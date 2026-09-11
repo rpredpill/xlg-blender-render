@@ -10,8 +10,9 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 # Build the exact 57-part character using the already verified neutral57 source.
 # Patch the older renderer's EEVEE enum for Blender 5.2 before executing it.
-ENGINE = "BLENDER_EEVEE_NEXT" if bpy.app.version < (5,0,0) else "BLENDER_EEVEE"
-src_text = SRC.read_text(encoding="utf-8").replace("BLENDER_EEVEE_NEXT", ENGINE)
+ENGINE = "CYCLES"
+src_text = SRC.read_text(encoding="utf-8")
+src_text = src_text.replace("sc.render.engine = 'BLENDER_EEVEE_NEXT'", "sc.render.engine = 'CYCLES'\\nsc.cycles.samples = 1\\nsc.cycles.use_denoising = False")
 try:
     exec(compile(src_text, str(SRC), "exec"), {"__name__":"__main__", "__file__":str(SRC)})
 except SystemExit:
@@ -19,17 +20,16 @@ except SystemExit:
 
 sc = bpy.context.scene
 sc.frame_start = 1
-sc.frame_end = 168
+sc.frame_end = 120
 sc.render.fps = 24
-sc.render.resolution_x = 540
-sc.render.resolution_y = 960
+sc.render.resolution_x = 360
+sc.render.resolution_y = 640
 sc.render.resolution_percentage = 100
 sc.render.film_transparent = False
-sc.render.engine = ENGINE
-try:
-    sc.eevee.taa_render_samples = 12
-except Exception:
-    pass
+sc.render.engine = 'CYCLES'
+sc.cycles.samples = 1
+sc.cycles.use_denoising = False
+sc.cycles.max_bounces = 0
 
 # Neutral white background.
 if sc.world:
