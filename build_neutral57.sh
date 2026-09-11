@@ -10,8 +10,9 @@ s=p.read_text()
 s=s.replace("tx.interpolation = 'Linear'","tx.interpolation = 'Closest'")
 s=s.replace("sc.render.resolution_x = 471","sc.render.resolution_x = 941")
 s=s.replace("sc.render.resolution_y = 836","sc.render.resolution_y = 1672")
+s=s.replace("cd.ortho_scale = max(canvas_h, canvas_w/aspect) * 1.01","cd.ortho_scale = max(canvas_h, canvas_w/aspect)")
 needle="sc.render.image_settings.color_depth = '8'"
-insert = needle + "\nsc.view_settings.view_transform = 'Standard'\nsc.view_settings.look = 'None'\nsc.view_settings.exposure = 0.0\nsc.view_settings.gamma = 1.0"
+insert = needle + "\nsc.view_settings.view_transform = 'Standard'\nsc.view_settings.look = 'NONE'\nsc.view_settings.exposure = 0.0\nsc.view_settings.gamma = 1.0"
 s=s.replace(needle, insert)
 p.write_text(s)
 PY
