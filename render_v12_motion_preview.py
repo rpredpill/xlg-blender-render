@@ -1,5 +1,5 @@
 from pathlib import Path
-import runpy, math
+import math
 import bpy
 
 ROOT = Path(__file__).resolve().parent
@@ -9,8 +9,10 @@ OUT = NEUTRAL / "output"
 OUT.mkdir(parents=True, exist_ok=True)
 
 # Build the exact 57-part character using the already verified neutral57 source.
+# Patch the older renderer's EEVEE enum for Blender 5.2 before executing it.
+src_text = SRC.read_text(encoding="utf-8").replace("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE")
 try:
-    runpy.run_path(str(SRC), run_name="__main__")
+    exec(compile(src_text, str(SRC), "exec"), {"__name__":"__main__", "__file__":str(SRC)})
 except SystemExit:
     pass
 
@@ -22,7 +24,7 @@ sc.render.resolution_x = 540
 sc.render.resolution_y = 960
 sc.render.resolution_percentage = 100
 sc.render.film_transparent = False
-sc.render.engine = 'BLENDER_EEVEE_NEXT'
+sc.render.engine = 'BLENDER_EEVEE'
 try:
     sc.eevee.taa_render_samples = 12
 except Exception:
