@@ -149,6 +149,23 @@ def tail_weights(o,side,segment):
             m[b2][v.index]=1-a; m[b3][v.index]=a
     put(o,m)
 
+def sidehair_weights(o,side):
+    clear_groups(o)
+    B=f"SIDEHAIR_{side}"
+    m={"HEAD":{},B:{}}
+    for v in o.data.vertices:
+        t=norm_y(o,v)
+        # Root remains welded to HEAD. Influence transfers gradually down the strand.
+        if t < .18:
+            m["HEAD"][v.index]=1.0
+        elif t < .52:
+            a=(t-.18)/.34
+            m["HEAD"][v.index]=1-a
+            m[B][v.index]=a
+        else:
+            m[B][v.index]=1.0
+    put(o,m)
+
 def leg_weights(o,side,kind):
     clear_groups(o)
     if kind=="Leg": rigid(o,f"THIGH_{side}")
@@ -175,7 +192,8 @@ dense=[
 "Sleeve_L","Cuff_L","Hand_L","Sleeve_R","Cuff_R","Hand_R",
 "Leg_L","Sock_L","Shoe_L","Leg_R","Sock_R","Shoe_R",
 "TwinTail_L_Root","TwinTail_L_Main","TwinTail_L_Tip",
-"TwinTail_R_Root","TwinTail_R_Main","TwinTail_R_Tip"
+"TwinTail_R_Root","TwinTail_R_Main","TwinTail_R_Tip",
+"SideHair_L","SideHair_R"
 ]
 for n in dense: subdiv(O(n),9 if "TwinTail" in n or "Sleeve" in n else 7)
 
@@ -284,6 +302,16 @@ def tail_chain(side,mesh):
 
 tail_chain("L",tailL); tail_chain("R",tailR)
 
+# Front side-hair gets its own deform bone. The root is connected visually
+# to the head through shared HEAD/SIDEHAIR weights instead of moving as a rigid card.
+for s in "LR":
+    o=O(f"SideHair_{s}")
+    b=wb(o)
+    x=(b[0]+b[2])/2
+    rootp=Vector((x,b[3]-.04*(b[3]-b[1]),0))
+    tip=Vector((x,b[1]+.04*(b[3]-b[1]),0))
+    bone(f"SIDEHAIR_{s}",rootp,tip,"HEAD",False)
+
 bpy.ops.object.mode_set(mode='POSE')
 for pb in arm.pose.bones:
     pb.rotation_mode='XYZ'
@@ -299,13 +327,20 @@ def arm_mod(o):
 
 for o in [upper,legL,legR,tailL,tailR]: arm_mod(o)
 
-# Head art uses the same HEAD bone, so face/hair cannot drift apart.
+# Side-hair meshes use blended HEAD -> SIDEHAIR weights so their roots cannot split.
+for s in "LR":
+    o=O(f"SideHair_{s}")
+    if o:
+        sidehair_weights(o,s)
+        arm_mod(o)
+
+# Remaining head art uses the same HEAD bone, so face/hair cannot drift apart.
 head_names=[
 "Face_Base_Full","Ear_L","Ear_R",
 "Eye_L_White","Eye_L_Iris","Eye_L_Pupil","Eye_L_Highlight","Eye_L_LowerLid","Eye_L_UpperLid","Eye_L_LowerLash","Eye_L_UpperLash","Eye_L_Crease",
 "Eye_R_White","Eye_R_Iris","Eye_R_Pupil","Eye_R_Highlight","Eye_R_LowerLid","Eye_R_UpperLid","Eye_R_LowerLash","Eye_R_UpperLash","Eye_R_Crease",
 "Brow_L","Brow_R","Nose_Base","Mouth_Line","Hair_Back","Hair_Crown","Bang_L","Bang_C","Bang_R",
-"SideHair_L","SideHair_R","Hairpin_XLG","HairBow_L","HairBow_R"
+"Hairpin_XLG","HairBow_L","HairBow_R"
 ]
 for n in head_names:
     o=O(n)
@@ -332,6 +367,8 @@ for f,bodyz,armz in beats:
         pk(f"TAIL_{s}_01",f,-bodyz*1.1 + sgn*1.0)
         pk(f"TAIL_{s}_02",f,-bodyz*1.8 + sgn*2.0)
         pk(f"TAIL_{s}_03",f,-bodyz*2.5 + sgn*3.2)
+        # Deliberately expose the artwork hidden beneath the two front strands.
+        pk(f"SIDEHAIR_{s}",f,-bodyz*1.35 + sgn*2.4)
 
 # Minimal eye motion/blink remains local inside HEAD deformation.
 eye_open=[n for n in head_names if n.startswith("Eye_L_") or n.startswith("Eye_R_")]
@@ -368,4 +405,4 @@ sc.render.image_settings.color_depth='8'
 
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/"XLG_V12_REAL_BLENDER_PREVIEW.blend"))
 bpy.ops.render.render(animation=True)
-print("V14_MESH_DEFORM_DONE")
+print("V15_HIDDEN_ART_DEFORM_DONE")
