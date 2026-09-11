@@ -10,7 +10,8 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 # Build the exact 57-part character using the already verified neutral57 source.
 # Patch the older renderer's EEVEE enum for Blender 5.2 before executing it.
-src_text = SRC.read_text(encoding="utf-8").replace("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE")
+ENGINE = "BLENDER_EEVEE_NEXT" if bpy.app.version < (5,0,0) else "BLENDER_EEVEE"
+src_text = SRC.read_text(encoding="utf-8").replace("BLENDER_EEVEE_NEXT", ENGINE)
 try:
     exec(compile(src_text, str(SRC), "exec"), {"__name__":"__main__", "__file__":str(SRC)})
 except SystemExit:
@@ -18,13 +19,13 @@ except SystemExit:
 
 sc = bpy.context.scene
 sc.frame_start = 1
-sc.frame_end = 240
+sc.frame_end = 168
 sc.render.fps = 24
 sc.render.resolution_x = 540
 sc.render.resolution_y = 960
 sc.render.resolution_percentage = 100
 sc.render.film_transparent = False
-sc.render.engine = 'BLENDER_EEVEE'
+sc.render.engine = ENGINE
 try:
     sc.eevee.taa_render_samples = 12
 except Exception:
