@@ -154,8 +154,14 @@ sc=bpy.context.scene;sc.render.engine='BLENDER_EEVEE_NEXT';sc.render.resolution_
 if sc.world is None:
     sc.world=bpy.data.worlds.new('World')
 sc.world.color=(1,1,1)
-cd=bpy.data.cameras.new('Camera');cam=bpy.data.objects.new('Camera',cd);bpy.context.scene.collection.objects.link(cam);cam.location=(0,5.0,20);cam.rotation_euler=(0,0,0);cd.type='ORTHO';cd.ortho_scale=7.0;sc.camera=cam
-cam.location.x=0.0;cam.location.y=5.25
+cd=bpy.data.cameras.new('Camera');cam=bpy.data.objects.new('Camera',cd);bpy.context.scene.collection.objects.link(cam);cam.rotation_euler=(0,0,0);cd.type='ORTHO';sc.camera=cam
+# Auto-frame the full character instead of using the old hard-coded crop.
+x0,y0,x1,y1=bbox_world(list(objs.values()))
+cx=(x0+x1)/2; cy=(y0+y1)/2
+span_w=max(x1-x0,0.01); span_h=max(y1-y0,0.01)
+aspect=sc.render.resolution_x/sc.render.resolution_y
+cd.ortho_scale=max(span_h, span_w/aspect)*1.08
+cam.location=(cx,cy,20)
 bpy.context.scene.render.image_settings.file_format='PNG';bpy.context.scene.render.image_settings.color_mode='RGBA'
 
 sc.frame_start=1;sc.frame_end=73
