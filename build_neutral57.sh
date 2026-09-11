@@ -16,7 +16,7 @@ s=s.replace("cd.ortho_scale = max(canvas_h, canvas_w/aspect) * 1.01","cd.ortho_s
 # Keep the object in the .blend for future expression rigging, but do not render it in neutral.
 s += "\n# neutral brow cleanup\nb=bpy.data.objects.get('Brow_L')\nif b: b.hide_render=True\n"
 needle="sc.render.image_settings.color_depth = '8'"
-insert = needle + "\nsc.view_settings.view_transform = 'Standard'\nsc.view_settings.look = 'NONE'\nsc.view_settings.exposure = 0.0\nsc.view_settings.gamma = 1.0"
+insert = needle + "\nsc.view_settings.view_transform = 'Standard'\nsc.view_settings.look = 'None'\nsc.view_settings.exposure = 0.0\nsc.view_settings.gamma = 1.0"
 s=s.replace(needle, insert)
 p.write_text(s)
 PY
