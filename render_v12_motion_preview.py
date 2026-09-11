@@ -296,6 +296,6 @@ sc.render.image_settings.file_format='PNG'
 sc.render.image_settings.color_mode='RGBA'
 sc.render.image_settings.color_depth='8'
 
-bpy.ops.wm.save_as_mainfile(filepath=str(OUT/"XLG_V13_SEAMLOCK_PREVIEW.blend"))
+bpy.ops.wm.save_as_mainfile(filepath=str(OUT/"XLG_V12_REAL_BLENDER_PREVIEW.blend"))
 bpy.ops.render.render(animation=True)
 print("V13_SEAMLOCK_DONE",frames_dir)
