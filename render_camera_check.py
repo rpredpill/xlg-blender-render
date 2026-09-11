@@ -150,7 +150,7 @@ for d in (-1,1):
     for n in ['Bang_L','Bang_C','Bang_R']:hairwarp(L[n],d,.55,.82,.10)
     for n in ['SideHair_L','SideHair_R']:hairwarp(L[n],d,.65,.74,.12)
 
-sc=bpy.context.scene;sc.render.engine='BLENDER_EEVEE_NEXT';sc.render.resolution_x=460;sc.render.resolution_y=700;sc.render.resolution_percentage=100;sc.render.film_transparent=False
+sc=bpy.context.scene;sc.render.engine='BLENDER_EEVEE_NEXT';sc.render.resolution_x=460;sc.render.resolution_y=700;sc.render.resolution_percentage=100;sc.render.film_transparent=True
 if sc.world is None:
     sc.world=bpy.data.worlds.new('World')
 sc.world.color=(1,1,1)
@@ -175,4 +175,19 @@ bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'XLG_HeadYaw_V4_REAL.blend'))
 sc.frame_set(19)
 sc.render.filepath=str(OUT/'Yaw_0_CAMERA_CHECK.png')
 bpy.ops.render.render(write_still=True)
+# Quantitative framing QA from Render Result alpha.
+img=bpy.data.images.get('Render Result')
+w,h=img.size
+px=list(img.pixels)
+xs=[]; ys=[]
+for y in range(h):
+    row=y*w
+    for x in range(w):
+        if px[(row+x)*4+3] > 0.01:
+            xs.append(x); ys.append(y)
+if not xs:
+    print('CAMERA_QA EMPTY')
+else:
+    x0,x1=min(xs),max(xs); y0,y1=min(ys),max(ys)
+    print('CAMERA_QA', 'size',w,h,'bbox',x0,y0,x1,y1,'margins',x0,w-1-x1,y0,h-1-y1,'coverage',round((x1-x0+1)/w,4),round((y1-y0+1)/h,4))
 print('CAMERA_CHECK_DONE',OUT)
