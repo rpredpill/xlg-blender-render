@@ -12,7 +12,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 # Patch the older renderer's EEVEE enum for Blender 5.2 before executing it.
 ENGINE = "CYCLES"
 src_text = SRC.read_text(encoding="utf-8")
-src_text = src_text.replace("sc.render.engine = 'BLENDER_EEVEE_NEXT'", "sc.render.engine = 'CYCLES'\\nsc.cycles.samples = 1\\nsc.cycles.use_denoising = False")
+src_text = src_text.replace("sc.render.engine = 'BLENDER_EEVEE_NEXT'", "sc.render.engine = 'CYCLES'\nsc.cycles.samples = 1\nsc.cycles.use_denoising = False")
 try:
     exec(compile(src_text, str(SRC), "exec"), {"__name__":"__main__", "__file__":str(SRC)})
 except SystemExit:
@@ -221,16 +221,15 @@ for action in bpy.data.actions:
         except Exception:
             pass
 
-# Render actual Blender animation.
-sc.render.filepath=str(OUT/"XLG_V12_REAL_BLENDER_PREVIEW.mp4")
-sc.render.image_settings.file_format='FFMPEG'
-sc.render.ffmpeg.format='MPEG4'
-sc.render.ffmpeg.codec='H264'
-sc.render.ffmpeg.constant_rate_factor='MEDIUM'
-sc.render.ffmpeg.ffmpeg_preset='GOOD'
-sc.render.ffmpeg.audio_codec='NONE'
+# Render actual Blender animation as PNG frames.
+frames_dir = OUT / "frames"
+frames_dir.mkdir(parents=True, exist_ok=True)
+sc.render.filepath = str(frames_dir / "frame_")
+sc.render.image_settings.file_format = 'PNG'
+sc.render.image_settings.color_mode = 'RGBA'
+sc.render.image_settings.color_depth = '8'
 bpy.ops.render.render(animation=True)
 
 # Save the Blender scene too.
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/"XLG_V12_REAL_BLENDER_PREVIEW.blend"))
-print("DONE", sc.render.filepath)
+print("DONE_FRAMES", frames_dir)
