@@ -354,7 +354,7 @@ def pk(name,f,z):
     pb.rotation_euler=(0,0,math.radians(z))
     pb.keyframe_insert("rotation_euler",frame=f)
 
-beats=[(1,0,0),(24,-2.5,-6),(48,2.8,7),(72,-1.8,-5),(96,2.0,5),(120,0,0)]
+beats=[(1,0,0),(24,-2.1,-3.5),(48,2.3,4.0),(72,-1.5,-3.0),(96,1.7,3.2),(120,0,0)]
 for f,bodyz,armz in beats:
     pk("SPINE",f,bodyz*.35)
     pk("CHEST",f,bodyz)
@@ -368,7 +368,8 @@ for f,bodyz,armz in beats:
         pk(f"TAIL_{s}_02",f,-bodyz*1.8 + sgn*2.0)
         pk(f"TAIL_{s}_03",f,-bodyz*2.5 + sgn*3.2)
         # Deliberately expose the artwork hidden beneath the two front strands.
-        pk(f"SIDEHAIR_{s}",f,-bodyz*1.35 + sgn*2.4)
+        # Front strands move, but remain inside the repaired underpaint range.
+        pk(f"SIDEHAIR_{s}",f,-bodyz*0.45 + sgn*0.80)
 
 # Minimal eye motion/blink remains local inside HEAD deformation.
 eye_open=[n for n in head_names if n.startswith("Eye_L_") or n.startswith("Eye_R_")]
@@ -405,4 +406,4 @@ sc.render.image_settings.color_depth='8'
 
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/"XLG_V12_REAL_BLENDER_PREVIEW.blend"))
 bpy.ops.render.render(animation=True)
-print("V15_HIDDEN_ART_DEFORM_DONE")
+print("V16_OCCLUSION_SAFE_DEFORM_DONE")
