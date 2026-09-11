@@ -1,6 +1,7 @@
 from pathlib import Path
 import math
 import bpy
+from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parent
 NEUTRAL = ROOT / "neutral57"
@@ -8,11 +9,11 @@ SRC = NEUTRAL / "render_neutral57.py"
 OUT = NEUTRAL / "output"
 OUT.mkdir(parents=True, exist_ok=True)
 
-# Build the exact 57-part character using the already verified neutral57 source.
-# Patch the older renderer's EEVEE enum for Blender 5.2 before executing it.
-ENGINE = "CYCLES"
 src_text = SRC.read_text(encoding="utf-8")
-src_text = src_text.replace("sc.render.engine = 'BLENDER_EEVEE_NEXT'", "sc.render.engine = 'CYCLES'\nsc.cycles.samples = 1\nsc.cycles.use_denoising = False")
+src_text = src_text.replace(
+    "sc.render.engine = 'BLENDER_EEVEE_NEXT'",
+    "sc.render.engine = 'CYCLES'\nsc.cycles.samples = 1\nsc.cycles.use_denoising = False"
+)
 try:
     exec(compile(src_text, str(SRC), "exec"), {"__name__":"__main__", "__file__":str(SRC)})
 except SystemExit:
@@ -30,179 +31,247 @@ sc.render.engine = 'CYCLES'
 sc.cycles.samples = 1
 sc.cycles.use_denoising = False
 sc.cycles.max_bounces = 0
-
-# Neutral white background.
 if sc.world:
     sc.world.color = (0.96, 0.96, 0.96)
 
 def obj(name):
     return bpy.data.objects.get(name)
 
-# Full bounds for scale-aware controls.
-renderables = [o for o in sc.objects if o.type == 'MESH']
-xs, ys = [], []
-for o in renderables:
-    try:
-        for c in o.bound_box:
-            wc = o.matrix_world @ __import__('mathutils').Vector(c)
-            xs.append(wc.x); ys.append(wc.y)
-    except Exception:
-        pass
-char_w = max(xs)-min(xs) if xs else 10.0
-char_h = max(ys)-min(ys) if ys else 18.0
+def bounds_of(o):
+    pts = [o.matrix_world @ Vector(c) for c in o.bound_box]
+    xs=[p.x for p in pts]; ys=[p.y for p in pts]
+    return min(xs), min(ys), max(xs), max(ys)
 
-def center(names):
-    pts = [obj(n).matrix_world.translation.copy() for n in names if obj(n)]
-    if not pts:
-        return (0,0,0)
-    x=sum(p.x for p in pts)/len(pts); y=sum(p.y for p in pts)/len(pts); z=sum(p.z for p in pts)/len(pts)
-    return (x,y,z)
+def group_bounds(names):
+    bs=[bounds_of(obj(n)) for n in names if obj(n)]
+    if not bs:
+        return (0,0,1,1)
+    return (min(b[0] for b in bs), min(b[1] for b in bs),
+            max(b[2] for b in bs), max(b[3] for b in bs))
 
-def ctrl(name, names, pivot=None):
-    e=bpy.data.objects.new(name,None)
+def preserve_parent(child, parent):
+    mw=child.matrix_world.copy()
+    child.parent=parent
+    child.matrix_world=mw
+
+def make_ctrl(name, pivot):
+    e=bpy.data.objects.new(name, None)
+    e.empty_display_type='PLAIN_AXES'
+    e.empty_display_size=.18
     sc.collection.objects.link(e)
-    if pivot is None: pivot=center(names)
-    e.location=pivot
-    for n in names:
-        o=obj(n)
-        if not o: continue
-        mw=o.matrix_world.copy()
-        o.parent=e
-        o.matrix_world=mw
+    e.location=(pivot.x,pivot.y,0)
     return e
 
-face_names = [
+face_parts = [
 "Face_Base_Full","Ear_L","Ear_R",
+"Eye_L_White","Eye_L_Iris","Eye_L_Pupil","Eye_L_Highlight","Eye_L_LowerLid",
+"Eye_L_UpperLid","Eye_L_LowerLash","Eye_L_UpperLash","Eye_L_Crease",
+"Eye_R_White","Eye_R_Iris","Eye_R_Pupil","Eye_R_Highlight","Eye_R_LowerLid",
+"Eye_R_UpperLid","Eye_R_LowerLash","Eye_R_UpperLash","Eye_R_Crease",
+"Brow_L","Brow_R","Nose_Base","Mouth_Line"
+]
+head_hair = [
+"Hair_Back","Hair_Crown","Bang_L","Bang_C","Bang_R",
+"SideHair_L","SideHair_R","Hairpin_XLG","HairBow_L","HairBow_R"
+]
+body_parts = ["Neck_Full","Shoulder","Torso","Skirt","Leg_L","Leg_R","Sock_L","Sock_R","Shoe_L","Shoe_R"]
+armL = ["Sleeve_L","Cuff_L","Hand_L"]
+armR = ["Sleeve_R","Cuff_R","Hand_R"]
+
+all_mesh=[o for o in sc.objects if o.type=='MESH']
+all_bounds=[bounds_of(o) for o in all_mesh]
+char_x0=min(b[0] for b in all_bounds); char_y0=min(b[1] for b in all_bounds)
+char_x1=max(b[2] for b in all_bounds); char_y1=max(b[3] for b in all_bounds)
+char_w=char_x1-char_x0; char_h=char_y1-char_y0
+
+torso_b=group_bounds(["Torso","Shoulder"])
+body_cx=(torso_b[0]+torso_b[2])/2
+skirt_b=group_bounds(["Skirt"])
+root_pivot=Vector((body_cx, skirt_b[3]-0.10*(skirt_b[3]-skirt_b[1]), 0))
+neck_b=group_bounds(["Neck_Full"])
+head_pivot=Vector(((neck_b[0]+neck_b[2])/2,
+                   neck_b[1]+0.55*(neck_b[3]-neck_b[1]), 0))
+
+def shoulder_pivot(sleeve_name):
+    b=group_bounds([sleeve_name])
+    cx=(b[0]+b[2])/2
+    inner_x=b[0] if cx>body_cx else b[2]
+    y=b[3]-0.10*(b[3]-b[1])
+    return Vector((inner_x,y,0))
+
+def tail_anchor(root_name):
+    b=group_bounds([root_name])
+    cx=(b[0]+b[2])/2
+    inner_x=b[0] if cx>body_cx else b[2]
+    y=b[3]-0.08*(b[3]-b[1])
+    return Vector((inner_x,y,0))
+
+def segment_anchor(name):
+    b=group_bounds([name])
+    return Vector(((b[0]+b[2])/2, b[3]-0.08*(b[3]-b[1]), 0))
+
+ROOT_CTRL=make_ctrl("CTRL_ROOT_SEAMLOCK",root_pivot)
+HEAD_CTRL=make_ctrl("CTRL_HEAD_SEAMLOCK",head_pivot)
+FACE_CTRL=make_ctrl("CTRL_FACE_PARALLAX",head_pivot)
+ARM_L_CTRL=make_ctrl("CTRL_ARM_L_SEAMLOCK",shoulder_pivot("Sleeve_L"))
+ARM_R_CTRL=make_ctrl("CTRL_ARM_R_SEAMLOCK",shoulder_pivot("Sleeve_R"))
+
+for n in body_parts:
+    if obj(n): preserve_parent(obj(n),ROOT_CTRL)
+preserve_parent(HEAD_CTRL,ROOT_CTRL)
+preserve_parent(ARM_L_CTRL,ROOT_CTRL)
+preserve_parent(ARM_R_CTRL,ROOT_CTRL)
+for n in head_hair:
+    if obj(n): preserve_parent(obj(n),HEAD_CTRL)
+preserve_parent(FACE_CTRL,HEAD_CTRL)
+for n in face_parts:
+    if obj(n): preserve_parent(obj(n),FACE_CTRL)
+for n in armL:
+    if obj(n): preserve_parent(obj(n),ARM_L_CTRL)
+for n in armR:
+    if obj(n): preserve_parent(obj(n),ARM_R_CTRL)
+
+def build_tail(side):
+    r=f"TwinTail_{side}_Root"
+    m=f"TwinTail_{side}_Main"
+    t=f"TwinTail_{side}_Tip"
+    c1=make_ctrl(f"CTRL_TAIL_{side}_01",tail_anchor(r))
+    c2=make_ctrl(f"CTRL_TAIL_{side}_02",segment_anchor(m))
+    c3=make_ctrl(f"CTRL_TAIL_{side}_03",segment_anchor(t))
+    preserve_parent(c1,HEAD_CTRL)
+    preserve_parent(c2,c1)
+    preserve_parent(c3,c2)
+    if obj(r): preserve_parent(obj(r),c1)
+    if obj(m): preserve_parent(obj(m),c2)
+    if obj(t): preserve_parent(obj(t),c3)
+    return c1,c2,c3
+
+TAIL_L=build_tail("L")
+TAIL_R=build_tail("R")
+
+controllers=[ROOT_CTRL,HEAD_CTRL,FACE_CTRL,ARM_L_CTRL,ARM_R_CTRL,*TAIL_L,*TAIL_R]
+base_ctrl={o.name:(o.location.copy(),o.rotation_euler.copy(),o.scale.copy()) for o in controllers}
+
+feature_names=[
 "Eye_L_White","Eye_L_Iris","Eye_L_Pupil","Eye_L_Highlight","Eye_L_LowerLid","Eye_L_UpperLid","Eye_L_LowerLash","Eye_L_UpperLash","Eye_L_Crease",
 "Eye_R_White","Eye_R_Iris","Eye_R_Pupil","Eye_R_Highlight","Eye_R_LowerLid","Eye_R_UpperLid","Eye_R_LowerLash","Eye_R_UpperLash","Eye_R_Crease",
-"Brow_L","Brow_R","Nose_Base","Mouth_Line",
-"Bang_L","Bang_C","Bang_R","Hair_Crown","Hairpin_XLG","HairBow_L","HairBow_R",
-"SideHair_L","SideHair_R","Hair_Back"
+"Brow_L","Brow_R","Nose_Base","Mouth_Line"
 ]
-body_names=["Neck_Full","Shoulder","Torso","Skirt","Leg_L","Leg_R","Sock_L","Sock_R","Shoe_L","Shoe_R"]
-armL=["Sleeve_L","Cuff_L","Hand_L"]
-armR=["Sleeve_R","Cuff_R","Hand_R"]
-tailL=["TwinTail_L_Root","TwinTail_L_Main","TwinTail_L_Tip"]
-tailR=["TwinTail_R_Root","TwinTail_R_Main","TwinTail_R_Tip"]
-
-body=ctrl("CTRL_BODY", body_names)
-head=ctrl("CTRL_HEAD", face_names)
-arm_l=ctrl("CTRL_ARM_L", armL)
-arm_r=ctrl("CTRL_ARM_R", armR)
-tail_l=ctrl("CTRL_TAIL_L", tailL)
-tail_r=ctrl("CTRL_TAIL_R", tailR)
-
-# Hierarchy
-for c in (head,arm_l,arm_r):
-    mw=c.matrix_world.copy(); c.parent=body; c.matrix_world=mw
-for c in (tail_l,tail_r):
-    mw=c.matrix_world.copy(); c.parent=head; c.matrix_world=mw
-
-# Baselines for local feature animation.
-all_feature_names = [
-"Eye_L_White","Eye_L_Iris","Eye_L_Pupil","Eye_L_Highlight","Eye_L_LowerLid","Eye_L_UpperLid","Eye_L_LowerLash","Eye_L_UpperLash","Eye_L_Crease",
-"Eye_R_White","Eye_R_Iris","Eye_R_Pupil","Eye_R_Highlight","Eye_R_LowerLid","Eye_R_UpperLid","Eye_R_LowerLash","Eye_R_UpperLash","Eye_R_Crease",
-"Brow_L","Brow_R","Nose_Base","Mouth_Line","Ear_L","Ear_R","Face_Base_Full"
-]
-base={}
-for n in all_feature_names:
+base_feat={}
+for n in feature_names:
     o=obj(n)
     if o:
-        base[n]=(o.location.copy(),o.scale.copy(),o.rotation_euler.copy())
+        base_feat[n]=(o.location.copy(),o.scale.copy(),o.rotation_euler.copy())
 
-def kf(o, frame, loc=None, rot=None, scale=None):
+def kf(o,f,loc=None,rot=None,scale=None):
     if loc is not None:
-        o.location=loc; o.keyframe_insert("location",frame=frame)
+        o.location=loc
+        o.keyframe_insert("location",frame=f)
     if rot is not None:
-        o.rotation_euler=rot; o.keyframe_insert("rotation_euler",frame=frame)
+        o.rotation_euler=rot
+        o.keyframe_insert("rotation_euler",frame=f)
     if scale is not None:
-        o.scale=scale; o.keyframe_insert("scale",frame=frame)
+        o.scale=scale
+        o.keyframe_insert("scale",frame=f)
 
-# Main motion beats.
 beats=[
 (1,   0.00, 0.00,  0.0),
-(36, -0.75, 0.18, -2.0),
-(72,  0.85,-0.10,  2.5),
-(108, 0.25, 0.22, -1.0),
-(144,-0.45,-0.12,  1.5),
-(180, 0.60, 0.10, -1.0),
-(216,-0.20, 0.00,  0.5),
-(240, 0.00, 0.00,  0.0),
+(24, -0.55, 0.12, -1.3),
+(48,  0.65,-0.08,  1.5),
+(72, -0.30, 0.10, -0.7),
+(96,  0.42,-0.05,  0.8),
+(120, 0.00, 0.00,  0.0),
 ]
-for f,yaw,pitch,roll in beats:
-    # Body and head follow.
-    b=body.rotation_euler.copy(); b.z=math.radians(-yaw*1.4)
-    kf(body,f,loc=(body.location.x,body.location.y+pitch*0.015*char_h,body.location.z),rot=b)
-    h=head.rotation_euler.copy(); h.z=math.radians(roll + yaw*2.0)
-    kf(head,f,loc=(head.location.x+yaw*0.010*char_w,head.location.y+pitch*0.012*char_h,head.location.z),rot=h)
 
-    # Facial pseudo-3D parallax.
-    for n in all_feature_names:
+root_loc0,root_rot0,_=base_ctrl[ROOT_CTRL.name]
+head_loc0,head_rot0,_=base_ctrl[HEAD_CTRL.name]
+face_loc0,face_rot0,_=base_ctrl[FACE_CTRL.name]
+al_loc0,al_rot0,_=base_ctrl[ARM_L_CTRL.name]
+ar_loc0,ar_rot0,_=base_ctrl[ARM_R_CTRL.name]
+
+for f,yaw,pitch,roll in beats:
+    rl=root_loc0.copy()
+    rl.y += math.sin(f/18.0)*0.0018*char_h
+    rr=root_rot0.copy()
+    rr.z=math.radians(0.45*math.sin(f/31.0))
+    kf(ROOT_CTRL,f,loc=rl,rot=rr)
+
+    hl=head_loc0.copy()
+    hl.y += pitch*0.0015*char_h
+    hr=head_rot0.copy()
+    hr.z=math.radians(roll)
+    kf(HEAD_CTRL,f,loc=hl,rot=hr)
+
+    fl=face_loc0.copy()
+    fl.x += yaw*0.0028*char_w
+    kf(FACE_CTRL,f,loc=fl,rot=face_rot0.copy())
+
+    lar=al_rot0.copy(); rar=ar_rot0.copy()
+    lar.z=math.radians(0.75*yaw)
+    rar.z=math.radians(0.75*yaw)
+    kf(ARM_L_CTRL,f,loc=al_loc0,rot=lar)
+    kf(ARM_R_CTRL,f,loc=ar_loc0,rot=rar)
+
+    for chain,sgn in ((TAIL_L,1.0),(TAIL_R,-1.0)):
+        amps=(1.4,3.0,5.0)
+        for i,c in enumerate(chain):
+            loc0,rot0,_=base_ctrl[c.name]
+            r=rot0.copy()
+            lag=math.sin((f-i*5)/16.0)
+            r.z=math.radians((-yaw*amps[i]*0.55) + sgn*amps[i]*0.35*lag)
+            kf(c,f,loc=loc0,rot=r)
+
+    for n in feature_names:
         o=obj(n)
-        if not o or n not in base: continue
-        bl,bs,br=base[n]
-        factor=0.0
-        sx=1.0
-        if n=="Nose_Base": factor=0.030
-        elif n=="Mouth_Line": factor=0.020
-        elif n.startswith("Eye_L"): factor=0.012; sx=1.0+0.035*yaw
-        elif n.startswith("Eye_R"): factor=0.012; sx=1.0-0.035*yaw
-        elif n.startswith("Brow_"): factor=0.010
-        elif n.startswith("Ear_"): factor=-0.008
-        elif n=="Face_Base_Full": factor=0.004; sx=1.0-0.018*abs(yaw)
-        loc=bl.copy(); loc.x += yaw*factor*char_w; loc.y += pitch*0.007*char_h
-        scale=bs.copy(); scale.x *= sx
+        if not o or n not in base_feat: continue
+        bl,bs,br=base_feat[n]
+        loc=bl.copy(); scale=bs.copy()
+        if n=="Nose_Base":
+            loc.x += yaw*0.0018*char_w
+            loc.y += pitch*0.0010*char_h
+        elif n=="Mouth_Line":
+            loc.x += yaw*0.0011*char_w
+            loc.y += pitch*0.0010*char_h
+        elif n.startswith("Eye_L_"):
+            loc.x += yaw*0.00055*char_w
+            scale.x *= (1.0+0.012*yaw)
+        elif n.startswith("Eye_R_"):
+            loc.x += yaw*0.00055*char_w
+            scale.x *= (1.0-0.012*yaw)
+        elif n.startswith("Brow_"):
+            loc.x += yaw*0.00045*char_w
         kf(o,f,loc=loc,scale=scale)
 
-    # Hair delay.
-    for c,phase in ((tail_l,1.0),(tail_r,-1.0)):
-        r=c.rotation_euler.copy()
-        r.z=math.radians((-yaw*5.5 + phase*2.0*math.sin(f/26.0)))
-        kf(c,f,rot=r)
-
-    # Arms subtly counter-sway.
-    rl=arm_l.rotation_euler.copy(); rr=arm_r.rotation_euler.copy()
-    rl.z=math.radians(yaw*1.8); rr.z=math.radians(yaw*1.8)
-    kf(arm_l,f,rot=rl); kf(arm_r,f,rot=rr)
-
-# Eye gaze.
 iris_parts=["Eye_L_Iris","Eye_L_Pupil","Eye_L_Highlight","Eye_R_Iris","Eye_R_Pupil","Eye_R_Highlight"]
-for f,gx,gy in [(1,0,0),(55,-1,.3),(90,1,-.2),(130,.5,.35),(170,-.6,-.1),(210,.3,.15),(240,0,0)]:
+for f,gx,gy in [(1,0,0),(30,-.7,.2),(60,.8,-.1),(90,-.35,.15),(120,0,0)]:
     for n in iris_parts:
         o=obj(n)
-        if not o or n not in base: continue
-        bl,bs,br=base[n]
-        # layer on top of yaw keyframes with another key at same frame where possible
+        if not o: continue
         loc=o.location.copy()
-        loc.x += gx*0.006*char_w
-        loc.y += gy*0.004*char_h
+        loc.x += gx*0.0032*char_w
+        loc.y += gy*0.0022*char_h
         kf(o,f,loc=loc)
 
-# Blinks by vertically compressing eye parts around their own origins.
-eye_open_parts=[n for n in all_feature_names if n.startswith("Eye_L_") or n.startswith("Eye_R_")]
-for centerf in [28,84,151,205]:
-    for n in eye_open_parts:
+eye_open=[n for n in feature_names if n.startswith("Eye_L_") or n.startswith("Eye_R_")]
+for cf in [22,61,99]:
+    for n in eye_open:
         o=obj(n)
         if not o: continue
-        s0=o.scale.copy()
-        kf(o,centerf-2,scale=s0)
-        sm=s0.copy(); sm.y=max(0.08,s0.y*0.10)
-        kf(o,centerf,scale=sm)
-        kf(o,centerf+2,scale=s0)
+        s=o.scale.copy()
+        kf(o,cf-2,scale=s)
+        s2=s.copy(); s2.y=max(0.08,s.y*0.12)
+        kf(o,cf,scale=s2)
+        kf(o,cf+2,scale=s)
 
-# Speech-like mouth movement.
-m=obj("Mouth_Line")
-if m:
-    for f in range(100,177,6):
-        s=m.scale.copy()
-        kf(m,f,scale=s)
-        s2=s.copy()
-        s2.x*=0.90 if ((f//6)%2) else 1.08
-        s2.y*=1.7
-        kf(m,f+3,scale=s2)
-        kf(m,f+6,scale=s)
+mouth=obj("Mouth_Line")
+if mouth:
+    for f in range(48,85,8):
+        s=mouth.scale.copy()
+        kf(mouth,f,scale=s)
+        s2=s.copy(); s2.y*=1.45; s2.x*=0.96
+        kf(mouth,f+4,scale=s2)
+        kf(mouth,f+8,scale=s)
 
-# Make interpolation smooth.
 for action in bpy.data.actions:
     try:
         for layer in action.layers:
@@ -213,7 +282,6 @@ for action in bpy.data.actions:
                         for kp in fc.keyframe_points:
                             kp.interpolation='BEZIER'
     except Exception:
-        # Blender 4.x legacy actions
         try:
             for fc in action.fcurves:
                 for kp in fc.keyframe_points:
@@ -221,15 +289,13 @@ for action in bpy.data.actions:
         except Exception:
             pass
 
-# Render actual Blender animation as PNG frames.
-frames_dir = OUT / "frames"
-frames_dir.mkdir(parents=True, exist_ok=True)
-sc.render.filepath = str(frames_dir / "frame_")
-sc.render.image_settings.file_format = 'PNG'
-sc.render.image_settings.color_mode = 'RGBA'
-sc.render.image_settings.color_depth = '8'
-bpy.ops.render.render(animation=True)
+frames_dir=OUT/"frames"
+frames_dir.mkdir(parents=True,exist_ok=True)
+sc.render.filepath=str(frames_dir/"frame_")
+sc.render.image_settings.file_format='PNG'
+sc.render.image_settings.color_mode='RGBA'
+sc.render.image_settings.color_depth='8'
 
-# Save the Blender scene too.
-bpy.ops.wm.save_as_mainfile(filepath=str(OUT/"XLG_V12_REAL_BLENDER_PREVIEW.blend"))
-print("DONE_FRAMES", frames_dir)
+bpy.ops.wm.save_as_mainfile(filepath=str(OUT/"XLG_V13_SEAMLOCK_PREVIEW.blend"))
+bpy.ops.render.render(animation=True)
+print("V13_SEAMLOCK_DONE",frames_dir)
