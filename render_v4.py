@@ -168,5 +168,4 @@ OUT=ROOT/'output';OUT.mkdir(exist_ok=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'XLG_HeadYaw_V4_REAL.blend'))
 for f,n in [(1,'Yaw_N20_REAL'),(19,'Yaw_0_REAL'),(37,'Yaw_P20_REAL')]:
     sc.frame_set(f);sc.render.filepath=str(OUT/(n+'.png'));bpy.ops.render.render(write_still=True)
-sc.render.image_settings.file_format='FFMPEG';sc.render.ffmpeg.format='MPEG4';sc.render.ffmpeg.codec='H264';sc.render.ffmpeg.constant_rate_factor='MEDIUM';sc.render.fps=24;sc.render.filepath=str(OUT/'HeadYaw_V4_REAL.mp4');bpy.ops.render.render(animation=True)
-print('RENDER_DONE',OUT)
+print('RENDER_DONE_STILLS',OUT)
