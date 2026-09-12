@@ -15,12 +15,10 @@ manifest=json.loads((ROOT/"manifest.json").read_text(encoding="utf-8"))
 meta={p["name"]:p for p in manifest["parts"]}
 
 def full(name):
-    p1=ROOT/"parts"/f"{name}.png"
-    if p1.exists():
-        im=np.array(Image.open(p1).convert("RGBA"))
-        if im.shape[1]==W and im.shape[0]==H: return im
-    p=ROOT/"parts_cropped"/f"{name}.png"
+    p=ROOT/"parts"/f"{name}.png"
     arr=np.array(Image.open(p).convert("RGBA"))
+    if arr.shape[1]==W and arr.shape[0]==H:
+        return arr
     x0,y0,x1,y1=map(int,meta[name]["crop_bbox"])
     out=np.zeros((H,W,4),np.uint8)
     if arr.shape[1]!=(x1-x0) or arr.shape[0]!=(y1-y0):
