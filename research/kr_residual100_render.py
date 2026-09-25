@@ -5,7 +5,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-START = pd.Timestamp("2021-01-01")
+START = pd.Timestamp("2021-04-01")
 END = pd.Timestamp("2026-09-25")
 YEARS = range(2020, 2027)
 LOOKBACK, SKIP, L6, L3, NPC = 252, 21, 126, 63, 5
@@ -127,20 +127,52 @@ def choose_with_buffer(score,incumbents):
 def cap_weights(raw,parent_mcap):
     raw=raw.clip(lower=0).dropna()
     if raw.sum()<=0: raw[:]=1.0
-    w=raw/raw.sum(); base=parent_mcap.sum()
-    caps=pd.Series(np.minimum(ABS_CAP,MCAP_MULT*(parent_mcap.reindex(w.index).fillna(0)/base)),index=w.index)
-    if caps.sum()<1:
-        for _ in range(80):
-            caps=(caps*1.10).clip(upper=ABS_CAP)
-            if caps.sum()>=1: break
-    for _ in range(100):
-        over=w>caps+1e-12
-        if not over.any(): break
-        excess=(w[over]-caps[over]).sum(); w[over]=caps[over]
-        room=(caps[~over]-w[~over]).clip(lower=0)
-        if room.sum()<=1e-15: break
-        w[~over]+=excess*room/room.sum()
-    return w/w.sum()
+    base=parent_mcap.sum()
+    rel=MCAP_MULT*(parent_mcap.reindex(raw.index).fillna(0)/base)
+
+    # Relax only the relative cap if necessary, while preserving the 9% hard cap.
+    lo,hi=1.0,1.0
+    def capped_sum(scale):
+        return float(np.minimum(ABS_CAP, rel.to_numpy()*scale).sum())
+    while capped_sum(hi)<1.0 and hi<1e6:
+        hi*=2.0
+    for _ in range(60):
+        mid=(lo+hi)/2.0
+        if capped_sum(mid)>=1.0: hi=mid
+        else: lo=mid
+    caps=pd.Series(np.minimum(ABS_CAP, rel.to_numpy()*hi),index=raw.index)
+
+    # Exact capped proportional allocation (water filling).
+    w=pd.Series(0.0,index=raw.index)
+    free=list(raw.index)
+    remaining=1.0
+    for _ in range(len(raw)+5):
+        if not free or remaining<=1e-14: break
+        r=raw.reindex(free)
+        if r.sum()<=0: proposal=pd.Series(remaining/len(free),index=free)
+        else: proposal=r/r.sum()*remaining
+        over=proposal>caps.reindex(free)+1e-14
+        if not over.any():
+            w.loc[free]=proposal
+            remaining=0.0
+            break
+        fixed=list(proposal.index[over])
+        w.loc[fixed]=caps.loc[fixed]
+        remaining=1.0-float(w.sum())
+        free=[x for x in free if x not in fixed]
+
+    # Numerical cleanup only; never violate hard caps.
+    if remaining>1e-10 and free:
+        room=(caps.loc[free]-w.loc[free]).clip(lower=0)
+        if room.sum()>0:
+            add=remaining*room/room.sum()
+            add=np.minimum(add,room)
+            w.loc[free]+=add
+    if abs(float(w.sum())-1.0)>1e-6:
+        raise RuntimeError(f"cap allocation failed sum={w.sum()} capsum={caps.sum()}")
+    if float((w-caps).max())>1e-8 or float(w.max())>ABS_CAP+1e-8:
+        raise RuntimeError(f"cap violated maxw={w.max()} maxover={(w-caps).max()}")
+    return w
 
 def target_weights(score,pm,incumbents):
     sel=choose_with_buffer(score,incumbents); s=score.reindex(sel); mc=pm.reindex(sel)
