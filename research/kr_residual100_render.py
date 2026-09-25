@@ -204,28 +204,107 @@ threading.Thread(target=server.serve_forever,daemon=False).start()
 print("serving",port,flush=True)
 STATUS["state"]="pass1"
 
+
+def build_signal_cache(ret,kospi,info):
+    cache={}
+    n=len(info)
+    for j,d in enumerate(info.keys(),1):
+        STATUS["state"]=f"signals {j}/{n}"
+        raw,pm=score_at(d,ret,kospi,info,False)
+        res,_=score_at(d,ret,kospi,info,True)
+        common=raw.index.intersection(res.index)
+        cache[d]={"raw":raw.reindex(common),"res":res.reindex(common),"pm":pm}
+        print("signal",j,"/",n,str(d.date()),"n",len(common),flush=True)
+    return cache
+
+def run_cached(ret,signals,alpha):
+    dates=ret.index[(ret.index>=START)&(ret.index<=END)]
+    rb=set(signals.keys())
+    w=pd.Series(dtype=float); gross=net=1.0; rows=[]; turns=[]; last_scores=pd.Series(dtype=float)
+    for d in dates:
+        if len(w):
+            rr=ret.loc[d].reindex(w.index).fillna(0.0).astype(float)
+            pr=float((w*rr).sum())
+            gross*=1+pr; net*=1+pr
+            if 1+pr>0: w=w*(1+rr)/(1+pr)
+        if d in rb:
+            z=signals[d]
+            sc=(alpha*z["raw"]+(1-alpha)*z["res"]).dropna().sort_values(ascending=False)
+            pm=z["pm"]
+            if len(sc)>=HOLD_N:
+                tw=target_weights(sc,pm,list(w.index))
+                idx=w.index.union(tw.index)
+                old=w.reindex(idx).fillna(0); new=tw.reindex(idx).fillna(0)
+                buys=float((new-old).clip(lower=0).sum()); sells=float((old-new).clip(lower=0).sum())
+                net*=1-buys*SLIP_BPS/1e4-sells*(SLIP_BPS+SELL_TAX_BPS)/1e4
+                turns.append({"date":str(d.date()),"turnover":(buys+sells)/2})
+                w=tw.copy(); last_scores=sc.copy()
+        rows.append((d,gross,net))
+    nav=pd.DataFrame(rows,columns=["Date","Gross","Net"]).set_index("Date")
+    return nav,turns,w,last_scores
+
+STATUS["state"]="pass1"
 print("PASS1 top500",flush=True)
-info,union,nm1,mk1=build_rebalance_info(); print("rebalances",len(info),"union",len(union),flush=True)
-STATUS["state"]="pass2"; print("PASS2 returns",flush=True)
-ret,nm2,mk2=build_returns(union); names={**nm1,**nm2}; markets={**mk1,**mk2}; print("ret",ret.shape,flush=True)
+info,union,nm1,mk1=build_rebalance_info()
+print("rebalances",len(info),"union",len(union),flush=True)
+
+STATUS["state"]="pass2"
+print("PASS2 returns",flush=True)
+ret,nm2,mk2=build_returns(union)
+names={**nm1,**nm2}; markets={**mk1,**mk2}
+print("ret",ret.shape,flush=True)
 kospi=load_kospi()
-STATUS["state"]="raw"; print("RAW",flush=True); raw,rt,rw,rs=run(ret,kospi,info,False)
-STATUS["state"]="residual"; print("RESIDUAL",flush=True); res,st,sw,ss=run(ret,kospi,info,True)
-bench=kospi.loc[START:END].dropna(); bench=bench/bench.iloc[0]
-monthly=pd.concat([raw["Net"].rename("Raw100"),res["Net"].rename("Residual100"),bench.rename("KOSPI")],axis=1).resample("ME").last().dropna(how="all")
-top20=[{"code":c,"name":names.get(c,c),"market":markets.get(c,""),"weight":float(w),"score":float(ss.get(c,np.nan))} for c,w in sw.sort_values(ascending=False).head(20).items()]
+
+STATUS["state"]="signal_cache"
+print("BUILD SIGNAL CACHE",flush=True)
+signals=build_signal_cache(ret,kospi,info)
+
+alphas=[1.0,0.9,0.75,0.5,0.25,0.0]
+results={}
+current={}
+for a in alphas:
+    key=f"raw_{int(round(a*100))}_res_{int(round((1-a)*100))}"
+    STATUS["state"]=key
+    print("RUN",key,flush=True)
+    nav,turns,w,sc=run_cached(ret,signals,a)
+    results[key]={
+        "gross":metrics(nav["Gross"]),
+        "net_sensitivity":metrics(nav["Net"]),
+        "yearly_net":yearly(nav["Net"]),
+        "2025":year_stats(nav["Net"],2025),
+        "2026":year_stats(nav["Net"],2026),
+        "avg_quarter_turnover":float(np.mean([x["turnover"] for x in turns])) if turns else None,
+        "rebalances":len(turns)
+    }
+    current[key]=[
+        {"code":c,"name":names.get(c,c),"market":markets.get(c,""),"weight":float(ww),"score":float(sc.get(c,np.nan))}
+        for c,ww in w.sort_values(ascending=False).head(10).items()
+    ]
+
+bench=kospi.loc[START:END].dropna()
+bench=bench/bench.iloc[0]
 out={
-"period":[str(START.date()),str(END.date())],
-"data":{"rebalances":len(info),"parent_union_unique":len(union),"return_matrix":[int(ret.shape[0]),int(ret.shape[1])]},
-"metrics":{"Raw100_gross":metrics(raw["Gross"]),"Raw100_net_sensitivity":metrics(raw["Net"]),"Residual100_gross":metrics(res["Gross"]),"Residual100_net_sensitivity":metrics(res["Net"]),"KOSPI":metrics(bench)},
-"yearly":{"Raw100_net":yearly(raw["Net"]),"Residual100_net":yearly(res["Net"]),"KOSPI":yearly(bench)},
-"2025":{"Raw100":year_stats(raw["Net"],2025),"Residual100":year_stats(res["Net"],2025),"KOSPI":year_stats(bench,2025)},
-"2026":{"Raw100":year_stats(raw["Net"],2026),"Residual100":year_stats(res["Net"],2026),"KOSPI":year_stats(bench,2026)},
-"turnover":{"Raw100_avg_quarter":float(np.mean([x["turnover"] for x in rt])) if rt else None,"Residual100_avg_quarter":float(np.mean([x["turnover"] for x in st])) if st else None,"Raw100_rebalances":len(rt),"Residual100_rebalances":len(st)},
-"current_residual_top20":top20,
-"monthly_nav":[{"date":str(i.date()),**{k:(None if pd.isna(v) else float(v)) for k,v in row.items()}} for i,row in monthly.iterrows()],
-"assumptions":{"holdings":100,"parent":"point-in-time KOSPI+KOSDAQ ordinary stocks top500 by market cap","rebalance":"quarterly first trading day","score":"0.70*z(RM6-1)+0.30*z(RM3-1)","residual":"remove KOSPI beta + first 5 PCA components, trailing 252 sessions","weight":"sqrt(mcap)*shifted score","cap":"min(9%,3x parent market-cap weight)","buffer":"keep<=120, new<=80 preferred","net_sensitivity":"2bp one-way slippage + 20bp sell-tax sensitivity; not historical tax reconstruction","stock_returns":"KRX daily ChagesRatio/ChangesRatio price returns","dividends":"not included"}}
-RESULT=json.dumps(out,ensure_ascii=False,separators=(",",":")); print("RESULT_JSON="+RESULT,flush=True)
+    "period":[str(START.date()),str(END.date())],
+    "data":{"rebalances":len(info),"parent_union_unique":len(union),"return_matrix":[int(ret.shape[0]),int(ret.shape[1])]},
+    "grid":results,
+    "KOSPI":{"metrics":metrics(bench),"yearly":yearly(bench),"2025":year_stats(bench,2025),"2026":year_stats(bench,2026)},
+    "current_top10":current,
+    "assumptions":{
+      "holdings":100,
+      "parent":"point-in-time KOSPI+KOSDAQ ordinary stocks top500 by market cap",
+      "rebalance":"quarterly first trading day",
+      "raw_score":"0.70*z(RM6-1)+0.30*z(RM3-1)",
+      "residual":"remove KOSPI beta + first 5 PCA components, trailing 252 sessions",
+      "blend":"alpha*RawScore + (1-alpha)*ResidualScore; fixed diagnostic grid",
+      "weight":"sqrt(mcap)*shifted score",
+      "cap":"min(9%,3x parent market-cap weight)",
+      "buffer":"keep<=120, new<=80 preferred",
+      "net_sensitivity":"2bp one-way slippage + 20bp sell-tax sensitivity; not historical tax reconstruction",
+      "stock_returns":"KRX daily ChagesRatio/ChangesRatio price returns",
+      "dividends":"not included"
+    }
+}
+RESULT=json.dumps(out,ensure_ascii=False,separators=(",",":"))
+print("RESULT_JSON="+RESULT,flush=True)
 STATUS["result"]=out
 STATUS["state"]="done"
-
