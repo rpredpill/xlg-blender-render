@@ -1,4 +1,4 @@
-import os, json, gc
+import os, json, gc, threading
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -185,13 +185,32 @@ def year_stats(s,y):
     if len(x)<2:return None
     return {"return":float(x.iloc[-1]/x.iloc[0]-1),"peak_to_end":float(x.iloc[-1]/x.cummax().max()-1),"peak_date":str(x.idxmax().date())}
 
+
+STATUS={"state":"booting","result":None}
+class H(BaseHTTPRequestHandler):
+    def do_GET(self):
+        payload=STATUS["result"] if STATUS["result"] is not None else {"state":STATUS["state"]}
+        b=json.dumps(payload,ensure_ascii=False,separators=(",",":")).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type","application/json; charset=utf-8")
+        self.send_header("Content-Length",str(len(b)))
+        self.end_headers()
+        self.wfile.write(b)
+    def log_message(self,*a): pass
+
+port=int(os.environ.get("PORT","10000"))
+server=HTTPServer(("0.0.0.0",port),H)
+threading.Thread(target=server.serve_forever,daemon=False).start()
+print("serving",port,flush=True)
+STATUS["state"]="pass1"
+
 print("PASS1 top500",flush=True)
 info,union,nm1,mk1=build_rebalance_info(); print("rebalances",len(info),"union",len(union),flush=True)
-print("PASS2 returns",flush=True)
+STATUS["state"]="pass2"; print("PASS2 returns",flush=True)
 ret,nm2,mk2=build_returns(union); names={**nm1,**nm2}; markets={**mk1,**mk2}; print("ret",ret.shape,flush=True)
 kospi=load_kospi()
-print("RAW",flush=True); raw,rt,rw,rs=run(ret,kospi,info,False)
-print("RESIDUAL",flush=True); res,st,sw,ss=run(ret,kospi,info,True)
+STATUS["state"]="raw"; print("RAW",flush=True); raw,rt,rw,rs=run(ret,kospi,info,False)
+STATUS["state"]="residual"; print("RESIDUAL",flush=True); res,st,sw,ss=run(ret,kospi,info,True)
 bench=kospi.loc[START:END].dropna(); bench=bench/bench.iloc[0]
 monthly=pd.concat([raw["Net"].rename("Raw100"),res["Net"].rename("Residual100"),bench.rename("KOSPI")],axis=1).resample("ME").last().dropna(how="all")
 top20=[{"code":c,"name":names.get(c,c),"market":markets.get(c,""),"weight":float(w),"score":float(ss.get(c,np.nan))} for c,w in sw.sort_values(ascending=False).head(20).items()]
@@ -207,9 +226,6 @@ out={
 "monthly_nav":[{"date":str(i.date()),**{k:(None if pd.isna(v) else float(v)) for k,v in row.items()}} for i,row in monthly.iterrows()],
 "assumptions":{"holdings":100,"parent":"point-in-time KOSPI+KOSDAQ ordinary stocks top500 by market cap","rebalance":"quarterly first trading day","score":"0.70*z(RM6-1)+0.30*z(RM3-1)","residual":"remove KOSPI beta + first 5 PCA components, trailing 252 sessions","weight":"sqrt(mcap)*shifted score","cap":"min(9%,3x parent market-cap weight)","buffer":"keep<=120, new<=80 preferred","net_sensitivity":"2bp one-way slippage + 20bp sell-tax sensitivity; not historical tax reconstruction","stock_returns":"KRX daily ChagesRatio/ChangesRatio price returns","dividends":"not included"}}
 RESULT=json.dumps(out,ensure_ascii=False,separators=(",",":")); print("RESULT_JSON="+RESULT,flush=True)
+STATUS["result"]=out
+STATUS["state"]="done"
 
-class H(BaseHTTPRequestHandler):
-    def do_GET(self):
-        b=RESULT.encode("utf-8"); self.send_response(200); self.send_header("Content-Type","application/json; charset=utf-8"); self.send_header("Content-Length",str(len(b))); self.end_headers(); self.wfile.write(b)
-    def log_message(self,*a): pass
-port=int(os.environ.get("PORT","10000")); print("serving",port,flush=True); HTTPServer(("0.0.0.0",port),H).serve_forever()
