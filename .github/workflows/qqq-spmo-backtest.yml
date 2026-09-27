@@ -1,0 +1,35 @@
+name: QQQ SPMO Intersection Backtest
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'research/qqq_spmo_intersection_backtest.py'
+      - '.github/workflows/qqq-spmo-backtest.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Run backtest
+        run: python research/qqq_spmo_intersection_backtest.py
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qqq-spmo-backtest-output
+          path: research/backtest_output/
+          if-no-files-found: warn
