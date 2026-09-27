@@ -1,6 +1,12 @@
 name: QQQ SPMO Intersection Backtest
 
 on:
+  push:
+    branches:
+      - 'research/qqq-spmo-intersection-backtest'
+    paths:
+      - 'research/qqq_spmo_intersection_backtest.py'
+      - '.github/workflows/qqq-spmo-backtest.yml'
   pull_request:
     branches: [main]
     paths:
