@@ -2,22 +2,29 @@ name: QQQ SPMO Intersection Backtest
 on:
   push:
     branches: ['research/qqq-spmo-intersection-backtest']
-    paths: ['.github/workflows/qqq-spmo-backtest.yml']
+    paths:
+      - 'research/qqq_spmo_jina_backtest.py'
+      - '.github/workflows/qqq-spmo-backtest.yml'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  inspect:
+  backtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 20
     steps:
-      - name: Inspect SPMO Atom through Jina
-        run: |
-          python3 - <<'PY'
-          import urllib.request,re
-          u='https://r.jina.ai/https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany%26CIK=S000050154%26type=NPORT-P%26dateb=%26owner=include%26count=100%26output=atom'
-          t=urllib.request.urlopen(u,timeout=30).read().decode()
-          print('LEN',len(t))
-          print(t[:12000])
-          print('ACCESSIONS',re.findall(r'\d{10}-\d{2}-\d{6}',t))
-          PY
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Run reconstructed backtest
+        run: python research/qqq_spmo_jina_backtest.py
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qqq-spmo-backtest-output
+          path: research/backtest_output/
+          if-no-files-found: warn
