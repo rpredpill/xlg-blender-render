@@ -7,11 +7,6 @@ on:
     paths:
       - 'research/qqq_spmo_intersection_backtest.py'
       - '.github/workflows/qqq-spmo-backtest.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'research/qqq_spmo_intersection_backtest.py'
-      - '.github/workflows/qqq-spmo-backtest.yml'
   workflow_dispatch:
 
 permissions:
@@ -30,44 +25,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
-      - name: Diagnose SEC access routes
+      - name: Inspect Jina NPORT
         run: |
           python - <<'PY'
           import requests
-          ua = 'rpredpill qqq-spmo research 146419441+rpredpill@users.noreply.github.com'
-          urls = [
-            'https://data.sec.gov/submissions/CIK0001067839.json',
-            'https://www.sec.gov/Archives/edgar/data/1067839/000175272423269960/primary_doc.xml',
-            'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=S000050154&type=NPORT-P&dateb=&owner=include&count=100&output=atom',
-            'https://r.jina.ai/https://data.sec.gov/submissions/CIK0001067839.json',
-            'https://r.jina.ai/https://www.sec.gov/Archives/edgar/data/1067839/000175272423269960/primary_doc.xml',
-          ]
-          for u in urls:
-            try:
-              r = requests.get(u, headers={'User-Agent': ua, 'Accept': '*/*'}, timeout=30)
-              print('\nURL', u)
-              print('STATUS', r.status_code, 'LEN', len(r.content), 'CTYPE', r.headers.get('content-type'))
-              print('HEAD', repr(r.text[:500]))
-            except Exception as e:
-              print('\nURL', u, 'ERROR', repr(e))
+          u='https://r.jina.ai/https://www.sec.gov/Archives/edgar/data/1067839/000175272423269960/primary_doc.xml'
+          t=requests.get(u,timeout=30).text
+          print('LEN',len(t))
+          for needle in ['Apple','APPLE','Microsoft','MICROSOFT','03783310','pctVal']:
+            i=t.find(needle)
+            print('\nNEEDLE',needle,'INDEX',i)
+            if i>=0: print(repr(t[max(0,i-1200):i+2200]))
+          print('\nTAIL',repr(t[-3000:]))
           PY
-      - name: Use SEC-compliant request headers
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('research/qqq_spmo_intersection_backtest.py')
-          s = p.read_text()
-          s = s.replace('UA = "qqq-spmo-intersection-research/1.0 contact=no-reply@github.com"', 'UA = "rpredpill qqq-spmo research 146419441+rpredpill@users.noreply.github.com"')
-          s = s.replace('SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Host": "www.sec.gov"}', 'SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Accept": "application/xml,text/html;q=0.9,*/*;q=0.8"}')
-          s = s.replace('DATA_SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Host": "data.sec.gov"}', 'DATA_SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Accept": "application/json,*/*;q=0.8"}')
-          p.write_text(s)
-          PY
-      - name: Run backtest
-        run: python research/qqq_spmo_intersection_backtest.py
-      - name: Upload results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: qqq-spmo-backtest-output
-          path: research/backtest_output/
-          if-no-files-found: warn
+      - name: Stop after inspection
+        run: echo inspection-complete
