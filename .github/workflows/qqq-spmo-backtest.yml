@@ -30,6 +30,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Use SEC-compliant request headers
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('research/qqq_spmo_intersection_backtest.py')
+          s = p.read_text()
+          s = s.replace('UA = "qqq-spmo-intersection-research/1.0 contact=no-reply@github.com"', 'UA = "rpredpill qqq-spmo research 146419441+rpredpill@users.noreply.github.com"')
+          s = s.replace('SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Host": "www.sec.gov"}', 'SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Accept": "application/xml,text/html;q=0.9,*/*;q=0.8"}')
+          s = s.replace('DATA_SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Host": "data.sec.gov"}', 'DATA_SEC_HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate", "Accept": "application/json,*/*;q=0.8"}')
+          p.write_text(s)
+          PY
       - name: Run backtest
         run: python research/qqq_spmo_intersection_backtest.py
       - name: Upload results
