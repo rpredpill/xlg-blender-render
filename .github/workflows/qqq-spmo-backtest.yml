@@ -30,6 +30,27 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Diagnose SEC access routes
+        run: |
+          python - <<'PY'
+          import requests
+          ua = 'rpredpill qqq-spmo research 146419441+rpredpill@users.noreply.github.com'
+          urls = [
+            'https://data.sec.gov/submissions/CIK0001067839.json',
+            'https://www.sec.gov/Archives/edgar/data/1067839/000175272423269960/primary_doc.xml',
+            'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=S000050154&type=NPORT-P&dateb=&owner=include&count=100&output=atom',
+            'https://r.jina.ai/https://data.sec.gov/submissions/CIK0001067839.json',
+            'https://r.jina.ai/https://www.sec.gov/Archives/edgar/data/1067839/000175272423269960/primary_doc.xml',
+          ]
+          for u in urls:
+            try:
+              r = requests.get(u, headers={'User-Agent': ua, 'Accept': '*/*'}, timeout=30)
+              print('\nURL', u)
+              print('STATUS', r.status_code, 'LEN', len(r.content), 'CTYPE', r.headers.get('content-type'))
+              print('HEAD', repr(r.text[:500]))
+            except Exception as e:
+              print('\nURL', u, 'ERROR', repr(e))
+          PY
       - name: Use SEC-compliant request headers
         run: |
           python - <<'PY'
