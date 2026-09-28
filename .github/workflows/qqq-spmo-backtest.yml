@@ -1,30 +1,30 @@
-name: QQQ Top40 Missing Price Fetch
+name: QQQ VOO SPMO Variation Data
 on:
   push:
     branches: ['research/qqq-spmo-intersection-backtest']
     paths:
-      - 'research/fetch_top40_missing_prices.py'
+      - 'research/fetch_voo_nport_prices.py'
       - '.github/workflows/qqq-spmo-backtest.yml'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  prices:
+  voo-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'yfinance>=0.2.66,<0.3'
-      - name: Fetch missing top40 prices
-        run: python research/fetch_top40_missing_prices.py
-      - name: Upload price results
+        run: pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Fetch VOO N-PORT snapshots and historical prices
+        run: python research/fetch_voo_nport_prices.py
+      - name: Upload VOO data
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: qqq-top40-missing-prices
-          path: research/top40_missing_price_output/
+          name: voo-nport-prices
+          path: research/voo_data_output/
           if-no-files-found: error
