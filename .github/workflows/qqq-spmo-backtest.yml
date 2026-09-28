@@ -1,15 +1,15 @@
-name: QQQ VOO SPMO Variation Data
+name: S&P500 Variation Data
 on:
   push:
     branches: ['research/qqq-spmo-intersection-backtest']
     paths:
-      - 'research/fetch_voo_atom_prices.py'
+      - 'research/fetch_sp500_members_prices.py'
       - '.github/workflows/qqq-spmo-backtest.yml'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  voo-data:
+  sp500-data:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -19,12 +19,12 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
-      - name: Fetch VOO N-PORT snapshots and historical prices
-        run: python research/fetch_voo_atom_prices.py
-      - name: Upload VOO data
+      - name: Fetch historical S&P 500 membership and prices
+        run: python research/fetch_sp500_members_prices.py
+      - name: Upload S&P 500 data
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: voo-nport-prices
-          path: research/voo_data_output/
+          name: sp500-history-prices
+          path: research/sp500_data_output/
           if-no-files-found: error
