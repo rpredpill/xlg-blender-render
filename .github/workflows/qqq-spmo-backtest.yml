@@ -1,30 +1,30 @@
-name: Candidate ETF Data
+name: S&P500 Momentum Lookback Data
 on:
   push:
     branches: ['research/qqq-spmo-intersection-backtest']
     paths:
-      - 'research/fetch_candidate_etfs.py'
+      - 'research/fetch_sp500_pre2021_prices.py'
       - '.github/workflows/qqq-spmo-backtest.yml'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  candidate-etfs:
+  prehistory:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install 'pandas>=2.2,<3' 'yfinance>=0.2.66,<0.3'
-      - name: Fetch candidate ETF histories
-        run: python research/fetch_candidate_etfs.py
-      - name: Upload candidate ETF data
+        run: pip install 'pandas>=2.2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Fetch pre-2021 stock histories
+        run: python research/fetch_sp500_pre2021_prices.py
+      - name: Upload prehistory
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: candidate-etf-prices
-          path: research/candidate_etfs_output/
+          name: sp500-pre2021-prices
+          path: research/sp500_pre2021_output/
           if-no-files-found: error
