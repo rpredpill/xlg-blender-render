@@ -1,9 +1,9 @@
-name: QQQ SPMO Top20 Union Price Fetch
+name: QQQ Top40 Missing Price Fetch
 on:
   push:
     branches: ['research/qqq-spmo-intersection-backtest']
     paths:
-      - 'research/fetch_top20_prices.py'
+      - 'research/fetch_top40_missing_prices.py'
       - '.github/workflows/qqq-spmo-backtest.yml'
   workflow_dispatch:
 permissions:
@@ -19,12 +19,12 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'yfinance>=0.2.66,<0.3'
-      - name: Fetch candidate prices
-        run: python research/fetch_top20_prices.py
+      - name: Fetch missing top40 prices
+        run: python research/fetch_top40_missing_prices.py
       - name: Upload price results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: qqq-spmo-top20-prices
-          path: research/top20_price_output/
+          name: qqq-top40-missing-prices
+          path: research/top40_missing_price_output/
           if-no-files-found: error
