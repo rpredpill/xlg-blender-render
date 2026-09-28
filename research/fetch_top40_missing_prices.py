@@ -5,7 +5,7 @@ import yfinance as yf
 
 OUT=Path('research/top40_missing_price_output')
 OUT.mkdir(parents=True, exist_ok=True)
-TICKERS=['ABNB','ARM','ASML','ATVI','CSX','MELI','PDD']
+TICKERS=['ALAB','ATVI','DDOG','MSTR','NXPI','WBD','WDAY']
 rows=[]
 for t in TICKERS:
     yt=t.replace('.','-')
