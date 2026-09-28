@@ -1,30 +1,30 @@
-name: S&P500 Variation Data
+name: Candidate ETF Data
 on:
   push:
     branches: ['research/qqq-spmo-intersection-backtest']
     paths:
-      - 'research/fetch_sp500_members_prices.py'
+      - 'research/fetch_candidate_etfs.py'
       - '.github/workflows/qqq-spmo-backtest.yml'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  sp500-data:
+  candidate-etfs:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install 'pandas>=2.2,<3' 'numpy>=2,<3' 'requests>=2.32,<3' 'yfinance>=0.2.66,<0.3'
-      - name: Fetch historical S&P 500 membership and prices
-        run: python research/fetch_sp500_members_prices.py
-      - name: Upload S&P 500 data
+        run: pip install 'pandas>=2.2,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Fetch candidate ETF histories
+        run: python research/fetch_candidate_etfs.py
+      - name: Upload candidate ETF data
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sp500-history-prices
-          path: research/sp500_data_output/
+          name: candidate-etf-prices
+          path: research/candidate_etfs_output/
           if-no-files-found: error
