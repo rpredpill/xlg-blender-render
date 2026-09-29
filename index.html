@@ -1,0 +1,35 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SOMX Live</title><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b1730"><meta name="application-name" content="SOMX"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="SOMX"><link rel="apple-touch-icon" href="./icon-192.png"><link rel="stylesheet" href="./style.css"></head><body><button class="gear" id="settingsBtn" aria-label="설정">⚙</button>
+<input id="centerPhotoInput" type="file" accept="image/*" hidden>
+
+<div class="board">
+  <section class="card left"><svg id="donut" viewBox="0 0 900 900" aria-label="SOMX portfolio donut"></svg></section>
+  <section class="right">
+    <div class="card">
+      <table>
+        <thead><tr><th style="width:36%">종목</th><th style="width:29%">상태</th><th style="width:35%">1개월 수익률</th></tr></thead>
+        <tbody id="holdings-body"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="summary-title">월간 수익률</div>
+      <div class="summary-grid">
+        <div class="metric"><div class="metric-label">포트폴리오 월간 수익률</div><div class="metric-value" id="portfolio-return">--</div></div>
+        <div class="metric"><div class="metric-label">상승 종목</div><div class="metric-value count" id="up-count">--</div></div>
+        <div class="metric"><div class="metric-label">최고 수익률</div><div class="metric-name" id="best-ticker">--</div><div class="metric-value" id="best-return">--</div></div>
+        <div class="metric"><div class="metric-label">최저 수익률</div><div class="metric-name" id="worst-ticker">--</div><div class="metric-value" id="worst-return">--</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h2>무료 실시간 데이터 연결</h2>
+    <p>Alpaca Basic 무료 계정의 IEX 피드를 사용합니다. 키는 이 브라우저의 localStorage에만 저장되고 이 사이트 소스에는 포함되지 않습니다.</p>
+    <div class="field"><label>API Key ID</label><input id="keyId" autocomplete="off" placeholder="PK..."></div>
+    <div class="field"><label>API Secret Key</label><input id="secretKey" type="password" autocomplete="off" placeholder="Secret"></div>
+    <div class="row"><button class="btn secondary" id="clearBtn">키 삭제</button><button class="btn primary" id="saveBtn">저장 후 연결</button></div>
+    <div class="small">개인용/비공개 사용을 전제로 한 0원 구조입니다. 무료 IEX는 미국 전체 거래소 통합 SIP가 아니라 IEX 단일 거래소 데이터입니다. 사이트를 닫아 둔 동안에는 실행되지 않지만, 다음에 열면 빠진 월 리밸런스를 순서대로 계산해 따라잡습니다.</div>
+  </div>
+</div>
+<div class="toast" id="toast"></div><script src="./app.js"></script><script src="./pwa.js"></script></body></html>
