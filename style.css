@@ -59,9 +59,9 @@ td{padding:0 22px;vertical-align:middle}
 .center-photo-ring{fill:#fff;stroke:#e3e8ef;stroke-width:4}
 .center-photo-placeholder{fill:#97a3b4;font-size:24px;font-weight:800;pointer-events:none}
 
-/* Classic: original side-by-side dashboard */
-body[data-layout="classic"]{overflow-x:auto}
-body[data-layout="classic"] .board{width:calc(100vw - 20px);min-width:1200px;max-width:1792px;height:1024px;padding:18px 16px 16px;grid-template-columns:49.2% 50.8%;gap:22px}
+/* Classic: exact original 1792x1024 dashboard, scaled as a whole by JS */
+body[data-layout="classic"]{overflow-x:hidden}
+body[data-layout="classic"] .board{width:1792px;max-width:none;height:1024px;margin:0 auto;padding:18px 16px 16px;grid-template-columns:49.2% 50.8%;gap:22px}
 body[data-layout="classic"] .left{aspect-ratio:auto;min-height:990px;padding:0}
 body[data-layout="classic"] #donut{width:94%;height:94%}
 body[data-layout="classic"] .right{grid-template-rows:67% 31%;gap:22px;min-height:990px}
@@ -70,17 +70,17 @@ body[data-layout="classic"] thead th{font-size:28px;height:86px}
 body[data-layout="classic"] tbody tr{height:96px}
 body[data-layout="classic"] td{padding:0 28px}
 body[data-layout="classic"] .stock{gap:26px}
-body[data-layout="classic"] .logo{width:104px;min-width:104px;height:58px;font-size:25px}
+body[data-layout="classic"] .logo{display:flex;width:104px;min-width:104px;height:58px;font-size:25px}
 body[data-layout="classic"] .badge{min-width:150px;height:58px;padding:0 24px;border-radius:17px;font-size:28px}
 body[data-layout="classic"] .ret{font-size:33px}
 body[data-layout="classic"] .summary-title{height:74px;padding:19px 28px;font-size:30px}
 body[data-layout="classic"] .summary-grid{height:calc(100% - 74px);min-height:0;grid-template-columns:1.28fr .9fr 1.2fr 1.2fr}
-body[data-layout="classic"] .metric{padding:15px}
+body[data-layout="classic"] .metric{min-height:0;border-bottom:0;padding:15px}
+body[data-layout="classic"] .metric:nth-child(2){border-right:1.3px solid var(--line)}
 body[data-layout="classic"] .metric-label{font-size:24px}
 body[data-layout="classic"] .metric-name{font-size:25px}
 body[data-layout="classic"] .metric-value,body[data-layout="classic"] .metric-value.count{font-size:48px}
 
-/* Vertical layout */
 body[data-layout="vertical"] .board{grid-template-columns:1fr}
 
 @media (max-width:700px){
