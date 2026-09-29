@@ -37,8 +37,11 @@ td{padding:0 22px;vertical-align:middle}
 .metric-name{font-size:22px;font-weight:900;margin-top:2px}
 .metric-value{color:var(--green);font-size:42px;line-height:1;font-weight:950;letter-spacing:-1px}
 .metric-value.count{color:var(--ink);font-size:42px}
-.gear{position:fixed;right:12px;top:10px;border:0;background:transparent;color:#8b96a8;font-size:22px;cursor:pointer;opacity:.22;z-index:30}
-.gear:hover{opacity:.8}
+.gear{position:fixed;right:12px;top:10px;border:0;background:transparent;color:#8b96a8;font-size:22px;cursor:pointer;opacity:.35;z-index:30}
+.gear:hover{opacity:.9}
+.layout-switch{position:fixed;right:50px;top:8px;display:flex;gap:2px;padding:3px;background:#eef2f7;border:1px solid #dbe3ec;border-radius:11px;z-index:31;box-shadow:0 1px 3px rgba(14,30,62,.06)}
+.layout-btn{height:30px;min-width:48px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#6d7889;font-size:12px;font-weight:800;cursor:pointer}
+.layout-btn.active{background:#fff;color:#0b1730;box-shadow:0 1px 3px rgba(14,30,62,.12)}
 .modal-backdrop{position:fixed;inset:0;background:rgba(8,18,37,.22);display:none;align-items:center;justify-content:center;z-index:50}
 .modal-backdrop.show{display:flex}
 .modal{width:min(620px,92vw);background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 80px rgba(16,32,64,.18);padding:28px}
@@ -55,25 +58,52 @@ td{padding:0 22px;vertical-align:middle}
 .center-photo-hit{cursor:pointer}
 .center-photo-ring{fill:#fff;stroke:#e3e8ef;stroke-width:4}
 .center-photo-placeholder{fill:#97a3b4;font-size:24px;font-weight:800;pointer-events:none}
+
+/* Classic: original side-by-side dashboard */
+body[data-layout="classic"]{overflow-x:auto}
+body[data-layout="classic"] .board{width:calc(100vw - 20px);min-width:1200px;max-width:1792px;height:1024px;padding:18px 16px 16px;grid-template-columns:49.2% 50.8%;gap:22px}
+body[data-layout="classic"] .left{aspect-ratio:auto;min-height:990px;padding:0}
+body[data-layout="classic"] #donut{width:94%;height:94%}
+body[data-layout="classic"] .right{grid-template-rows:67% 31%;gap:22px;min-height:990px}
+body[data-layout="classic"] table{font-size:30px}
+body[data-layout="classic"] thead th{font-size:28px;height:86px}
+body[data-layout="classic"] tbody tr{height:96px}
+body[data-layout="classic"] td{padding:0 28px}
+body[data-layout="classic"] .stock{gap:26px}
+body[data-layout="classic"] .logo{width:104px;min-width:104px;height:58px;font-size:25px}
+body[data-layout="classic"] .badge{min-width:150px;height:58px;padding:0 24px;border-radius:17px;font-size:28px}
+body[data-layout="classic"] .ret{font-size:33px}
+body[data-layout="classic"] .summary-title{height:74px;padding:19px 28px;font-size:30px}
+body[data-layout="classic"] .summary-grid{height:calc(100% - 74px);min-height:0;grid-template-columns:1.28fr .9fr 1.2fr 1.2fr}
+body[data-layout="classic"] .metric{padding:15px}
+body[data-layout="classic"] .metric-label{font-size:24px}
+body[data-layout="classic"] .metric-name{font-size:25px}
+body[data-layout="classic"] .metric-value,body[data-layout="classic"] .metric-value.count{font-size:48px}
+
+/* Vertical layout */
+body[data-layout="vertical"] .board{grid-template-columns:1fr}
+
 @media (max-width:700px){
-  .board{padding:10px 10px 22px;gap:12px}
-  .card{border-radius:14px}
-  .left{padding:4px}
-  table{font-size:16px}
-  thead th{font-size:15px;height:52px}
-  tbody tr{height:60px}
-  td{padding:0 8px}
-  .stock{gap:4px}
-  .logo{display:none}
-  .badge{min-width:74px;height:36px;padding:0 10px;border-radius:11px;font-size:16px}
-  .ret{font-size:18px}
-  .summary-title{height:52px;padding:13px 15px;font-size:20px}
-  .summary-grid{grid-template-columns:1fr 1fr;min-height:0}
-  .metric{min-height:118px;border-bottom:1.3px solid var(--line);padding:10px}
-  .metric:nth-child(2){border-right:0}
-  .metric:nth-child(3),.metric:nth-child(4){border-bottom:0}
-  .metric-label{font-size:14px}
-  .metric-name{font-size:17px}
-  .metric-value,.metric-value.count{font-size:30px}
+  body[data-layout="vertical"] .board{padding:10px 10px 22px;gap:12px}
+  body[data-layout="vertical"] .card{border-radius:14px}
+  body[data-layout="vertical"] .left{padding:4px}
+  body[data-layout="vertical"] table{font-size:16px}
+  body[data-layout="vertical"] thead th{font-size:15px;height:52px}
+  body[data-layout="vertical"] tbody tr{height:60px}
+  body[data-layout="vertical"] td{padding:0 8px}
+  body[data-layout="vertical"] .stock{gap:4px}
+  body[data-layout="vertical"] .logo{display:none}
+  body[data-layout="vertical"] .badge{min-width:74px;height:36px;padding:0 10px;border-radius:11px;font-size:16px}
+  body[data-layout="vertical"] .ret{font-size:18px}
+  body[data-layout="vertical"] .summary-title{height:52px;padding:13px 15px;font-size:20px}
+  body[data-layout="vertical"] .summary-grid{grid-template-columns:1fr 1fr;min-height:0}
+  body[data-layout="vertical"] .metric{min-height:118px;border-bottom:1.3px solid var(--line);padding:10px}
+  body[data-layout="vertical"] .metric:nth-child(2){border-right:0}
+  body[data-layout="vertical"] .metric:nth-child(3),body[data-layout="vertical"] .metric:nth-child(4){border-bottom:0}
+  body[data-layout="vertical"] .metric-label{font-size:14px}
+  body[data-layout="vertical"] .metric-name{font-size:17px}
+  body[data-layout="vertical"] .metric-value,body[data-layout="vertical"] .metric-value.count{font-size:30px}
+  .layout-switch{right:45px;top:7px}
+  .layout-btn{min-width:44px;padding:0 8px}
 }
 @media (prefers-reduced-motion:reduce){#wheel,.upright-label{animation:none}}
