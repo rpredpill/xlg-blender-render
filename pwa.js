@@ -1,5 +1,19 @@
 const LAYOUT_KEY="somx.layout.v1";
 const validLayouts=new Set(["classic","vertical"]);
+
+function fitClassic(){
+  const board=document.querySelector('.board');
+  if(!board)return;
+  if(document.body.dataset.layout!=="classic"){
+    board.style.zoom="";
+    document.body.style.minHeight="";
+    return;
+  }
+  const scale=Math.min(1,Math.max(.18,(window.innerWidth-8)/1792));
+  board.style.zoom=String(scale);
+  document.body.style.minHeight=(1024*scale+8)+"px";
+}
+
 function applyLayout(layout){
   const value=validLayouts.has(layout)?layout:"vertical";
   document.documentElement.dataset.layout=value;
@@ -10,16 +24,21 @@ function applyLayout(layout){
     btn.setAttribute("aria-pressed",active?"true":"false");
   });
   try{localStorage.setItem(LAYOUT_KEY,value)}catch(e){}
+  requestAnimationFrame(fitClassic);
 }
+
 applyLayout((()=>{try{return localStorage.getItem(LAYOUT_KEY)||"vertical"}catch(e){return "vertical"}})());
 document.querySelectorAll("[data-layout-choice]").forEach(btn=>{
   btn.addEventListener("click",()=>applyLayout(btn.dataset.layoutChoice));
 });
+window.addEventListener("resize",fitClassic);
+window.addEventListener("orientationchange",()=>setTimeout(fitClassic,120));
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
-      const reg = await navigator.serviceWorker.register("./sw.js?v=5", {updateViaCache:"none"});
+      fitClassic();
+      const reg = await navigator.serviceWorker.register("./sw.js?v=6", {updateViaCache:"none"});
       await reg.update();
     } catch (e) {
       console.error(e);
