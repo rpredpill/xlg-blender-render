@@ -1,11 +1,11 @@
 (()=>{
 "use strict";
 
-const STORE="somx.strategy.builder.v3";
+const STORE="somx.strategy.builder.v4";
 const ACTIVE_STORE="somx.strategy.active.v1";
 const clone=x=>JSON.parse(JSON.stringify(x));
 
-/* Core is intentionally immutable: canonical SOMX. */
+/* Core is immutable: canonical SOMX. */
 const core={
   mode:"core",label:"SOMX Core",
   holdings:6,entryRank:6,exitRank:16,rebalanceMonths:1,
@@ -39,7 +39,7 @@ function normalizeCustom(saved){
     if(saved.factors?.momentum)c.factors.momentum={...c.factors.momentum,...saved.factors.momentum};
   }
   if(!["momentum","marketCap"].includes(c.factor))c.factor="momentum";
-  c.weighting="equal";
+  if(!["equal","marketCap","rank"].includes(c.weighting))c.weighting="equal";
   c.factors.momentum.enabled=c.factor==="momentum";
   c.factors.momentum.weight=c.factor==="momentum"?100:0;
   c.factors.marketCap.enabled=c.factor==="marketCap";
@@ -49,10 +49,10 @@ function normalizeCustom(saved){
 }
 function loadCustom(){
   try{
-    const v3=JSON.parse(localStorage.getItem(STORE)||"null");
-    if(v3)return normalizeCustom(v3);
-    const v2=JSON.parse(localStorage.getItem("somx.strategy.builder.v2")||"null");
-    return normalizeCustom(v2);
+    const v4=JSON.parse(localStorage.getItem(STORE)||"null");
+    if(v4)return normalizeCustom(v4);
+    const old=JSON.parse(localStorage.getItem("somx.strategy.builder.v3")||"null")||JSON.parse(localStorage.getItem("somx.strategy.builder.v2")||"null");
+    return normalizeCustom(old);
   }catch{return clone(defaultCustom)}
 }
 function saveCustom(c){try{localStorage.setItem(STORE,JSON.stringify(normalizeCustom(c)))}catch{}}
@@ -76,12 +76,13 @@ function requiredCalendarDays(c=config()){
 const ret=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&b>0?a/b-1:NaN;
 function eom(signalDate,monthsBack){const d=new Date(signalDate);d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()-monthsBack+1);d.setUTCDate(0);d.setUTCHours(23,59,59,999);return+d}
 function lastClose(bars,ts){let x=NaN;for(const b of bars){if(+new Date(b.t)<=ts)x=+b.c;else break}return x}
+function capValue(source,s){return Number(source?.get?.(s)??source?.[s])}
 
-/* Single-factor scorer. marketCapBySymbol is intentionally an optional future data source. */
+/* Exactly one selection factor. */
 function score({universe,barsBySymbol,signalDate,marketCapBySymbol,config:c=config()}){
   if(c.factor==="marketCap"){
-    if(!marketCapBySymbol)throw new Error("시총 팩터 데이터 소스가 아직 연결되지 않았습니다.");
-    return universe.map(s=>({s,score:Number(marketCapBySymbol.get?.(s)??marketCapBySymbol[s]),raw:{marketCap:Number(marketCapBySymbol.get?.(s)??marketCapBySymbol[s])}}))
+    if(!marketCapBySymbol)throw new Error("시총 데이터 소스를 불러오지 못했습니다.");
+    return universe.map(s=>{const v=capValue(marketCapBySymbol,s);return{s,score:v,raw:{marketCap:v}}})
       .filter(x=>Number.isFinite(x.score)&&x.score>0).sort((a,b)=>b.score-a.score);
   }
   const mom=c.factors?.momentum||{},skip=Math.max(1,Number(mom.skip)||1),look=Math.max(skip+1,Number(mom.lookback)||6);
@@ -94,11 +95,33 @@ function score({universe,barsBySymbol,signalDate,marketCapBySymbol,config:c=conf
   return rows.sort((a,b)=>b.score-a.score);
 }
 
+/* Factor chooses names; weighting decides capital allocation. */
+function weightsFor({holdings,ranked,marketCapBySymbol,config:c=config()}){
+  const names=[...holdings];
+  if(!names.length)return{};
+  if(c.weighting==="marketCap"){
+    if(!marketCapBySymbol)throw new Error("시총 비중 계산용 데이터가 없습니다.");
+    const raw=Object.fromEntries(names.map(s=>[s,capValue(marketCapBySymbol,s)]));
+    if(names.some(s=>!Number.isFinite(raw[s])||raw[s]<=0))throw new Error("선택 종목 일부의 시총 데이터가 없습니다.");
+    const sum=names.reduce((a,s)=>a+raw[s],0);
+    return Object.fromEntries(names.map(s=>[s,raw[s]/sum]));
+  }
+  if(c.weighting==="rank"){
+    const pos=new Map((ranked||[]).map((x,i)=>[x.s,i]));
+    const ordered=[...names].sort((a,b)=>(pos.get(a)??1e9)-(pos.get(b)??1e9));
+    const n=ordered.length,total=n*(n+1)/2,out={};
+    ordered.forEach((s,i)=>out[s]=(n-i)/total);
+    return out;
+  }
+  const w=1/names.length;
+  return Object.fromEntries(names.map(s=>[s,w]));
+}
+
 globalThis.SOMXStrategy={
   getConfig:()=>config(),getMode:()=>activeMode,getCustom:()=>clone(custom),
   setCustom:c=>{custom=normalizeCustom(c);saveCustom(custom)},
   setMode:m=>{activeMode=m==="custom"?"custom":"core";saveMode(activeMode)},
-  signature,isTradeMonth,requiredCalendarDays,score,
+  signature,isTradeMonth,requiredCalendarDays,score,weightsFor,
   presets:{core:clone(core),custom:clone(defaultCustom)}
 };
 
@@ -111,11 +134,11 @@ function initUI(){
     <div class="strategy-body">
       <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title">SOMX Core · Locked</div><div class="core-rule">PIT S&P 500 · 6종목 · Entry Top 6 · Exit 16 · 6-1 Momentum · Equal Weight · Monthly. Core는 Custom과 완전히 분리되며 다시 Apply하면 canonical SOMX 상태로 복귀합니다.</div></div>
       <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="20"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="50"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="100"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
-      <section class="strategy-section"><div class="strategy-section-title">Factor · 종목을 고르는 기준</div><div class="factor-choice-grid">
+      <section class="strategy-section"><div class="strategy-section-title">Factor · 어떤 종목을 고를지</div><div class="factor-choice-grid">
         <label class="factor-choice" data-factor-choice="momentum"><input type="radio" name="st-factor" value="momentum"><span><strong>Momentum</strong><small>가격 모멘텀 순위</small></span></label>
         <label class="factor-choice" data-factor-choice="marketCap"><input type="radio" name="st-factor" value="marketCap"><span><strong>Market Cap</strong><small>시가총액 큰 순서</small></span></label>
-      </div><div id="momentum-options" class="factor-options"><label>Lookback <input id="st-mom-look" type="number" min="2" max="24"></label><label>Skip <input id="st-mom-skip" type="number" min="1" max="3"></label></div><div id="marketcap-note" class="factor-data-note" hidden>시총 팩터 계산용 데이터 소스는 별도 연결이 필요합니다. UI와 전략 구조는 분리해 두었습니다.</div></section>
-      <section class="strategy-section"><div class="strategy-section-title">Weighting · 선택된 종목의 비중</div><div class="weighting-row"><select id="st-weighting"><option value="equal">Equal Weight</option></select><span>팩터와 비중은 별개입니다. 현재는 동일비중만 사용합니다.</span></div></section>
+      </div><div id="momentum-options" class="factor-options"><label>Lookback <input id="st-mom-look" type="number" min="2" max="24"></label><label>Skip <input id="st-mom-skip" type="number" min="1" max="3"></label></div></section>
+      <section class="strategy-section"><div class="strategy-section-title">Weighting · 고른 종목을 얼마씩 살지</div><div class="weighting-row"><select id="st-weighting"><option value="equal">Equal Weight</option><option value="marketCap">Market Cap Weight</option><option value="rank">Rank Weight</option></select><span id="weighting-note"></span></div><div id="marketcap-note" class="factor-data-note" hidden>Market Cap 관련 계산은 현재 S&P 500의 일일 시총 스냅샷을 사용합니다. 과거 PIT 시총 데이터가 아니라 현재/향후 운용용입니다.</div></section>
       <section class="strategy-section preview-section"><div class="strategy-section-title">Current signal preview</div><div id="strategy-preview" class="strategy-preview">Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.</div></section>
     </div>
     <div class="strategy-actions"><button id="strategy-preview-btn" class="strategy-btn secondary" type="button">Preview</button><button id="strategy-apply-btn" class="strategy-btn primary" type="button">Apply Strategy</button></div>
@@ -140,10 +163,12 @@ function initUI(){
     c.filters={};
     return normalizeCustom(c);
   }
-  function factorUI(c){
+  function refreshChoiceUI(c){
     qa('[data-factor-choice]').forEach(el=>el.classList.toggle("active",el.dataset.factorChoice===c.factor));
     q("#momentum-options").hidden=c.factor!=="momentum";
-    q("#marketcap-note").hidden=c.factor!=="marketCap";
+    const notes={equal:"모든 종목을 같은 비중으로 시작",marketCap:"선택 종목의 시가총액에 비례",rank:"팩터 순위 1위부터 N, N-1 … 1 비율"};
+    q("#weighting-note").textContent=notes[c.weighting]||notes.equal;
+    q("#marketcap-note").hidden=!(c.factor==="marketCap"||c.weighting==="marketCap");
   }
   function fill(c){
     working=clone(c);
@@ -155,30 +180,28 @@ function initUI(){
     qa(".strategy-body input,.strategy-body select").forEach(x=>x.disabled=locked);
     q("#core-lock-note").style.display=locked?"block":"none";
     qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
-    factorUI(c);
+    refreshChoiceUI(c);
   }
   function updateLaunch(){launch.textContent=`Strategy · ${config().label}`}
   qa(".strategy-tabs button").forEach(b=>b.onclick=()=>{
     editMode=b.dataset.mode;working=editMode==="custom"?clone(custom):clone(core);fill(working);
     q("#strategy-preview").textContent="Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.";
   });
-  modal.addEventListener("input",()=>{if(editMode==="custom"){working=pull();factorUI(working)}});
+  modal.addEventListener("input",()=>{if(editMode==="custom"){working=pull();refreshChoiceUI(working)}});
   launch.onclick=()=>{editMode=activeMode;working=config();fill(working);modal.classList.add("show")};
   q(".strategy-x").onclick=()=>modal.classList.remove("show");
   modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("show")});
   q("#strategy-preview-btn").onclick=async()=>{
-    const c=pull(),box=q("#strategy-preview");
-    if(c.factor==="marketCap"){box.textContent="시총 팩터 데이터 소스가 아직 연결되지 않았습니다.";return}
-    box.textContent="현재 S&P 500을 계산하는 중…";
+    const c=pull(),box=q("#strategy-preview");box.textContent="현재 S&P 500을 계산하는 중…";
     try{
       if(!globalThis.SOMXLive?.previewStrategy)throw new Error("실시간 엔진 연결을 기다리는 중입니다.");
       const rows=await globalThis.SOMXLive.previewStrategy(c);
-      box.innerHTML=rows.slice(0,Math.min(20,c.entryRank)).map((r,i)=>`<div class="preview-row"><span>${i+1}</span><strong>${r.s}</strong><em>${(r.score*100).toFixed(1)}</em></div>`).join("")||"조건을 통과한 종목이 없습니다.";
+      const value=r=>c.factor==="marketCap"?`$${(r.score/1e9).toFixed(1)}B`:`${(r.score*100).toFixed(1)}%`;
+      box.innerHTML=rows.slice(0,Math.min(20,c.entryRank)).map((r,i)=>`<div class="preview-row"><span>${i+1}</span><strong>${r.s}</strong><em>${value(r)}</em></div>`).join("")||"조건을 통과한 종목이 없습니다.";
     }catch(e){box.textContent=e.message||"Preview 실패"}
   };
   q("#strategy-apply-btn").onclick=async()=>{
     const c=pull(),box=q("#strategy-preview");
-    if(editMode==="custom"&&c.factor==="marketCap"){box.textContent="시총 데이터 소스 연결 전에는 Market Cap 전략을 Apply할 수 없습니다.";return}
     if(editMode==="custom"){custom=normalizeCustom(c);saveCustom(custom)}
     activeMode=editMode;saveMode(activeMode);updateLaunch();q("#strategy-apply-btn").textContent="Applying…";
     try{if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(config());modal.classList.remove("show")}
