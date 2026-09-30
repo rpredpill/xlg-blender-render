@@ -119,11 +119,10 @@ globalThis.SOMXStrategy={
 };
 
 function initUI(){
-  const launch=document.getElementById("strategyBtn");if(!launch)return;
-  const modal=document.createElement("div");modal.className="strategy-backdrop";modal.id="strategy-modal";
-  modal.innerHTML=`<div class="strategy-modal">
-    <div class="strategy-top"><div><h2>Strategy Lab</h2><p>Core는 SOMX 원본 그대로 유지되고, Custom만 수정됩니다.</p></div><button class="strategy-x" type="button">×</button></div>
-    <div class="strategy-tabs"><button data-mode="core">Core</button><button data-mode="custom">Custom</button></div>
+  const root=document.getElementById("strategy-settings-root");if(!root)return;
+  root.innerHTML=`
+    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>Core는 SOMX 원본 그대로 유지되고, Custom만 수정됩니다.</small></div>
+    <div class="strategy-tabs"><button data-mode="core" type="button">Core</button><button data-mode="custom" type="button">Custom</button></div>
     <div class="strategy-body">
       <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title">SOMX Core · Locked</div><div class="core-rule">PIT S&P 500 · 6종목 · Entry Top 6 · Exit 16 · 6-1 Momentum · Equal Weight · Monthly. Core는 Custom과 완전히 분리되며 다시 Apply하면 canonical SOMX 상태로 복귀합니다.</div></div>
       <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="20"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="50"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="100"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
@@ -134,12 +133,10 @@ function initUI(){
       <section class="strategy-section"><div class="strategy-section-title">Weighting · 고른 종목을 얼마씩 살지</div><div class="weighting-row"><select id="st-weighting"><option value="equal">Equal Weight</option><option value="marketCap">Market Cap Weight</option></select><span id="weighting-note"></span></div><div id="marketcap-note" class="factor-data-note" hidden>Market Cap 관련 계산은 현재 S&P 500의 일일 시총 스냅샷을 사용합니다. 과거 PIT 시총 데이터가 아니라 현재/향후 운용용입니다.</div></section>
       <section class="strategy-section preview-section"><div class="strategy-section-title">Current signal preview</div><div id="strategy-preview" class="strategy-preview">Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.</div></section>
     </div>
-    <div class="strategy-actions"><button id="strategy-preview-btn" class="strategy-btn secondary" type="button">Preview</button><button id="strategy-apply-btn" class="strategy-btn primary" type="button">Apply Strategy</button></div>
-  </div>`;
-  document.body.appendChild(modal);
+    <div class="strategy-actions"><button id="strategy-preview-btn" class="strategy-btn secondary" type="button">Preview</button><button id="strategy-apply-btn" class="strategy-btn primary" type="button">Apply Strategy</button></div>`;
 
   let editMode=activeMode,working=config();
-  const q=s=>modal.querySelector(s),qa=s=>[...modal.querySelectorAll(s)];
+  const q=s=>root.querySelector(s),qa=s=>[...root.querySelectorAll(s)];
   function pull(){
     if(editMode==="core")return clone(core);
     const c=clone(working);c.mode="custom";c.label="Custom";
@@ -175,15 +172,12 @@ function initUI(){
     qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
     refreshChoiceUI(c);
   }
-  function updateLaunch(){launch.textContent=`Strategy · ${config().label}`}
+  function updateCurrent(){const el=q("#strategy-current");if(el)el.textContent=`현재 · ${config().label}`}
   qa(".strategy-tabs button").forEach(b=>b.onclick=()=>{
     editMode=b.dataset.mode;working=editMode==="custom"?clone(custom):clone(core);fill(working);
     q("#strategy-preview").textContent="Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.";
   });
-  modal.addEventListener("input",()=>{if(editMode==="custom"){working=pull();refreshChoiceUI(working)}});
-  launch.onclick=()=>{editMode=activeMode;working=config();fill(working);modal.classList.add("show")};
-  q(".strategy-x").onclick=()=>modal.classList.remove("show");
-  modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("show")});
+  root.addEventListener("input",()=>{if(editMode==="custom"){working=pull();refreshChoiceUI(working)}});
   q("#strategy-preview-btn").onclick=async()=>{
     const c=pull(),box=q("#strategy-preview");box.textContent="현재 S&P 500을 계산하는 중…";
     try{
@@ -196,12 +190,12 @@ function initUI(){
   q("#strategy-apply-btn").onclick=async()=>{
     const c=pull(),box=q("#strategy-preview");
     if(editMode==="custom"){custom=normalizeCustom(c);saveCustom(custom)}
-    activeMode=editMode;saveMode(activeMode);updateLaunch();q("#strategy-apply-btn").textContent="Applying…";
-    try{if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(config());modal.classList.remove("show")}
+    activeMode=editMode;saveMode(activeMode);q("#strategy-apply-btn").textContent="Applying…";
+    try{if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(config());updateCurrent()}
     catch(e){box.textContent=e.message||"전략 적용 실패"}
     finally{q("#strategy-apply-btn").textContent="Apply Strategy"}
   };
-  updateLaunch();fill(config());window.addEventListener("somx:strategy-active",updateLaunch);
+  updateCurrent();fill(config());window.addEventListener("somx:strategy-active",updateCurrent);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initUI);else initUI();
 })();
