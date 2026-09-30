@@ -28,8 +28,9 @@ td{padding:0 22px;vertical-align:middle}
 .badge{display:inline-flex;align-items:center;justify-content:center;min-width:126px;height:50px;padding:0 20px;border-radius:15px;font-weight:900;font-size:24px}
 .hold{background:var(--hold-bg);color:var(--hold-fg)} .in{background:var(--in-bg);color:var(--in-fg)} .out{background:var(--out-bg);color:var(--out-fg)}
 .ret{text-align:center;color:var(--green);font-size:28px;font-weight:900}
-.ret.neg,.metric-value.neg{color:var(--red)}
-.summary-title{height:64px;padding:16px 24px;font-size:26px;font-weight:900;border-bottom:1.5px solid var(--line);background:linear-gradient(#fbfcfe,#f4f7fb)}
+.ret.neg,.metric-value.neg,.history-port.neg,.history-stock strong.neg{color:var(--red)}
+.summary-title{height:64px;padding:0 18px 0 24px;font-size:26px;font-weight:900;border-bottom:1.5px solid var(--line);background:linear-gradient(#fbfcfe,#f4f7fb);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.history-btn{border:1px solid #d5deea;background:#fff;color:#33445f;height:34px;padding:0 13px;border-radius:10px;font-weight:850;font-size:14px;cursor:pointer}
 .summary-grid{display:grid;grid-template-columns:1.28fr .9fr 1.2fr 1.2fr;min-height:190px}
 .metric{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;border-right:1.3px solid var(--line);text-align:center;padding:14px}
 .metric:last-child{border-right:0}
@@ -59,7 +60,27 @@ td{padding:0 22px;vertical-align:middle}
 .center-photo-ring{fill:#fff;stroke:#e3e8ef;stroke-width:4}
 .center-photo-placeholder{fill:#97a3b4;font-size:24px;font-weight:800;pointer-events:none}
 
-/* Classic: exact original 1792x1024 dashboard, scaled as a whole by JS */
+.history-backdrop{z-index:55}
+.history-modal{width:min(680px,94vw);max-height:min(760px,88vh);padding:0;overflow:hidden;display:flex;flex-direction:column}
+.history-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 22px 12px;border-bottom:1px solid var(--line)}
+.history-head h2{margin:0 0 4px;font-size:24px}
+.history-head p{margin:0;color:#728096;font-size:12px}
+.history-close{width:38px;height:38px;border:0;border-radius:10px;background:#f0f3f7;color:#66748a;font-size:26px;line-height:1;cursor:pointer}
+.history-list{padding:10px 14px 16px;overflow:auto}
+.history-empty{padding:38px 14px;text-align:center;color:#7a8799;font-size:14px}
+.history-month{border:1px solid #dce4ed;border-radius:13px;margin:8px 0;background:#fff;overflow:hidden}
+.history-month summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:10px;padding:14px 16px}
+.history-month summary::-webkit-details-marker{display:none}
+.history-month[open] summary{background:#f7f9fc;border-bottom:1px solid #e1e7ee}
+.history-month-label{font-size:17px;font-weight:900}
+.history-date{font-size:12px;color:#7a8799}
+.history-port{font-size:20px;font-weight:950;color:var(--green)}
+.history-details{display:grid;grid-template-columns:1fr 1fr;padding:8px 14px 12px;gap:0 18px}
+.history-stock{display:flex;justify-content:space-between;align-items:center;padding:9px 2px;border-bottom:1px solid #eef2f6;font-size:14px}
+.history-stock:nth-last-child(-n+2){border-bottom:0}
+.history-stock span{font-weight:850}
+.history-stock strong{color:var(--green);font-size:15px}
+
 body[data-layout="classic"]{overflow-x:hidden}
 body[data-layout="classic"] .board{width:1792px;max-width:none;height:1024px;margin:0 auto;padding:18px 16px 16px;grid-template-columns:49.2% 50.8%;gap:22px}
 body[data-layout="classic"] .left{aspect-ratio:auto;min-height:990px;padding:0}
@@ -73,13 +94,14 @@ body[data-layout="classic"] .stock{gap:26px}
 body[data-layout="classic"] .logo{display:flex;width:104px;min-width:104px;height:58px;font-size:25px}
 body[data-layout="classic"] .badge{min-width:150px;height:58px;padding:0 24px;border-radius:17px;font-size:28px}
 body[data-layout="classic"] .ret{font-size:33px}
-body[data-layout="classic"] .summary-title{height:74px;padding:19px 28px;font-size:30px}
+body[data-layout="classic"] .summary-title{height:74px;padding:0 22px 0 28px;font-size:30px}
 body[data-layout="classic"] .summary-grid{height:calc(100% - 74px);min-height:0;grid-template-columns:1.28fr .9fr 1.2fr 1.2fr}
 body[data-layout="classic"] .metric{min-height:0;border-bottom:0;padding:15px}
 body[data-layout="classic"] .metric:nth-child(2){border-right:1.3px solid var(--line)}
 body[data-layout="classic"] .metric-label{font-size:24px}
 body[data-layout="classic"] .metric-name{font-size:25px}
 body[data-layout="classic"] .metric-value,body[data-layout="classic"] .metric-value.count{font-size:48px}
+body[data-layout="classic"] .history-btn{height:38px;font-size:15px;padding:0 16px}
 
 body[data-layout="vertical"] .board{grid-template-columns:1fr}
 
@@ -95,7 +117,8 @@ body[data-layout="vertical"] .board{grid-template-columns:1fr}
   body[data-layout="vertical"] .logo{display:none}
   body[data-layout="vertical"] .badge{min-width:74px;height:36px;padding:0 10px;border-radius:11px;font-size:16px}
   body[data-layout="vertical"] .ret{font-size:18px}
-  body[data-layout="vertical"] .summary-title{height:52px;padding:13px 15px;font-size:20px}
+  body[data-layout="vertical"] .summary-title{height:52px;padding:0 10px 0 15px;font-size:20px}
+  body[data-layout="vertical"] .history-btn{height:30px;font-size:12px;padding:0 10px}
   body[data-layout="vertical"] .summary-grid{grid-template-columns:1fr 1fr;min-height:0}
   body[data-layout="vertical"] .metric{min-height:118px;border-bottom:1.3px solid var(--line);padding:10px}
   body[data-layout="vertical"] .metric:nth-child(2){border-right:0}
@@ -105,5 +128,12 @@ body[data-layout="vertical"] .board{grid-template-columns:1fr}
   body[data-layout="vertical"] .metric-value,body[data-layout="vertical"] .metric-value.count{font-size:30px}
   .layout-switch{right:45px;top:7px}
   .layout-btn{min-width:44px;padding:0 8px}
+  .history-modal{max-height:82vh}
+  .history-head{padding:18px 16px 10px}
+  .history-head h2{font-size:21px}
+  .history-month summary{grid-template-columns:74px 1fr auto;padding:13px 12px}
+  .history-month-label{font-size:15px}
+  .history-port{font-size:18px}
+  .history-details{padding:7px 12px 10px;gap:0 12px}
 }
 @media (prefers-reduced-motion:reduce){#wheel,.upright-label{animation:none}}
