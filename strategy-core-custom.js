@@ -1,40 +1,191 @@
 (()=>{
 "use strict";
-const STORE="somx.strategy.builder.v2",ACTIVE_STORE="somx.strategy.active.v1";
+
+const STORE="somx.strategy.builder.v3";
+const ACTIVE_STORE="somx.strategy.active.v1";
 const clone=x=>JSON.parse(JSON.stringify(x));
-const core={mode:"core",label:"SOMX Core",holdings:6,entryRank:6,exitRank:16,rebalanceMonths:1,factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1},trend:{enabled:false,weight:0,sma:200},relativeStrength:{enabled:false,weight:0,lookback:6,skip:1},lowVol:{enabled:false,weight:0,window:60},drawdown:{enabled:false,weight:0,window:126},high52:{enabled:false,weight:0,window:252},liquidity:{enabled:false,weight:0,window:20}},filters:{positiveMomentum:false,aboveSma:false,maxDrawdownEnabled:false,maxDrawdown:40,minDollarVolumeEnabled:false,minDollarVolume:20}};
-const defaultCustom={...clone(core),mode:"custom",label:"Custom",factors:{momentum:{enabled:true,weight:45,lookback:6,skip:1},trend:{enabled:true,weight:15,sma:200},relativeStrength:{enabled:true,weight:10,lookback:6,skip:1},lowVol:{enabled:true,weight:10,window:60},drawdown:{enabled:true,weight:10,window:126},high52:{enabled:true,weight:10,window:252},liquidity:{enabled:false,weight:0,window:20}},filters:{positiveMomentum:false,aboveSma:false,maxDrawdownEnabled:false,maxDrawdown:40,minDollarVolumeEnabled:false,minDollarVolume:20}};
-function mergeCustom(saved){const c=clone(defaultCustom);if(!saved||typeof saved!=="object")return c;for(const k of ["holdings","entryRank","exitRank","rebalanceMonths"])if(saved[k]!=null)c[k]=saved[k];for(const [k,v] of Object.entries(saved.factors||{}))if(c.factors[k])c.factors[k]={...c.factors[k],...v};c.filters={...c.filters,...(saved.filters||{})};c.mode="custom";c.label="Custom";return c}
-function loadCustom(){try{return mergeCustom(JSON.parse(localStorage.getItem(STORE))||JSON.parse(localStorage.getItem("somx.strategy.builder.v1")))}catch{return clone(defaultCustom)}}
-function saveCustom(c){try{localStorage.setItem(STORE,JSON.stringify(c))}catch{}}
+
+/* Core is intentionally immutable: canonical SOMX. */
+const core={
+  mode:"core",label:"SOMX Core",
+  holdings:6,entryRank:6,exitRank:16,rebalanceMonths:1,
+  factor:"momentum",
+  weighting:"equal",
+  factors:{
+    momentum:{enabled:true,weight:100,lookback:6,skip:1},
+    marketCap:{enabled:false,weight:0}
+  },
+  filters:{}
+};
+
+const defaultCustom={
+  mode:"custom",label:"Custom",
+  holdings:6,entryRank:6,exitRank:16,rebalanceMonths:1,
+  factor:"momentum",
+  weighting:"equal",
+  factors:{
+    momentum:{enabled:true,weight:100,lookback:6,skip:1},
+    marketCap:{enabled:false,weight:0}
+  },
+  filters:{}
+};
+
+function normalizeCustom(saved){
+  const c=clone(defaultCustom);
+  if(saved&&typeof saved==="object"){
+    for(const k of ["holdings","entryRank","exitRank","rebalanceMonths","factor","weighting"]){
+      if(saved[k]!=null)c[k]=saved[k];
+    }
+    if(saved.factors?.momentum)c.factors.momentum={...c.factors.momentum,...saved.factors.momentum};
+  }
+  if(!["momentum","marketCap"].includes(c.factor))c.factor="momentum";
+  c.weighting="equal";
+  c.factors.momentum.enabled=c.factor==="momentum";
+  c.factors.momentum.weight=c.factor==="momentum"?100:0;
+  c.factors.marketCap.enabled=c.factor==="marketCap";
+  c.factors.marketCap.weight=c.factor==="marketCap"?100:0;
+  c.mode="custom";c.label="Custom";c.filters={};
+  return c;
+}
+function loadCustom(){
+  try{
+    const v3=JSON.parse(localStorage.getItem(STORE)||"null");
+    if(v3)return normalizeCustom(v3);
+    const v2=JSON.parse(localStorage.getItem("somx.strategy.builder.v2")||"null");
+    return normalizeCustom(v2);
+  }catch{return clone(defaultCustom)}
+}
+function saveCustom(c){try{localStorage.setItem(STORE,JSON.stringify(normalizeCustom(c)))}catch{}}
 function loadMode(){try{return localStorage.getItem(ACTIVE_STORE)==="custom"?"custom":"core"}catch{return"core"}}
 function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,m==="custom"?"custom":"core")}catch{}}
+
 let custom=loadCustom(),activeMode=loadMode();
 function config(mode=activeMode){return clone(mode==="custom"?custom:core)}
-function signature(c=config()){if(c.mode==="core")return"core";const raw=JSON.stringify(c);let h=2166136261;for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}return`custom-${(h>>>0).toString(36)}`}
+function signature(c=config()){
+  if(c.mode==="core")return"core";
+  const raw=JSON.stringify(c);let h=2166136261;
+  for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
+  return`custom-${(h>>>0).toString(36)}`;
+}
 function monthsBetween(a,b){const[ay,am]=a.split("-").map(Number),[by,bm]=b.split("-").map(Number);return(by-ay)*12+(bm-am)}
 function isTradeMonth(anchor,target,c=config()){return monthsBetween(anchor,target)%Math.max(1,Number(c.rebalanceMonths)||1)===0}
-function requiredCalendarDays(c=config()){const f=c.factors||{};let d=380;if(f.momentum?.enabled)d=Math.max(d,(+f.momentum.lookback||6)*32+40);if(f.relativeStrength?.enabled)d=Math.max(d,(+f.relativeStrength.lookback||6)*32+40);if(f.trend?.enabled)d=Math.max(d,(+f.trend.sma||200)*2);if(f.lowVol?.enabled)d=Math.max(d,(+f.lowVol.window||60)*2);if(f.drawdown?.enabled)d=Math.max(d,(+f.drawdown.window||126)*2);if(f.high52?.enabled)d=Math.max(d,(+f.high52.window||252)*2);return Math.min(800,Math.max(180,d))}
+function requiredCalendarDays(c=config()){
+  if(c.factor==="momentum")return Math.min(800,Math.max(180,(Number(c.factors?.momentum?.lookback)||6)*32+40));
+  return 180;
+}
 const ret=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&b>0?a/b-1:NaN;
-function stdev(a){if(a.length<2)return NaN;const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/(a.length-1))}
-function maxDD(a){let p=-Infinity,w=0;for(const x of a){p=Math.max(p,x);if(p>0)w=Math.min(w,x/p-1)}return w}
 function eom(signalDate,monthsBack){const d=new Date(signalDate);d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()-monthsBack+1);d.setUTCDate(0);d.setUTCHours(23,59,59,999);return+d}
 function lastClose(bars,ts){let x=NaN;for(const b of bars){if(+new Date(b.t)<=ts)x=+b.c;else break}return x}
-function stats(bars,c,signalDate,spyBars){const f=c.factors,ts=+new Date(signalDate),v=bars.filter(b=>+new Date(b.t)<=ts&&+b.c>0).sort((a,b)=>+new Date(a.t)-+new Date(b.t));if(v.length<15)return null;const closes=v.map(b=>+b.c),last=closes.at(-1),mom=f.momentum||{},rs=f.relativeStrength||{};const calc=(obj,src=v)=>{const skip=Math.max(1,+obj.skip||1),look=Math.max(+obj.lookback||6,skip),a=lastClose(src,eom(signalDate,skip-1)),b=lastClose(src,eom(signalDate,look-1));return ret(a,b)};const momentum=calc(mom);const smaN=Math.max(10,+f.trend?.sma||200),sl=closes.slice(-smaN),sma=sl.length?sl.reduce((a,b)=>a+b,0)/sl.length:NaN,trend=ret(last,sma);const ownRS=calc(rs),spyRS=spyBars?.length?calc(rs,spyBars):NaN,relativeStrength=Number.isFinite(ownRS)&&Number.isFinite(spyRS)?ownRS-spyRS:NaN;const vw=Math.max(10,+f.lowVol?.window||60),cr=closes.slice(-(vw+1)),dr=[];for(let i=1;i<cr.length;i++)dr.push(cr[i]/cr[i-1]-1);const vol=stdev(dr),lowVol=Number.isFinite(vol)?-vol:NaN;const dd=maxDD(closes.slice(-Math.max(20,+f.drawdown?.window||126)));const hi=Math.max(...closes.slice(-Math.max(20,+f.high52?.window||252))),high52=ret(last,hi);const lb=v.slice(-Math.max(5,+f.liquidity?.window||20)),liquidity=lb.length?lb.reduce((a,b)=>a+(+b.c||0)*(+b.v||0),0)/lb.length:NaN;return{momentum,trend,relativeStrength,lowVol,drawdown:dd,high52,liquidity,last,sma}}
-function pctMap(rows,key){const a=rows.filter(x=>Number.isFinite(x.raw[key])).sort((x,y)=>x.raw[key]-y.raw[key]),m=new Map();if(a.length===1)m.set(a[0].s,1);else a.forEach((x,i)=>m.set(x.s,i/(a.length-1)));return m}
-function score({universe,barsBySymbol,spyBars,signalDate,config:c=config()}){const rows=[];for(const s of universe){const raw=stats(barsBySymbol.get(s)||[],c,signalDate,spyBars);if(!raw)continue;const f=c.filters||{};if(f.positiveMomentum&&!(raw.momentum>0))continue;if(f.aboveSma&&!(raw.last>raw.sma))continue;if(f.maxDrawdownEnabled&&!(raw.drawdown>=-Math.abs(+f.maxDrawdown||40)/100))continue;if(f.minDollarVolumeEnabled&&!(raw.liquidity>=Math.max(0,+f.minDollarVolume||0)*1e6))continue;rows.push({s,raw})}const en=Object.entries(c.factors||{}).filter(([,v])=>v?.enabled&&+v.weight>0).map(([k,v])=>({k,w:+v.weight}));if(!en.length)return[];const maps=new Map(en.map(x=>[x.k,pctMap(rows,x.k)]));for(const r of rows){let t=0,u=0;for(const x of en){const p=maps.get(x.k).get(r.s);if(Number.isFinite(p)){t+=p*x.w;u+=x.w}}r.score=u?t/u:NaN}return rows.filter(r=>Number.isFinite(r.score)).sort((a,b)=>b.score-a.score)}
-globalThis.SOMXStrategy={getConfig:()=>config(),getMode:()=>activeMode,getCustom:()=>clone(custom),setCustom:c=>{custom=mergeCustom(c);saveCustom(custom)},setMode:m=>{activeMode=m==="custom"?"custom":"core";saveMode(activeMode)},signature,isTradeMonth,requiredCalendarDays,score,presets:{core:clone(core),custom:clone(defaultCustom)}};
-function initUI(){const launch=document.getElementById("strategyBtn");if(!launch)return;const modal=document.createElement("div");modal.className="strategy-backdrop";modal.id="strategy-modal";modal.innerHTML=`<div class="strategy-modal"><div class="strategy-top"><div><h2>Strategy Lab</h2><p>Core는 SOMX 원본 그대로 유지됩니다. Custom만 수정할 수 있습니다.</p></div><button class="strategy-x" type="button">×</button></div><div class="strategy-tabs"><button data-mode="core">Core</button><button data-mode="custom">Custom</button></div><div class="strategy-body"><div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title">SOMX Core · Locked</div><div style="font-size:12px;line-height:1.65;color:#657288">PIT S&P 500 · 6종목 · Entry Top 6 · Exit 16 · 6-1 Momentum · Monthly. Custom과 상태/기록을 공유하지 않으며 Core로 돌아오면 canonical SOMX 체인으로 복귀합니다.</div></div><section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="20"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="50"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="100"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section><section class="strategy-section"><div class="strategy-section-title row-title"><span>Factors</span><span class="factor-total" id="factor-total"></span></div><div id="factor-list"></div></section><section class="strategy-section"><div class="strategy-section-title">Filters</div><div class="filter-list"><label><input id="fl-pos" type="checkbox"> Positive momentum only</label><label><input id="fl-sma" type="checkbox"> Price above trend SMA</label><label class="filter-with"><input id="fl-dd-on" type="checkbox"> Max drawdown ≥ -<input id="fl-dd" type="number" min="5" max="90">%</label><label class="filter-with"><input id="fl-liq-on" type="checkbox"> Avg $ volume ≥ $<input id="fl-liq" type="number" min="0" max="1000">M</label></div></section><section class="strategy-section preview-section"><div class="strategy-section-title">Current signal preview</div><div id="strategy-preview" class="strategy-preview">Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.</div></section></div><div class="strategy-actions"><button id="strategy-preview-btn" class="strategy-btn secondary" type="button">Preview</button><button id="strategy-apply-btn" class="strategy-btn primary" type="button">Apply Strategy</button></div></div>`;document.body.appendChild(modal);
-const defs=[["momentum","Momentum","Lookback","lookback",3,24,"Skip","skip",1,3],["trend","Trend / SMA","SMA","sma",20,250,null,null,null,null],["relativeStrength","Relative Strength","Lookback","lookback",3,24,"Skip","skip",1,3],["lowVol","Low Volatility","Window","window",20,180,null,null,null,null],["drawdown","Max Drawdown","Window","window",40,252,null,null,null,null],["high52","52W High Proximity","Window","window",60,300,null,null,null,null],["liquidity","Liquidity","Window","window",5,90,null,null,null,null]],list=modal.querySelector("#factor-list");list.innerHTML=defs.map(d=>`<div class="factor-card" data-factor="${d[0]}"><div class="factor-main"><label class="factor-toggle"><input type="checkbox" data-k="enabled"><span>${d[1]}</span></label><label class="factor-weight">Weight <input type="number" min="0" max="100" data-k="weight">%</label></div><div class="factor-params"><label>${d[2]} <input type="number" min="${d[4]}" max="${d[5]}" data-k="${d[3]}"></label>${d[6]?`<label>${d[6]} <input type="number" min="${d[8]}" max="${d[9]}" data-k="${d[7]}"></label>`:""}</div></div>`).join("");
-let editMode=activeMode,working=config();const q=s=>modal.querySelector(s),qa=s=>[...modal.querySelectorAll(s)];
-function pull(){if(editMode==="core")return clone(core);const c=clone(working);c.mode="custom";c.label="Custom";c.holdings=Math.max(3,Math.min(20,+q("#st-holdings").value||6));c.entryRank=Math.max(c.holdings,Math.min(50,+q("#st-entry").value||c.holdings));c.exitRank=Math.max(c.entryRank+1,Math.min(100,+q("#st-exit").value||16));c.rebalanceMonths=+q("#st-rebalance").value||1;qa(".factor-card").forEach(card=>card.querySelectorAll("[data-k]").forEach(inp=>{c.factors[card.dataset.factor][inp.dataset.k]=inp.type==="checkbox"?inp.checked:+inp.value}));c.filters.positiveMomentum=q("#fl-pos").checked;c.filters.aboveSma=q("#fl-sma").checked;c.filters.maxDrawdownEnabled=q("#fl-dd-on").checked;c.filters.maxDrawdown=+q("#fl-dd").value||40;c.filters.minDollarVolumeEnabled=q("#fl-liq-on").checked;c.filters.minDollarVolume=+q("#fl-liq").value||0;return c}
-function fill(c){working=clone(c);q("#st-holdings").value=c.holdings;q("#st-entry").value=c.entryRank;q("#st-exit").value=c.exitRank;q("#st-rebalance").value=String(c.rebalanceMonths);qa(".factor-card").forEach(card=>{const o=c.factors[card.dataset.factor];card.querySelectorAll("[data-k]").forEach(inp=>{const p=inp.dataset.k;if(inp.type==="checkbox")inp.checked=!!o[p];else inp.value=o[p]??0})});q("#fl-pos").checked=!!c.filters.positiveMomentum;q("#fl-sma").checked=!!c.filters.aboveSma;q("#fl-dd-on").checked=!!c.filters.maxDrawdownEnabled;q("#fl-dd").value=c.filters.maxDrawdown;q("#fl-liq-on").checked=!!c.filters.minDollarVolumeEnabled;q("#fl-liq").value=c.filters.minDollarVolume;const locked=editMode==="core";qa(".strategy-body input,.strategy-body select").forEach(x=>x.disabled=locked);q("#core-lock-note").style.display=locked?"block":"none";qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));updateTotal()}
-function updateTotal(){if(editMode==="core"){q("#factor-total").textContent="LOCKED";return}const c=pull(),sum=Object.values(c.factors).filter(x=>x.enabled).reduce((a,x)=>a+(+x.weight||0),0);q("#factor-total").textContent=`enabled weight ${sum}% · 자동 정규화`}
-function updateLaunch(){const c=config();launch.textContent=`Strategy · ${c.label}`}
-qa(".strategy-tabs button").forEach(b=>b.onclick=()=>{editMode=b.dataset.mode;working=editMode==="custom"?clone(custom):clone(core);fill(working);q("#strategy-preview").textContent=editMode==="core"?"Core는 canonical SOMX 규칙을 그대로 사용합니다.":"Preview를 누르면 현재 신호 기준 랭킹을 계산합니다."});
-modal.addEventListener("input",()=>{if(editMode==="custom"){working=pull();updateTotal()}});launch.onclick=()=>{editMode=activeMode;working=config();fill(working);modal.classList.add("show")};q(".strategy-x").onclick=()=>modal.classList.remove("show");modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("show")});
-q("#strategy-preview-btn").onclick=async()=>{const c=pull(),box=q("#strategy-preview");box.textContent="현재 S&P 500을 계산하는 중…";try{if(!globalThis.SOMXLive?.previewStrategy)throw new Error("실시간 엔진 연결을 기다리는 중입니다.");const rows=await globalThis.SOMXLive.previewStrategy(c);box.innerHTML=rows.slice(0,Math.min(20,c.entryRank)).map((r,i)=>`<div class="preview-row"><span>${i+1}</span><strong>${r.s}</strong><em>${(r.score*100).toFixed(1)}</em></div>`).join("")||"조건을 통과한 종목이 없습니다."}catch(e){box.textContent=e.message||"Preview 실패"}};
-q("#strategy-apply-btn").onclick=async()=>{const c=pull();if(editMode==="custom"){custom=mergeCustom(c);saveCustom(custom)}activeMode=editMode==="custom"?"custom":"core";saveMode(activeMode);updateLaunch();const btn=q("#strategy-apply-btn");btn.textContent="Applying…";try{if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(config());modal.classList.remove("show")}catch(e){q("#strategy-preview").textContent=e.message||"전략 적용 실패"}finally{btn.textContent="Apply Strategy"}};
-updateLaunch();fill(config());window.addEventListener("somx:strategy-active",updateLaunch)}
+
+/* Single-factor scorer. marketCapBySymbol is intentionally an optional future data source. */
+function score({universe,barsBySymbol,signalDate,marketCapBySymbol,config:c=config()}){
+  if(c.factor==="marketCap"){
+    if(!marketCapBySymbol)throw new Error("시총 팩터 데이터 소스가 아직 연결되지 않았습니다.");
+    return universe.map(s=>({s,score:Number(marketCapBySymbol.get?.(s)??marketCapBySymbol[s]),raw:{marketCap:Number(marketCapBySymbol.get?.(s)??marketCapBySymbol[s])}}))
+      .filter(x=>Number.isFinite(x.score)&&x.score>0).sort((a,b)=>b.score-a.score);
+  }
+  const mom=c.factors?.momentum||{},skip=Math.max(1,Number(mom.skip)||1),look=Math.max(skip+1,Number(mom.lookback)||6);
+  const recentTs=eom(signalDate,skip-1),earlyTs=eom(signalDate,look-1),rows=[];
+  for(const s of universe){
+    const bars=(barsBySymbol.get(s)||[]).filter(b=>+new Date(b.t)<=+new Date(signalDate)).sort((a,b)=>+new Date(a.t)-+new Date(b.t));
+    const a=lastClose(bars,recentTs),b=lastClose(bars,earlyTs),m=ret(a,b);
+    if(Number.isFinite(m))rows.push({s,score:m,raw:{momentum:m}});
+  }
+  return rows.sort((a,b)=>b.score-a.score);
+}
+
+globalThis.SOMXStrategy={
+  getConfig:()=>config(),getMode:()=>activeMode,getCustom:()=>clone(custom),
+  setCustom:c=>{custom=normalizeCustom(c);saveCustom(custom)},
+  setMode:m=>{activeMode=m==="custom"?"custom":"core";saveMode(activeMode)},
+  signature,isTradeMonth,requiredCalendarDays,score,
+  presets:{core:clone(core),custom:clone(defaultCustom)}
+};
+
+function initUI(){
+  const launch=document.getElementById("strategyBtn");if(!launch)return;
+  const modal=document.createElement("div");modal.className="strategy-backdrop";modal.id="strategy-modal";
+  modal.innerHTML=`<div class="strategy-modal">
+    <div class="strategy-top"><div><h2>Strategy Lab</h2><p>Core는 SOMX 원본 그대로 유지되고, Custom만 수정됩니다.</p></div><button class="strategy-x" type="button">×</button></div>
+    <div class="strategy-tabs"><button data-mode="core">Core</button><button data-mode="custom">Custom</button></div>
+    <div class="strategy-body">
+      <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title">SOMX Core · Locked</div><div class="core-rule">PIT S&P 500 · 6종목 · Entry Top 6 · Exit 16 · 6-1 Momentum · Equal Weight · Monthly. Core는 Custom과 완전히 분리되며 다시 Apply하면 canonical SOMX 상태로 복귀합니다.</div></div>
+      <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="20"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="50"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="100"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
+      <section class="strategy-section"><div class="strategy-section-title">Factor · 종목을 고르는 기준</div><div class="factor-choice-grid">
+        <label class="factor-choice" data-factor-choice="momentum"><input type="radio" name="st-factor" value="momentum"><span><strong>Momentum</strong><small>가격 모멘텀 순위</small></span></label>
+        <label class="factor-choice" data-factor-choice="marketCap"><input type="radio" name="st-factor" value="marketCap"><span><strong>Market Cap</strong><small>시가총액 큰 순서</small></span></label>
+      </div><div id="momentum-options" class="factor-options"><label>Lookback <input id="st-mom-look" type="number" min="2" max="24"></label><label>Skip <input id="st-mom-skip" type="number" min="1" max="3"></label></div><div id="marketcap-note" class="factor-data-note" hidden>시총 팩터 계산용 데이터 소스는 별도 연결이 필요합니다. UI와 전략 구조는 분리해 두었습니다.</div></section>
+      <section class="strategy-section"><div class="strategy-section-title">Weighting · 선택된 종목의 비중</div><div class="weighting-row"><select id="st-weighting"><option value="equal">Equal Weight</option></select><span>팩터와 비중은 별개입니다. 현재는 동일비중만 사용합니다.</span></div></section>
+      <section class="strategy-section preview-section"><div class="strategy-section-title">Current signal preview</div><div id="strategy-preview" class="strategy-preview">Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.</div></section>
+    </div>
+    <div class="strategy-actions"><button id="strategy-preview-btn" class="strategy-btn secondary" type="button">Preview</button><button id="strategy-apply-btn" class="strategy-btn primary" type="button">Apply Strategy</button></div>
+  </div>`;
+  document.body.appendChild(modal);
+
+  let editMode=activeMode,working=config();
+  const q=s=>modal.querySelector(s),qa=s=>[...modal.querySelectorAll(s)];
+  function pull(){
+    if(editMode==="core")return clone(core);
+    const c=clone(working);c.mode="custom";c.label="Custom";
+    c.holdings=Math.max(3,Math.min(20,+q("#st-holdings").value||6));
+    c.entryRank=Math.max(c.holdings,Math.min(50,+q("#st-entry").value||c.holdings));
+    c.exitRank=Math.max(c.entryRank+1,Math.min(100,+q("#st-exit").value||16));
+    c.rebalanceMonths=+q("#st-rebalance").value||1;
+    c.factor=q('input[name="st-factor"]:checked')?.value||"momentum";
+    c.weighting=q("#st-weighting").value||"equal";
+    c.factors.momentum.lookback=Math.max(2,Math.min(24,+q("#st-mom-look").value||6));
+    c.factors.momentum.skip=Math.max(1,Math.min(3,+q("#st-mom-skip").value||1));
+    c.factors.momentum.enabled=c.factor==="momentum";c.factors.momentum.weight=c.factor==="momentum"?100:0;
+    c.factors.marketCap.enabled=c.factor==="marketCap";c.factors.marketCap.weight=c.factor==="marketCap"?100:0;
+    c.filters={};
+    return normalizeCustom(c);
+  }
+  function factorUI(c){
+    qa('[data-factor-choice]').forEach(el=>el.classList.toggle("active",el.dataset.factorChoice===c.factor));
+    q("#momentum-options").hidden=c.factor!=="momentum";
+    q("#marketcap-note").hidden=c.factor!=="marketCap";
+  }
+  function fill(c){
+    working=clone(c);
+    q("#st-holdings").value=c.holdings;q("#st-entry").value=c.entryRank;q("#st-exit").value=c.exitRank;q("#st-rebalance").value=String(c.rebalanceMonths);
+    q("#st-weighting").value=c.weighting||"equal";
+    q("#st-mom-look").value=c.factors?.momentum?.lookback??6;q("#st-mom-skip").value=c.factors?.momentum?.skip??1;
+    const radio=q(`input[name="st-factor"][value="${c.factor||"momentum"}"]`);if(radio)radio.checked=true;
+    const locked=editMode==="core";
+    qa(".strategy-body input,.strategy-body select").forEach(x=>x.disabled=locked);
+    q("#core-lock-note").style.display=locked?"block":"none";
+    qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
+    factorUI(c);
+  }
+  function updateLaunch(){launch.textContent=`Strategy · ${config().label}`}
+  qa(".strategy-tabs button").forEach(b=>b.onclick=()=>{
+    editMode=b.dataset.mode;working=editMode==="custom"?clone(custom):clone(core);fill(working);
+    q("#strategy-preview").textContent="Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.";
+  });
+  modal.addEventListener("input",()=>{if(editMode==="custom"){working=pull();factorUI(working)}});
+  launch.onclick=()=>{editMode=activeMode;working=config();fill(working);modal.classList.add("show")};
+  q(".strategy-x").onclick=()=>modal.classList.remove("show");
+  modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("show")});
+  q("#strategy-preview-btn").onclick=async()=>{
+    const c=pull(),box=q("#strategy-preview");
+    if(c.factor==="marketCap"){box.textContent="시총 팩터 데이터 소스가 아직 연결되지 않았습니다.";return}
+    box.textContent="현재 S&P 500을 계산하는 중…";
+    try{
+      if(!globalThis.SOMXLive?.previewStrategy)throw new Error("실시간 엔진 연결을 기다리는 중입니다.");
+      const rows=await globalThis.SOMXLive.previewStrategy(c);
+      box.innerHTML=rows.slice(0,Math.min(20,c.entryRank)).map((r,i)=>`<div class="preview-row"><span>${i+1}</span><strong>${r.s}</strong><em>${(r.score*100).toFixed(1)}</em></div>`).join("")||"조건을 통과한 종목이 없습니다.";
+    }catch(e){box.textContent=e.message||"Preview 실패"}
+  };
+  q("#strategy-apply-btn").onclick=async()=>{
+    const c=pull(),box=q("#strategy-preview");
+    if(editMode==="custom"&&c.factor==="marketCap"){box.textContent="시총 데이터 소스 연결 전에는 Market Cap 전략을 Apply할 수 없습니다.";return}
+    if(editMode==="custom"){custom=normalizeCustom(c);saveCustom(custom)}
+    activeMode=editMode;saveMode(activeMode);updateLaunch();q("#strategy-apply-btn").textContent="Applying…";
+    try{if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(config());modal.classList.remove("show")}
+    catch(e){box.textContent=e.message||"전략 적용 실패"}
+    finally{q("#strategy-apply-btn").textContent="Apply Strategy"}
+  };
+  updateLaunch();fill(config());window.addEventListener("somx:strategy-active",updateLaunch);
+}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initUI);else initUI();
 })();
