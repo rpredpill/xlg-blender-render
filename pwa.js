@@ -11,7 +11,7 @@ function fitClassic(){
   }
   const scale=Math.min(1,Math.max(.18,(window.innerWidth-8)/1792));
   board.style.zoom=String(scale);
-  document.body.style.minHeight=(1340*scale+8)+"px";
+  document.body.style.minHeight=(1370*scale+8)+"px";
 }
 
 function applyLayout(layout){
@@ -38,7 +38,7 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
       fitClassic();
-      const reg = await navigator.serviceWorker.register("./sw.js?v=10", {updateViaCache:"none"});
+      const reg = await navigator.serviceWorker.register("./sw.js?v=11", {updateViaCache:"none"});
       await reg.update();
     } catch (e) {
       console.error(e);
