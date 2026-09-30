@@ -38,7 +38,7 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
       fitClassic();
-      const reg = await navigator.serviceWorker.register("./sw.js?v=7", {updateViaCache:"none"});
+      const reg = await navigator.serviceWorker.register("./sw.js?v=8", {updateViaCache:"none"});
       await reg.update();
     } catch (e) {
       console.error(e);
