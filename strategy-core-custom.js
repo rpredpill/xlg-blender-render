@@ -1,7 +1,7 @@
 (()=>{
 "use strict";
 
-const STORE="somx.strategy.builder.v4";
+const STORE="somx.strategy.builder.v5";
 const ACTIVE_STORE="somx.strategy.active.v1";
 const clone=x=>JSON.parse(JSON.stringify(x));
 
@@ -39,7 +39,7 @@ function normalizeCustom(saved){
     if(saved.factors?.momentum)c.factors.momentum={...c.factors.momentum,...saved.factors.momentum};
   }
   if(!["momentum","marketCap"].includes(c.factor))c.factor="momentum";
-  if(!["equal","marketCap","rank"].includes(c.weighting))c.weighting="equal";
+  if(!["equal","marketCap"].includes(c.weighting))c.weighting="equal";
   c.factors.momentum.enabled=c.factor==="momentum";
   c.factors.momentum.weight=c.factor==="momentum"?100:0;
   c.factors.marketCap.enabled=c.factor==="marketCap";
@@ -49,9 +49,9 @@ function normalizeCustom(saved){
 }
 function loadCustom(){
   try{
-    const v4=JSON.parse(localStorage.getItem(STORE)||"null");
-    if(v4)return normalizeCustom(v4);
-    const old=JSON.parse(localStorage.getItem("somx.strategy.builder.v3")||"null")||JSON.parse(localStorage.getItem("somx.strategy.builder.v2")||"null");
+    const v5=JSON.parse(localStorage.getItem(STORE)||"null");
+    if(v5)return normalizeCustom(v5);
+    const old=JSON.parse(localStorage.getItem("somx.strategy.builder.v4")||"null")||JSON.parse(localStorage.getItem("somx.strategy.builder.v3")||"null")||JSON.parse(localStorage.getItem("somx.strategy.builder.v2")||"null");
     return normalizeCustom(old);
   }catch{return clone(defaultCustom)}
 }
@@ -96,7 +96,7 @@ function score({universe,barsBySymbol,signalDate,marketCapBySymbol,config:c=conf
 }
 
 /* Factor chooses names; weighting decides capital allocation. */
-function weightsFor({holdings,ranked,marketCapBySymbol,config:c=config()}){
+function weightsFor({holdings,marketCapBySymbol,config:c=config()}){
   const names=[...holdings];
   if(!names.length)return{};
   if(c.weighting==="marketCap"){
@@ -105,13 +105,6 @@ function weightsFor({holdings,ranked,marketCapBySymbol,config:c=config()}){
     if(names.some(s=>!Number.isFinite(raw[s])||raw[s]<=0))throw new Error("선택 종목 일부의 시총 데이터가 없습니다.");
     const sum=names.reduce((a,s)=>a+raw[s],0);
     return Object.fromEntries(names.map(s=>[s,raw[s]/sum]));
-  }
-  if(c.weighting==="rank"){
-    const pos=new Map((ranked||[]).map((x,i)=>[x.s,i]));
-    const ordered=[...names].sort((a,b)=>(pos.get(a)??1e9)-(pos.get(b)??1e9));
-    const n=ordered.length,total=n*(n+1)/2,out={};
-    ordered.forEach((s,i)=>out[s]=(n-i)/total);
-    return out;
   }
   const w=1/names.length;
   return Object.fromEntries(names.map(s=>[s,w]));
@@ -138,7 +131,7 @@ function initUI(){
         <label class="factor-choice" data-factor-choice="momentum"><input type="radio" name="st-factor" value="momentum"><span><strong>Momentum</strong><small>가격 모멘텀 순위</small></span></label>
         <label class="factor-choice" data-factor-choice="marketCap"><input type="radio" name="st-factor" value="marketCap"><span><strong>Market Cap</strong><small>시가총액 큰 순서</small></span></label>
       </div><div id="momentum-options" class="factor-options"><label>Lookback <input id="st-mom-look" type="number" min="2" max="24"></label><label>Skip <input id="st-mom-skip" type="number" min="1" max="3"></label></div></section>
-      <section class="strategy-section"><div class="strategy-section-title">Weighting · 고른 종목을 얼마씩 살지</div><div class="weighting-row"><select id="st-weighting"><option value="equal">Equal Weight</option><option value="marketCap">Market Cap Weight</option><option value="rank">Rank Weight</option></select><span id="weighting-note"></span></div><div id="marketcap-note" class="factor-data-note" hidden>Market Cap 관련 계산은 현재 S&P 500의 일일 시총 스냅샷을 사용합니다. 과거 PIT 시총 데이터가 아니라 현재/향후 운용용입니다.</div></section>
+      <section class="strategy-section"><div class="strategy-section-title">Weighting · 고른 종목을 얼마씩 살지</div><div class="weighting-row"><select id="st-weighting"><option value="equal">Equal Weight</option><option value="marketCap">Market Cap Weight</option></select><span id="weighting-note"></span></div><div id="marketcap-note" class="factor-data-note" hidden>Market Cap 관련 계산은 현재 S&P 500의 일일 시총 스냅샷을 사용합니다. 과거 PIT 시총 데이터가 아니라 현재/향후 운용용입니다.</div></section>
       <section class="strategy-section preview-section"><div class="strategy-section-title">Current signal preview</div><div id="strategy-preview" class="strategy-preview">Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.</div></section>
     </div>
     <div class="strategy-actions"><button id="strategy-preview-btn" class="strategy-btn secondary" type="button">Preview</button><button id="strategy-apply-btn" class="strategy-btn primary" type="button">Apply Strategy</button></div>
@@ -166,7 +159,7 @@ function initUI(){
   function refreshChoiceUI(c){
     qa('[data-factor-choice]').forEach(el=>el.classList.toggle("active",el.dataset.factorChoice===c.factor));
     q("#momentum-options").hidden=c.factor!=="momentum";
-    const notes={equal:"모든 종목을 같은 비중으로 시작",marketCap:"선택 종목의 시가총액에 비례",rank:"팩터 순위 1위부터 N, N-1 … 1 비율"};
+    const notes={equal:"모든 종목을 같은 비중으로 시작",marketCap:"선택 종목의 시가총액에 비례"};
     q("#weighting-note").textContent=notes[c.weighting]||notes.equal;
     q("#marketcap-note").hidden=!(c.factor==="marketCap"||c.weighting==="marketCap");
   }
