@@ -4,7 +4,6 @@
   const stateBox=document.getElementById("benchmark-state");
   const somxValue=document.getElementById("benchmark-somx-value");
   const compareValue=document.getElementById("benchmark-spy-value");
-  const historyList=document.getElementById("history-list");
   const titleEl=document.querySelector(".benchmark-main-title");
   const legendLabel=document.getElementById("benchmark-legend-label");
   const noteEl=document.getElementById("benchmark-note");
@@ -30,18 +29,26 @@
     SPMO:{label:"SPMO",note:"SPMO 조정주가 기준"}
   };
   const SELECT_KEY="somx.benchmark.v1";
+  const symbols=Object.keys(BENCHMARKS);
   let selected=(()=>{try{const v=localStorage.getItem(SELECT_KEY);return BENCHMARKS[v]?v:"SPY"}catch(e){return "SPY"}})();
-  let busy=false,lastKey="",retryTimer=null,pending=false;
+  let requestId=0;
+  let monthlySomx=new Map();
+  let monthlyBench=new Map(symbols.map(s=>[s,new Map()]));
   const NS="http://www.w3.org/2000/svg";
+
   const monthAdd=(ym,n)=>{const [y,m]=ym.split("-").map(Number),d=new Date(Date.UTC(y,m-1+n,1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,"0")}`};
   const nyMonth=()=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date()).filter(x=>x.type!=="literal").map(x=>[x.type,x.value]));return `${p.year}-${p.month}`};
-  const pct=text=>{const n=Number(String(text||"").replace(/[^0-9+-.]/g,""));return Number.isFinite(n)?n:null};
   function svgEl(name,attrs={}){const n=document.createElementNS(NS,name);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,String(v));return n}
+
+  function setState(text,show=true){
+    stateBox.textContent=text||"";
+    stateBox.hidden=!show;
+    if(show&&!svg.childNodes.length)svg.hidden=true;
+  }
 
   function updateBenchmarkUI(){
     const cfg=BENCHMARKS[selected];
     if(titleEl)titleEl.textContent=`SOMX vs ${cfg.label}`;
-    if(compareValue)compareValue.textContent=`${cfg.label} 100.0`;
     if(legendLabel)legendLabel.textContent=cfg.label;
     if(noteEl)noteEl.textContent=`월별 수익률 복리 누적 · ${cfg.note}`;
     svg.setAttribute("aria-label",`SOMX와 ${cfg.label} 누적 성과 비교 그래프`);
@@ -52,106 +59,140 @@
     });
   }
 
-  function historyMap(){
-    const out=new Map();
-    if(!historyList)return out;
-    for(const el of historyList.querySelectorAll(".history-month")){
-      const month=el.querySelector(".history-month-label")?.textContent.trim();
-      const value=pct(el.querySelector(".history-port")?.textContent);
-      if(/^\d{4}-\d{2}$/.test(month||"")&&value!==null)out.set(month,value);
-    }
-    return out;
-  }
-
-  async function stockMonthReturn(month,symbols){
+  async function fetchSomx(months){
     const alpaca=globalThis.alpaca;
     if(typeof alpaca!=="function")throw new Error("Alpaca 연결 후 비교 그래프가 표시됩니다.");
-    const q=new URLSearchParams({symbols:symbols.join(","),timeframe:"1Day",start:`${month}-01`,end:`${monthAdd(month,1)}-01`,adjustment:"all",feed:"iex",limit:"10000",sort:"asc"});
+    const universe=[...new Set(months.flatMap(m=>HOLDINGS[m]||[]))];
+    const q=new URLSearchParams({symbols:universe.join(","),timeframe:"1Day",start:`${months[0]}-01`,end:`${monthAdd(months[months.length-1],1)}-01`,adjustment:"all",feed:"iex",limit:"10000",sort:"asc"});
     const data=await alpaca(`/stocks/bars?${q}`);
-    const ratios=[];
-    for(const s of symbols){
-      const bars=data.bars?.[s]||[];
-      if(bars.length&&Number(bars[0].o)>0&&Number.isFinite(Number(bars[bars.length-1].c)))ratios.push(Number(bars[bars.length-1].c)/Number(bars[0].o));
+    const bySymbolMonth=new Map();
+    for(const s of universe){
+      const monthMap=new Map();
+      for(const b of(data.bars?.[s]||[])){
+        const ym=String(b.t||"").slice(0,7);
+        if(!monthMap.has(ym))monthMap.set(ym,[]);
+        monthMap.get(ym).push(b);
+      }
+      bySymbolMonth.set(s,monthMap);
     }
-    if(!ratios.length)return null;
-    return (ratios.reduce((a,b)=>a+b,0)/ratios.length-1)*100;
-  }
-
-  async function benchmarkReturns(months,symbol){
-    const alpaca=globalThis.alpaca;
-    if(typeof alpaca!=="function")throw new Error("Alpaca 연결 후 비교 그래프가 표시됩니다.");
-    const first=months[0],last=months[months.length-1];
-    const q=new URLSearchParams({symbols:symbol,timeframe:"1Day",start:`${first}-01`,end:`${monthAdd(last,1)}-01`,adjustment:"all",feed:"iex",limit:"1000",sort:"asc"});
-    const data=await alpaca(`/stocks/bars?${q}`),grouped=new Map();
-    for(const b of(data.bars?.[symbol]||[])){const ym=String(b.t||"").slice(0,7);if(!grouped.has(ym))grouped.set(ym,[]);grouped.get(ym).push(b)}
     const out=new Map();
-    for(const m of months){const bars=grouped.get(m)||[];if(bars.length&&Number(bars[0].o)>0)out.set(m,(Number(bars[bars.length-1].c)/Number(bars[0].o)-1)*100)}
+    for(const m of months){
+      const ratios=[];
+      for(const s of HOLDINGS[m]||[]){
+        const bars=bySymbolMonth.get(s)?.get(m)||[];
+        const o=Number(bars[0]?.o),c=Number(bars[bars.length-1]?.c);
+        if(bars.length&&o>0&&Number.isFinite(c))ratios.push(c/o);
+      }
+      if(ratios.length)out.set(m,(ratios.reduce((a,b)=>a+b,0)/ratios.length-1)*100);
+    }
     return out;
   }
 
-  function draw(monthly,label){
+  async function fetchBenchmarks(months){
+    const alpaca=globalThis.alpaca;
+    if(typeof alpaca!=="function")throw new Error("Alpaca 연결 후 비교 그래프가 표시됩니다.");
+    const q=new URLSearchParams({symbols:symbols.join(","),timeframe:"1Day",start:`${months[0]}-01`,end:`${monthAdd(months[months.length-1],1)}-01`,adjustment:"all",feed:"iex",limit:"10000",sort:"asc"});
+    const data=await alpaca(`/stocks/bars?${q}`);
+    const out=new Map(symbols.map(s=>[s,new Map()]));
+    for(const s of symbols){
+      const grouped=new Map();
+      for(const b of(data.bars?.[s]||[])){
+        const ym=String(b.t||"").slice(0,7);
+        if(!grouped.has(ym))grouped.set(ym,[]);
+        grouped.get(ym).push(b);
+      }
+      for(const m of months){
+        const bars=grouped.get(m)||[];
+        const o=Number(bars[0]?.o),c=Number(bars[bars.length-1]?.c);
+        if(bars.length&&o>0&&Number.isFinite(c))out.get(s).set(m,(c/o-1)*100);
+      }
+    }
+    return out;
+  }
+
+  function draw(months){
+    const cfg=BENCHMARKS[selected];
+    const bmap=monthlyBench.get(selected)||new Map();
+    const monthly=months.map(m=>({month:m,somx:monthlySomx.get(m),bench:bmap.get(m)})).filter(r=>Number.isFinite(r.somx)&&Number.isFinite(r.bench));
+    if(!monthly.length)throw new Error(`비교 가능한 ${cfg.label} 월간 데이터가 없습니다.`);
+
     const indexed=[{month:"시작",somx:100,bench:100}];
     let s=100,p=100;
     for(const r of monthly){s*=1+r.somx/100;p*=1+r.bench/100;indexed.push({month:r.month,somx:s,bench:p})}
-    svg.innerHTML="";svg.hidden=false;stateBox.hidden=true;
-    const W=760,H=300,L=50,R=20,T=24,B=42;
+
+    svg.innerHTML="";
+    const W=760,H=300,L=54,R=22,T=24,B=42;
     const vals=indexed.flatMap(r=>[r.somx,r.bench]);
-    let min=Math.min(...vals),max=Math.max(...vals);if(min===max){min-=2;max+=2}const pad=Math.max(2,(max-min)*.13);min-=pad;max+=pad;
+    let min=Math.min(...vals),max=Math.max(...vals);
+    if(min===max){min-=2;max+=2}
+    const pad=Math.max(2,(max-min)*.13);min-=pad;max+=pad;
     const x=i=>L+i*((W-L-R)/Math.max(1,indexed.length-1));
     const y=v=>T+(max-v)*(H-T-B)/(max-min);
+
     for(let i=0;i<=5;i++){
       const v=min+(max-min)*i/5,yy=y(v);
       svg.appendChild(svgEl("line",{x1:L,x2:W-R,y1:yy,y2:yy,stroke:"#e8edf3","stroke-width":1}));
-      const t=svgEl("text",{x:L-8,y:yy+4,"text-anchor":"end","font-size":10,fill:"#7b8798"});t.textContent=v.toFixed(0);svg.appendChild(t);
+      const t=svgEl("text",{x:L-9,y:yy+4,"text-anchor":"end","font-size":10,fill:"#7b8798"});t.textContent=v.toFixed(0);svg.appendChild(t);
     }
-    const y100=y(100);svg.appendChild(svgEl("line",{x1:L,x2:W-R,y1:y100,y2:y100,stroke:"#b8c2cf","stroke-width":1.4,"stroke-dasharray":"4 4"}));
-    indexed.forEach((r,i)=>{const t=svgEl("text",{x:x(i),y:H-15,"text-anchor":"middle","font-size":10,fill:"#748196"});t.textContent=i===0?"100":`${Number(r.month.slice(5))}월`;svg.appendChild(t)});
-    function series(key,color,seriesLabel){
-      svg.appendChild(svgEl("polyline",{points:indexed.map((r,i)=>`${x(i)},${y(r[key])}`).join(" "),fill:"none",stroke:color,"stroke-width":3.2,"stroke-linecap":"round","stroke-linejoin":"round"}));
-      indexed.forEach((r,i)=>{const c=svgEl("circle",{cx:x(i),cy:y(r[key]),r:4,fill:"#fff",stroke:color,"stroke-width":2.4}),title=svgEl("title");title.textContent=`${r.month} ${seriesLabel}: ${r[key].toFixed(2)}`;c.appendChild(title);svg.appendChild(c)})
+    const y100=y(100);
+    svg.appendChild(svgEl("line",{x1:L,x2:W-R,y1:y100,y2:y100,stroke:"#b7c0cc","stroke-width":1.4,"stroke-dasharray":"5 5"}));
+    indexed.forEach((r,i)=>{const t=svgEl("text",{x:x(i),y:H-14,"text-anchor":"middle","font-size":10,fill:"#748196"});t.textContent=i===0?"100":`${Number(r.month.slice(5))}월`;svg.appendChild(t)});
+
+    function series(key,color,label){
+      svg.appendChild(svgEl("polyline",{points:indexed.map((r,i)=>`${x(i)},${y(r[key])}`).join(" "),fill:"none",stroke:color,"stroke-width":3.4,"stroke-linecap":"round","stroke-linejoin":"round"}));
+      indexed.forEach((r,i)=>{const c=svgEl("circle",{cx:x(i),cy:y(r[key]),r:4.1,fill:"#fff",stroke:color,"stroke-width":2.5}),title=svgEl("title");title.textContent=`${r.month} ${label}: ${r[key].toFixed(2)}`;c.appendChild(title);svg.appendChild(c)})
     }
-    series("somx","#174f95","SOMX");series("bench","#8b96a8",label);
-    somxValue.textContent=`SOMX ${s.toFixed(1)}`;compareValue.textContent=`${label} ${p.toFixed(1)}`;
+    series("somx","#174f95","SOMX");
+    series("bench","#7c8798",cfg.label);
+
+    somxValue.textContent=`SOMX ${s.toFixed(1)}`;
+    compareValue.textContent=`${cfg.label} ${p.toFixed(1)}`;
+    svg.hidden=false;
+    stateBox.hidden=true;
   }
 
-  async function refresh(){
-    if(busy){pending=true;return}
-    const requestSymbol=selected,cfg=BENCHMARKS[requestSymbol];
+  async function loadAll(){
+    const id=++requestId;
     const current=nyMonth();
     const months=Object.keys(HOLDINGS).filter(m=>m<current).sort();
-    if(!months.length){stateBox.hidden=false;stateBox.textContent="완료된 월간 기록이 생기면 그래프가 표시됩니다.";svg.hidden=true;return}
-    const hist=historyMap();
-    const key=requestSymbol+"|"+months.map(m=>`${m}:${hist.get(m)??"x"}`).join("|");
-    if(key===lastKey&&svg.childNodes.length)return;
-    busy=true;stateBox.hidden=false;stateBox.textContent=`SOMX와 ${cfg.label} 누적 성과를 계산하는 중…`;svg.hidden=true;
+    if(!months.length){setState("완료된 월간 기록이 생기면 그래프가 표시됩니다.");return}
+    panel.classList.add("is-loading");
+    if(!svg.childNodes.length)setState("비교 데이터를 불러오는 중…");
     try{
-      const somxMap=new Map(hist);
-      for(const m of months){if(!somxMap.has(m)){const r=await stockMonthReturn(m,HOLDINGS[m]);if(Number.isFinite(r))somxMap.set(m,r)}}
-      const benchMap=await benchmarkReturns(months,requestSymbol);
-      if(requestSymbol!==selected){pending=true;return}
-      const rows=months.map(m=>({month:m,somx:somxMap.get(m),bench:benchMap.get(m)})).filter(r=>Number.isFinite(r.somx)&&Number.isFinite(r.bench));
-      if(!rows.length)throw new Error(`비교 가능한 ${cfg.label} 월간 데이터가 없습니다.`);
-      lastKey=key;draw(rows,cfg.label);
+      const [somx,bench]=await Promise.all([fetchSomx(months),fetchBenchmarks(months)]);
+      if(id!==requestId)return;
+      monthlySomx=somx;monthlyBench=bench;
+      draw(months);
     }catch(e){
-      if(requestSymbol===selected){svg.hidden=true;stateBox.hidden=false;stateBox.textContent=e?.message||"그래프를 불러오지 못했습니다.";clearTimeout(retryTimer);retryTimer=setTimeout(refresh,2500)}
+      if(id!==requestId)return;
+      svg.hidden=true;
+      setState(e?.message||"그래프를 불러오지 못했습니다.");
     }finally{
-      busy=false;
-      if(pending){pending=false;setTimeout(refresh,0)}
+      if(id===requestId)panel.classList.remove("is-loading");
+    }
+  }
+
+  function redrawSelected(){
+    const current=nyMonth();
+    const months=Object.keys(HOLDINGS).filter(m=>m<current).sort();
+    updateBenchmarkUI();
+    if(monthlySomx.size&&monthlyBench.get(selected)?.size){
+      try{draw(months)}catch(e){setState(e?.message||"그래프를 표시하지 못했습니다.")}
+    }else{
+      loadAll();
     }
   }
 
   document.querySelectorAll("[data-benchmark]").forEach(btn=>btn.addEventListener("click",()=>{
     const symbol=btn.dataset.benchmark;
     if(!BENCHMARKS[symbol]||symbol===selected)return;
-    selected=symbol;lastKey="";pending=true;
+    selected=symbol;
     try{localStorage.setItem(SELECT_KEY,selected)}catch(e){}
-    updateBenchmarkUI();
-    refresh();
+    redrawSelected();
   }));
 
   updateBenchmarkUI();
-  if(historyList)new MutationObserver(()=>{clearTimeout(retryTimer);retryTimer=setTimeout(refresh,250)}).observe(historyList,{childList:true,subtree:true,characterData:true});
-  window.addEventListener("load",()=>setTimeout(refresh,700));
-  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
-  setTimeout(refresh,900);
+  window.addEventListener("load",()=>setTimeout(loadAll,450));
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&(!svg.childNodes.length||!monthlySomx.size))loadAll()});
+  setTimeout(loadAll,700);
 })();
