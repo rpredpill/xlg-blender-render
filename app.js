@@ -33,7 +33,7 @@ const basePalette=["#1767c9","#e33b36","#f6b11a","#702ec9","#1e8b4b","#dd3b73","
 
 let activeStrategy=globalThis.SOMXStrategy?.getConfig?.()||{mode:"core",label:"SOMX Core",holdings:6,entryRank:6,exitRank:16,rebalanceMonths:1,factor:"momentum",weighting:"equal",factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1}},filters:{}};
 let strategySig=globalThis.SOMXStrategy?.signature?.(activeStrategy)||"core";
-let state,monthlyHistory,holdingsHistory,weightsHistory;
+let state,monthlyHistory,holdingsHistory,weightsHistory,somvComponents={};
 let creds=loadCreds(),latestPrices={},socket=null,pitRows=null,marketCapCache=null,starting=false,historyLoading=false,switching=false;
 
 function currentNYMonth(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date());return `${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`}
@@ -68,8 +68,10 @@ function loadContext(){
   }
   state={...defaultState(),...(st||{})};state.targetWeights=normalizeWeights(state.targetWeights,state.holdings||[]);
   monthlyHistory=mh;holdingsHistory=hh;weightsHistory=wh;
+  try{somvComponents=JSON.parse(localStorage.getItem(storageKey("components"))||"{}")||{}}catch{somvComponents={}}
   if(state.holdings?.length&&!weightsHistory[state.rebalanceMonth])weightsHistory[state.rebalanceMonth]=clone(state.targetWeights);
 }
+function saveSomvComponents(){try{localStorage.setItem(storageKey("components"),JSON.stringify(somvComponents))}catch{}}
 function saveState(){try{localStorage.setItem(storageKey("state"),JSON.stringify(state))}catch{}}
 function saveMonthlyHistory(){try{localStorage.setItem(storageKey("history"),JSON.stringify(monthlyHistory))}catch{};window.dispatchEvent(new Event("somx:historychange"))}
 function saveHoldingsHistory(){try{localStorage.setItem(storageKey("holdings"),JSON.stringify(holdingsHistory))}catch{}}
@@ -116,6 +118,23 @@ function transition(prev,ranked,universe,c=activeStrategy){
   for(const x of ranked.slice(0,entry)){if(keep.length>=n)break;if(!keep.includes(x.s))keep.push(x.s)}
   if(keep.length<n){for(const x of ranked){if(keep.length>=n)break;if(!keep.includes(x.s))keep.push(x.s)}}return keep.slice(0,n);
 }
+function somvSelection(coreHoldings,ranked){
+  const core=[...new Set(coreHoldings)],top6=ranked.slice(0,6).map(x=>x.s);
+  if(core.length!==6||new Set(top6).size!==6)throw new Error("SOMV 계산에 Core 6개와 Top6가 모두 필요합니다.");
+  return{coreHoldings:core,top6,holdings:[...new Set([...core,...top6])]};
+}
+function canonicalCoreHistory(){return{...seededCoreHistory,...(globalThis.SOMXCoreBackfill?.history?.()||{})}}
+async function coreForMonth(ym,result){
+  const history=canonicalCoreHistory();if(history[ym])return [...history[ym]];
+  const prior=Object.keys(history).filter(m=>m<ym).sort().at(-1);
+  if(!prior)throw new Error("SOMX Core 기준 이력이 없습니다.");
+  let core=[...history[prior]];
+  for(let m=addMonths(prior,1);m<=ym;m=addMonths(m,1)){
+    const r=m===ym?result:await rankForRebalance(m,globalThis.SOMXStrategy.presets.core);
+    core=transition(core,r.ranked,r.universe,globalThis.SOMXStrategy.presets.core);
+  }
+  return core;
+}
 function shouldTrade(anchor,target,c=activeStrategy){return globalThis.SOMXStrategy?.isTradeMonth?.(anchor,target,c)??true}
 async function targetWeightsFor(holdings,ranked,c=activeStrategy,marketCapBySymbol=null){
   let caps=marketCapBySymbol;if(c.weighting==="marketCap"&&!caps)caps=await loadMarketCaps();
@@ -133,10 +152,13 @@ async function carryWeights(month,holdings,startWeights){
 
 async function bootstrapStrategy(){
   const ym=currentNYMonth();toast(`${activeStrategy.label} 현재 신호 계산 중…`);
-  const result=await rankForRebalance(ym,activeStrategy),n=Math.max(1,Number(activeStrategy.holdings)||6),holdings=result.ranked.slice(0,n).map(x=>x.s);
+  const result=await rankForRebalance(ym,activeStrategy),n=Math.max(1,Number(activeStrategy.holdings)||6);
+  const selection=activeStrategy.mode==="somv"?somvSelection(await coreForMonth(ym,result),result.ranked):null;
+  const holdings=selection?.holdings||result.ranked.slice(0,n).map(x=>x.s);
   if(holdings.length<n)throw new Error(`조건을 통과한 종목이 ${holdings.length}개뿐입니다.`);
   const targetWeights=await targetWeightsFor(holdings,result.ranked,activeStrategy,result.marketCapBySymbol);
-  state={rebalanceMonth:ym,strategyAnchor:ym,initialized:true,holdings,statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,basePrices:{},updatedAt:new Date().toISOString()};
+  state={...(selection||{}),rebalanceMonth:ym,strategyAnchor:ym,initialized:true,holdings,statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,basePrices:{},updatedAt:new Date().toISOString()};
+  if(selection){somvComponents[ym]={coreHoldings:selection.coreHoldings,top6:selection.top6};saveSomvComponents()}
   holdingsHistory={[ym]:[...holdings]};weightsHistory={[ym]:clone(targetWeights)};monthlyHistory={};saveState();saveHoldingsHistory();saveWeightsHistory();saveMonthlyHistory();
 }
 async function catchUpRebalances(){
@@ -145,8 +167,12 @@ async function catchUpRebalances(){
     if(!holdingsHistory[cursor])holdingsHistory[cursor]=[...state.holdings];if(!weightsHistory[cursor])weightsHistory[cursor]=clone(normalizeWeights(state.targetWeights,state.holdings));
     const next=addMonths(cursor,1),old=[...state.holdings],oldWeights=normalizeWeights(state.targetWeights,old);let holdings=old,targetWeights;
     if(shouldTrade(state.strategyAnchor||cursor,next,activeStrategy)){
-      toast(`${activeStrategy.label} ${next} 리밸런스 계산 중…`);const result=await rankForRebalance(next,activeStrategy);holdings=transition(old,result.ranked,result.universe,activeStrategy);targetWeights=await targetWeightsFor(holdings,result.ranked,activeStrategy,result.marketCapBySymbol);
+      toast(`${activeStrategy.label} ${next} 리밸런스 계산 중…`);const result=await rankForRebalance(next,activeStrategy);if(activeStrategy.mode==="somv"){
+        const core=transition(state.coreHoldings,result.ranked,result.universe,globalThis.SOMXStrategy.presets.core),selection=somvSelection(core,result.ranked);
+        holdings=selection.holdings;state.coreHoldings=selection.coreHoldings;state.top6=selection.top6;
+      }else holdings=transition(old,result.ranked,result.universe,activeStrategy);targetWeights=await targetWeightsFor(holdings,result.ranked,activeStrategy,result.marketCapBySymbol);
     }else targetWeights=await carryWeights(cursor,holdings,oldWeights);
+    if(activeStrategy.mode==="somv"){somvComponents[next]={coreHoldings:[...state.coreHoldings],top6:[...state.top6]};saveSomvComponents()}
     const oldSet=new Set(old);holdingsHistory[next]=[...holdings];weightsHistory[next]=clone(targetWeights);state.holdings=holdings;state.targetWeights=targetWeights;state.statuses=Object.fromEntries(holdings.map(s=>[s,oldSet.has(s)?"HOLD":"IN"]));state.rebalanceMonth=next;state.basePrices={};state.updatedAt=new Date().toISOString();saveHoldingsHistory();saveWeightsHistory();saveState();cursor=next;
   }
 }
@@ -166,13 +192,37 @@ function connectStream(){
 async function completedMonthReturn(month,holdings,startWeights){
   if(!holdings?.length)throw new Error(`${month} 보유종목 이력이 없습니다.`);const w=normalizeWeights(startWeights,holdings),dataBars=await monthBars(month,holdings),rows=[];
   for(const s of holdings){const bars=(dataBars[s]||[]).filter(b=>String(b.t).slice(0,7)===month);if(!bars.length){rows.push({ticker:s,ret:NaN,weight:w[s]});continue}const first=bars[0],last=bars.at(-1),rel=Number(first.o)>0?Number(last.c)/Number(first.o):NaN;rows.push({ticker:s,ret:Number.isFinite(rel)?(rel-1)*100:NaN,weight:w[s],first:Number(first.o),last:Number(last.c),lastDate:String(last.t).slice(0,10)})}
-  const valid=rows.filter(x=>Number.isFinite(x.ret)),port=valid.length===holdings.length?(rows.reduce((a,x)=>a+w[x.ticker]*(1+x.ret/100),0)-1)*100:NaN;return{month,port,rows,lastDate:valid[0]?.lastDate||null,holdings:[...holdings],weights:clone(w)};
+  const valid=rows.filter(x=>Number.isFinite(x.ret)),port=valid.length===holdings.length?(rows.reduce((a,x)=>a+w[x.ticker]*(1+x.ret/100),0)-1)*100:NaN;return{month,port,rows,lastDate:valid[0]?.lastDate||null,holdings:[...holdings],weights:clone(w),...(activeStrategy.mode==="somv"?clone(somvComponents[month]||{}):{})};
 }
 async function ensureMonthlyHistory(){
-  if(historyLoading||!creds)return;historyLoading=true;try{const current=currentNYMonth(),months=Object.keys(holdingsHistory).filter(m=>m<current).sort();for(const month of months){if(monthlyHistory[month]&&Number.isFinite(monthlyHistory[month].port))continue;const status=document.getElementById("history-status");if(status)status.textContent=`${month} 계산 중…`;try{monthlyHistory[month]=await completedMonthReturn(month,holdingsHistory[month],weightsHistory[month]);saveMonthlyHistory();renderHistory()}catch(e){console.warn("history",month,e)}}const status=document.getElementById("history-status");if(status)status.textContent="각 달 첫 거래일 시가 → 마지막 거래일 종가"}finally{historyLoading=false}
+  if(historyLoading||!creds)return;historyLoading=true;const sig=strategySig;try{const current=currentNYMonth(),months=Object.keys(holdingsHistory).filter(m=>m<current).sort();for(const month of months){if(monthlyHistory[month]&&Number.isFinite(monthlyHistory[month].port))continue;const status=document.getElementById("history-status");if(status)status.textContent=`${month} 계산 중…`;try{const record=await completedMonthReturn(month,holdingsHistory[month],weightsHistory[month]);if(sig!==strategySig)return;monthlyHistory[month]=record;saveMonthlyHistory();renderHistory()}catch(e){console.warn("history",month,e)}}const status=document.getElementById("history-status");if(status)status.textContent="각 달 첫 거래일 시가 → 마지막 거래일 종가"}finally{historyLoading=false}
 }
-function renderHistory(){const list=document.getElementById("history-list");if(!list)return;const months=Object.keys(monthlyHistory).sort().reverse();if(!months.length){list.innerHTML='<div class="history-empty">이 전략의 월말 기록이 아직 없습니다.</div>';return}list.innerHTML=months.map(month=>{const h=monthlyHistory[month],details=(h.rows||[]).map(x=>`<div class="history-stock"><span>${x.ticker}</span><strong class="${x.ret<0?"neg":""}">${fmt(x.ret)}</strong></div>`).join("");return `<details class="history-month"><summary><span class="history-month-label">${month}</span><span class="history-date">${h.lastDate||""}</span><strong class="history-port ${h.port<0?"neg":""}">${fmt(h.port)}</strong></summary><div class="history-details">${details}</div></details>`}).join("")}
-function openHistory(){document.getElementById("history-modal").classList.add("show");renderHistory();if(creds)ensureMonthlyHistory()}
+function renderHistory(){const list=document.getElementById("history-list");if(!list)return;const heading=document.querySelector("#history-modal h2");if(heading)heading.textContent=`${activeStrategy.mode==="somv"?"SOMV":activeStrategy.label} 월말 수익률 기록`;const months=Object.keys(monthlyHistory).sort().reverse();if(!months.length){list.innerHTML='<div class="history-empty">이 전략의 월말 기록이 아직 없습니다.</div>';return}list.innerHTML=months.map(month=>{const h=monthlyHistory[month],details=(h.rows||[]).map(x=>`<div class="history-stock"><span>${x.ticker}${activeStrategy.mode==="somv"?`<small class="history-membership">${h.coreHoldings?.includes(x.ticker)?(h.top6?.includes(x.ticker)?"Core · Top6":"Core"):"Top6"} · ${((x.weight||0)*100).toFixed(2)}%</small>`:""}</span><strong class="${x.ret<0?"neg":""}">${fmt(x.ret)}</strong></div>`).join("");return `<details class="history-month"><summary><span class="history-month-label">${month}</span><span class="history-date">${h.lastDate||""}${activeStrategy.mode==="somv"?` · ${h.holdings.length}종목`:""}</span><strong class="history-port ${h.port<0?"neg":""}">${fmt(h.port)}</strong></summary><div class="history-details">${details}</div></details>`}).join("")}
+let somvBackfillPromise=null;
+async function backfillSomvHistory(){
+  if(activeStrategy.mode!=="somv"||!creds)return;
+  if(somvBackfillPromise)return somvBackfillPromise;
+  const sig=strategySig;
+  somvBackfillPromise=(async()=>{
+    const history=canonicalCoreHistory(),months=Object.keys(history).filter(m=>m<currentNYMonth()).sort();
+    for(const month of months){
+      if(sig!==strategySig)return;
+      if(somvComponents[month]&&holdingsHistory[month])continue;
+      document.getElementById("history-status").textContent=`SOMV ${month} · Core ∪ Top6 계산 중…`;
+      const result=await rankForRebalance(month,globalThis.SOMXStrategy.presets.somv);
+      if(sig!==strategySig)return;
+      const selection=somvSelection(history[month],result.ranked);
+      holdingsHistory[month]=selection.holdings;weightsHistory[month]=equalWeights(selection.holdings);
+      somvComponents[month]={coreHoldings:selection.coreHoldings,top6:selection.top6};
+      delete monthlyHistory[month];saveHoldingsHistory();saveWeightsHistory();saveSomvComponents();
+    }
+    while(historyLoading){await new Promise(r=>setTimeout(r,100));if(sig!==strategySig)return}
+    await ensureMonthlyHistory();if(sig===strategySig)renderHistory();
+  })().catch(e=>{if(sig===strategySig)document.getElementById("history-status").textContent=e.message||"SOMV 기록 계산 실패";console.error("somv history",e)}).finally(()=>{somvBackfillPromise=null});
+  return somvBackfillPromise;
+}
+function refreshStrategyHistory(){if(activeStrategy.mode==="somv")return backfillSomvHistory();return ensureMonthlyHistory()}
+function openHistory(){document.getElementById("history-modal").classList.add("show");renderHistory();if(creds)refreshStrategyHistory()}
 function closeHistory(){document.getElementById("history-modal").classList.remove("show")}
 
 function metrics(){
@@ -183,7 +233,7 @@ function setMetric(id,v){const el=document.getElementById(id);if(!el)return;el.t
 function render(){
   const{rows,port}=metrics(),tbody=document.getElementById("holdings-body");if(!tbody)return;
   tbody.innerHTML=rows.map((p,i)=>`<tr><td><div class="stock"><div class="logo" style="color:${colorFor(i)}">${p.ticker}</div><div>${p.ticker}</div></div></td><td class="status-wrap"><span class="badge ${p.status==="IN"?"in":"hold"}">${p.status}</span></td><td class="ret ${p.ret<0?"neg":""}">${fmt(p.ret)}</td></tr>`).join("");
-  const valid=rows.filter(x=>Number.isFinite(x.ret)),up=valid.filter(x=>x.ret>0).length,best=valid.length?[...valid].sort((a,b)=>b.ret-a.ret)[0]:null,worst=valid.length?[...valid].sort((a,b)=>a.ret-b.ret)[0]:null;setMetric("portfolio-return",port);document.getElementById("up-count").textContent=valid.length?`${up} / ${rows.length}`:"--";document.getElementById("best-ticker").textContent=best?.ticker||"--";setMetric("best-return",best?.ret);document.getElementById("worst-ticker").textContent=worst?.ticker||"--";setMetric("worst-return",worst?.ret);drawDonut(rows);document.body.dataset.strategy=activeStrategy.mode;
+  const valid=rows.filter(x=>Number.isFinite(x.ret)),up=valid.filter(x=>x.ret>0).length,best=valid.length?[...valid].sort((a,b)=>b.ret-a.ret)[0]:null,worst=valid.length?[...valid].sort((a,b)=>a.ret-b.ret)[0]:null;setMetric("portfolio-return",port);document.getElementById("up-count").textContent=valid.length?`${up} / ${rows.length}`:"--";document.getElementById("best-ticker").textContent=best?.ticker||"--";setMetric("best-return",best?.ret);document.getElementById("worst-ticker").textContent=worst?.ticker||"--";setMetric("worst-return",worst?.ret);drawDonut(rows);document.body.dataset.strategy=activeStrategy.mode;document.getElementById("donut")?.setAttribute("aria-label",`${activeStrategy.label} portfolio donut`);
 }
 function polar(cx,cy,r,a){const rad=(a-90)*Math.PI/180;return[cx+r*Math.cos(rad),cy+r*Math.sin(rad)]}
 function arcPath(cx,cy,ro,ri,a0,a1){const[x0,y0]=polar(cx,cy,ro,a0),[x1,y1]=polar(cx,cy,ro,a1),[xi1,yi1]=polar(cx,cy,ri,a1),[xi0,yi0]=polar(cx,cy,ri,a0),large=a1-a0>180?1:0;return`M ${x0} ${y0} A ${ro} ${ro} 0 ${large} 1 ${x1} ${y1} L ${xi1} ${yi1} A ${ri} ${ri} 0 ${large} 0 ${xi0} ${yi0} Z`}
@@ -194,15 +244,16 @@ function drawDonut(rows){
 }
 function toast(msg){const t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.style.display="block";clearTimeout(toast._t);toast._t=setTimeout(()=>t.style.display="none",3600)}
 
-async function ensureInitialized(){if(!state.initialized||state.holdings.length!==Number(activeStrategy.holdings))await bootstrapStrategy()}
-async function start(){if(starting||!creds)return;starting=true;try{render();await ensureInitialized();await catchUpRebalances();await getMonthBasePrices();await getLatestFallback();render();connectStream();ensureMonthlyHistory().catch(console.error);toast(`${activeStrategy.label} · 무료 IEX 연결됨`)}catch(e){console.error(e);toast(e.message||"연결 실패");if(String(e.message).includes("401")||String(e.message).includes("403"))openModal()}finally{starting=false}}
+async function ensureInitialized(){const invalid=activeStrategy.mode==="somv"?state.holdings.length<6||state.holdings.length>12||state.coreHoldings?.length!==6:state.holdings.length!==Number(activeStrategy.holdings);if(!state.initialized||invalid)await bootstrapStrategy()}
+async function start(){if(starting||!creds)return;starting=true;try{render();await ensureInitialized();await catchUpRebalances();await getMonthBasePrices();await getLatestFallback();render();connectStream();refreshStrategyHistory().catch(console.error);toast(`${activeStrategy.label} · 무료 IEX 연결됨`)}catch(e){console.error(e);toast(e.message||"연결 실패");if(String(e.message).includes("401")||String(e.message).includes("403"))openModal()}finally{starting=false}}
 async function previewStrategy(c){if(!creds&&c.factor!=="marketCap")throw new Error("Alpaca 연결이 필요합니다.");const{ranked}=await rankForRebalance(currentNYMonth(),c);return ranked}
 async function applyStrategy(c){
-  if(switching)return;switching=true;try{if(socket)try{socket.close()}catch{}activeStrategy=clone(c);strategySig=globalThis.SOMXStrategy?.signature?.(activeStrategy)||activeStrategy.mode;latestPrices={};loadContext();render();if(creds){await ensureInitialized();await catchUpRebalances();await getMonthBasePrices();await getLatestFallback();render();connectStream();ensureMonthlyHistory().catch(console.error)}window.dispatchEvent(new Event("somx:strategy-active"));window.dispatchEvent(new Event("somx:historychange"));toast(`${activeStrategy.label} 적용됨`)}finally{switching=false}
+  if(starting){throw new Error("현재 계산이 끝난 뒤 다시 적용해주세요")}
+  if(switching)return;switching=true;try{if(socket)try{socket.close()}catch{}activeStrategy=clone(c);strategySig=globalThis.SOMXStrategy?.signature?.(activeStrategy)||activeStrategy.mode;latestPrices={};loadContext();render();if(creds){await ensureInitialized();await catchUpRebalances();await getMonthBasePrices();await getLatestFallback();render();connectStream();refreshStrategyHistory().catch(console.error)}window.dispatchEvent(new Event("somx:strategy-active"));window.dispatchEvent(new Event("somx:historychange"));toast(`${activeStrategy.label} 적용됨`)}finally{switching=false}
 }
-globalThis.SOMXLive={previewStrategy,applyStrategy,getMonthlyHistory:()=>clone(monthlyHistory),getHoldingsHistory:()=>clone(holdingsHistory),getWeightsHistory:()=>clone(weightsHistory),getState:()=>clone(state),getStrategy:()=>clone(activeStrategy),refreshHistory:ensureMonthlyHistory};
+globalThis.SOMXLive={previewStrategy,applyStrategy,getMonthlyHistory:()=>clone(monthlyHistory),getHoldingsHistory:()=>clone(holdingsHistory),getWeightsHistory:()=>clone(weightsHistory),getState:()=>clone(state),getStrategy:()=>clone(activeStrategy),refreshHistory:refreshStrategyHistory,somvSelection};
 
-setInterval(async()=>{if(!creds||starting||switching)return;if(state.rebalanceMonth<currentNYMonth()){try{await catchUpRebalances();await getMonthBasePrices();await getLatestFallback();render();connectStream();ensureMonthlyHistory().catch(console.error)}catch(e){toast(e.message||"리밸런스 실패")}}},60000);
+setInterval(async()=>{if(!creds||starting||switching)return;if(state.rebalanceMonth<currentNYMonth()){try{await catchUpRebalances();await getMonthBasePrices();await getLatestFallback();render();connectStream();refreshStrategyHistory().catch(console.error)}catch(e){toast(e.message||"리밸런스 실패")}}},60000);
 const modal=document.getElementById("modal");function openModal(){document.getElementById("keyId").value=creds?.keyId||"";document.getElementById("secretKey").value=creds?.secretKey||"";modal.classList.add("show")}function closeModal(){modal.classList.remove("show")}
 document.getElementById("settingsBtn").onclick=openModal;document.getElementById("saveBtn").onclick=()=>{const keyId=document.getElementById("keyId").value.trim(),secretKey=document.getElementById("secretKey").value.trim();if(!keyId||!secretKey){toast("Key ID와 Secret을 입력하세요");return}saveCreds({keyId,secretKey});closeModal();start()};document.getElementById("clearBtn").onclick=()=>{localStorage.removeItem(CRED_KEY);creds=null;if(socket)socket.close();toast("API 키 삭제됨")};modal.addEventListener("click",e=>{if(e.target===modal&&creds)closeModal()});
 document.getElementById("historyBtn").addEventListener("click",openHistory);document.getElementById("historyCloseBtn").addEventListener("click",closeHistory);document.getElementById("history-modal").addEventListener("click",e=>{if(e.target.id==="history-modal")closeHistory()});

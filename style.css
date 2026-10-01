@@ -137,3 +137,6 @@ body[data-layout="vertical"] .board{grid-template-columns:1fr}
   .history-details{padding:7px 12px 10px;gap:0 12px}
 }
 @media (prefers-reduced-motion:reduce){#wheel,.upright-label{animation:none}}
+
+
+.history-membership{display:block;margin-top:3px;font-size:12px;font-weight:500;color:var(--muted,#657288)}

@@ -18,6 +18,8 @@ const core={
   filters:{}
 };
 
+const somv={...clone(core),mode:"somv",label:"SOMV",selection:"core-union-top6"};
+
 const defaultCustom={
   mode:"custom",label:"Custom",
   holdings:6,entryRank:6,exitRank:16,rebalanceMonths:1,
@@ -56,13 +58,14 @@ function loadCustom(){
   }catch{return clone(defaultCustom)}
 }
 function saveCustom(c){try{localStorage.setItem(STORE,JSON.stringify(normalizeCustom(c)))}catch{}}
-function loadMode(){try{return localStorage.getItem(ACTIVE_STORE)==="custom"?"custom":"core"}catch{return"core"}}
-function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,m==="custom"?"custom":"core")}catch{}}
+function loadMode(){try{return ["core","somv","custom"].includes(localStorage.getItem(ACTIVE_STORE))?localStorage.getItem(ACTIVE_STORE):"core"}catch{return"core"}}
+function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,["core","somv","custom"].includes(m)?m:"core")}catch{}}
 
 let custom=loadCustom(),activeMode=loadMode();
-function config(mode=activeMode){return clone(mode==="custom"?custom:core)}
+function config(mode=activeMode){return clone(mode==="custom"?custom:mode==="somv"?somv:core)}
 function signature(c=config()){
   if(c.mode==="core")return"core";
+  if(c.mode==="somv")return"somv-union-v1";
   const raw=JSON.stringify(c);let h=2166136261;
   for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
   return`custom-${(h>>>0).toString(36)}`;
@@ -113,16 +116,16 @@ function weightsFor({holdings,marketCapBySymbol,config:c=config()}){
 globalThis.SOMXStrategy={
   getConfig:()=>config(),getMode:()=>activeMode,getCustom:()=>clone(custom),
   setCustom:c=>{custom=normalizeCustom(c);saveCustom(custom)},
-  setMode:m=>{activeMode=m==="custom"?"custom":"core";saveMode(activeMode)},
+  setMode:m=>{activeMode=["core","somv","custom"].includes(m)?m:"core";saveMode(activeMode)},
   signature,isTradeMonth,requiredCalendarDays,score,weightsFor,
-  presets:{core:clone(core),custom:clone(defaultCustom)}
+  presets:{core:clone(core),somv:clone(somv),custom:clone(defaultCustom)}
 };
 
 function initUI(){
   const root=document.getElementById("strategy-settings-root");if(!root)return;
   root.innerHTML=`
-    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>Core는 SOMX 원본 그대로 유지되고, Custom만 수정됩니다.</small></div>
-    <div class="strategy-tabs"><button data-mode="core" type="button">Core</button><button data-mode="custom" type="button">Custom</button></div>
+    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>Core · SOMV는 고정 규칙, Custom은 직접 설정</small></div>
+    <div class="strategy-tabs"><button data-mode="core" type="button">Core</button><button data-mode="somv" type="button">SOMV</button><button data-mode="custom" type="button">Custom</button></div>
     <div class="strategy-body">
       <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title">SOMX Core · Locked</div><div class="core-rule">PIT S&P 500 · 6종목 · Entry Top 6 · Exit 16 · 6-1 Momentum · Equal Weight · Monthly. Core는 Custom과 완전히 분리되며 다시 Apply하면 canonical SOMX 상태로 복귀합니다.</div></div>
       <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="20"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="50"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="100"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
@@ -138,7 +141,7 @@ function initUI(){
   let editMode=activeMode,working=config();
   const q=s=>root.querySelector(s),qa=s=>[...root.querySelectorAll(s)];
   function pull(){
-    if(editMode==="core")return clone(core);
+    if(editMode!=="custom")return config(editMode);
     const c=clone(working);c.mode="custom";c.label="Custom";
     c.holdings=Math.max(3,Math.min(20,+q("#st-holdings").value||6));
     c.entryRank=Math.max(c.holdings,Math.min(50,+q("#st-entry").value||c.holdings));
@@ -166,7 +169,11 @@ function initUI(){
     q("#st-weighting").value=c.weighting||"equal";
     q("#st-mom-look").value=c.factors?.momentum?.lookback??6;q("#st-mom-skip").value=c.factors?.momentum?.skip??1;
     const radio=q(`input[name="st-factor"][value="${c.factor||"momentum"}"]`);if(radio)radio.checked=true;
-    const locked=editMode==="core";
+    const locked=editMode!=="custom";
+    q("#st-holdings").type=editMode==="somv"?"text":"number";
+    if(editMode==="somv")q("#st-holdings").value="6–12";
+    q("#core-lock-note .strategy-section-title").textContent=editMode==="somv"?"SOMV":"SOMX Core · Locked";
+    q("#core-lock-note .core-rule").textContent=editMode==="somv"?"PIT S&P 500 · 6-1 Momentum · 기존 SOMX Core 6개(Top6 진입, 16위까지 유지) ∪ 현재 Top6 · 중복 제거 · 6~12종목 동일비중 · 월간. 추가 종목은 매월 Top6에서 다시 선정하며, Core 6개는 별도로 유지됩니다.":"PIT S&P 500 · 6종목 · Entry Top 6 · 16위까지 유지 / 17위부터 퇴출 · 6-1 Momentum · Equal Weight · Monthly";
     qa(".strategy-body input,.strategy-body select").forEach(x=>x.disabled=locked);
     q("#core-lock-note").style.display=locked?"block":"none";
     qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
@@ -174,7 +181,7 @@ function initUI(){
   }
   function updateCurrent(){const el=q("#strategy-current");if(el)el.textContent=`현재 · ${config().label}`}
   qa(".strategy-tabs button").forEach(b=>b.onclick=()=>{
-    editMode=b.dataset.mode;working=editMode==="custom"?clone(custom):clone(core);fill(working);
+    editMode=b.dataset.mode;working=config(editMode);fill(working);
     q("#strategy-preview").textContent="Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.";
   });
   root.addEventListener("input",()=>{if(editMode==="custom"){working=pull();refreshChoiceUI(working)}});

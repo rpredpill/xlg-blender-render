@@ -77,7 +77,7 @@ async function backfillCoreHistory(){
     status(done?.version===2?"SOMX Core 과거 월별 수익률 확인 중…":"SOMX Core canonical 기록 확장 중…");
     const changed=installHistory();markDone();
     if(changed)status(`Core 과거 보유이력 ${changed}개월 갱신 · 월별 수익률 계산 중…`);
-    await waitHistoryIdle();await ensureMonthlyHistory();renderHistory();
+    await waitHistoryIdle();if(activeStrategy?.mode!=="core")return;await ensureMonthlyHistory();if(activeStrategy?.mode!=="core")return;renderHistory();
     const months=Object.keys(monthlyHistory||{}).sort(),first=months[0]||"--",last=months.at(-1)||"--";
     status(`각 달 첫 거래일 시가 → 마지막 거래일 종가 · ${first} ~ ${last} · ${months.length}개월`);
   }catch(e){console.error("core backfill",e);status(e?.message||"Core 과거 기록 확장 실패");}
@@ -85,7 +85,7 @@ async function backfillCoreHistory(){
 }
 
 const historyBtn=document.getElementById("historyBtn");
-historyBtn?.addEventListener("click",e=>{e.stopImmediatePropagation();document.getElementById("history-modal")?.classList.add("show");renderHistory();if(!creds)return;if(activeStrategy?.mode==="core")backfillCoreHistory();else ensureMonthlyHistory();},true);
+historyBtn?.addEventListener("click",e=>{e.stopImmediatePropagation();document.getElementById("history-modal")?.classList.add("show");renderHistory();if(!creds)return;if(activeStrategy?.mode==="core")backfillCoreHistory();else refreshStrategyHistory();},true);
 
 globalThis.SOMXCoreBackfill={run:backfillCoreHistory,history:()=>JSON.parse(JSON.stringify(CORE_HISTORY))};
 })();
