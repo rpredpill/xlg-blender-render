@@ -28,7 +28,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install --disable-pip-version-check yfinance requests pandas
+        run: pip install --disable-pip-version-check yfinance requests pandas lxml
 
       - name: Build complete QUQU snapshot
         shell: python
@@ -39,9 +39,10 @@ jobs:
           import pandas as pd
           import yfinance as yf
 
-          MEMBERS_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100-table.csv'
-          FALLBACK_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100_marketcap_052026.csv'
-          HEADERS = {'User-Agent': 'Mozilla/5.0 QUQU-refresh/2.0'}
+          CURRENT_MEMBERS_URL = 'https://www.slickcharts.com/nasdaq100'
+          FALLBACK_MEMBERS_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100-table.csv'
+          FALLBACK_CAP_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100_marketcap_052026.csv'
+          HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36'}
           CAP = 0.20
 
           def get_text(url):
@@ -66,6 +67,13 @@ jobs:
               k = year * 12 + (month - 1) + delta
               return k // 12, k % 12 + 1
 
+          def median(xs):
+              s = sorted(xs)
+              n = len(s)
+              if not n:
+                  raise RuntimeError('median of empty list')
+              return s[n//2] if n % 2 else (s[n//2-1] + s[n//2]) / 2
+
           def cap_and_redistribute(raw, cap=CAP):
               free = set(raw)
               out = {}
@@ -87,33 +95,107 @@ jobs:
                       raise RuntimeError('QUQU cap redistribution underflow')
               return out
 
-          # ---- universe ----
-          member_rows = list(csv.DictReader(io.StringIO(get_text(MEMBERS_URL))))
-          old_rows = list(csv.DictReader(io.StringIO(get_text(FALLBACK_URL))))
+          # ---- current Nasdaq-100 membership candidates ----
+          membership_source = CURRENT_MEMBERS_URL
+          candidates = []
+          try:
+              html = get_text(CURRENT_MEMBERS_URL)
+              tables = pd.read_html(io.StringIO(html))
+              table = next(t for t in tables if 'Symbol' in [str(c) for c in t.columns])
+              seen = set()
+              for _, r in table.iterrows():
+                  ticker = str(r.get('Symbol','')).strip().upper().replace('-', '.')
+                  company = str(r.get('Company','')).strip()
+                  if ticker and ticker != 'NAN' and ticker not in seen:
+                      seen.add(ticker)
+                      candidates.append((ticker, company))
+          except Exception as e:
+              membership_source = FALLBACK_MEMBERS_URL + ' (fallback)'
+              rows = list(csv.DictReader(io.StringIO(get_text(FALLBACK_MEMBERS_URL))))
+              seen = set()
+              for r in rows:
+                  ticker = str(r.get('ticker','')).strip().upper().replace('-', '.')
+                  if ticker and ticker not in seen:
+                      seen.add(ticker)
+                      candidates.append((ticker, str(r.get('company','')).strip()))
+
+          if len(candidates) < 100:
+              raise RuntimeError(f'Only {len(candidates)} Nasdaq-100 candidates found')
+
+          # ---- old cap fallback ----
           old_caps = {}
-          for r in old_rows:
+          for r in csv.DictReader(io.StringIO(get_text(FALLBACK_CAP_URL))):
               t = str(r.get('ticker','')).strip().upper().replace('-', '.')
               cap = parse_cap(r.get('market_cap_usd'))
               if t and cap:
                   old_caps[t] = cap
 
-          members = []
-          seen = set()
-          for r in member_rows:
-              t = str(r.get('ticker','')).strip().upper().replace('-', '.')
-              if not t or t in seen:
-                  continue
-              seen.add(t)
-              members.append((t, str(r.get('company','')).strip()))
-          if len(members) < 100:
-              raise RuntimeError(f'Only {len(members)} Nasdaq-100 members found')
-          members = members[:100]
+          # ---- signal dates ----
+          now = datetime.now(timezone.utc)
+          recent_y, recent_m = shift_month(now.year, now.month, -1)
+          early_y, early_m = shift_month(now.year, now.month, -6)
+          recent_target = month_end(recent_y, recent_m)
+          early_target = month_end(early_y, early_m)
+          start = (early_target - timedelta(days=12)).date().isoformat()
+          end = (recent_target + timedelta(days=5)).date().isoformat()
+          all_tickers = [t for t, _ in candidates]
 
-          # ---- market caps ----
-          rows = []
+          # ---- batch adjusted closes ----
+          data = yf.download(
+              tickers=all_tickers,
+              start=start,
+              end=end,
+              auto_adjust=True,
+              progress=False,
+              group_by='column',
+              threads=True,
+          )
+
+          def batch_close(ticker, target):
+              try:
+                  if isinstance(data.columns, pd.MultiIndex):
+                      if ('Close', ticker) in data.columns:
+                          s = data[('Close', ticker)]
+                      elif (ticker, 'Close') in data.columns:
+                          s = data[(ticker, 'Close')]
+                      else:
+                          return None
+                  else:
+                      return None
+                  s = s.dropna()
+                  if s.empty:
+                      return None
+                  idx = pd.to_datetime(s.index, utc=True)
+                  mask = idx <= pd.Timestamp(target)
+                  if not mask.any():
+                      return None
+                  return float(s.iloc[mask.nonzero()[0][-1]])
+              except Exception:
+                  return None
+
+          def individual_prices(ticker):
+              try:
+                  h = yf.Ticker(ticker).history(start=start, end=end, auto_adjust=True, actions=False)
+                  if h.empty:
+                      return None, None
+                  h = h.dropna(subset=['Close'])
+                  idx = pd.to_datetime(h.index, utc=True)
+                  em = idx <= pd.Timestamp(early_target)
+                  rm = idx <= pd.Timestamp(recent_target)
+                  early = float(h['Close'].iloc[em.nonzero()[0][-1]]) if em.any() else None
+                  recent = float(h['Close'].iloc[rm.nonzero()[0][-1]]) if rm.any() else None
+                  return early, recent
+              except Exception:
+                  return None, None
+
+          # ---- build valid current candidates; choose first 100 by current index order ----
+          selected = []
+          skipped = []
           fallback_caps = []
-          failed_caps = []
-          for ticker, company in members:
+          individual_price_fallbacks = []
+          insufficient_history = []
+
+          for ticker, company in candidates:
               cap = None
               try:
                   q = yf.Ticker(ticker)
@@ -133,115 +215,74 @@ jobs:
                   cap = old_caps.get(ticker)
                   if cap:
                       fallback_caps.append(ticker)
-                  else:
-                      failed_caps.append(ticker)
-                      continue
-              rows.append({'ticker': ticker, 'company': company, 'marketCap': float(cap)})
-              time.sleep(0.01)
-          if len(rows) != 100:
-              raise RuntimeError(f'Market cap completeness {len(rows)}/100; failed={failed_caps}')
-
-          # ---- 6-1 month-end prices ----
-          now = datetime.now(timezone.utc)
-          recent_y, recent_m = shift_month(now.year, now.month, -1)
-          early_y, early_m = shift_month(now.year, now.month, -6)
-          recent_target = month_end(recent_y, recent_m)
-          early_target = month_end(early_y, early_m)
-          start = (early_target - timedelta(days=12)).date().isoformat()
-          end = (recent_target + timedelta(days=5)).date().isoformat()
-          tickers = [r['ticker'] for r in rows]
-
-          data = yf.download(
-              tickers=tickers,
-              start=start,
-              end=end,
-              auto_adjust=True,
-              progress=False,
-              group_by='column',
-              threads=True,
-          )
-
-          def extract_close(ticker, target):
-              try:
-                  if isinstance(data.columns, pd.MultiIndex):
-                      if ('Close', ticker) in data.columns:
-                          s = data[('Close', ticker)]
-                      elif (ticker, 'Close') in data.columns:
-                          s = data[(ticker, 'Close')]
-                      else:
-                          return None
-                  else:
-                      if len(tickers) != 1 or 'Close' not in data.columns:
-                          return None
-                      s = data['Close']
-                  s = s.dropna()
-                  if s.empty:
-                      return None
-                  idx = pd.to_datetime(s.index, utc=True)
-                  mask = idx <= pd.Timestamp(target)
-                  if not mask.any():
-                      return None
-                  return float(s.iloc[mask.nonzero()[0][-1]])
-              except Exception:
-                  return None
-
-          missing_prices = []
-          individual_fallbacks = []
-          row_by = {r['ticker']: r for r in rows}
-          for ticker in tickers:
-              early = extract_close(ticker, early_target)
-              recent = extract_close(ticker, recent_target)
-              if not (early and recent and math.isfinite(early) and math.isfinite(recent) and early > 0 and recent > 0):
-                  # Individual Yahoo fallback for symbols omitted by the batch response.
-                  try:
-                      h = yf.Ticker(ticker).history(
-                          start=start,
-                          end=end,
-                          auto_adjust=True,
-                          actions=False,
-                      )
-                      if not h.empty:
-                          h = h.dropna(subset=['Close'])
-                          idx = pd.to_datetime(h.index, utc=True)
-                          early_mask = idx <= pd.Timestamp(early_target)
-                          recent_mask = idx <= pd.Timestamp(recent_target)
-                          if early_mask.any() and recent_mask.any():
-                              early = float(h['Close'].iloc[early_mask.nonzero()[0][-1]])
-                              recent = float(h['Close'].iloc[recent_mask.nonzero()[0][-1]])
-                              individual_fallbacks.append(ticker)
-                  except Exception:
-                      pass
-              if not (early and recent and math.isfinite(early) and math.isfinite(recent) and early > 0 and recent > 0):
-                  missing_prices.append(ticker)
+              if cap is None or not math.isfinite(cap) or cap <= 0:
+                  skipped.append({'ticker':ticker,'reason':'marketCap'})
                   continue
-              r = row_by[ticker]
-              r['earlyPrice'] = early
-              r['recentPrice'] = recent
-              r['momentumGross'] = recent / early
-              r['momentum'] = recent / early - 1.0
 
-          if missing_prices:
-              raise RuntimeError(f'Price completeness {100-len(missing_prices)}/100; missing={missing_prices}')
+              early = batch_close(ticker, early_target)
+              recent = batch_close(ticker, recent_target)
+              if recent is None or not math.isfinite(recent) or recent <= 0:
+                  ie, ir = individual_prices(ticker)
+                  early = early if early is not None else ie
+                  recent = ir
+                  individual_price_fallbacks.append(ticker)
 
-          # ---- QUQU score and weights ----
-          for r in rows:
+              if recent is None or not math.isfinite(recent) or recent <= 0:
+                  skipped.append({'ticker':ticker,'reason':'recentPrice'})
+                  continue
+
+              if early is None or not math.isfinite(early) or early <= 0:
+                  ie, _ = individual_prices(ticker)
+                  if ie is not None and math.isfinite(ie) and ie > 0:
+                      early = ie
+                      if ticker not in individual_price_fallbacks:
+                          individual_price_fallbacks.append(ticker)
+
+              row = {
+                  'ticker': ticker,
+                  'company': company,
+                  'marketCap': float(cap),
+                  'earlyPrice': float(early) if early is not None and math.isfinite(early) and early > 0 else None,
+                  'recentPrice': float(recent),
+              }
+              if row['earlyPrice'] is None:
+                  insufficient_history.append(ticker)
+              selected.append(row)
+              if len(selected) == 100:
+                  break
+
+          if len(selected) != 100:
+              raise RuntimeError(f'Only {len(selected)}/100 valid current constituents; skipped={skipped}')
+
+          # New/short-history constituents stay in the 100-stock portfolio. Until a full
+          # 6-1 window exists, assign the cross-sectional median gross momentum (neutral).
+          full_gross = [r['recentPrice']/r['earlyPrice'] for r in selected if r['earlyPrice']]
+          neutral_gross = median(full_gross)
+          for r in selected:
+              if r['earlyPrice']:
+                  r['momentumGross'] = r['recentPrice'] / r['earlyPrice']
+                  r['momentumFallback'] = None
+              else:
+                  r['momentumGross'] = neutral_gross
+                  r['momentumFallback'] = 'cross-sectional median (insufficient 6-1 history)'
+              r['momentum'] = r['momentumGross'] - 1.0
               r['score'] = r['momentumGross'] * r['marketCap']
-          scores = sorted(r['score'] for r in rows)
-          med = (scores[49] + scores[50]) / 2.0
+
+          score_med = median([r['score'] for r in selected])
           raw = {}
-          for r in rows:
-              r['relativeScore'] = r['score'] / med
+          for r in selected:
+              r['relativeScore'] = r['score'] / score_med
               raw[r['ticker']] = r['relativeScore'] ** 3
           weights = cap_and_redistribute(raw)
-          for r in rows:
+          for r in selected:
               r['weight'] = weights[r['ticker']]
 
-          rows.sort(key=lambda x: x['weight'], reverse=True)
-          for rank, r in enumerate(rows, 1):
+          selected.sort(key=lambda x: x['weight'], reverse=True)
+          for rank, r in enumerate(selected, 1):
               r['weightRank'] = rank
 
-          weight_sum = sum(r['weight'] for r in rows)
-          max_weight = max(r['weight'] for r in rows)
+          weight_sum = sum(r['weight'] for r in selected)
+          max_weight = max(r['weight'] for r in selected)
           if abs(weight_sum - 1.0) > 1e-9:
               raise RuntimeError(f'Weight sum {weight_sum}')
           if max_weight > CAP + 1e-9:
@@ -256,19 +297,21 @@ jobs:
                   'earlyDate': early_target.date().isoformat(),
                   'recentDate': recent_target.date().isoformat(),
                   'rule': '6-1 Momentum × Market Cap; relative score cubed; 20% cap',
+                  'shortHistoryRule': 'Use cross-sectional median gross momentum until full 6-1 history exists',
               },
-              'sourceMembership': 'thaywebsearch/nasdaq100-list nasdaq100-table.csv',
+              'sourceMembership': membership_source,
               'sourceMarketCap': 'Yahoo Finance via yfinance',
               'sourcePrice': 'Yahoo Finance adjusted close via yfinance',
-              'fallbackMarketCapSource': 'nasdaq100_marketcap_052026.csv',
+              'fallbackMarketCapSource': FALLBACK_CAP_URL,
               'fallbackMarketCapTickers': fallback_caps,
-              'individualPriceFallbackTickers': individual_fallbacks,
-              'failedMarketCapTickers': failed_caps,
-              'missingPriceTickers': missing_prices,
+              'individualPriceFallbackTickers': individual_price_fallbacks,
+              'insufficientHistoryTickers': insufficient_history,
+              'skippedCandidates': skipped,
+              'candidateCount': len(candidates),
               'weightSum': weight_sum,
               'maxWeight': max_weight,
-              'top10Weight': sum(r['weight'] for r in rows[:10]),
-              'rows': rows,
+              'top10Weight': sum(r['weight'] for r in selected[:10]),
+              'rows': selected,
           }
           with open('ququ-latest.json', 'w', encoding='utf-8') as f:
               json.dump(payload, f, ensure_ascii=False, indent=2)
