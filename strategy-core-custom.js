@@ -18,7 +18,14 @@ const core={
   filters:{}
 };
 
-const somv={...clone(core),mode:"somv",label:"SOMV",selection:"core-union-top6"};
+/* QUQU is a separate Nasdaq-100 engine/page. It is not executed by the S&P 500 live engine. */
+const ququ={
+  mode:"ququ",label:"QUQU",universe:"nasdaq100",
+  holdings:100,entryRank:100,exitRank:100,rebalanceMonths:1,
+  factor:"ququScore",weighting:"scoreCubeCap20",
+  factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1},marketCap:{enabled:true,weight:100}},
+  cap:0.20,filters:{}
+};
 
 const defaultCustom={
   mode:"custom",label:"Custom",
@@ -35,9 +42,7 @@ const defaultCustom={
 function normalizeCustom(saved){
   const c=clone(defaultCustom);
   if(saved&&typeof saved==="object"){
-    for(const k of ["holdings","entryRank","exitRank","rebalanceMonths","factor","weighting"]){
-      if(saved[k]!=null)c[k]=saved[k];
-    }
+    for(const k of ["holdings","entryRank","exitRank","rebalanceMonths","factor","weighting"]){if(saved[k]!=null)c[k]=saved[k]}
     if(saved.factors?.momentum)c.factors.momentum={...c.factors.momentum,...saved.factors.momentum};
   }
   if(!["momentum","marketCap"].includes(c.factor))c.factor="momentum";
@@ -51,84 +56,73 @@ function normalizeCustom(saved){
 }
 function loadCustom(){
   try{
-    const v5=JSON.parse(localStorage.getItem(STORE)||"null");
-    if(v5)return normalizeCustom(v5);
+    const v5=JSON.parse(localStorage.getItem(STORE)||"null");if(v5)return normalizeCustom(v5);
     const old=JSON.parse(localStorage.getItem("somx.strategy.builder.v4")||"null")||JSON.parse(localStorage.getItem("somx.strategy.builder.v3")||"null")||JSON.parse(localStorage.getItem("somx.strategy.builder.v2")||"null");
     return normalizeCustom(old);
   }catch{return clone(defaultCustom)}
 }
 function saveCustom(c){try{localStorage.setItem(STORE,JSON.stringify(normalizeCustom(c)))}catch{}}
-function loadMode(){try{return ["core","somv","custom"].includes(localStorage.getItem(ACTIVE_STORE))?localStorage.getItem(ACTIVE_STORE):"core"}catch{return"core"}}
-function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,["core","somv","custom"].includes(m)?m:"core")}catch{}}
+/* SOMV was retired. Any old SOMV selection falls back safely to Core. */
+function loadMode(){try{return ["core","custom"].includes(localStorage.getItem(ACTIVE_STORE))?localStorage.getItem(ACTIVE_STORE):"core"}catch{return"core"}}
+function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,["core","custom"].includes(m)?m:"core")}catch{}}
 
 let custom=loadCustom(),activeMode=loadMode();
-function config(mode=activeMode){return clone(mode==="custom"?custom:mode==="somv"?somv:core)}
+function config(mode=activeMode){return clone(mode==="custom"?custom:mode==="ququ"?ququ:core)}
 function signature(c=config()){
   if(c.mode==="core")return"core";
-  if(c.mode==="somv")return"somv-union-v1";
-  const raw=JSON.stringify(c);let h=2166136261;
-  for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
+  if(c.mode==="ququ")return"ququ-ndx100-v1";
+  const raw=JSON.stringify(c);let h=2166136261;for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
   return`custom-${(h>>>0).toString(36)}`;
 }
 function monthsBetween(a,b){const[ay,am]=a.split("-").map(Number),[by,bm]=b.split("-").map(Number);return(by-ay)*12+(bm-am)}
 function isTradeMonth(anchor,target,c=config()){return monthsBetween(anchor,target)%Math.max(1,Number(c.rebalanceMonths)||1)===0}
-function requiredCalendarDays(c=config()){
-  if(c.factor==="momentum")return Math.min(800,Math.max(180,(Number(c.factors?.momentum?.lookback)||6)*32+40));
-  return 180;
-}
+function requiredCalendarDays(c=config()){if(c.factor==="momentum")return Math.min(800,Math.max(180,(Number(c.factors?.momentum?.lookback)||6)*32+40));return 180}
 const ret=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&b>0?a/b-1:NaN;
 function eom(signalDate,monthsBack){const d=new Date(signalDate);d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()-monthsBack+1);d.setUTCDate(0);d.setUTCHours(23,59,59,999);return+d}
 function lastClose(bars,ts){let x=NaN;for(const b of bars){if(+new Date(b.t)<=ts)x=+b.c;else break}return x}
 function capValue(source,s){return Number(source?.get?.(s)??source?.[s])}
 
-/* Exactly one selection factor. */
+/* S&P 500 Core/Custom scorer. QUQU is handled on ququ.html. */
 function score({universe,barsBySymbol,signalDate,marketCapBySymbol,config:c=config()}){
   if(c.factor==="marketCap"){
     if(!marketCapBySymbol)throw new Error("시총 데이터 소스를 불러오지 못했습니다.");
-    return universe.map(s=>{const v=capValue(marketCapBySymbol,s);return{s,score:v,raw:{marketCap:v}}})
-      .filter(x=>Number.isFinite(x.score)&&x.score>0).sort((a,b)=>b.score-a.score);
+    return universe.map(s=>{const v=capValue(marketCapBySymbol,s);return{s,score:v,raw:{marketCap:v}}}).filter(x=>Number.isFinite(x.score)&&x.score>0).sort((a,b)=>b.score-a.score);
   }
   const mom=c.factors?.momentum||{},skip=Math.max(1,Number(mom.skip)||1),look=Math.max(skip+1,Number(mom.lookback)||6);
   const recentTs=eom(signalDate,skip-1),earlyTs=eom(signalDate,look-1),rows=[];
   for(const s of universe){
     const bars=(barsBySymbol.get(s)||[]).filter(b=>+new Date(b.t)<=+new Date(signalDate)).sort((a,b)=>+new Date(a.t)-+new Date(b.t));
-    const a=lastClose(bars,recentTs),b=lastClose(bars,earlyTs),m=ret(a,b);
-    if(Number.isFinite(m))rows.push({s,score:m,raw:{momentum:m}});
+    const a=lastClose(bars,recentTs),b=lastClose(bars,earlyTs),m=ret(a,b);if(Number.isFinite(m))rows.push({s,score:m,raw:{momentum:m}})
   }
   return rows.sort((a,b)=>b.score-a.score);
 }
-
-/* Factor chooses names; weighting decides capital allocation. */
 function weightsFor({holdings,marketCapBySymbol,config:c=config()}){
-  const names=[...holdings];
-  if(!names.length)return{};
+  const names=[...holdings];if(!names.length)return{};
   if(c.weighting==="marketCap"){
     if(!marketCapBySymbol)throw new Error("시총 비중 계산용 데이터가 없습니다.");
     const raw=Object.fromEntries(names.map(s=>[s,capValue(marketCapBySymbol,s)]));
     if(names.some(s=>!Number.isFinite(raw[s])||raw[s]<=0))throw new Error("선택 종목 일부의 시총 데이터가 없습니다.");
-    const sum=names.reduce((a,s)=>a+raw[s],0);
-    return Object.fromEntries(names.map(s=>[s,raw[s]/sum]));
+    const sum=names.reduce((a,s)=>a+raw[s],0);return Object.fromEntries(names.map(s=>[s,raw[s]/sum]));
   }
-  const w=1/names.length;
-  return Object.fromEntries(names.map(s=>[s,w]));
+  const w=1/names.length;return Object.fromEntries(names.map(s=>[s,w]));
 }
 
 globalThis.SOMXStrategy={
   getConfig:()=>config(),getMode:()=>activeMode,getCustom:()=>clone(custom),
   setCustom:c=>{custom=normalizeCustom(c);saveCustom(custom)},
-  setMode:m=>{activeMode=["core","somv","custom"].includes(m)?m:"core";saveMode(activeMode)},
+  setMode:m=>{activeMode=["core","custom"].includes(m)?m:"core";saveMode(activeMode)},
   signature,isTradeMonth,requiredCalendarDays,score,weightsFor,
-  presets:{core:clone(core),somv:clone(somv),custom:clone(defaultCustom)}
+  presets:{core:clone(core),ququ:clone(ququ),custom:clone(defaultCustom)}
 };
 
 function initUI(){
   const root=document.getElementById("strategy-settings-root");if(!root)return;
   root.innerHTML=`
-    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>Core · SOMV는 고정 규칙, Custom은 직접 설정</small></div>
-    <div class="strategy-tabs"><button data-mode="core" type="button">Core</button><button data-mode="somv" type="button">SOMV</button><button data-mode="custom" type="button">Custom</button></div>
+    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>Core · QUQU는 고정 규칙, Custom은 직접 설정</small></div>
+    <div class="strategy-tabs"><button data-mode="core" type="button">Core</button><button data-mode="ququ" type="button">QUQU</button><button data-mode="custom" type="button">Custom</button></div>
     <div class="strategy-body">
-      <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title">SOMX Core · Locked</div><div class="core-rule">PIT S&P 500 · 6종목 · Entry Top 6 · Exit 16 · 6-1 Momentum · Equal Weight · Monthly. Core는 Custom과 완전히 분리되며 다시 Apply하면 canonical SOMX 상태로 복귀합니다.</div></div>
-      <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="20"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="50"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="100"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
+      <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title">SOMX Core · Locked</div><div class="core-rule"></div></div>
+      <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="100"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="100"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="100"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
       <section class="strategy-section"><div class="strategy-section-title">Factor · 어떤 종목을 고를지</div><div class="factor-choice-grid">
         <label class="factor-choice" data-factor-choice="momentum"><input type="radio" name="st-factor" value="momentum"><span><strong>Momentum</strong><small>가격 모멘텀 순위</small></span></label>
         <label class="factor-choice" data-factor-choice="marketCap"><input type="radio" name="st-factor" value="marketCap"><span><strong>Market Cap</strong><small>시가총액 큰 순서</small></span></label>
@@ -152,55 +146,47 @@ function initUI(){
     c.factors.momentum.lookback=Math.max(2,Math.min(24,+q("#st-mom-look").value||6));
     c.factors.momentum.skip=Math.max(1,Math.min(3,+q("#st-mom-skip").value||1));
     c.factors.momentum.enabled=c.factor==="momentum";c.factors.momentum.weight=c.factor==="momentum"?100:0;
-    c.factors.marketCap.enabled=c.factor==="marketCap";c.factors.marketCap.weight=c.factor==="marketCap"?100:0;
-    c.filters={};
-    return normalizeCustom(c);
+    c.factors.marketCap.enabled=c.factor==="marketCap";c.factors.marketCap.weight=c.factor==="marketCap"?100:0;c.filters={};return normalizeCustom(c);
   }
   function refreshChoiceUI(c){
     qa('[data-factor-choice]').forEach(el=>el.classList.toggle("active",el.dataset.factorChoice===c.factor));
     q("#momentum-options").hidden=c.factor!=="momentum";
-    const notes={equal:"모든 종목을 같은 비중으로 시작",marketCap:"선택 종목의 시가총액에 비례"};
-    q("#weighting-note").textContent=notes[c.weighting]||notes.equal;
+    const notes={equal:"모든 종목을 같은 비중으로 시작",marketCap:"선택 종목의 시가총액에 비례"};q("#weighting-note").textContent=notes[c.weighting]||"QUQU 전용 동적 비중";
     q("#marketcap-note").hidden=!(c.factor==="marketCap"||c.weighting==="marketCap");
   }
   function fill(c){
-    working=clone(c);
+    working=clone(c);const qu=editMode==="ququ";
     q("#st-holdings").value=c.holdings;q("#st-entry").value=c.entryRank;q("#st-exit").value=c.exitRank;q("#st-rebalance").value=String(c.rebalanceMonths);
-    q("#st-weighting").value=c.weighting||"equal";
+    q("#st-weighting").value=["equal","marketCap"].includes(c.weighting)?c.weighting:"equal";
     q("#st-mom-look").value=c.factors?.momentum?.lookback??6;q("#st-mom-skip").value=c.factors?.momentum?.skip??1;
-    const radio=q(`input[name="st-factor"][value="${c.factor||"momentum"}"]`);if(radio)radio.checked=true;
+    const radio=q(`input[name="st-factor"][value="${["momentum","marketCap"].includes(c.factor)?c.factor:"momentum"}"]`);if(radio)radio.checked=true;
     const locked=editMode!=="custom";
-    q("#st-holdings").type=editMode==="somv"?"text":"number";
-    if(editMode==="somv")q("#st-holdings").value="6–12";
-    q("#core-lock-note .strategy-section-title").textContent=editMode==="somv"?"SOMV":"SOMX Core · Locked";
-    q("#core-lock-note .core-rule").textContent=editMode==="somv"?"PIT S&P 500 · 6-1 Momentum · 기존 SOMX Core 6개(Top6 진입, 16위까지 유지) ∪ 현재 Top6 · 중복 제거 · 6~12종목 동일비중 · 월간. 추가 종목은 매월 Top6에서 다시 선정하며, Core 6개는 별도로 유지됩니다.":"PIT S&P 500 · 6종목 · Entry Top 6 · 16위까지 유지 / 17위부터 퇴출 · 6-1 Momentum · Equal Weight · Monthly";
+    q("#core-lock-note .strategy-section-title").textContent=qu?"QUQU · Locked":"SOMX Core · Locked";
+    q("#core-lock-note .core-rule").textContent=qu?"Nasdaq-100 · 구성종목 전체 보유 · 월간 6-1 모멘텀×시총 점수 · 점수³ Convex Weighting · 단일종목 최대 20% · 초과분 비례 재분배. SOMV는 제거되었습니다.":"PIT S&P 500 · 6종목 · Entry Top 6 · 16위까지 유지 / 17위부터 퇴출 · 6-1 Momentum · Equal Weight · Monthly";
     qa(".strategy-body input,.strategy-body select").forEach(x=>x.disabled=locked);
     q("#core-lock-note").style.display=locked?"block":"none";
     qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
+    q("#strategy-preview-btn").textContent=qu?"Open QUQU":"Preview";q("#strategy-apply-btn").textContent=qu?"Open QUQU":"Apply Strategy";
+    q("#strategy-preview").textContent=qu?"QUQU는 Nasdaq-100 전용 엔진에서 계산됩니다. 아래 Open QUQU를 누르면 현재 100종목 비중을 계산합니다.":"Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.";
     refreshChoiceUI(c);
   }
   function updateCurrent(){const el=q("#strategy-current");if(el)el.textContent=`현재 · ${config().label}`}
-  qa(".strategy-tabs button").forEach(b=>b.onclick=()=>{
-    editMode=b.dataset.mode;working=config(editMode);fill(working);
-    q("#strategy-preview").textContent="Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.";
-  });
+  qa(".strategy-tabs button").forEach(b=>b.onclick=()=>{editMode=b.dataset.mode;working=config(editMode);fill(working)});
   root.addEventListener("input",()=>{if(editMode==="custom"){working=pull();refreshChoiceUI(working)}});
   q("#strategy-preview-btn").onclick=async()=>{
+    if(editMode==="ququ"){location.href="./ququ.html";return}
     const c=pull(),box=q("#strategy-preview");box.textContent="현재 S&P 500을 계산하는 중…";
     try{
       if(!globalThis.SOMXLive?.previewStrategy)throw new Error("실시간 엔진 연결을 기다리는 중입니다.");
-      const rows=await globalThis.SOMXLive.previewStrategy(c);
-      const value=r=>c.factor==="marketCap"?`$${(r.score/1e9).toFixed(1)}B`:`${(r.score*100).toFixed(1)}%`;
+      const rows=await globalThis.SOMXLive.previewStrategy(c),value=r=>c.factor==="marketCap"?`$${(r.score/1e9).toFixed(1)}B`:`${(r.score*100).toFixed(1)}%`;
       box.innerHTML=rows.slice(0,Math.min(20,c.entryRank)).map((r,i)=>`<div class="preview-row"><span>${i+1}</span><strong>${r.s}</strong><em>${value(r)}</em></div>`).join("")||"조건을 통과한 종목이 없습니다.";
     }catch(e){box.textContent=e.message||"Preview 실패"}
   };
   q("#strategy-apply-btn").onclick=async()=>{
-    const c=pull(),box=q("#strategy-preview");
-    if(editMode==="custom"){custom=normalizeCustom(c);saveCustom(custom)}
+    if(editMode==="ququ"){location.href="./ququ.html";return}
+    const c=pull(),box=q("#strategy-preview");if(editMode==="custom"){custom=normalizeCustom(c);saveCustom(custom)}
     activeMode=editMode;saveMode(activeMode);q("#strategy-apply-btn").textContent="Applying…";
-    try{if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(config());updateCurrent()}
-    catch(e){box.textContent=e.message||"전략 적용 실패"}
-    finally{q("#strategy-apply-btn").textContent="Apply Strategy"}
+    try{if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(config());updateCurrent()}catch(e){box.textContent=e.message||"전략 적용 실패"}finally{q("#strategy-apply-btn").textContent="Apply Strategy"}
   };
   updateCurrent();fill(config());window.addEventListener("somx:strategy-active",updateCurrent);
 }
