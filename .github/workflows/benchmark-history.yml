@@ -1,0 +1,51 @@
+name: Publish benchmark history
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/benchmark-history.yml'
+      - 'tools/build_benchmark_history.py'
+  schedule:
+    - cron: '20 7 2 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check yfinance pandas
+      - name: Load builder
+        run: git show origin/main:tools/build_benchmark_history.py > /tmp/build_benchmark_history.py
+      - name: Build benchmark history
+        run: python /tmp/build_benchmark_history.py
+      - name: Validate
+        shell: python
+        run: |
+          import json
+          j=json.load(open('benchmark-history.json',encoding='utf-8'))
+          months=j.get('months') or {}
+          if len(months)<48: raise RuntimeError(f'only {len(months)} months')
+          for s in ['SPY','QQQ','QLD','TQQQ','SPMO']:
+              n=sum(1 for x in months.values() if isinstance(x.get(s),(int,float)))
+              if n<48: raise RuntimeError(f'{s}: only {n} months')
+          print('validated',len(months),min(months),max(months))
+      - name: Commit to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add benchmark-history.json
+          git commit -m 'Update benchmark monthly history' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
