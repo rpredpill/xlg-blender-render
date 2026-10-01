@@ -1,4 +1,4 @@
-name: Refresh QUQU market cap
+name: Refresh QUQU signal
 
 on:
   workflow_dispatch:
@@ -28,19 +28,21 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install --disable-pip-version-check yfinance requests
+        run: pip install --disable-pip-version-check yfinance requests pandas
 
-      - name: Build latest QUQU market-cap snapshot
+      - name: Build complete QUQU snapshot
         shell: python
         run: |
           import csv, io, json, math, re, time
-          from datetime import datetime, timezone
+          from datetime import datetime, timezone, timedelta
           import requests
+          import pandas as pd
           import yfinance as yf
 
           MEMBERS_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100-table.csv'
           FALLBACK_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100_marketcap_052026.csv'
-          HEADERS = {'User-Agent': 'Mozilla/5.0 QUQU-marketcap-refresh/1.0'}
+          HEADERS = {'User-Agent': 'Mozilla/5.0 QUQU-refresh/2.0'}
+          CAP = 0.20
 
           def get_text(url):
               r = requests.get(url, headers=HEADERS, timeout=30)
@@ -53,9 +55,39 @@ jobs:
               if not m:
                   return None
               n = float(m.group(1))
-              mult = {'T':1e12,'B':1e9,'M':1e6,'K':1e3,'':1}[m.group(2)]
-              return n * mult
+              return n * {'T':1e12,'B':1e9,'M':1e6,'K':1e3,'':1}[m.group(2)]
 
+          def month_end(year, month):
+              if month == 12:
+                  return datetime(year + 1, 1, 1, tzinfo=timezone.utc) - timedelta(days=1)
+              return datetime(year, month + 1, 1, tzinfo=timezone.utc) - timedelta(days=1)
+
+          def shift_month(year, month, delta):
+              k = year * 12 + (month - 1) + delta
+              return k // 12, k % 12 + 1
+
+          def cap_and_redistribute(raw, cap=CAP):
+              free = set(raw)
+              out = {}
+              remaining = 1.0
+              while free:
+                  total = sum(raw[s] for s in free)
+                  if total <= 0:
+                      raise RuntimeError('QUQU raw weight sum <= 0')
+                  over = [s for s in free if remaining * raw[s] / total > cap + 1e-12]
+                  if not over:
+                      for s in free:
+                          out[s] = remaining * raw[s] / total
+                      break
+                  for s in over:
+                      out[s] = cap
+                      remaining -= cap
+                      free.remove(s)
+                  if remaining < -1e-12:
+                      raise RuntimeError('QUQU cap redistribution underflow')
+              return out
+
+          # ---- universe ----
           member_rows = list(csv.DictReader(io.StringIO(get_text(MEMBERS_URL))))
           old_rows = list(csv.DictReader(io.StringIO(get_text(FALLBACK_URL))))
           old_caps = {}
@@ -73,14 +105,14 @@ jobs:
                   continue
               seen.add(t)
               members.append((t, str(r.get('company','')).strip()))
-
           if len(members) < 100:
               raise RuntimeError(f'Only {len(members)} Nasdaq-100 members found')
           members = members[:100]
 
+          # ---- market caps ----
           rows = []
-          failures = []
-          fallback_tickers = []
+          fallback_caps = []
+          failed_caps = []
           for ticker, company in members:
               cap = None
               try:
@@ -88,45 +120,154 @@ jobs:
                   try:
                       cap = q.fast_info.get('market_cap')
                   except Exception:
-                      cap = None
+                      pass
                   if not cap:
                       try:
                           cap = q.info.get('marketCap')
                       except Exception:
-                          cap = None
+                          pass
                   cap = float(cap) if cap is not None else None
               except Exception:
                   cap = None
-
               if cap is None or not math.isfinite(cap) or cap <= 0:
                   cap = old_caps.get(ticker)
                   if cap:
-                      fallback_tickers.append(ticker)
+                      fallback_caps.append(ticker)
                   else:
-                      failures.append(ticker)
+                      failed_caps.append(ticker)
                       continue
-
               rows.append({'ticker': ticker, 'company': company, 'marketCap': float(cap)})
-              time.sleep(0.02)
-
+              time.sleep(0.01)
           if len(rows) != 100:
-              raise RuntimeError(f'Only {len(rows)}/100 market caps; failures={failures}')
+              raise RuntimeError(f'Market cap completeness {len(rows)}/100; failed={failed_caps}')
 
-          # Preserve the Nasdaq-100 membership set. Rank here is informational only;
-          # QUQU itself owns all 100 and uses the score only for capital allocation.
-          for rank, row in enumerate(rows, 1):
-              row['rank'] = rank
+          # ---- 6-1 month-end prices ----
+          now = datetime.now(timezone.utc)
+          recent_y, recent_m = shift_month(now.year, now.month, -1)
+          early_y, early_m = shift_month(now.year, now.month, -6)
+          recent_target = month_end(recent_y, recent_m)
+          early_target = month_end(early_y, early_m)
+          start = (early_target - timedelta(days=12)).date().isoformat()
+          end = (recent_target + timedelta(days=5)).date().isoformat()
+          tickers = [r['ticker'] for r in rows]
+
+          data = yf.download(
+              tickers=tickers,
+              start=start,
+              end=end,
+              auto_adjust=True,
+              progress=False,
+              group_by='column',
+              threads=True,
+          )
+
+          def extract_close(ticker, target):
+              try:
+                  if isinstance(data.columns, pd.MultiIndex):
+                      if ('Close', ticker) in data.columns:
+                          s = data[('Close', ticker)]
+                      elif (ticker, 'Close') in data.columns:
+                          s = data[(ticker, 'Close')]
+                      else:
+                          return None
+                  else:
+                      if len(tickers) != 1 or 'Close' not in data.columns:
+                          return None
+                      s = data['Close']
+                  s = s.dropna()
+                  if s.empty:
+                      return None
+                  idx = pd.to_datetime(s.index, utc=True)
+                  mask = idx <= pd.Timestamp(target)
+                  if not mask.any():
+                      return None
+                  return float(s.iloc[mask.nonzero()[0][-1]])
+              except Exception:
+                  return None
+
+          missing_prices = []
+          individual_fallbacks = []
+          row_by = {r['ticker']: r for r in rows}
+          for ticker in tickers:
+              early = extract_close(ticker, early_target)
+              recent = extract_close(ticker, recent_target)
+              if not (early and recent and math.isfinite(early) and math.isfinite(recent) and early > 0 and recent > 0):
+                  # Individual Yahoo fallback for symbols omitted by the batch response.
+                  try:
+                      h = yf.Ticker(ticker).history(
+                          start=start,
+                          end=end,
+                          auto_adjust=True,
+                          actions=False,
+                      )
+                      if not h.empty:
+                          h = h.dropna(subset=['Close'])
+                          idx = pd.to_datetime(h.index, utc=True)
+                          early_mask = idx <= pd.Timestamp(early_target)
+                          recent_mask = idx <= pd.Timestamp(recent_target)
+                          if early_mask.any() and recent_mask.any():
+                              early = float(h['Close'].iloc[early_mask.nonzero()[0][-1]])
+                              recent = float(h['Close'].iloc[recent_mask.nonzero()[0][-1]])
+                              individual_fallbacks.append(ticker)
+                  except Exception:
+                      pass
+              if not (early and recent and math.isfinite(early) and math.isfinite(recent) and early > 0 and recent > 0):
+                  missing_prices.append(ticker)
+                  continue
+              r = row_by[ticker]
+              r['earlyPrice'] = early
+              r['recentPrice'] = recent
+              r['momentumGross'] = recent / early
+              r['momentum'] = recent / early - 1.0
+
+          if missing_prices:
+              raise RuntimeError(f'Price completeness {100-len(missing_prices)}/100; missing={missing_prices}')
+
+          # ---- QUQU score and weights ----
+          for r in rows:
+              r['score'] = r['momentumGross'] * r['marketCap']
+          scores = sorted(r['score'] for r in rows)
+          med = (scores[49] + scores[50]) / 2.0
+          raw = {}
+          for r in rows:
+              r['relativeScore'] = r['score'] / med
+              raw[r['ticker']] = r['relativeScore'] ** 3
+          weights = cap_and_redistribute(raw)
+          for r in rows:
+              r['weight'] = weights[r['ticker']]
+
+          rows.sort(key=lambda x: x['weight'], reverse=True)
+          for rank, r in enumerate(rows, 1):
+              r['weightRank'] = rank
+
+          weight_sum = sum(r['weight'] for r in rows)
+          max_weight = max(r['weight'] for r in rows)
+          if abs(weight_sum - 1.0) > 1e-9:
+              raise RuntimeError(f'Weight sum {weight_sum}')
+          if max_weight > CAP + 1e-9:
+              raise RuntimeError(f'Cap violation {max_weight}')
 
           payload = {
               'strategy': 'QUQU',
               'universe': 'Nasdaq-100',
               'holdings': 100,
               'generatedAt': datetime.now(timezone.utc).isoformat(),
+              'signal': {
+                  'earlyDate': early_target.date().isoformat(),
+                  'recentDate': recent_target.date().isoformat(),
+                  'rule': '6-1 Momentum × Market Cap; relative score cubed; 20% cap',
+              },
               'sourceMembership': 'thaywebsearch/nasdaq100-list nasdaq100-table.csv',
               'sourceMarketCap': 'Yahoo Finance via yfinance',
+              'sourcePrice': 'Yahoo Finance adjusted close via yfinance',
               'fallbackMarketCapSource': 'nasdaq100_marketcap_052026.csv',
-              'fallbackTickers': fallback_tickers,
-              'failedTickers': failures,
+              'fallbackMarketCapTickers': fallback_caps,
+              'individualPriceFallbackTickers': individual_fallbacks,
+              'failedMarketCapTickers': failed_caps,
+              'missingPriceTickers': missing_prices,
+              'weightSum': weight_sum,
+              'maxWeight': max_weight,
+              'top10Weight': sum(r['weight'] for r in rows[:10]),
               'rows': rows,
           }
           with open('ququ-latest.json', 'w', encoding='utf-8') as f:
@@ -140,6 +281,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No changes'
           else
-            git commit -m 'Refresh QUQU market cap snapshot'
+            git commit -m 'Refresh complete QUQU signal snapshot'
             git push origin HEAD:somx-pages
           fi
