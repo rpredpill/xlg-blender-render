@@ -94,7 +94,6 @@ jobs:
                       raise RuntimeError('QUQU cap redistribution underflow')
               return out
 
-          # Current Nasdaq-100 membership candidates.
           membership_source = CURRENT_MEMBERS_URL
           candidates = []
           try:
@@ -135,15 +134,7 @@ jobs:
           end = (recent_target + timedelta(days=5)).date().isoformat()
           all_tickers = [t for t, _ in candidates]
 
-          data = yf.download(
-              tickers=all_tickers,
-              start=start,
-              end=end,
-              auto_adjust=True,
-              progress=False,
-              group_by='column',
-              threads=True,
-          )
+          data = yf.download(tickers=all_tickers,start=start,end=end,auto_adjust=True,progress=False,group_by='column',threads=True)
 
           def batch_close(ticker, target):
               try:
@@ -166,7 +157,7 @@ jobs:
 
           def individual_prices(ticker):
               try:
-                  h = yf.Ticker(ticker).history(start=start, end=end, auto_adjust=True, actions=False)
+                  h = yf.Ticker(ticker).history(start=start,end=end,auto_adjust=True,actions=False)
                   if h.empty:
                       return None, None
                   h = h.dropna(subset=['Close'])
@@ -201,7 +192,6 @@ jobs:
                   cap = float(cap) if cap is not None else None
               except Exception:
                   cap = None
-
               if cap is None or not math.isfinite(cap) or cap <= 0:
                   cap = old_caps.get(ticker)
                   if cap:
@@ -217,11 +207,9 @@ jobs:
                   early = early if early is not None else ie
                   recent = ir
                   individual_price_fallbacks.append(ticker)
-
               if recent is None or not math.isfinite(recent) or recent <= 0:
                   skipped.append({'ticker':ticker,'reason':'recentPrice'})
                   continue
-
               if early is None or not math.isfinite(early) or early <= 0:
                   ie, _ = individual_prices(ticker)
                   if ie is not None and math.isfinite(ie) and ie > 0:
@@ -229,13 +217,7 @@ jobs:
                       if ticker not in individual_price_fallbacks:
                           individual_price_fallbacks.append(ticker)
 
-              row = {
-                  'ticker': ticker,
-                  'company': company,
-                  'marketCap': float(cap),
-                  'earlyPrice': float(early) if early is not None and math.isfinite(early) and early > 0 else None,
-                  'recentPrice': float(recent),
-              }
+              row = {'ticker':ticker,'company':company,'marketCap':float(cap),'earlyPrice':float(early) if early is not None and math.isfinite(early) and early > 0 else None,'recentPrice':float(recent)}
               if row['earlyPrice'] is None:
                   insufficient_history.append(ticker)
               selected.append(row)
@@ -255,7 +237,6 @@ jobs:
                   r['momentumGross'] = neutral_gross
                   r['momentumFallback'] = 'cross-sectional median (insufficient 6-1 history)'
               r['momentum'] = r['momentumGross'] - 1.0
-              # Informational SOM-style score. Weighting is intentionally separated below.
               r['score'] = r['momentumGross'] * r['marketCap']
 
           score_med = median([r['score'] for r in selected])
@@ -264,14 +245,13 @@ jobs:
           for r in selected:
               r['relativeScore'] = r['score'] / score_med
               r['relativeMomentum'] = r['momentumGross'] / momentum_med
-              # QUQU weighting: market cap enters linearly; only relative momentum is convex.
-              r['rawWeightScore'] = r['marketCap'] * (r['relativeMomentum'] ** 3)
+              # Market-cap advantage is compressed; conviction comes from momentum dispersion.
+              r['rawWeightScore'] = math.sqrt(r['marketCap']) * (r['relativeMomentum'] ** 3)
               raw[r['ticker']] = r['rawWeightScore']
 
           weights = cap_and_redistribute(raw)
           for r in selected:
               r['weight'] = weights[r['ticker']]
-
           selected.sort(key=lambda x: x['weight'], reverse=True)
           for rank, r in enumerate(selected, 1):
               r['weightRank'] = rank
@@ -285,33 +265,21 @@ jobs:
               raise RuntimeError(f'Cap violation {max_weight}')
 
           payload = {
-              'strategy': 'QUQU',
-              'universe': 'Nasdaq-100',
-              'holdings': 100,
-              'generatedAt': datetime.now(timezone.utc).isoformat(),
-              'signal': {
-                  'earlyDate': early_target.date().isoformat(),
-                  'recentDate': recent_target.date().isoformat(),
-                  'rule': 'Raw weight = Market Cap × (6-1 gross momentum / median gross momentum)^3; 20% cap',
-                  'scoreRule': 'Informational score = 6-1 gross momentum × Market Cap',
-                  'shortHistoryRule': 'Use cross-sectional median gross momentum until full 6-1 history exists',
+              'strategy':'QUQU','universe':'Nasdaq-100','holdings':100,'generatedAt':datetime.now(timezone.utc).isoformat(),
+              'signal':{
+                  'earlyDate':early_target.date().isoformat(),
+                  'recentDate':recent_target.date().isoformat(),
+                  'rule':'Raw weight = sqrt(Market Cap) × (6-1 gross momentum / median gross momentum)^3; 20% cap',
+                  'scoreRule':'Informational score = 6-1 gross momentum × Market Cap',
+                  'shortHistoryRule':'Use cross-sectional median gross momentum until full 6-1 history exists'
               },
-              'sourceMembership': membership_source,
-              'sourceMarketCap': 'Yahoo Finance via yfinance',
-              'sourcePrice': 'Yahoo Finance adjusted close via yfinance',
-              'fallbackMarketCapSource': FALLBACK_CAP_URL,
-              'fallbackMarketCapTickers': fallback_caps,
-              'individualPriceFallbackTickers': individual_price_fallbacks,
-              'insufficientHistoryTickers': insufficient_history,
-              'skippedCandidates': skipped,
-              'candidateCount': len(candidates),
-              'weightSum': weight_sum,
-              'maxWeight': max_weight,
-              'top10Weight': top10_weight,
-              'rows': selected,
+              'sourceMembership':membership_source,'sourceMarketCap':'Yahoo Finance via yfinance','sourcePrice':'Yahoo Finance adjusted close via yfinance',
+              'fallbackMarketCapSource':FALLBACK_CAP_URL,'fallbackMarketCapTickers':fallback_caps,'individualPriceFallbackTickers':individual_price_fallbacks,
+              'insufficientHistoryTickers':insufficient_history,'skippedCandidates':skipped,'candidateCount':len(candidates),
+              'weightSum':weight_sum,'maxWeight':max_weight,'top10Weight':top10_weight,'rows':selected
           }
-          with open('ququ-latest.json', 'w', encoding='utf-8') as f:
-              json.dump(payload, f, ensure_ascii=False, indent=2)
+          with open('ququ-latest.json','w',encoding='utf-8') as f:
+              json.dump(payload,f,ensure_ascii=False,indent=2)
 
       - name: Commit snapshot to Pages branch
         run: |
