@@ -1,0 +1,99 @@
+name: Archive QUQU monthly targets
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ququ-history.yml'
+  workflow_run:
+    workflows: ['Refresh QUQU signal']
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Archive latest QUQU target
+        shell: python
+        run: |
+          import json
+          from datetime import date
+          from pathlib import Path
+
+          latest_path = Path('ququ-latest.json')
+          if not latest_path.exists():
+              raise RuntimeError('ququ-latest.json not found')
+
+          latest = json.loads(latest_path.read_text(encoding='utf-8'))
+          rows = latest.get('rows') or []
+          if len(rows) != 100:
+              raise RuntimeError(f'QUQU latest has {len(rows)}/100 rows')
+
+          recent = date.fromisoformat(latest['signal']['recentDate'])
+          if recent.month == 12:
+              allocation_month = f'{recent.year + 1}-01'
+          else:
+              allocation_month = f'{recent.year}-{recent.month + 1:02d}'
+
+          history_path = Path('ququ-history.json')
+          if history_path.exists():
+              try:
+                  history = json.loads(history_path.read_text(encoding='utf-8'))
+              except Exception:
+                  history = {}
+          else:
+              history = {}
+
+          months = history.get('months') if isinstance(history.get('months'), dict) else {}
+          compact_rows = []
+          for r in rows:
+              compact_rows.append({
+                  'ticker': str(r.get('ticker', '')).upper(),
+                  'weight': float(r['weight']),
+                  'momentum': float(r.get('momentum', 0.0)),
+                  'marketCap': float(r.get('marketCap', 0.0)),
+              })
+
+          months[allocation_month] = {
+              'allocationMonth': allocation_month,
+              'signalMonth': latest['signal']['recentDate'][:7],
+              'signalDate': latest['signal']['recentDate'],
+              'generatedAt': latest.get('generatedAt'),
+              'rule': latest['signal'].get('rule'),
+              'maxWeight': float(latest.get('maxWeight', max(x['weight'] for x in compact_rows))),
+              'top10Weight': float(latest.get('top10Weight', sum(sorted((x['weight'] for x in compact_rows), reverse=True)[:10]))),
+              'rows': compact_rows,
+          }
+
+          ordered = {k: months[k] for k in sorted(months)}
+          payload = {
+              'strategy': 'QUQU',
+              'universe': 'Nasdaq-100',
+              'description': 'Monthly QUQU target holdings and weights. allocationMonth is the month these weights are held.',
+              'months': ordered,
+          }
+          history_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(f'Archived QUQU {allocation_month}: {len(compact_rows)} holdings')
+
+      - name: Commit history to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ququ-history.json
+          if git diff --cached --quiet; then
+            echo 'No history changes'
+          else
+            git commit -m 'Archive QUQU monthly target'
+            git push origin HEAD:somx-pages
+          fi
