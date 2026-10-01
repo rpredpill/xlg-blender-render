@@ -15,16 +15,34 @@ async function syncSnpiHistory({reload=true}={}){
     const r=await fetch(`${HISTORY_URL}?v=${Date.now()}`,{cache:"no-store"});
     if(!r.ok)throw new Error(`SNPI history HTTP ${r.status}`);
     const j=await r.json(),months=j?.months||{};
-    const hh=read("holdings"),wh=read("weights");let changed=false;
+    const hh=read("holdings"),wh=read("weights"),mh=read("history");let changed=false,returnsChanged=false;
     for(const [month,record] of Object.entries(months)){
       const rows=record?.rows;if(!validRows(rows))continue;
       const sum=rows.reduce((a,x)=>a+Number(x.weight),0);if(Math.abs(sum-1)>1e-6)continue;
-      hh[month]=rows.map(x=>String(x.ticker).trim().toUpperCase());
-      wh[month]=Object.fromEntries(rows.map(x=>[String(x.ticker).trim().toUpperCase(),Number(x.weight)]));
-      changed=true;
+      const holdings=rows.map(x=>String(x.ticker).trim().toUpperCase());
+      const weights=Object.fromEntries(rows.map(x=>[String(x.ticker).trim().toUpperCase(),Number(x.weight)]));
+      hh[month]=holdings;wh[month]=weights;changed=true;
+      if(Number.isFinite(Number(record.portfolioReturn))){
+        mh[month]={
+          month,
+          port:Number(record.portfolioReturn),
+          lastDate:record.lastDate||null,
+          holdings,
+          weights,
+          rows:rows.map(x=>({ticker:String(x.ticker).trim().toUpperCase(),ret:Number.isFinite(Number(x.monthlyReturn))?Number(x.monthlyReturn)*100:0,weight:Number(x.weight)})),
+          serverBackfill:true,
+          missingReturnWeight:Number(record.missingReturnWeight||0),
+          historicalCapCount:Number(record.historicalCapCount||0),
+          currentSharesProxyCount:Number(record.currentSharesProxyCount||0),
+          medianCapFallbackCount:Number(record.medianCapFallbackCount||0)
+        };
+        returnsChanged=true;
+      }
     }
     if(changed){write("holdings",hh);write("weights",wh)}
+    if(returnsChanged)write("history",mh);
     window.dispatchEvent(new CustomEvent("somx:snpi-history-synced",{detail:{months:Object.keys(months).sort()}}));
+    if(returnsChanged)window.dispatchEvent(new Event("somx:historychange"));
     if(reload&&globalThis.SOMXLive?.applyStrategy&&globalThis.SOMXStrategy?.getMode?.()==="snpi")await globalThis.SOMXLive.applyStrategy(globalThis.SOMXStrategy.getConfig());
   }catch(e){console.warn("SNPI history sync",e)}finally{syncing=false}
 }
