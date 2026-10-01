@@ -1,0 +1,613 @@
+{
+  "strategy": "QUQU",
+  "universe": "Nasdaq-100",
+  "holdings": 100,
+  "generatedAt": "2026-10-01T16:05:57.581166+00:00",
+  "sourceMembership": "thaywebsearch/nasdaq100-list nasdaq100-table.csv",
+  "sourceMarketCap": "Yahoo Finance via yfinance",
+  "fallbackMarketCapSource": "nasdaq100_marketcap_052026.csv",
+  "fallbackTickers": [],
+  "failedTickers": [],
+  "rows": [
+    {
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "marketCap": 5545853452288.0,
+      "rank": 1
+    },
+    {
+      "ticker": "AAPL",
+      "company": "Apple Inc.",
+      "marketCap": 4785579229184.0,
+      "rank": 2
+    },
+    {
+      "ticker": "MSFT",
+      "company": "Microsoft Corporation",
+      "marketCap": 3815468171264.0,
+      "rank": 3
+    },
+    {
+      "ticker": "AMZN",
+      "company": "Amazon.com Inc.",
+      "marketCap": 2666969956352.0,
+      "rank": 4
+    },
+    {
+      "ticker": "GOOGL",
+      "company": "Alphabet Inc. Class A",
+      "marketCap": 4163803545600.0,
+      "rank": 5
+    },
+    {
+      "ticker": "GOOG",
+      "company": "Alphabet Inc. Class C",
+      "marketCap": 4126074470400.0,
+      "rank": 6
+    },
+    {
+      "ticker": "AVGO",
+      "company": "Broadcom Inc.",
+      "marketCap": 1658573946880.0,
+      "rank": 7
+    },
+    {
+      "ticker": "META",
+      "company": "Meta Platforms Inc. Class A",
+      "marketCap": 1853132374016.0,
+      "rank": 8
+    },
+    {
+      "ticker": "TSLA",
+      "company": "Tesla Inc.",
+      "marketCap": 1414550126592.0,
+      "rank": 9
+    },
+    {
+      "ticker": "WMT",
+      "company": "Walmart Inc.",
+      "marketCap": 832250773504.0,
+      "rank": 10
+    },
+    {
+      "ticker": "ASML",
+      "company": "ASML Holding N.V.",
+      "marketCap": 691449167872.0,
+      "rank": 11
+    },
+    {
+      "ticker": "COST",
+      "company": "Costco Wholesale Corporation",
+      "marketCap": 409289621504.0,
+      "rank": 12
+    },
+    {
+      "ticker": "MU",
+      "company": "Micron Technology Inc.",
+      "marketCap": 1182728716288.0,
+      "rank": 13
+    },
+    {
+      "ticker": "NFLX",
+      "company": "Netflix Inc.",
+      "marketCap": 282939260928.0,
+      "rank": 14
+    },
+    {
+      "ticker": "PLTR",
+      "company": "Palantir Technologies Inc. Class A",
+      "marketCap": 452880400384.0,
+      "rank": 15
+    },
+    {
+      "ticker": "AMD",
+      "company": "Advanced Micro Devices Inc.",
+      "marketCap": 996283121664.0,
+      "rank": 16
+    },
+    {
+      "ticker": "CSCO",
+      "company": "Cisco Systems Inc.",
+      "marketCap": 426863853568.0,
+      "rank": 17
+    },
+    {
+      "ticker": "AMAT",
+      "company": "Applied Materials Inc.",
+      "marketCap": 416449232896.0,
+      "rank": 18
+    },
+    {
+      "ticker": "LRCX",
+      "company": "Lam Research Corporation",
+      "marketCap": 417030897664.0,
+      "rank": 19
+    },
+    {
+      "ticker": "INTC",
+      "company": "Intel Corporation",
+      "marketCap": 631530979328.0,
+      "rank": 20
+    },
+    {
+      "ticker": "LIN",
+      "company": "Linde plc",
+      "marketCap": 214696902656.0,
+      "rank": 21
+    },
+    {
+      "ticker": "TMUS",
+      "company": "T-Mobile US Inc.",
+      "marketCap": 174116061184.0,
+      "rank": 22
+    },
+    {
+      "ticker": "PEP",
+      "company": "PepsiCo Inc.",
+      "marketCap": 172266258432.0,
+      "rank": 23
+    },
+    {
+      "ticker": "KLAC",
+      "company": "KLA Corporation",
+      "marketCap": 257621327872.0,
+      "rank": 24
+    },
+    {
+      "ticker": "AMGN",
+      "company": "Amgen Inc.",
+      "marketCap": 222467358720.0,
+      "rank": 25
+    },
+    {
+      "ticker": "TXN",
+      "company": "Texas Instruments Incorporated",
+      "marketCap": 255526682624.0,
+      "rank": 26
+    },
+    {
+      "ticker": "GILD",
+      "company": "Gilead Sciences Inc.",
+      "marketCap": 182831382528.0,
+      "rank": 27
+    },
+    {
+      "ticker": "ISRG",
+      "company": "Intuitive Surgical Inc.",
+      "marketCap": 144538320896.0,
+      "rank": 28
+    },
+    {
+      "ticker": "ARM",
+      "company": "Arm Holdings plc ADR",
+      "marketCap": 312581816320.0,
+      "rank": 29
+    },
+    {
+      "ticker": "ADI",
+      "company": "Analog Devices Inc.",
+      "marketCap": 192789217280.0,
+      "rank": 30
+    },
+    {
+      "ticker": "SHOP",
+      "company": "Shopify Inc. Class A",
+      "marketCap": 191461507072.0,
+      "rank": 31
+    },
+    {
+      "ticker": "PDD",
+      "company": "PDD Holdings Inc. ADR",
+      "marketCap": 109084696576.0,
+      "rank": 32
+    },
+    {
+      "ticker": "HON",
+      "company": "Honeywell International Inc.",
+      "marketCap": 67982045184.0,
+      "rank": 33
+    },
+    {
+      "ticker": "QCOM",
+      "company": "QUALCOMM Incorporated",
+      "marketCap": 196170661888.0,
+      "rank": 34
+    },
+    {
+      "ticker": "BKNG",
+      "company": "Booking Holdings Inc.",
+      "marketCap": 124189777920.0,
+      "rank": 35
+    },
+    {
+      "ticker": "APP",
+      "company": "AppLovin Corporation Class A",
+      "marketCap": 93049577472.0,
+      "rank": 36
+    },
+    {
+      "ticker": "PANW",
+      "company": "Palo Alto Networks Inc.",
+      "marketCap": 320966852608.0,
+      "rank": 37
+    },
+    {
+      "ticker": "INTU",
+      "company": "Intuit Inc.",
+      "marketCap": 74449272832.0,
+      "rank": 38
+    },
+    {
+      "ticker": "VRTX",
+      "company": "Vertex Pharmaceuticals Incorporated",
+      "marketCap": 129153875968.0,
+      "rank": 39
+    },
+    {
+      "ticker": "SBUX",
+      "company": "Starbucks Corporation",
+      "marketCap": 107553300480.0,
+      "rank": 40
+    },
+    {
+      "ticker": "WDC",
+      "company": "Western Digital Corporation",
+      "marketCap": 161803550720.0,
+      "rank": 41
+    },
+    {
+      "ticker": "CEG",
+      "company": "Constellation Energy Corporation",
+      "marketCap": 92029927424.0,
+      "rank": 42
+    },
+    {
+      "ticker": "CMCSA",
+      "company": "Comcast Corporation Class A",
+      "marketCap": 76561842176.0,
+      "rank": 43
+    },
+    {
+      "ticker": "CRWD",
+      "company": "CrowdStrike Holdings Inc. Class A",
+      "marketCap": 271086747648.0,
+      "rank": 44
+    },
+    {
+      "ticker": "ADBE",
+      "company": "Adobe Inc.",
+      "marketCap": 94919024640.0,
+      "rank": 45
+    },
+    {
+      "ticker": "STX",
+      "company": "Seagate Technology Holdings plc",
+      "marketCap": 209356161024.0,
+      "rank": 46
+    },
+    {
+      "ticker": "MRVL",
+      "company": "Marvell Technology Inc.",
+      "marketCap": 238385905664.0,
+      "rank": 47
+    },
+    {
+      "ticker": "MAR",
+      "company": "Marriott International Inc. Class A",
+      "marketCap": 92238249984.0,
+      "rank": 48
+    },
+    {
+      "ticker": "MELI",
+      "company": "MercadoLibre Inc.",
+      "marketCap": 85482414080.0,
+      "rank": 49
+    },
+    {
+      "ticker": "REGN",
+      "company": "Regeneron Pharmaceuticals Inc.",
+      "marketCap": 75040800768.0,
+      "rank": 50
+    },
+    {
+      "ticker": "ADP",
+      "company": "Automatic Data Processing Inc.",
+      "marketCap": 104382562304.0,
+      "rank": 51
+    },
+    {
+      "ticker": "CDNS",
+      "company": "Cadence Design Systems Inc.",
+      "marketCap": 94033944576.0,
+      "rank": 52
+    },
+    {
+      "ticker": "ORLY",
+      "company": "O'Reilly Automotive Inc.",
+      "marketCap": 68235841536.0,
+      "rank": 53
+    },
+    {
+      "ticker": "CSX",
+      "company": "CSX Corporation",
+      "marketCap": 85547286528.0,
+      "rank": 54
+    },
+    {
+      "ticker": "SNPS",
+      "company": "Synopsys Inc.",
+      "marketCap": 90778279936.0,
+      "rank": 55
+    },
+    {
+      "ticker": "ABNB",
+      "company": "Airbnb Inc. Class A",
+      "marketCap": 94706933760.0,
+      "rank": 56
+    },
+    {
+      "ticker": "MDLZ",
+      "company": "Mondelez International Inc. Class A",
+      "marketCap": 74156449792.0,
+      "rank": 57
+    },
+    {
+      "ticker": "MNST",
+      "company": "Monster Beverage Corporation",
+      "marketCap": 82169094144.0,
+      "rank": 58
+    },
+    {
+      "ticker": "ROST",
+      "company": "Ross Stores Inc.",
+      "marketCap": 74875019264.0,
+      "rank": 59
+    },
+    {
+      "ticker": "AEP",
+      "company": "American Electric Power Company Inc.",
+      "marketCap": 64791453696.0,
+      "rank": 60
+    },
+    {
+      "ticker": "WBD",
+      "company": "Warner Bros. Discovery Inc. Series A",
+      "marketCap": 77545742336.0,
+      "rank": 61
+    },
+    {
+      "ticker": "CTAS",
+      "company": "Cintas Corporation",
+      "marketCap": 78041645056.0,
+      "rank": 62
+    },
+    {
+      "ticker": "DASH",
+      "company": "DoorDash Inc. Class A",
+      "marketCap": 78483259392.0,
+      "rank": 63
+    },
+    {
+      "ticker": "PCAR",
+      "company": "PACCAR Inc.",
+      "marketCap": 58563366912.0,
+      "rank": 64
+    },
+    {
+      "ticker": "FTNT",
+      "company": "Fortinet Inc.",
+      "marketCap": 130032410624.0,
+      "rank": 65
+    },
+    {
+      "ticker": "BKR",
+      "company": "Baker Hughes Company Class A",
+      "marketCap": 55023923200.0,
+      "rank": 66
+    },
+    {
+      "ticker": "MPWR",
+      "company": "Monolithic Power Systems Inc.",
+      "marketCap": 66161221632.0,
+      "rank": 67
+    },
+    {
+      "ticker": "FANG",
+      "company": "Diamondback Energy Inc.",
+      "marketCap": 52099223552.0,
+      "rank": 68
+    },
+    {
+      "ticker": "FAST",
+      "company": "Fastenal Company",
+      "marketCap": 57151119360.0,
+      "rank": 69
+    },
+    {
+      "ticker": "EA",
+      "company": "Electronic Arts Inc.",
+      "marketCap": 52925640704.0,
+      "rank": 70
+    },
+    {
+      "ticker": "ADSK",
+      "company": "Autodesk Inc.",
+      "marketCap": 43862827008.0,
+      "rank": 71
+    },
+    {
+      "ticker": "NXPI",
+      "company": "NXP Semiconductors N.V.",
+      "marketCap": 59609088000.0,
+      "rank": 72
+    },
+    {
+      "ticker": "EXC",
+      "company": "Exelon Corporation",
+      "marketCap": 41627410432.0,
+      "rank": 73
+    },
+    {
+      "ticker": "XEL",
+      "company": "Xcel Energy Inc.",
+      "marketCap": 43918036992.0,
+      "rank": 74
+    },
+    {
+      "ticker": "FER",
+      "company": "Ferrovial SE",
+      "marketCap": 37890723840.0,
+      "rank": 75
+    },
+    {
+      "ticker": "IDXX",
+      "company": "IDEXX Laboratories Inc.",
+      "marketCap": 41235693568.0,
+      "rank": 76
+    },
+    {
+      "ticker": "ALNY",
+      "company": "Alnylam Pharmaceuticals Inc.",
+      "marketCap": 31536132096.0,
+      "rank": 77
+    },
+    {
+      "ticker": "MSTR",
+      "company": "Strategy Inc.",
+      "marketCap": 62414467072.0,
+      "rank": 78
+    },
+    {
+      "ticker": "DDOG",
+      "company": "Datadog Inc. Class A",
+      "marketCap": 98253725696.0,
+      "rank": 79
+    },
+    {
+      "ticker": "ODFL",
+      "company": "Old Dominion Freight Line Inc.",
+      "marketCap": 36372426752.0,
+      "rank": 80
+    },
+    {
+      "ticker": "PYPL",
+      "company": "PayPal Holdings Inc.",
+      "marketCap": 45759270912.0,
+      "rank": 81
+    },
+    {
+      "ticker": "CCEP",
+      "company": "Coca-Cola Europacific Partners plc",
+      "marketCap": 44280012800.0,
+      "rank": 82
+    },
+    {
+      "ticker": "TRI",
+      "company": "Thomson Reuters Corporation",
+      "marketCap": 42835566592.0,
+      "rank": 83
+    },
+    {
+      "ticker": "TTWO",
+      "company": "Take-Two Interactive Software Inc.",
+      "marketCap": 37745741824.0,
+      "rank": 84
+    },
+    {
+      "ticker": "ROP",
+      "company": "Roper Technologies Inc.",
+      "marketCap": 35256184832.0,
+      "rank": 85
+    },
+    {
+      "ticker": "MCHP",
+      "company": "Microchip Technology Incorporated",
+      "marketCap": 42045165568.0,
+      "rank": 86
+    },
+    {
+      "ticker": "INSM",
+      "company": "Insmed Incorporated",
+      "marketCap": 24147533824.0,
+      "rank": 87
+    },
+    {
+      "ticker": "KDP",
+      "company": "Keurig Dr Pepper Inc.",
+      "marketCap": 41933852672.0,
+      "rank": 88
+    },
+    {
+      "ticker": "AXON",
+      "company": "Axon Enterprise Inc.",
+      "marketCap": 33991360512.0,
+      "rank": 89
+    },
+    {
+      "ticker": "WDAY",
+      "company": "Workday Inc. Class A",
+      "marketCap": 44471730176.0,
+      "rank": 90
+    },
+    {
+      "ticker": "PAYX",
+      "company": "Paychex Inc.",
+      "marketCap": 35551772672.0,
+      "rank": 91
+    },
+    {
+      "ticker": "GEHC",
+      "company": "GE HealthCare Technologies Inc.",
+      "marketCap": 29322323968.0,
+      "rank": 92
+    },
+    {
+      "ticker": "CPRT",
+      "company": "Copart Inc.",
+      "marketCap": 25052606464.0,
+      "rank": 93
+    },
+    {
+      "ticker": "CTSH",
+      "company": "Cognizant Technology Solutions Corporation Class A",
+      "marketCap": 28902664192.0,
+      "rank": 94
+    },
+    {
+      "ticker": "CHTR",
+      "company": "Charter Communications Inc. Class A",
+      "marketCap": 14207613952.0,
+      "rank": 95
+    },
+    {
+      "ticker": "KHC",
+      "company": "Kraft Heinz Company",
+      "marketCap": 26141485056.0,
+      "rank": 96
+    },
+    {
+      "ticker": "VRSK",
+      "company": "Verisk Analytics Inc.",
+      "marketCap": 22088972288.0,
+      "rank": 97
+    },
+    {
+      "ticker": "DXCM",
+      "company": "DexCom Inc.",
+      "marketCap": 32583215104.0,
+      "rank": 98
+    },
+    {
+      "ticker": "ZS",
+      "company": "Zscaler Inc. Class A",
+      "marketCap": 32417722368.0,
+      "rank": 99
+    },
+    {
+      "ticker": "TEAM",
+      "company": "Atlassian Corporation Class A",
+      "marketCap": 47402774528.0,
+      "rank": 100
+    }
+  ]
+}
