@@ -19,9 +19,9 @@
   </div>
 
   <div class="card rule">
-    <b>고정 규칙</b> · Nasdaq-100 · 100종목 · 월간 · 6-1 Momentum × Market Cap · Score³ · 단일종목 최대 20%
-    <div class="formula">Scoreᵢ = (P[t-1] / P[t-6]) × MarketCapᵢ<br>Rawᵢ = (Scoreᵢ / MedianScore)³<br>Weightᵢ = cap-and-redistribute(Rawᵢ, 20%)</div>
-    <div class="note" style="margin-top:9px">가격·시총·최종 비중은 GitHub Actions가 매월 2일 서버에서 계산합니다. 브라우저는 계산 결과만 읽으므로 Alpaca API가 필요하지 않습니다.</div>
+    <b>고정 규칙</b> · Nasdaq-100 · 100종목 · 월간 · 6-1 Momentum · √Market Cap · Momentum³ · 단일종목 최대 20%
+    <div class="formula">Mᵢ = P[t-1] / P[t-6]<br>RelativeMomentumᵢ = Mᵢ / Median(M)<br>Rawᵢ = √MarketCapᵢ × RelativeMomentumᵢ³<br>Weightᵢ = cap-and-redistribute(Rawᵢ, 20%)</div>
+    <div class="note" style="margin-top:9px">시총은 제곱근으로 완화하고, 모멘텀만 세제곱해 강한 승자에 집중합니다. 가격·시총·최종 비중은 GitHub Actions가 매월 2일 서버에서 계산하며 브라우저는 결과만 읽습니다.</div>
   </div>
 
   <div class="grid">
@@ -35,21 +35,21 @@
 
   <div class="card table-card">
     <div class="table-head"><strong>100 Holdings</strong><span id="signalDate" class="note"></span></div>
-    <div class="scroll"><table><thead><tr><th>#</th><th>Ticker</th><th>6-1</th><th>Market Cap</th><th>Score rel.</th><th>Weight</th></tr></thead><tbody id="tbody"><tr><td colspan="6" style="text-align:center;color:#667085;padding:28px">로딩 중</td></tr></tbody></table></div>
+    <div class="scroll"><table><thead><tr><th>#</th><th>Ticker</th><th>6-1</th><th>Market Cap</th><th>Momentum rel.</th><th>Weight</th></tr></thead><tbody id="tbody"><tr><td colspan="6" style="text-align:center;color:#667085;padding:28px">로딩 중</td></tr></tbody></table></div>
   </div>
 
   <div class="card history"><div class="table-head"><strong>월말 기록</strong><span class="note">이 브라우저에 저장된 QUQU 목표비중 기록</span></div><div id="history"></div></div>
 </div>
 <script>
 "use strict";
-const LATEST_URL="./ququ-latest.json",HIST_KEY="ququ.monthly.targets.v3",CAP=.20,$=s=>document.querySelector(s);
+const LATEST_URL="./ququ-latest.json",HIST_KEY="ququ.monthly.targets.v4",CAP=.20,$=s=>document.querySelector(s);
 function fmtPct(v,d=2){return Number.isFinite(v)?`${(v*100).toFixed(d)}%`:"--"}
 function fmtCap(v){if(!Number.isFinite(v))return"--";if(v>=1e12)return`$${(v/1e12).toFixed(2)}T`;if(v>=1e9)return`$${(v/1e9).toFixed(1)}B`;return`$${(v/1e6).toFixed(1)}M`}
 function status(t,type=""){$("#status").textContent=t;$("#status").className=`card status ${type}`}
 function ymFromDate(s){return String(s||"").slice(0,7)}
 function saveHistory(j){let h={};try{h=JSON.parse(localStorage.getItem(HIST_KEY)||"{}")||{}}catch{}const key=ymFromDate(j.signal?.recentDate)||ymFromDate(j.generatedAt)||"latest";h[key]={savedAt:j.generatedAt,signal:j.signal,rows:j.rows.map(x=>({ticker:x.ticker,weight:x.weight,momentum:x.momentum,marketCap:x.marketCap}))};localStorage.setItem(HIST_KEY,JSON.stringify(h));renderHistory()}
 function renderHistory(){let h={};try{h=JSON.parse(localStorage.getItem(HIST_KEY)||"{}")||{}}catch{}const months=Object.keys(h).sort().reverse();$("#history").innerHTML=months.length?months.map(m=>{const x=h[m],top=[...x.rows].sort((a,b)=>b.weight-a.weight).slice(0,10),max=Math.max(...x.rows.map(r=>r.weight));return `<details><summary>${m} · 최대 ${fmtPct(max)} · Top10 ${fmtPct(top.reduce((a,r)=>a+r.weight,0))}</summary><div class="history-body">${top.map((r,i)=>`${i+1}. ${r.ticker} ${(r.weight*100).toFixed(2)}%`).join(" · ")}<br>6-1: ${x.signal?.earlyDate||"?"} → ${x.signal?.recentDate||"?"}</div></details>`}).join(""):"<div style='padding:16px 18px;color:#667085'>기록 없음</div>"}
-async function load(){const btn=$("#runBtn");btn.disabled=true;btn.textContent="불러오는 중…";try{const r=await fetch(`${LATEST_URL}?v=${Date.now()}`,{cache:"no-store"});if(!r.ok)throw new Error(`QUQU snapshot HTTP ${r.status}`);const j=await r.json();if(!Array.isArray(j.rows)||j.rows.length!==100)throw new Error(`QUQU snapshot ${j.rows?.length||0}/100`);const rows=j.rows.filter(x=>Number.isFinite(Number(x.weight))&&Number.isFinite(Number(x.marketCap))&&Number.isFinite(Number(x.momentum))&&Number.isFinite(Number(x.relativeScore)));if(rows.length!==100)throw new Error(`QUQU 계산 완료 데이터 ${rows.length}/100`);const sum=rows.reduce((a,x)=>a+Number(x.weight),0),max=Math.max(...rows.map(x=>Number(x.weight))),top10=[...rows].sort((a,b)=>b.weight-a.weight).slice(0,10).reduce((a,x)=>a+Number(x.weight),0);if(Math.abs(sum-1)>1e-7)throw new Error(`비중합 오류 ${sum}`);if(max>CAP+1e-8)throw new Error(`20% cap 오류 ${max}`);rows.sort((a,b)=>b.weight-a.weight);$("#count").textContent=rows.length;$("#maxWeight").textContent=fmtPct(max);$("#top10").textContent=fmtPct(top10);$("#dataMonth").textContent=(j.generatedAt||"").slice(0,10)||"--";$("#signalDate").textContent=`6-1: ${j.signal?.earlyDate||"?"} → ${j.signal?.recentDate||"?"}`;$("#tbody").innerHTML=rows.map((x,i)=>`<tr><td>${i+1}</td><td>${x.ticker}</td><td>${fmtPct(Number(x.momentum),1)}</td><td>${fmtCap(Number(x.marketCap))}</td><td>${Number(x.relativeScore).toFixed(2)}×</td><td class="weight ${Number(x.weight)>=CAP-1e-8?"cap":""}">${fmtPct(Number(x.weight))}</td></tr>`).join("");saveHistory({...j,rows});const fb=(j.fallbackMarketCapTickers||[]).length,ip=(j.individualPriceFallbackTickers||[]).length;status(`QUQU 정상 · 100종목 · 비중합 ${(sum*100).toFixed(6)}%\n가격 누락 0 · 시총 fallback ${fb} · 개별 가격 fallback ${ip}`,"ok")}catch(e){console.error(e);status(e.message||"QUQU 로딩 실패","err")}finally{btn.disabled=false;btn.textContent="최신 데이터 새로고침"}}
+async function load(){const btn=$("#runBtn");btn.disabled=true;btn.textContent="불러오는 중…";try{const r=await fetch(`${LATEST_URL}?v=${Date.now()}`,{cache:"no-store"});if(!r.ok)throw new Error(`QUQU snapshot HTTP ${r.status}`);const j=await r.json();if(!Array.isArray(j.rows)||j.rows.length!==100)throw new Error(`QUQU snapshot ${j.rows?.length||0}/100`);const rows=j.rows.filter(x=>Number.isFinite(Number(x.weight))&&Number.isFinite(Number(x.marketCap))&&Number.isFinite(Number(x.momentum))&&Number.isFinite(Number(x.relativeMomentum)));if(rows.length!==100)throw new Error(`QUQU 계산 완료 데이터 ${rows.length}/100`);const sum=rows.reduce((a,x)=>a+Number(x.weight),0),max=Math.max(...rows.map(x=>Number(x.weight))),top10=[...rows].sort((a,b)=>b.weight-a.weight).slice(0,10).reduce((a,x)=>a+Number(x.weight),0);if(Math.abs(sum-1)>1e-7)throw new Error(`비중합 오류 ${sum}`);if(max>CAP+1e-8)throw new Error(`20% cap 오류 ${max}`);rows.sort((a,b)=>b.weight-a.weight);$("#count").textContent=rows.length;$("#maxWeight").textContent=fmtPct(max);$("#top10").textContent=fmtPct(top10);$("#dataMonth").textContent=(j.generatedAt||"").slice(0,10)||"--";$("#signalDate").textContent=`6-1: ${j.signal?.earlyDate||"?"} → ${j.signal?.recentDate||"?"}`;$("#tbody").innerHTML=rows.map((x,i)=>`<tr><td>${i+1}</td><td>${x.ticker}</td><td>${fmtPct(Number(x.momentum),1)}</td><td>${fmtCap(Number(x.marketCap))}</td><td>${Number(x.relativeMomentum).toFixed(2)}×</td><td class="weight ${Number(x.weight)>=CAP-1e-8?"cap":""}">${fmtPct(Number(x.weight))}</td></tr>`).join("");saveHistory({...j,rows});const fb=(j.fallbackMarketCapTickers||[]).length,ip=(j.individualPriceFallbackTickers||[]).length,short=(j.insufficientHistoryTickers||[]).length;status(`QUQU 정상 · 100종목 · 비중합 ${(sum*100).toFixed(6)}%\n가격 누락 0 · 시총 fallback ${fb} · 개별 가격 fallback ${ip} · 단기이력 중립처리 ${short}`,"ok")}catch(e){console.error(e);status(e.message||"QUQU 로딩 실패","err")}finally{btn.disabled=false;btn.textContent="최신 데이터 새로고침"}}
 $("#runBtn").onclick=load;renderHistory();load();
 </script>
 </body>
