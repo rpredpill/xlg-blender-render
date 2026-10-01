@@ -1,0 +1,68 @@
+name: Archive SNPI monthly targets
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/snpi-history.yml'
+  workflow_run:
+    workflows: ['Refresh SNPI signal']
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Archive latest SNPI target
+        shell: python
+        run: |
+          import json
+          from datetime import date
+          from pathlib import Path
+
+          latest_path=Path('snpi-latest.json')
+          if not latest_path.exists(): raise RuntimeError('snpi-latest.json not found')
+          latest=json.loads(latest_path.read_text(encoding='utf-8'))
+          rows=latest.get('rows') or []
+          if len(rows)<495: raise RuntimeError(f'SNPI latest has only {len(rows)} rows')
+
+          recent=date.fromisoformat(latest['signal']['recentDate'])
+          allocation_month=f'{recent.year+1}-01' if recent.month==12 else f'{recent.year}-{recent.month+1:02d}'
+          p=Path('snpi-history.json')
+          try: history=json.loads(p.read_text(encoding='utf-8')) if p.exists() else {}
+          except Exception: history={}
+          months=history.get('months') if isinstance(history.get('months'),dict) else {}
+          compact=[{'ticker':str(r.get('ticker','')).upper(),'weight':float(r['weight']),'momentum':float(r.get('momentum',0.0)),'marketCap':float(r.get('marketCap',0.0))} for r in rows]
+          months[allocation_month]={
+              'allocationMonth':allocation_month,'signalMonth':latest['signal']['recentDate'][:7],'signalDate':latest['signal']['recentDate'],
+              'generatedAt':latest.get('generatedAt'),'membershipDate':latest.get('membershipDate'),'rule':latest['signal'].get('rule'),
+              'maxWeight':float(latest.get('maxWeight',max(x['weight'] for x in compact))),
+              'top10Weight':float(latest.get('top10Weight',sum(sorted((x['weight'] for x in compact),reverse=True)[:10]))),
+              'rows':compact
+          }
+          payload={'strategy':'SNPI','universe':'S&P 500','description':'Monthly SNPI target holdings and weights. allocationMonth is the month these weights are held.','months':{k:months[k] for k in sorted(months)}}
+          p.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(f'Archived SNPI {allocation_month}: {len(compact)} holdings')
+
+      - name: Commit history to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add snpi-history.json
+          if git diff --cached --quiet; then
+            echo 'No history changes'
+          else
+            git commit -m 'Archive SNPI monthly target'
+            git push origin HEAD:somx-pages
+          fi
