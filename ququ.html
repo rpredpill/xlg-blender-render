@@ -6,7 +6,8 @@
 <title>QUQU · Nasdaq-100 Dynamic Concentration</title>
 <style>
 :root{--bg:#f5f7fb;--panel:#fff;--ink:#101828;--muted:#667085;--line:#e4e7ec;--blue:#175cd3;--green:#067647;--red:#b42318;--soft:#f9fafb}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif}.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.back{display:inline-flex;text-decoration:none;color:var(--muted);font-weight:700;margin-bottom:12px}.title h1{margin:0;font-size:34px}.title p{margin:8px 0 0;color:var(--muted);line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer;color:var(--ink)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn:disabled{opacity:.55;cursor:wait}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(16,24,40,.03)}.metric{padding:18px}.metric small{color:var(--muted);font-weight:700}.metric strong{display:block;font-size:27px;margin-top:7px}.rule{padding:18px 20px;margin-bottom:14px;line-height:1.7}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px;overflow:auto}.status{padding:12px 16px;margin:14px 0;color:var(--muted);white-space:pre-wrap}.status.err{color:var(--red)}.status.ok{color:var(--green)}.table-card{overflow:hidden}.table-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.scroll{max-height:650px;overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-size:12px;z-index:2}th:nth-child(1),td:nth-child(1),th:nth-child(2),td:nth-child(2){text-align:left}td:nth-child(2){font-weight:900}.weight{font-weight:900;color:var(--blue)}.cap{color:var(--red)}.note{font-size:12px;color:var(--muted)}.history{margin-top:14px}.history details{border-top:1px solid var(--line)}.history summary{padding:12px 18px;cursor:pointer;font-weight:800}.history-body{padding:0 18px 14px;color:var(--muted);font-size:13px}.modal{position:fixed;inset:0;background:rgba(16,24,40,.45);display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-card{width:min(520px,100%);background:#fff;border-radius:16px;padding:22px}.modal-card h2{margin:0 0 8px}.modal-card p{color:var(--muted);line-height:1.5}.modal-card label{display:block;margin:12px 0 5px;font-size:13px;font-weight:800}.modal-card input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.back{display:inline-flex;text-decoration:none;color:var(--muted);font-weight:700;margin-bottom:12px}.title h1{margin:0;font-size:34px;letter-spacing:-1px}.title p{margin:8px 0 0;color:var(--muted);line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer;color:var(--ink)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn:disabled{opacity:.55;cursor:default}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(16,24,40,.03)}.metric{padding:18px}.metric small{color:var(--muted);font-weight:700}.metric strong{display:block;font-size:27px;margin-top:7px}.rule{padding:18px 20px;margin-bottom:14px;line-height:1.7}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px;overflow:auto}.status{padding:12px 16px;margin:14px 0;color:var(--muted);white-space:pre-wrap}.status.err{color:var(--red)}.status.ok{color:var(--green)}.table-card{overflow:hidden}.table-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.table-head strong{font-size:18px}.scroll{max-height:650px;overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-size:12px;z-index:2}th:nth-child(1),td:nth-child(1),th:nth-child(2),td:nth-child(2){text-align:left}td:nth-child(2){font-weight:900}.weight{font-weight:900;color:var(--blue)}.cap{color:var(--red)}.modal{position:fixed;inset:0;background:rgba(16,24,40,.45);display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-card{width:min(520px,100%);background:#fff;border-radius:16px;padding:22px}.modal-card h2{margin:0 0 8px}.modal-card p{color:var(--muted);line-height:1.5}.modal-card label{display:block;margin:12px 0 5px;font-size:13px;font-weight:800}.modal-card input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.history{margin-top:14px}.history details{border-top:1px solid var(--line)}.history summary{padding:12px 18px;cursor:pointer;font-weight:800}.history-body{padding:0 18px 14px;color:var(--muted);font-size:13px}.note{font-size:12px;color:var(--muted)}
 @media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.top{display:block}.actions{margin-top:14px}.title h1{font-size:28px}th,td{padding:10px 8px;font-size:12px}}
 </style>
 </head>
@@ -14,48 +15,47 @@
 <div class="wrap">
   <a class="back" href="./">← SOMX</a>
   <div class="top">
-    <div class="title"><h1>QUQU</h1><p>Nasdaq-100 100종목을 모두 보유하고, 상대 점수가 압도적인 종목에 비중을 자동 집중.</p></div>
+    <div class="title"><h1>QUQU</h1><p>Nasdaq-100 100종목을 유지하면서 강한 승자에게 비중을 자동 집중하는 월간 전략.</p></div>
     <div class="actions"><button class="btn" id="keyBtn">Alpaca API</button><button class="btn primary" id="runBtn">현재 비중 계산</button></div>
   </div>
 
   <div class="card rule">
-    <b>고정 규칙</b> · Nasdaq-100 · 100종목 · 월간 · 6-1 gross momentum × Market Cap · score³ · 단일종목 최대 20%
+    <b>고정 규칙</b> · Nasdaq-100 · 100종목 · 월간 · 6-1 Momentum × Market Cap · Score³ · 단일종목 최대 20%
     <div class="formula">Scoreᵢ = (P[t-1] / P[t-6]) × MarketCapᵢ<br>Rawᵢ = (Scoreᵢ / MedianScore)³<br>Weightᵢ = cap-and-redistribute(Rawᵢ, 20%)</div>
-    <div class="note" style="margin-top:9px">구성/시총은 가장 최근 발견되는 Nasdaq-100 월별 파일을 사용하고, 가격은 Alpaca IEX adjusted daily bars를 사용합니다.</div>
+    <div class="note" style="margin-top:9px">시총은 ququ-latest.json 자동 스냅샷을 우선 사용합니다. GitHub Actions가 매월 2일 갱신하며, 스냅샷이 없을 때만 기존 공개 CSV로 fallback합니다.</div>
   </div>
 
   <div class="grid">
     <div class="card metric"><small>종목 수</small><strong id="count">100</strong></div>
     <div class="card metric"><small>최대 종목 비중</small><strong id="maxWeight">--</strong></div>
     <div class="card metric"><small>Top 10 합계</small><strong id="top10">--</strong></div>
-    <div class="card metric"><small>데이터 기준</small><strong id="dataMonth" style="font-size:20px">--</strong></div>
+    <div class="card metric"><small>시총 스냅샷</small><strong id="dataMonth" style="font-size:18px">--</strong></div>
   </div>
 
-  <div id="status" class="card status">QUQU 준비됨.</div>
+  <div id="status" class="card status">QUQU 준비 중…</div>
 
   <div class="card table-card">
     <div class="table-head"><strong>100 Holdings</strong><span id="signalDate" class="note"></span></div>
     <div class="scroll"><table><thead><tr><th>#</th><th>Ticker</th><th>6-1</th><th>Market Cap</th><th>Score rel.</th><th>Weight</th></tr></thead><tbody id="tbody"><tr><td colspan="6" style="text-align:center;color:#667085;padding:28px">계산 전</td></tr></tbody></table></div>
   </div>
 
-  <div class="card history"><div class="table-head"><strong>월말 기록</strong><span class="note">브라우저 저장</span></div><div id="history"></div></div>
+  <div class="card history"><div class="table-head"><strong>월말 기록</strong><span class="note">이 브라우저의 QUQU 목표비중 기록</span></div><div id="history"></div></div>
 </div>
 
 <div class="modal" id="modal"><div class="modal-card">
-  <h2>Alpaca API</h2><p>SOMX와 같은 브라우저 localStorage 키를 사용합니다.</p>
+  <h2>Alpaca API</h2><p>SOMX와 같은 브라우저 저장 키를 사용합니다.</p>
   <label>Key ID</label><input id="keyId" autocomplete="off">
   <label>Secret Key</label><input id="secretKey" type="password" autocomplete="off">
   <div class="modal-actions"><button class="btn" id="closeBtn">닫기</button><button class="btn primary" id="saveBtn">저장 후 계산</button></div>
 </div></div>
-
 <script>
 "use strict";
 const ALPACA_REST="https://data.alpaca.markets/v2";
-const NDX_BASE="https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main";
 const CRED_KEY="somx.alpaca.credentials.v1";
 const HIST_KEY="ququ.monthly.targets.v2";
-const CAP=.20,HOLDINGS=100;
-const $=s=>document.querySelector(s);
+const LATEST_URL="./ququ-latest.json";
+const FALLBACK_BASE="https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main";
+const CAP=.20,HOLDINGS=100,$=s=>document.querySelector(s);
 let creds=loadCreds();
 function loadCreds(){try{return JSON.parse(localStorage.getItem(CRED_KEY))||null}catch{return null}}
 function saveCreds(c){localStorage.setItem(CRED_KEY,JSON.stringify(c));creds=c}
@@ -66,46 +66,30 @@ function iso(d){return d.toISOString().slice(0,10)}
 function fmtPct(v,d=2){return Number.isFinite(v)?`${(v*100).toFixed(d)}%`:"--"}
 function fmtCap(v){if(!Number.isFinite(v))return"--";if(v>=1e12)return`$${(v/1e12).toFixed(2)}T`;if(v>=1e9)return`$${(v/1e9).toFixed(1)}B`;return`$${(v/1e6).toFixed(1)}M`}
 function status(t,type=""){$("#status").textContent=t;$("#status").className=`card status ${type}`}
-function parseCap(v){const s=String(v??"").trim().replace(/[$,\s]/g,"").toUpperCase();const m=s.match(/^([0-9]*\.?[0-9]+)([TBMK]?)$/);if(!m)return NaN;const n=Number(m[1]),mult={T:1e12,B:1e9,M:1e6,K:1e3,"":1}[m[2]];return n*mult}
+function parseCap(v){const s=String(v??"").trim().replace(/[$,\s]/g,"").toUpperCase(),m=s.match(/^([0-9]*\.?[0-9]+)([TBMK]?)$/);if(!m)return NaN;return Number(m[1])*({T:1e12,B:1e9,M:1e6,K:1e3,"":1}[m[2]])}
 function parseCSV(text){const lines=text.trim().split(/\r?\n/);const parse=line=>{const out=[];let q=false,cur="";for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===","&&!q){out.push(cur);cur=""}else cur+=c}out.push(cur);return out};const h=parse(lines[0]).map(x=>x.trim().toLowerCase());return lines.slice(1).map(l=>{const a=parse(l),o={};h.forEach((k,i)=>o[k]=a[i]);return o})}
-async function fetchNDXData(){
-  const now=ym(),tries=[];for(let i=0;i<18;i++)tries.push(addMonths(now,-i));
-  let last="";
-  for(const m of tries){
-    const[y,mo]=m.split("-");const file=`nasdaq100_marketcap_${mo}${y}.csv`,url=`${NDX_BASE}/${file}`;
-    try{
-      const r=await fetch(url,{cache:"no-store"});if(!r.ok){last=`${file}: HTTP ${r.status}`;continue}
-      const parsed=parseCSV(await r.text()).map(x=>({rank:Number(x.rank),ticker:String(x.ticker||"").trim().toUpperCase().replace(/-/g,"."),company:x.company||"",marketCap:parseCap(x.market_cap_usd)})).filter(x=>x.ticker&&Number.isFinite(x.marketCap)&&x.marketCap>0).sort((a,b)=>a.rank-b.rank).slice(0,HOLDINGS);
-      if(parsed.length!==HOLDINGS){last=`${file}: ${parsed.length}/100`;continue}
-      return{rows:parsed,dataMonth:m,file}
-    }catch(e){last=`${file}: ${e.message||e}`}
-  }
-  throw new Error(`Nasdaq-100 구성/시총 로딩 실패\n${last}`)
+function ageDays(isoString){const t=Date.parse(isoString);return Number.isFinite(t)?(Date.now()-t)/86400000:Infinity}
+async function fetchLatestSnapshot(){
+  const r=await fetch(`${LATEST_URL}?v=${Date.now()}`,{cache:"no-store"});if(!r.ok)throw new Error(`latest snapshot HTTP ${r.status}`);
+  const j=await r.json();if(!Array.isArray(j.rows)||j.rows.length<100)throw new Error(`latest snapshot rows ${j.rows?.length||0}`);
+  const rows=j.rows.slice(0,100).map((x,i)=>({rank:i+1,ticker:String(x.ticker||"").toUpperCase().replace(/-/g,"."),company:x.company||"",marketCap:Number(x.marketCap)})).filter(x=>x.ticker&&Number.isFinite(x.marketCap)&&x.marketCap>0);
+  if(rows.length!==100)throw new Error(`latest snapshot valid ${rows.length}/100`);
+  return{rows,dataMonth:(j.generatedAt||"").slice(0,10)||"auto",source:`자동 · ${(j.generatedAt||"").slice(0,10)||"unknown"}`,generatedAt:j.generatedAt||null,stale:ageDays(j.generatedAt)>45}
 }
+async function fetchFallback(){
+  const now=ym(),tries=[];for(let i=0;i<24;i++)tries.push(addMonths(now,-i));let last="";
+  for(const m of tries){const[y,mo]=m.split("-");const file=`nasdaq100_marketcap_${mo}${y}.csv`,url=`${FALLBACK_BASE}/${file}`;try{const r=await fetch(url,{cache:"no-store"});if(!r.ok){last=`${file}: ${r.status}`;continue}const rows=parseCSV(await r.text()).map(x=>({rank:Number(x.rank),ticker:String(x.ticker||"").trim().toUpperCase().replace(/-/g,"."),company:x.company||"",marketCap:parseCap(x.market_cap_usd)})).filter(x=>x.ticker&&Number.isFinite(x.marketCap)&&x.marketCap>0).sort((a,b)=>a.rank-b.rank).slice(0,100);if(rows.length!==100){last=`${file}: ${rows.length}/100`;continue}return{rows,dataMonth:m,source:`fallback · ${m}`,generatedAt:null,stale:true}}catch(e){last=e.message||String(e)}}
+  throw new Error(`Nasdaq-100 fallback 실패: ${last}`)
+}
+async function loadUniverse(){try{return await fetchLatestSnapshot()}catch(e){console.warn("QUQU latest snapshot unavailable",e);return fetchFallback()}}
 function headers(){return{"APCA-API-KEY-ID":creds.keyId,"APCA-API-SECRET-KEY":creds.secretKey}}
-async function alpaca(path){if(!creds)throw new Error("Alpaca API 키를 입력하세요.");const r=await fetch(`${ALPACA_REST}${path}`,{headers:headers()});if(!r.ok)throw new Error(`Alpaca ${r.status}: ${(await r.text().catch(()=>"" )).slice(0,180)}`);return r.json()}
-async function monthEndPrices(symbols,target){
-  const y=target.getUTCFullYear(),m=target.getUTCMonth(),start=new Date(Date.UTC(y,m,15)),end=new Date(Date.UTC(y,m+1,4)),out={};
-  for(let i=0;i<symbols.length;i+=70){const part=symbols.slice(i,i+70),q=new URLSearchParams({symbols:part.join(","),timeframe:"1Day",start:iso(start),end:iso(end),adjustment:"all",feed:"iex",limit:"10000",sort:"asc"}),data=await alpaca(`/stocks/bars?${q}`);for(const[s,bars]of Object.entries(data.bars||{})){const valid=(bars||[]).filter(x=>new Date(x.t)<=target);if(valid.length)out[String(s).toUpperCase().replace(/-/g,".")]=Number(valid.at(-1).c)}}
-  return out
-}
+async function alpaca(path){if(!creds)throw new Error("Alpaca API 키를 입력하세요.");const r=await fetch(`${ALPACA_REST}${path}`,{headers:headers()});if(!r.ok)throw new Error(`Alpaca ${r.status}: ${(await r.text().catch(()=>"")).slice(0,180)}`);return r.json()}
+async function monthEndPrices(symbols,target){const y=target.getUTCFullYear(),m=target.getUTCMonth(),start=new Date(Date.UTC(y,m,15)),end=new Date(Date.UTC(y,m+1,4)),out={};for(let i=0;i<symbols.length;i+=70){const part=symbols.slice(i,i+70),q=new URLSearchParams({symbols:part.join(","),timeframe:"1Day",start:iso(start),end:iso(end),adjustment:"all",feed:"iex",limit:"10000",sort:"asc"}),data=await alpaca(`/stocks/bars?${q}`);for(const[s,bars]of Object.entries(data.bars||{})){const valid=(bars||[]).filter(x=>new Date(x.t)<=target);if(valid.length)out[String(s).toUpperCase().replace(/-/g,".")]=Number(valid.at(-1).c)}}return out}
 function median(a){const s=[...a].sort((x,y)=>x-y),n=s.length;return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2}
-function capAndRedistribute(raw,cap=CAP){const names=Object.keys(raw),w={},free=new Set(names);let remaining=1;while(free.size){const sum=[...free].reduce((a,s)=>a+raw[s],0);if(!(sum>0))throw new Error("비중 원점수 합이 0입니다.");const over=[];for(const s of free){if(remaining*raw[s]/sum>cap+1e-12)over.push(s)}if(!over.length){for(const s of free)w[s]=remaining*raw[s]/sum;break}for(const s of over){w[s]=cap;remaining-=cap;free.delete(s)}if(remaining<0)throw new Error("20% cap 재분배 오류")};return w}
-function saveSnapshot(rows,dataMonth,signal){let h={};try{h=JSON.parse(localStorage.getItem(HIST_KEY)||"{}")||{}}catch{}h[ym()]={savedAt:new Date().toISOString(),dataMonth,signal,rows:rows.map(x=>({ticker:x.ticker,weight:x.weight,momentum:x.momentum,marketCap:x.marketCap}))};localStorage.setItem(HIST_KEY,JSON.stringify(h));renderHistory()}
-function renderHistory(){let h={};try{h=JSON.parse(localStorage.getItem(HIST_KEY)||"{}")||{}}catch{}const months=Object.keys(h).sort().reverse();$("#history").innerHTML=months.length?months.map(m=>{const x=h[m],top=[...x.rows].sort((a,b)=>b.weight-a.weight).slice(0,10);return `<details><summary>${m} · 최대 ${fmtPct(Math.max(...x.rows.map(r=>r.weight)))} · Top10 ${fmtPct(top.reduce((a,r)=>a+r.weight,0))}</summary><div class="history-body">${top.map((r,i)=>`${i+1}. ${r.ticker} ${(r.weight*100).toFixed(2)}%`).join(" · ")}<br>시총 데이터 ${x.dataMonth} · 신호 ${x.signal}</div></details>`}).join(""):"<div style='padding:16px 18px;color:#667085'>기록 없음</div>"}
-async function run(){
-  const btn=$("#runBtn");btn.disabled=true;btn.textContent="계산 중…";
-  try{
-    if(!creds){openModal();throw new Error("Alpaca API 키를 입력한 뒤 계산하세요.")}
-    status("1/3 Nasdaq-100 구성/시총 로딩 중…");const ndx=await fetchNDXData(),symbols=ndx.rows.map(x=>x.ticker);$("#dataMonth").textContent=ndx.dataMonth;
-    const cur=ym(),recent=monthEnd(addMonths(cur,-1)),early=monthEnd(addMonths(cur,-6));status(`2/3 가격 로딩 중…\n${iso(early)} → ${iso(recent)}`);
-    const[pr,pe]=await Promise.all([monthEndPrices(symbols,recent),monthEndPrices(symbols,early)]);
-    const missing=symbols.filter(s=>!Number.isFinite(pr[s])||!Number.isFinite(pe[s]));if(missing.length)throw new Error(`가격 데이터 누락 ${missing.length}/100: ${missing.join(", ")}`);
-    status("3/3 QUQU 비중 계산 중…");const rows=ndx.rows.map(x=>{const gross=pr[x.ticker]/pe[x.ticker];return{...x,momentum:gross-1,score:gross*x.marketCap}});const med=median(rows.map(x=>x.score));for(const x of rows)x.rel=x.score/med;const raw=Object.fromEntries(rows.map(x=>[x.ticker,Math.pow(x.rel,3)])),weights=capAndRedistribute(raw);for(const x of rows)x.weight=weights[x.ticker]||0;
-    rows.sort((a,b)=>b.weight-a.weight);const sum=rows.reduce((a,x)=>a+x.weight,0),max=Math.max(...rows.map(x=>x.weight)),top10=rows.slice(0,10).reduce((a,x)=>a+x.weight,0);if(Math.abs(sum-1)>1e-8)throw new Error(`비중합 오류: ${sum}`);if(max>CAP+1e-8)throw new Error(`20% cap 오류: ${max}`);
-    $("#count").textContent=rows.length;$("#maxWeight").textContent=fmtPct(max);$("#top10").textContent=fmtPct(top10);$("#signalDate").textContent=`6-1: ${iso(early)} → ${iso(recent)}`;$("#tbody").innerHTML=rows.map((x,i)=>`<tr><td>${i+1}</td><td>${x.ticker}</td><td>${fmtPct(x.momentum,1)}</td><td>${fmtCap(x.marketCap)}</td><td>${x.rel.toFixed(2)}×</td><td class="weight ${x.weight>=CAP-1e-8?"cap":""}">${fmtPct(x.weight)}</td></tr>`).join("");saveSnapshot(rows,ndx.dataMonth,`${iso(early)}→${iso(recent)}`);status(`QUQU 계산 완료 · 100종목 · 비중합 ${(sum*100).toFixed(6)}%`,`ok`)
-  }catch(e){console.error(e);status(e.message||"계산 실패","err")}finally{btn.disabled=false;btn.textContent="현재 비중 계산"}
-}
+function capAndRedistribute(raw,cap=CAP){const names=Object.keys(raw),w={},free=new Set(names);let remaining=1;while(free.size){const sum=[...free].reduce((a,s)=>a+raw[s],0);if(!(sum>0))throw new Error("비중 원점수 합이 0입니다.");const over=[];for(const s of free)if(remaining*raw[s]/sum>cap+1e-12)over.push(s);if(!over.length){for(const s of free)w[s]=remaining*raw[s]/sum;break}for(const s of over){w[s]=cap;remaining-=cap;free.delete(s)}if(remaining<0)throw new Error("20% cap 재분배 오류")}return w}
+function saveSnapshot(rows,meta,signal){let h={};try{h=JSON.parse(localStorage.getItem(HIST_KEY)||"{}")||{}}catch{}h[ym()]={savedAt:new Date().toISOString(),dataMonth:meta.dataMonth,source:meta.source,signal,rows:rows.map(x=>({ticker:x.ticker,weight:x.weight,momentum:x.momentum,marketCap:x.marketCap}))};localStorage.setItem(HIST_KEY,JSON.stringify(h));renderHistory()}
+function renderHistory(){let h={};try{h=JSON.parse(localStorage.getItem(HIST_KEY)||"{}")||{}}catch{}const months=Object.keys(h).sort().reverse();$("#history").innerHTML=months.length?months.map(m=>{const x=h[m],top=[...x.rows].sort((a,b)=>b.weight-a.weight).slice(0,10);return `<details><summary>${m} · 최대 ${fmtPct(Math.max(...x.rows.map(r=>r.weight)))} · Top10 ${fmtPct(top.reduce((a,r)=>a+r.weight,0))}</summary><div class="history-body">${top.map((r,i)=>`${i+1}. ${r.ticker} ${(r.weight*100).toFixed(2)}%`).join(" · ")}<br>${x.source||x.dataMonth} · 신호 ${x.signal}</div></details>`}).join(""):"<div style='padding:16px 18px;color:#667085'>기록 없음</div>"}
+async function run(){const btn=$("#runBtn");btn.disabled=true;btn.textContent="계산 중…";try{if(!creds){openModal();throw new Error("Alpaca API 키를 입력한 뒤 계산하세요.")}status("1/3 Nasdaq-100 최신 구성/시총 로딩 중…");const meta=await loadUniverse(),symbols=meta.rows.map(x=>x.ticker);$("#dataMonth").textContent=meta.source;const cur=ym(),recent=monthEnd(addMonths(cur,-1)),early=monthEnd(addMonths(cur,-6));status(`2/3 가격 로딩 중…\n${iso(early)} → ${iso(recent)}`);const[pr,pe]=await Promise.all([monthEndPrices(symbols,recent),monthEndPrices(symbols,early)]);const missing=symbols.filter(s=>!Number.isFinite(pr[s])||!Number.isFinite(pe[s]));if(missing.length)throw new Error(`가격 데이터 누락 ${missing.length}/100: ${missing.join(", ")}`);status("3/3 QUQU 비중 계산 중…");const rows=meta.rows.map(x=>{const gross=pr[x.ticker]/pe[x.ticker];return{...x,momentum:gross-1,score:gross*x.marketCap}}),med=median(rows.map(x=>x.score));for(const x of rows)x.rel=x.score/med;const raw=Object.fromEntries(rows.map(x=>[x.ticker,Math.pow(x.rel,3)])),weights=capAndRedistribute(raw);for(const x of rows)x.weight=weights[x.ticker]||0;rows.sort((a,b)=>b.weight-a.weight);const sum=rows.reduce((a,x)=>a+x.weight,0),max=Math.max(...rows.map(x=>x.weight)),top10=rows.slice(0,10).reduce((a,x)=>a+x.weight,0);if(Math.abs(sum-1)>1e-8)throw new Error(`비중합 오류: ${sum}`);if(max>CAP+1e-8)throw new Error(`20% cap 오류: ${max}`);$("#count").textContent=rows.length;$("#maxWeight").textContent=fmtPct(max);$("#top10").textContent=fmtPct(top10);$("#signalDate").textContent=`6-1: ${iso(early)} → ${iso(recent)}`;$("#tbody").innerHTML=rows.map((x,i)=>`<tr><td>${i+1}</td><td>${x.ticker}</td><td>${fmtPct(x.momentum,1)}</td><td>${fmtCap(x.marketCap)}</td><td>${x.rel.toFixed(2)}×</td><td class="weight ${x.weight>=CAP-1e-8?"cap":""}">${fmtPct(x.weight)}</td></tr>`).join("");saveSnapshot(rows,meta,`${iso(early)}→${iso(recent)}`);status(`QUQU 계산 완료 · 100종목 · 비중합 ${(sum*100).toFixed(6)}%${meta.stale?"\n주의: 자동 최신 스냅샷이 없어 fallback 데이터를 사용했습니다.":""}`,meta.stale?"":"ok")}catch(e){console.error(e);status(e.message||"계산 실패","err")}finally{btn.disabled=false;btn.textContent="현재 비중 계산"}}
 function openModal(){$("#keyId").value=creds?.keyId||"";$("#secretKey").value=creds?.secretKey||"";$("#modal").classList.add("show")}
 function closeModal(){$("#modal").classList.remove("show")}
 $("#keyBtn").onclick=openModal;$("#closeBtn").onclick=closeModal;$("#saveBtn").onclick=()=>{const keyId=$("#keyId").value.trim(),secretKey=$("#secretKey").value.trim();if(!keyId||!secretKey){status("Key ID와 Secret을 모두 입력하세요.","err");return}saveCreds({keyId,secretKey});closeModal();run()};$("#runBtn").onclick=run;$("#modal").onclick=e=>{if(e.target.id==="modal")closeModal()};renderHistory();if(creds)run();else status("Alpaca API 키를 입력하면 QUQU를 계산합니다.");
