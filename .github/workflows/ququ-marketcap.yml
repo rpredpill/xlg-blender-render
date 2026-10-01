@@ -55,8 +55,7 @@ jobs:
               m = re.fullmatch(r'([0-9]*\.?[0-9]+)([TBMK]?)', s)
               if not m:
                   return None
-              n = float(m.group(1))
-              return n * {'T':1e12,'B':1e9,'M':1e6,'K':1e3,'':1}[m.group(2)]
+              return float(m.group(1)) * {'T':1e12,'B':1e9,'M':1e6,'K':1e3,'':1}[m.group(2)]
 
           def month_end(year, month):
               if month == 12:
@@ -95,12 +94,11 @@ jobs:
                       raise RuntimeError('QUQU cap redistribution underflow')
               return out
 
-          # ---- current Nasdaq-100 membership candidates ----
+          # Current Nasdaq-100 membership candidates.
           membership_source = CURRENT_MEMBERS_URL
           candidates = []
           try:
-              html = get_text(CURRENT_MEMBERS_URL)
-              tables = pd.read_html(io.StringIO(html))
+              tables = pd.read_html(io.StringIO(get_text(CURRENT_MEMBERS_URL)))
               table = next(t for t in tables if 'Symbol' in [str(c) for c in t.columns])
               seen = set()
               for _, r in table.iterrows():
@@ -109,11 +107,10 @@ jobs:
                   if ticker and ticker != 'NAN' and ticker not in seen:
                       seen.add(ticker)
                       candidates.append((ticker, company))
-          except Exception as e:
+          except Exception:
               membership_source = FALLBACK_MEMBERS_URL + ' (fallback)'
-              rows = list(csv.DictReader(io.StringIO(get_text(FALLBACK_MEMBERS_URL))))
               seen = set()
-              for r in rows:
+              for r in csv.DictReader(io.StringIO(get_text(FALLBACK_MEMBERS_URL))):
                   ticker = str(r.get('ticker','')).strip().upper().replace('-', '.')
                   if ticker and ticker not in seen:
                       seen.add(ticker)
@@ -122,7 +119,6 @@ jobs:
           if len(candidates) < 100:
               raise RuntimeError(f'Only {len(candidates)} Nasdaq-100 candidates found')
 
-          # ---- old cap fallback ----
           old_caps = {}
           for r in csv.DictReader(io.StringIO(get_text(FALLBACK_CAP_URL))):
               t = str(r.get('ticker','')).strip().upper().replace('-', '.')
@@ -130,7 +126,6 @@ jobs:
               if t and cap:
                   old_caps[t] = cap
 
-          # ---- signal dates ----
           now = datetime.now(timezone.utc)
           recent_y, recent_m = shift_month(now.year, now.month, -1)
           early_y, early_m = shift_month(now.year, now.month, -6)
@@ -140,7 +135,6 @@ jobs:
           end = (recent_target + timedelta(days=5)).date().isoformat()
           all_tickers = [t for t, _ in candidates]
 
-          # ---- batch adjusted closes ----
           data = yf.download(
               tickers=all_tickers,
               start=start,
@@ -153,13 +147,12 @@ jobs:
 
           def batch_close(ticker, target):
               try:
-                  if isinstance(data.columns, pd.MultiIndex):
-                      if ('Close', ticker) in data.columns:
-                          s = data[('Close', ticker)]
-                      elif (ticker, 'Close') in data.columns:
-                          s = data[(ticker, 'Close')]
-                      else:
-                          return None
+                  if not isinstance(data.columns, pd.MultiIndex):
+                      return None
+                  if ('Close', ticker) in data.columns:
+                      s = data[('Close', ticker)]
+                  elif (ticker, 'Close') in data.columns:
+                      s = data[(ticker, 'Close')]
                   else:
                       return None
                   s = s.dropna()
@@ -167,9 +160,7 @@ jobs:
                       return None
                   idx = pd.to_datetime(s.index, utc=True)
                   mask = idx <= pd.Timestamp(target)
-                  if not mask.any():
-                      return None
-                  return float(s.iloc[mask.nonzero()[0][-1]])
+                  return float(s.iloc[mask.nonzero()[0][-1]]) if mask.any() else None
               except Exception:
                   return None
 
@@ -188,7 +179,6 @@ jobs:
               except Exception:
                   return None, None
 
-          # ---- build valid current candidates; choose first 100 by current index order ----
           selected = []
           skipped = []
           fallback_caps = []
@@ -211,6 +201,7 @@ jobs:
                   cap = float(cap) if cap is not None else None
               except Exception:
                   cap = None
+
               if cap is None or not math.isfinite(cap) or cap <= 0:
                   cap = old_caps.get(ticker)
                   if cap:
@@ -254,8 +245,6 @@ jobs:
           if len(selected) != 100:
               raise RuntimeError(f'Only {len(selected)}/100 valid current constituents; skipped={skipped}')
 
-          # New/short-history constituents stay in the 100-stock portfolio. Until a full
-          # 6-1 window exists, assign the cross-sectional median gross momentum (neutral).
           full_gross = [r['recentPrice']/r['earlyPrice'] for r in selected if r['earlyPrice']]
           neutral_gross = median(full_gross)
           for r in selected:
@@ -266,13 +255,19 @@ jobs:
                   r['momentumGross'] = neutral_gross
                   r['momentumFallback'] = 'cross-sectional median (insufficient 6-1 history)'
               r['momentum'] = r['momentumGross'] - 1.0
+              # Informational SOM-style score. Weighting is intentionally separated below.
               r['score'] = r['momentumGross'] * r['marketCap']
 
           score_med = median([r['score'] for r in selected])
+          momentum_med = median([r['momentumGross'] for r in selected])
           raw = {}
           for r in selected:
               r['relativeScore'] = r['score'] / score_med
-              raw[r['ticker']] = r['relativeScore'] ** 3
+              r['relativeMomentum'] = r['momentumGross'] / momentum_med
+              # QUQU weighting: market cap enters linearly; only relative momentum is convex.
+              r['rawWeightScore'] = r['marketCap'] * (r['relativeMomentum'] ** 3)
+              raw[r['ticker']] = r['rawWeightScore']
+
           weights = cap_and_redistribute(raw)
           for r in selected:
               r['weight'] = weights[r['ticker']]
@@ -283,6 +278,7 @@ jobs:
 
           weight_sum = sum(r['weight'] for r in selected)
           max_weight = max(r['weight'] for r in selected)
+          top10_weight = sum(r['weight'] for r in selected[:10])
           if abs(weight_sum - 1.0) > 1e-9:
               raise RuntimeError(f'Weight sum {weight_sum}')
           if max_weight > CAP + 1e-9:
@@ -296,7 +292,8 @@ jobs:
               'signal': {
                   'earlyDate': early_target.date().isoformat(),
                   'recentDate': recent_target.date().isoformat(),
-                  'rule': '6-1 Momentum × Market Cap; relative score cubed; 20% cap',
+                  'rule': 'Raw weight = Market Cap × (6-1 gross momentum / median gross momentum)^3; 20% cap',
+                  'scoreRule': 'Informational score = 6-1 gross momentum × Market Cap',
                   'shortHistoryRule': 'Use cross-sectional median gross momentum until full 6-1 history exists',
               },
               'sourceMembership': membership_source,
@@ -310,7 +307,7 @@ jobs:
               'candidateCount': len(candidates),
               'weightSum': weight_sum,
               'maxWeight': max_weight,
-              'top10Weight': sum(r['weight'] for r in selected[:10]),
+              'top10Weight': top10_weight,
               'rows': selected,
           }
           with open('ququ-latest.json', 'w', encoding='utf-8') as f:
