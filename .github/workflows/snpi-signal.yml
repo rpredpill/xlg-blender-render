@@ -132,22 +132,27 @@ jobs:
                   return float(s.iloc[mask.nonzero()[0][-1]]) if mask.any() else None
               except Exception: return None
 
-          rows=[]; insufficient=[]; cap_fallback=[]; price_fallback=[]
+          rows=[]; insufficient=[]; cap_fallback=[]; cap_share_fallback=[]; price_fallback=[]
           for ticker in tickers:
+              q=None
               cap=cap_map.get(ticker)
               if not cap or not math.isfinite(cap) or cap<=0:
                   try:
-                      q=yf.Ticker(yf_ticker(ticker)); cap=q.fast_info.get('market_cap')
+                      q=yf.Ticker(yf_ticker(ticker))
+                      try: cap=q.fast_info.get('market_cap')
+                      except Exception: cap=None
+                      if not cap:
+                          try: cap=q.info.get('marketCap')
+                          except Exception: cap=None
                       cap=float(cap) if cap else None
                   except Exception: cap=None
                   if cap: cap_fallback.append(ticker)
-              if not cap or not math.isfinite(cap) or cap<=0:
-                  raise RuntimeError(f'Market cap missing: {ticker}')
 
               early=batch_close(ticker,early_target); recent=batch_close(ticker,recent_target)
               if recent is None or not math.isfinite(recent) or recent<=0:
                   try:
-                      h=yf.Ticker(yf_ticker(ticker)).history(start=start,end=end,auto_adjust=True,actions=False).dropna(subset=['Close'])
+                      q=q or yf.Ticker(yf_ticker(ticker))
+                      h=q.history(start=start,end=end,auto_adjust=True,actions=False).dropna(subset=['Close'])
                       idx=pd.to_datetime(h.index,utc=True)
                       emask=idx<=pd.Timestamp(early_target); rmask=idx<=pd.Timestamp(recent_target)
                       if early is None and emask.any(): early=float(h['Close'].iloc[emask.nonzero()[0][-1]])
@@ -156,6 +161,20 @@ jobs:
                   except Exception: pass
               if recent is None or not math.isfinite(recent) or recent<=0:
                   raise RuntimeError(f'Recent price missing: {ticker}')
+
+              if not cap or not math.isfinite(cap) or cap<=0:
+                  try:
+                      q=q or yf.Ticker(yf_ticker(ticker))
+                      info=q.info or {}
+                      shares=info.get('sharesOutstanding') or info.get('impliedSharesOutstanding')
+                      shares=float(shares) if shares else None
+                      if shares and math.isfinite(shares) and shares>0:
+                          cap=shares*recent
+                          cap_share_fallback.append(ticker)
+                  except Exception: cap=None
+              if not cap or not math.isfinite(cap) or cap<=0:
+                  raise RuntimeError(f'Market cap missing after fallbacks: {ticker}')
+
               if early is None or not math.isfinite(early) or early<=0: insufficient.append(ticker); early=None
               rows.append({'ticker':ticker,'marketCap':float(cap),'earlyPrice':early,'recentPrice':float(recent)})
 
@@ -187,7 +206,8 @@ jobs:
                   'shortHistoryRule':'Use cross-sectional median gross momentum until full 6-1 history exists'
               },
               'sourceMembership':MEMBERS_URL,'sourceMarketCap':CAP_URL,'sourcePrice':'Yahoo Finance adjusted close via yfinance',
-              'marketCapFallbackTickers':cap_fallback,'individualPriceFallbackTickers':price_fallback,'insufficientHistoryTickers':insufficient,
+              'marketCapFallbackTickers':cap_fallback,'marketCapSharesFallbackTickers':cap_share_fallback,
+              'individualPriceFallbackTickers':price_fallback,'insufficientHistoryTickers':insufficient,
               'weightSum':weight_sum,'maxWeight':max_weight,'top10Weight':top10,'rows':rows
           }
           with open('snpi-latest.json','w',encoding='utf-8') as f: json.dump(payload,f,ensure_ascii=False,indent=2)
