@@ -1,0 +1,206 @@
+name: Refresh SNPI signal
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/snpi-signal.yml'
+  schedule:
+    - cron: '35 2 2 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas
+
+      - name: Build SNPI snapshot
+        shell: python
+        run: |
+          import csv, io, json, math, re
+          from datetime import datetime, timezone, timedelta
+          import requests
+          import pandas as pd
+          import yfinance as yf
+
+          MEMBERS_URL = 'https://raw.githubusercontent.com/fja05680/sp500/master/S%26P%20500%20Historical%20Components%20%26%20Changes%20%28Updated%29.csv'
+          CAP_URL = 'https://raw.githubusercontent.com/Ate329/top-us-stock-tickers/main/tickers/sp500.csv'
+          HEADERS = {'User-Agent':'Mozilla/5.0'}
+          CAP = 0.20
+
+          def get_text(url):
+              r = requests.get(url, headers=HEADERS, timeout=45)
+              r.raise_for_status()
+              return r.text
+
+          def norm(t):
+              return str(t or '').strip().upper().replace('-', '.')
+
+          def yf_ticker(t):
+              return norm(t).replace('.', '-')
+
+          def parse_num(v):
+              s = str(v or '').strip().replace('$','').replace(',','').upper()
+              m = re.fullmatch(r'([0-9]*\.?[0-9]+)([TBMK]?)', s)
+              if not m:
+                  try: return float(s)
+                  except: return None
+              return float(m.group(1))*{'T':1e12,'B':1e9,'M':1e6,'K':1e3,'':1}[m.group(2)]
+
+          def month_end(y,m):
+              if m == 12: return datetime(y+1,1,1,tzinfo=timezone.utc)-timedelta(days=1)
+              return datetime(y,m+1,1,tzinfo=timezone.utc)-timedelta(days=1)
+
+          def shift_month(y,m,d):
+              k=y*12+(m-1)+d
+              return k//12,k%12+1
+
+          def median(xs):
+              s=sorted(xs); n=len(s)
+              if not n: raise RuntimeError('median of empty list')
+              return s[n//2] if n%2 else (s[n//2-1]+s[n//2])/2
+
+          def cap_and_redistribute(raw, cap=CAP):
+              free=set(raw); out={}; remaining=1.0
+              while free:
+                  total=sum(raw[s] for s in free)
+                  if total<=0: raise RuntimeError('SNPI raw weight sum <= 0')
+                  over=[s for s in free if remaining*raw[s]/total > cap+1e-12]
+                  if not over:
+                      for s in free: out[s]=remaining*raw[s]/total
+                      break
+                  for s in over:
+                      out[s]=cap; remaining-=cap; free.remove(s)
+              return out
+
+          member_rows=list(csv.DictReader(io.StringIO(get_text(MEMBERS_URL))))
+          if not member_rows: raise RuntimeError('S&P 500 membership file empty')
+          latest=member_rows[-1]
+          member_date=latest.get('date') or latest.get('Date')
+          tickers=[norm(x) for x in str(latest.get('tickers') or latest.get('Tickers') or '').split(',') if norm(x)]
+          tickers=list(dict.fromkeys(tickers))
+          if len(tickers)<495: raise RuntimeError(f'Only {len(tickers)} S&P 500 members found')
+
+          cap_text=get_text(CAP_URL)
+          cap_rows=list(csv.DictReader(io.StringIO(cap_text)))
+          cap_map={}
+          if cap_rows:
+              keys=[k for k in cap_rows[0].keys() if k]
+              sk=next((k for k in keys if k.lower() in ('symbol','ticker')), keys[0])
+              mk=next((k for k in keys if 'market' in k.lower() and 'cap' in k.lower()), None)
+              if mk:
+                  for r in cap_rows:
+                      v=parse_num(r.get(mk)); t=norm(r.get(sk))
+                      if t and v and v>0: cap_map[t]=v
+
+          now=datetime.now(timezone.utc)
+          ry,rm=shift_month(now.year,now.month,-1)
+          ey,em=shift_month(now.year,now.month,-6)
+          recent_target=month_end(ry,rm)
+          early_target=month_end(ey,em)
+          start=(early_target-timedelta(days=12)).date().isoformat()
+          end=(recent_target+timedelta(days=5)).date().isoformat()
+          yf_symbols=[yf_ticker(t) for t in tickers]
+          data=yf.download(tickers=yf_symbols,start=start,end=end,auto_adjust=True,progress=False,group_by='column',threads=True)
+
+          def batch_close(ticker,target):
+              yt=yf_ticker(ticker)
+              try:
+                  if not isinstance(data.columns,pd.MultiIndex): return None
+                  if ('Close',yt) in data.columns: s=data[('Close',yt)]
+                  elif (yt,'Close') in data.columns: s=data[(yt,'Close')]
+                  else: return None
+                  s=s.dropna()
+                  if s.empty: return None
+                  idx=pd.to_datetime(s.index,utc=True); mask=idx<=pd.Timestamp(target)
+                  return float(s.iloc[mask.nonzero()[0][-1]]) if mask.any() else None
+              except Exception: return None
+
+          rows=[]; insufficient=[]; cap_fallback=[]; price_fallback=[]
+          for ticker in tickers:
+              cap=cap_map.get(ticker)
+              if not cap or not math.isfinite(cap) or cap<=0:
+                  try:
+                      q=yf.Ticker(yf_ticker(ticker)); cap=q.fast_info.get('market_cap')
+                      cap=float(cap) if cap else None
+                  except Exception: cap=None
+                  if cap: cap_fallback.append(ticker)
+              if not cap or not math.isfinite(cap) or cap<=0:
+                  raise RuntimeError(f'Market cap missing: {ticker}')
+
+              early=batch_close(ticker,early_target); recent=batch_close(ticker,recent_target)
+              if recent is None or not math.isfinite(recent) or recent<=0:
+                  try:
+                      h=yf.Ticker(yf_ticker(ticker)).history(start=start,end=end,auto_adjust=True,actions=False).dropna(subset=['Close'])
+                      idx=pd.to_datetime(h.index,utc=True)
+                      emask=idx<=pd.Timestamp(early_target); rmask=idx<=pd.Timestamp(recent_target)
+                      if early is None and emask.any(): early=float(h['Close'].iloc[emask.nonzero()[0][-1]])
+                      if rmask.any(): recent=float(h['Close'].iloc[rmask.nonzero()[0][-1]])
+                      price_fallback.append(ticker)
+                  except Exception: pass
+              if recent is None or not math.isfinite(recent) or recent<=0:
+                  raise RuntimeError(f'Recent price missing: {ticker}')
+              if early is None or not math.isfinite(early) or early<=0: insufficient.append(ticker); early=None
+              rows.append({'ticker':ticker,'marketCap':float(cap),'earlyPrice':early,'recentPrice':float(recent)})
+
+          gross=[r['recentPrice']/r['earlyPrice'] for r in rows if r['earlyPrice']]
+          neutral=median(gross); mom_med=median(gross)
+          raw={}
+          for r in rows:
+              r['momentumGross']=r['recentPrice']/r['earlyPrice'] if r['earlyPrice'] else neutral
+              r['momentumFallback']=None if r['earlyPrice'] else 'cross-sectional median (insufficient 6-1 history)'
+              r['momentum']=r['momentumGross']-1.0
+              r['relativeMomentum']=r['momentumGross']/mom_med
+              r['rawWeightScore']=math.sqrt(r['marketCap'])*(r['relativeMomentum']**3)
+              raw[r['ticker']]=r['rawWeightScore']
+
+          weights=cap_and_redistribute(raw)
+          for r in rows: r['weight']=weights[r['ticker']]
+          rows.sort(key=lambda x:x['weight'],reverse=True)
+          for i,r in enumerate(rows,1): r['weightRank']=i
+          weight_sum=sum(r['weight'] for r in rows); max_weight=max(r['weight'] for r in rows); top10=sum(r['weight'] for r in rows[:10])
+          if abs(weight_sum-1.0)>1e-9: raise RuntimeError(f'Weight sum {weight_sum}')
+          if max_weight>CAP+1e-9: raise RuntimeError(f'Cap violation {max_weight}')
+
+          payload={
+              'strategy':'SNPI','universe':'S&P 500','holdings':len(rows),'generatedAt':datetime.now(timezone.utc).isoformat(),
+              'membershipDate':member_date,
+              'signal':{
+                  'earlyDate':early_target.date().isoformat(),'recentDate':recent_target.date().isoformat(),
+                  'rule':'Raw weight = sqrt(Market Cap) × (6-1 gross momentum / median gross momentum)^3; 20% cap',
+                  'shortHistoryRule':'Use cross-sectional median gross momentum until full 6-1 history exists'
+              },
+              'sourceMembership':MEMBERS_URL,'sourceMarketCap':CAP_URL,'sourcePrice':'Yahoo Finance adjusted close via yfinance',
+              'marketCapFallbackTickers':cap_fallback,'individualPriceFallbackTickers':price_fallback,'insufficientHistoryTickers':insufficient,
+              'weightSum':weight_sum,'maxWeight':max_weight,'top10Weight':top10,'rows':rows
+          }
+          with open('snpi-latest.json','w',encoding='utf-8') as f: json.dump(payload,f,ensure_ascii=False,indent=2)
+          print(f"SNPI {len(rows)} holdings; max={max_weight:.4%}; top10={top10:.4%}")
+
+      - name: Commit snapshot to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add snpi-latest.json
+          if git diff --cached --quiet; then
+            echo 'No changes'
+          else
+            git commit -m 'Refresh SNPI S&P 500 signal snapshot'
+            git push origin HEAD:somx-pages
+          fi
