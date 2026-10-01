@@ -2,8 +2,8 @@
 """Backfill SNPI / QUQU monthly targets and realized monthly returns.
 
 Default research window: 2022-10 through the last completed calendar month.
-Universe membership is point-in-time.  Momentum and returns use Yahoo adjusted
-prices.  Historical market cap uses contemporaneous Yahoo shares outstanding
+Universe membership is point-in-time. Momentum and returns use Yahoo adjusted
+prices. Historical market cap uses contemporaneous Yahoo shares outstanding
 when available; otherwise it falls back to a split-safe current-share proxy.
 Every fallback is recorded in the output JSON.
 """
@@ -16,7 +16,7 @@ import json
 import math
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -40,8 +40,7 @@ def yf_symbol(x: str) -> str:
 
 
 def month_add(ym: str, n: int) -> str:
-    p = pd.Period(ym, freq="M") + n
-    return str(p)
+    return str(pd.Period(ym, freq="M") + n)
 
 
 def month_end(ym: str) -> pd.Timestamp:
@@ -112,8 +111,7 @@ def extract_one(data: pd.DataFrame, ticker: str):
                 return None
         else:
             d = data.copy()
-        needed = [c for c in ["Open", "Close", "Adj Close"] if c in d.columns]
-        if "Close" not in needed:
+        if "Close" not in d.columns:
             return None
         if "Adj Close" not in d.columns:
             d["Adj Close"] = d["Close"]
@@ -139,7 +137,7 @@ def download_prices(symbols: list[str], start: str, end: str):
             end=end,
             auto_adjust=False,
             actions=False,
-            repair=True,
+            repair=False,
             progress=False,
             group_by="column",
             threads=False,
@@ -149,12 +147,14 @@ def download_prices(symbols: list[str], start: str, end: str):
             if d is not None:
                 out[s] = d
         print(f"prices {min(i+len(part), len(symbols))}/{len(symbols)}; loaded={len(out)}", flush=True)
-        time.sleep(0.25)
+        time.sleep(0.15)
 
     missing = [s for s in symbols if s not in out]
     for j, s in enumerate(missing):
         try:
-            d = yf.Ticker(yf_symbol(s)).history(start=start, end=end, auto_adjust=False, actions=False, repair=True)
+            d = yf.Ticker(yf_symbol(s)).history(
+                start=start, end=end, auto_adjust=False, actions=False, repair=False
+            )
             if not d.empty:
                 if "Adj Close" not in d.columns:
                     d["Adj Close"] = d["Close"]
@@ -166,7 +166,7 @@ def download_prices(symbols: list[str], start: str, end: str):
             pass
         if (j + 1) % 10 == 0:
             print(f"individual price fallbacks {j+1}/{len(missing)}", flush=True)
-        time.sleep(0.15)
+        time.sleep(0.10)
     return out
 
 
@@ -214,7 +214,7 @@ def month_return(prices, symbol: str, ym: str):
     }
 
 
-def fetch_share_info(symbol: str, start: str, end: str, prices):
+def fetch_share_info(symbol: str, start: str, end: str):
     yt = yf_symbol(symbol)
     series = None
     current_proxy = None
@@ -257,10 +257,10 @@ def fetch_share_info(symbol: str, start: str, end: str, prices):
     return symbol, series, current_proxy, method
 
 
-def load_shares(symbols: list[str], start: str, end: str, prices):
+def load_shares(symbols: list[str], start: str, end: str):
     out = {}
     with ThreadPoolExecutor(max_workers=6) as ex:
-        futs = {ex.submit(fetch_share_info, s, start, end, prices): s for s in symbols}
+        futs = {ex.submit(fetch_share_info, s, start, end): s for s in symbols}
         done = 0
         for fut in as_completed(futs):
             s = futs[fut]
@@ -290,7 +290,6 @@ def historical_cap(prices, shares, symbol: str, signal_date: pd.Timestamp):
                 return sh * raw_close, "historical-shares"
     proxy = info.get("proxy")
     if proxy and math.isfinite(float(proxy)) and float(proxy) > 0 and adj_close:
-        # Using adjusted price with current/post-split shares keeps split history scale consistent.
         return float(proxy) * adj_close, "current-shares-proxy"
     return None, "missing"
 
@@ -363,11 +362,9 @@ def strategy_month(name: str, membership, prices, shares, allocation_month: str)
 
     rows.sort(key=lambda x: x["weight"], reverse=True)
     missing_return_weight = sum(r["weight"] for r in rows if r["monthlyReturn"] is None)
-    valid_return_weight = 1.0 - missing_return_weight
     if missing_return_weight > 0.02:
         raise RuntimeError(f"{name} {allocation_month}: missing return weight {missing_return_weight:.2%}")
 
-    # Missing realized return is held as cash only when total missing weight <=2%; diagnostic is explicit.
     port = sum(r["weight"] * (r["monthlyReturn"] if r["monthlyReturn"] is not None else 0.0) for r in rows)
     cap_hist = sum(1 for r in rows if r["capMethod"] == "historical-shares")
     cap_proxy = sum(1 for r in rows if r["capMethod"] == "current-shares-proxy")
@@ -377,17 +374,15 @@ def strategy_month(name: str, membership, prices, shares, allocation_month: str)
     top10 = sum(r["weight"] for r in rows[:10])
     last_dates = [r["lastDate"] for r in rows if r["lastDate"]]
 
-    compact = []
-    for r in rows:
-        compact.append({
-            "ticker": r["ticker"],
-            "weight": r["weight"],
-            "momentum": r["momentum"],
-            "marketCap": r["marketCap"],
-            "monthlyReturn": r["monthlyReturn"],
-            "capMethod": r["capMethod"],
-            "momentumFallback": r["momentumFallback"],
-        })
+    compact = [{
+        "ticker": r["ticker"],
+        "weight": r["weight"],
+        "momentum": r["momentum"],
+        "marketCap": r["marketCap"],
+        "monthlyReturn": r["monthlyReturn"],
+        "capMethod": r["capMethod"],
+        "momentumFallback": r["momentumFallback"],
+    } for r in rows]
 
     return {
         "allocationMonth": allocation_month,
@@ -427,7 +422,11 @@ def build_strategy(name, universe_name, membership, prices, shares, start_month,
         try:
             rec = strategy_month(name, membership, prices, shares, current)
             months[current] = rec
-            print(f"{name} {current}: return={rec['portfolioReturn']:+.2f}% holdings={rec['holdingsCount']} histCap={rec['historicalCapCount']} proxy={rec['currentSharesProxyCount']} missingRetW={rec['missingReturnWeight']:.3%}", flush=True)
+            print(
+                f"{name} {current}: return={rec['portfolioReturn']:+.2f}% holdings={rec['holdingsCount']} "
+                f"histCap={rec['historicalCapCount']} proxy={rec['currentSharesProxyCount']} "
+                f"missingRetW={rec['missingReturnWeight']:.3%}", flush=True
+            )
         except Exception as e:
             failures[current] = str(e)
             print(f"WARN {name} {current}: {e}", flush=True)
@@ -460,8 +459,8 @@ def main():
     ap.add_argument("--output-dir", default=".")
     args = ap.parse_args()
 
-    today = pd.Timestamp.utcnow().tz_localize(None).normalize()
-    default_end = str((today.to_period("M") - 1))
+    today = pd.Timestamp.now(tz="UTC").tz_localize(None).normalize()
+    default_end = str(today.to_period("M") - 1)
     end_month = args.end or default_end
     if pd.Period(args.start, freq="M") > pd.Period(end_month, freq="M"):
         raise SystemExit("start > end")
@@ -471,14 +470,14 @@ def main():
     earliest_signal = month_end(month_add(args.start, -1))
     latest_signal = month_end(month_add(end_month, -1))
     all_symbols = set()
-    for rows in [sp, ndx]:
-        # Union snapshots spanning the needed signal window plus the early momentum window.
+    for membership in (sp, ndx):
         begin = month_end(month_add(args.start, -6))
-        for dt, tickers in rows:
-            if dt <= latest_signal and (dt >= begin or dt == max((x[0] for x in rows if x[0] <= begin), default=dt)):
+        all_symbols.update(members_at(membership, begin))
+        for dt, tickers in membership:
+            if begin < dt <= latest_signal:
                 all_symbols.update(tickers)
-        all_symbols.update(members_at(rows, earliest_signal))
-        all_symbols.update(members_at(rows, latest_signal))
+        all_symbols.update(members_at(membership, earliest_signal))
+        all_symbols.update(members_at(membership, latest_signal))
     symbols = sorted(all_symbols)
     print(f"union symbols={len(symbols)}", flush=True)
 
@@ -487,7 +486,7 @@ def main():
     prices = download_prices(symbols, price_start, price_end)
     print(f"price coverage={len(prices)}/{len(symbols)}", flush=True)
 
-    shares = load_shares(symbols, price_start, price_end, prices)
+    shares = load_shares(symbols, price_start, price_end)
 
     outdir = Path(args.output_dir)
     outdir.mkdir(parents=True, exist_ok=True)
