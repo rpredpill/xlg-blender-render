@@ -1,0 +1,92 @@
+name: Backfill SNPI and QUQU history
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_month:
+        description: 'First allocation month (YYYY-MM)'
+        required: false
+        default: '2022-10'
+      end_month:
+        description: 'Last allocation month (YYYY-MM); blank = last completed month'
+        required: false
+        default: ''
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/backfill-snpi-ququ-history.yml'
+      - 'tools/backfill_snpi_ququ.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backfill-snpi-ququ-history
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas numpy
+
+      - name: Load backfill engine from main
+        run: git show origin/main:tools/backfill_snpi_ququ.py > /tmp/backfill_snpi_ququ.py
+
+      - name: Backfill point-in-time monthly history
+        shell: bash
+        env:
+          START_MONTH: ${{ github.event.inputs.start_month || '2022-10' }}
+          END_MONTH: ${{ github.event.inputs.end_month || '' }}
+        run: |
+          set -euo pipefail
+          if [ -n "$END_MONTH" ]; then
+            python /tmp/backfill_snpi_ququ.py --start "$START_MONTH" --end "$END_MONTH" --output-dir .
+          else
+            python /tmp/backfill_snpi_ququ.py --start "$START_MONTH" --output-dir .
+          fi
+
+      - name: Validate history files
+        shell: python
+        run: |
+          import json
+          for fn, minimum in [('snpi-history.json', 495), ('ququ-history.json', 90)]:
+              j=json.load(open(fn, encoding='utf-8'))
+              realized=[(m,r) for m,r in (j.get('months') or {}).items() if isinstance(r.get('portfolioReturn'),(int,float))]
+              if len(realized) < 12:
+                  raise RuntimeError(f'{fn}: only {len(realized)} realized months')
+              for m,r in realized:
+                  rows=r.get('rows') or []
+                  if len(rows) < minimum:
+                      raise RuntimeError(f'{fn} {m}: only {len(rows)} rows')
+                  s=sum(float(x['weight']) for x in rows)
+                  if abs(s-1)>1e-6:
+                      raise RuntimeError(f'{fn} {m}: weight sum {s}')
+                  if max(float(x['weight']) for x in rows) > 0.2000001:
+                      raise RuntimeError(f'{fn} {m}: cap violation')
+              print(fn, len(realized), realized[0][0], realized[-1][0])
+
+      - name: Commit backfilled history to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add snpi-history.json ququ-history.json
+          if git diff --cached --quiet; then
+            echo 'No history changes'
+          else
+            git commit -m 'Backfill SNPI and QUQU monthly history'
+            git push origin HEAD:somx-pages
+          fi
