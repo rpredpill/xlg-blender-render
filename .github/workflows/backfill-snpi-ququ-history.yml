@@ -22,7 +22,7 @@ permissions:
 
 concurrency:
   group: backfill-snpi-ququ-history
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   backfill:
@@ -86,9 +86,6 @@ jobs:
               rows=r.get('rows') or []
               if not isinstance(r.get('portfolioReturn'),(int,float)) or len(rows)<=100:
                   continue
-              # Current QUQU is defined as 100 securities. If the PIT Nasdaq-100
-              # snapshot contains 101 share classes, keep the 100 largest by
-              # contemporaneous market cap, then recompute the exact formula.
               rows=sorted(rows,key=lambda x:float(x.get('marketCap') or 0),reverse=True)[:100]
               raw={x['ticker']:math.sqrt(float(x['marketCap']))*((1.0+float(x.get('momentum') or 0.0))**3) for x in rows}
               w=capped(raw)
@@ -100,7 +97,7 @@ jobs:
               r['top10Weight']=sum(x['weight'] for x in rows[:10])
               r['missingReturnWeight']=sum(x['weight'] for x in rows if x.get('monthlyReturn') is None)
               r['portfolioReturn']=100*sum(x['weight']*(float(x['monthlyReturn']) if x.get('monthlyReturn') is not None else 0.0) for x in rows)
-              r['ququ100Rule']='If PIT Nasdaq-100 has 101 securities, retain the 100 largest by contemporaneous market cap.'
+              r['ququ100Rule']='If PIT Nasdaq-100 has more than 100 securities, retain the 100 largest by contemporaneous market cap.'
               changed+=1
           p.write_text(json.dumps(j,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
           print('normalized months',changed)
