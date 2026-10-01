@@ -2,6 +2,10 @@ name: Refresh QUQU market cap
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ququ-marketcap.yml'
   schedule:
     - cron: '20 2 2 * *'
 
@@ -34,8 +38,6 @@ jobs:
           import pandas as pd
           import yfinance as yf
 
-          # Current Nasdaq-100 components. Wikipedia is used only for membership;
-          # market caps are independently fetched from Yahoo Finance via yfinance.
           tables = pd.read_html('https://en.wikipedia.org/wiki/Nasdaq-100')
           comp = None
           for t in tables:
@@ -47,12 +49,11 @@ jobs:
           if comp is None:
               raise RuntimeError('Nasdaq-100 component table not found')
 
-          ticker_col = 'ticker'
           name_col = 'company' if 'company' in comp.columns else 'security'
           raw = []
           seen = set()
           for _, r in comp.iterrows():
-              t = str(r[ticker_col]).strip().upper().replace('-', '.')
+              t = str(r['ticker']).strip().upper().replace('-', '.')
               if not t or t == 'NAN' or t in seen:
                   continue
               seen.add(t)
@@ -60,19 +61,19 @@ jobs:
 
           rows = []
           failures = []
-          for i, (ticker, company) in enumerate(raw, 1):
+          for ticker, company in raw:
               try:
                   q = yf.Ticker(ticker)
                   cap = None
                   try:
                       cap = q.fast_info.get('market_cap')
                   except Exception:
-                      cap = None
+                      pass
                   if not cap:
                       try:
                           cap = q.info.get('marketCap')
                       except Exception:
-                          cap = None
+                          pass
                   cap = float(cap) if cap is not None else float('nan')
                   if not math.isfinite(cap) or cap <= 0:
                       failures.append(ticker)
@@ -82,12 +83,10 @@ jobs:
                   failures.append(ticker)
               time.sleep(0.03)
 
-          # QUQU is intentionally 100 holdings. If the index exposes multiple share
-          # classes and the source returns >100 securities, keep the 100 largest by
-          # current market cap. This is deterministic and recorded in the snapshot.
           rows.sort(key=lambda x: x['marketCap'], reverse=True)
           if len(rows) < 100:
               raise RuntimeError(f'Only {len(rows)} valid market caps; failures={failures}')
+
           selected = rows[:100]
           for rank, row in enumerate(selected, 1):
               row['rank'] = rank
