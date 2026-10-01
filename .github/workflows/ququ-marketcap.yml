@@ -28,67 +28,93 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install --disable-pip-version-check pandas lxml html5lib yfinance
+        run: pip install --disable-pip-version-check yfinance requests
 
       - name: Build latest QUQU market-cap snapshot
         shell: python
         run: |
-          import json, math, time
+          import csv, io, json, math, re, time
           from datetime import datetime, timezone
-          import pandas as pd
+          import requests
           import yfinance as yf
 
-          tables = pd.read_html('https://en.wikipedia.org/wiki/Nasdaq-100')
-          comp = None
-          for t in tables:
-              cols = [str(c).strip().lower() for c in t.columns]
-              if 'ticker' in cols and ('company' in cols or 'security' in cols):
-                  comp = t.copy()
-                  comp.columns = cols
-                  break
-          if comp is None:
-              raise RuntimeError('Nasdaq-100 component table not found')
+          MEMBERS_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100-table.csv'
+          FALLBACK_URL = 'https://raw.githubusercontent.com/thaywebsearch/nasdaq100-list/main/nasdaq100_marketcap_052026.csv'
+          HEADERS = {'User-Agent': 'Mozilla/5.0 QUQU-marketcap-refresh/1.0'}
 
-          name_col = 'company' if 'company' in comp.columns else 'security'
-          raw = []
+          def get_text(url):
+              r = requests.get(url, headers=HEADERS, timeout=30)
+              r.raise_for_status()
+              return r.text
+
+          def parse_cap(v):
+              s = str(v or '').strip().replace('$','').replace(',','').upper()
+              m = re.fullmatch(r'([0-9]*\.?[0-9]+)([TBMK]?)', s)
+              if not m:
+                  return None
+              n = float(m.group(1))
+              mult = {'T':1e12,'B':1e9,'M':1e6,'K':1e3,'':1}[m.group(2)]
+              return n * mult
+
+          member_rows = list(csv.DictReader(io.StringIO(get_text(MEMBERS_URL))))
+          old_rows = list(csv.DictReader(io.StringIO(get_text(FALLBACK_URL))))
+          old_caps = {}
+          for r in old_rows:
+              t = str(r.get('ticker','')).strip().upper().replace('-', '.')
+              cap = parse_cap(r.get('market_cap_usd'))
+              if t and cap:
+                  old_caps[t] = cap
+
+          members = []
           seen = set()
-          for _, r in comp.iterrows():
-              t = str(r['ticker']).strip().upper().replace('-', '.')
-              if not t or t == 'NAN' or t in seen:
+          for r in member_rows:
+              t = str(r.get('ticker','')).strip().upper().replace('-', '.')
+              if not t or t in seen:
                   continue
               seen.add(t)
-              raw.append((t, str(r[name_col]).strip()))
+              members.append((t, str(r.get('company','')).strip()))
+
+          if len(members) < 100:
+              raise RuntimeError(f'Only {len(members)} Nasdaq-100 members found')
+          members = members[:100]
 
           rows = []
           failures = []
-          for ticker, company in raw:
+          fallback_tickers = []
+          for ticker, company in members:
+              cap = None
               try:
                   q = yf.Ticker(ticker)
-                  cap = None
                   try:
                       cap = q.fast_info.get('market_cap')
                   except Exception:
-                      pass
+                      cap = None
                   if not cap:
                       try:
                           cap = q.info.get('marketCap')
                       except Exception:
-                          pass
-                  cap = float(cap) if cap is not None else float('nan')
-                  if not math.isfinite(cap) or cap <= 0:
+                          cap = None
+                  cap = float(cap) if cap is not None else None
+              except Exception:
+                  cap = None
+
+              if cap is None or not math.isfinite(cap) or cap <= 0:
+                  cap = old_caps.get(ticker)
+                  if cap:
+                      fallback_tickers.append(ticker)
+                  else:
                       failures.append(ticker)
                       continue
-                  rows.append({'ticker': ticker, 'company': company, 'marketCap': cap})
-              except Exception:
-                  failures.append(ticker)
-              time.sleep(0.03)
 
-          rows.sort(key=lambda x: x['marketCap'], reverse=True)
-          if len(rows) < 100:
-              raise RuntimeError(f'Only {len(rows)} valid market caps; failures={failures}')
+              rows.append({'ticker': ticker, 'company': company, 'marketCap': float(cap)})
+              time.sleep(0.02)
 
-          selected = rows[:100]
-          for rank, row in enumerate(selected, 1):
+          if len(rows) != 100:
+              raise RuntimeError(f'Only {len(rows)}/100 market caps; failures={failures}')
+
+          # Preserve the Nasdaq-100 membership set. Rank here is informational only;
+          # QUQU itself owns all 100 and uses the score only for capital allocation.
+          for rank, row in enumerate(rows, 1):
               row['rank'] = rank
 
           payload = {
@@ -96,13 +122,12 @@ jobs:
               'universe': 'Nasdaq-100',
               'holdings': 100,
               'generatedAt': datetime.now(timezone.utc).isoformat(),
-              'sourceMembership': 'Wikipedia Nasdaq-100 components',
+              'sourceMembership': 'thaywebsearch/nasdaq100-list nasdaq100-table.csv',
               'sourceMarketCap': 'Yahoo Finance via yfinance',
-              'selectionNote': 'If more than 100 securities are returned, the 100 largest by current market cap are retained.',
-              'componentCountObserved': len(raw),
-              'validMarketCapCount': len(rows),
+              'fallbackMarketCapSource': 'nasdaq100_marketcap_052026.csv',
+              'fallbackTickers': fallback_tickers,
               'failedTickers': failures,
-              'rows': selected,
+              'rows': rows,
           }
           with open('ququ-latest.json', 'w', encoding='utf-8') as f:
               json.dump(payload, f, ensure_ascii=False, indent=2)
