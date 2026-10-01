@@ -1,0 +1,121 @@
+name: Refresh QUQU market cap
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 2 2 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check pandas lxml html5lib yfinance
+
+      - name: Build latest QUQU market-cap snapshot
+        shell: python
+        run: |
+          import json, math, time
+          from datetime import datetime, timezone
+          import pandas as pd
+          import yfinance as yf
+
+          # Current Nasdaq-100 components. Wikipedia is used only for membership;
+          # market caps are independently fetched from Yahoo Finance via yfinance.
+          tables = pd.read_html('https://en.wikipedia.org/wiki/Nasdaq-100')
+          comp = None
+          for t in tables:
+              cols = [str(c).strip().lower() for c in t.columns]
+              if 'ticker' in cols and ('company' in cols or 'security' in cols):
+                  comp = t.copy()
+                  comp.columns = cols
+                  break
+          if comp is None:
+              raise RuntimeError('Nasdaq-100 component table not found')
+
+          ticker_col = 'ticker'
+          name_col = 'company' if 'company' in comp.columns else 'security'
+          raw = []
+          seen = set()
+          for _, r in comp.iterrows():
+              t = str(r[ticker_col]).strip().upper().replace('-', '.')
+              if not t or t == 'NAN' or t in seen:
+                  continue
+              seen.add(t)
+              raw.append((t, str(r[name_col]).strip()))
+
+          rows = []
+          failures = []
+          for i, (ticker, company) in enumerate(raw, 1):
+              try:
+                  q = yf.Ticker(ticker)
+                  cap = None
+                  try:
+                      cap = q.fast_info.get('market_cap')
+                  except Exception:
+                      cap = None
+                  if not cap:
+                      try:
+                          cap = q.info.get('marketCap')
+                      except Exception:
+                          cap = None
+                  cap = float(cap) if cap is not None else float('nan')
+                  if not math.isfinite(cap) or cap <= 0:
+                      failures.append(ticker)
+                      continue
+                  rows.append({'ticker': ticker, 'company': company, 'marketCap': cap})
+              except Exception:
+                  failures.append(ticker)
+              time.sleep(0.03)
+
+          # QUQU is intentionally 100 holdings. If the index exposes multiple share
+          # classes and the source returns >100 securities, keep the 100 largest by
+          # current market cap. This is deterministic and recorded in the snapshot.
+          rows.sort(key=lambda x: x['marketCap'], reverse=True)
+          if len(rows) < 100:
+              raise RuntimeError(f'Only {len(rows)} valid market caps; failures={failures}')
+          selected = rows[:100]
+          for rank, row in enumerate(selected, 1):
+              row['rank'] = rank
+
+          payload = {
+              'strategy': 'QUQU',
+              'universe': 'Nasdaq-100',
+              'holdings': 100,
+              'generatedAt': datetime.now(timezone.utc).isoformat(),
+              'sourceMembership': 'Wikipedia Nasdaq-100 components',
+              'sourceMarketCap': 'Yahoo Finance via yfinance',
+              'selectionNote': 'If more than 100 securities are returned, the 100 largest by current market cap are retained.',
+              'componentCountObserved': len(raw),
+              'validMarketCapCount': len(rows),
+              'failedTickers': failures,
+              'rows': selected,
+          }
+          with open('ququ-latest.json', 'w', encoding='utf-8') as f:
+              json.dump(payload, f, ensure_ascii=False, indent=2)
+
+      - name: Commit snapshot to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ququ-latest.json
+          if git diff --cached --quiet; then
+            echo 'No changes'
+          else
+            git commit -m 'Refresh QUQU market cap snapshot'
+            git push origin HEAD:somx-pages
+          fi
