@@ -8,7 +8,7 @@ let syncing=false;
 
 function read(kind){try{return JSON.parse(localStorage.getItem(key(kind))||"{}")||{}}catch{return{}}}
 function write(kind,value){try{localStorage.setItem(key(kind),JSON.stringify(value))}catch{}}
-function validRows(rows){return Array.isArray(rows)&&rows.length===100&&rows.every(r=>r&&r.ticker&&Number.isFinite(Number(r.weight))&&Number(r.weight)>0)}
+function validRows(rows,record){const u=Number(record?.universeCount)||rows?.length||0,cov=u>0?(rows?.length||0)/u:0;return Array.isArray(rows)&&cov>=0.90&&rows.length<=100&&rows.every(r=>r&&r.ticker&&Number.isFinite(Number(r.weight))&&Number(r.weight)>0)}
 
 async function syncQuquHistory({reload=true}={}){
   if(syncing)return;
@@ -22,7 +22,7 @@ async function syncQuquHistory({reload=true}={}){
     let changed=false,returnsChanged=false;
     for(const [month,record] of Object.entries(months)){
       const rows=record?.rows;
-      if(!validRows(rows))continue;
+      if(!validRows(rows,record))continue;
       const sum=rows.reduce((a,x)=>a+Number(x.weight),0);
       if(Math.abs(sum-1)>1e-6)continue;
       const holdings=rows.map(x=>String(x.ticker).trim().toUpperCase());
@@ -37,6 +37,8 @@ async function syncQuquHistory({reload=true}={}){
           weights,
           rows:rows.map(x=>({ticker:String(x.ticker).trim().toUpperCase(),ret:Number.isFinite(Number(x.monthlyReturn))?Number(x.monthlyReturn)*100:0,weight:Number(x.weight)})),
           serverBackfill:true,
+          coverageRatio:Number(record.coverageRatio||((record.universeCount?rows.length/Number(record.universeCount):1))),
+          universeCount:Number(record.universeCount||rows.length),
           missingReturnWeight:Number(record.missingReturnWeight||0),
           historicalCapCount:Number(record.historicalCapCount||0),
           currentSharesProxyCount:Number(record.currentSharesProxyCount||0),
