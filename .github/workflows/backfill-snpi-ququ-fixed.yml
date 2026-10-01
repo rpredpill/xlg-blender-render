@@ -1,0 +1,105 @@
+name: Fixed SNPI and QUQU history backfill
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/backfill-snpi-ququ-fixed.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas numpy
+
+      - name: Load fixed backfill engine from main
+        run: git show origin/main:tools/backfill_snpi_ququ.py > /tmp/backfill_snpi_ququ.py
+
+      - name: Build PIT history 2022-10 through last completed month
+        run: python /tmp/backfill_snpi_ququ.py --start 2022-10 --output-dir .
+
+      - name: Normalize QUQU to exactly 100 holdings
+        shell: python
+        run: |
+          import json, math
+          from pathlib import Path
+          CAP=0.20
+          p=Path('ququ-history.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          def capped(raw):
+              free=set(raw); out={}; remaining=1.0
+              while free:
+                  total=sum(raw[s] for s in free)
+                  over=[s for s in free if remaining*raw[s]/total > CAP+1e-12]
+                  if not over:
+                      for s in free: out[s]=remaining*raw[s]/total
+                      break
+                  for s in over:
+                      out[s]=CAP; remaining-=CAP; free.remove(s)
+              return out
+          changed=0
+          for month,r in (j.get('months') or {}).items():
+              rows=r.get('rows') or []
+              if not isinstance(r.get('portfolioReturn'),(int,float)) or len(rows)<=100: continue
+              rows=sorted(rows,key=lambda x:float(x.get('marketCap') or 0),reverse=True)[:100]
+              # Relative-momentum median is a common scalar and cancels in normalized weights.
+              raw={x['ticker']:math.sqrt(float(x['marketCap']))*((1.0+float(x.get('momentum') or 0.0))**3) for x in rows}
+              w=capped(raw)
+              for x in rows: x['weight']=w[x['ticker']]
+              rows.sort(key=lambda x:x['weight'],reverse=True)
+              r['rows']=rows; r['holdingsCount']=100
+              r['maxWeight']=max(x['weight'] for x in rows)
+              r['top10Weight']=sum(x['weight'] for x in rows[:10])
+              r['missingReturnWeight']=sum(x['weight'] for x in rows if x.get('monthlyReturn') is None)
+              r['portfolioReturn']=100*sum(x['weight']*(float(x['monthlyReturn']) if x.get('monthlyReturn') is not None else 0.0) for x in rows)
+              r['ququ100Rule']='If PIT Nasdaq-100 has more than 100 securities, retain the 100 largest by contemporaneous market cap.'
+              changed+=1
+          p.write_text(json.dumps(j,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
+          print('normalized months',changed)
+
+      - name: Validate histories
+        shell: python
+        run: |
+          import json, math
+          for fn, minimum, exact in [('snpi-history.json',495,None),('ququ-history.json',100,100)]:
+              j=json.load(open(fn,encoding='utf-8'))
+              realized=[(m,r) for m,r in (j.get('months') or {}).items() if isinstance(r.get('portfolioReturn'),(int,float))]
+              if len(realized)<12: raise RuntimeError(f'{fn}: only {len(realized)} realized months')
+              for m,r in realized:
+                  rows=r.get('rows') or []
+                  if len(rows)<minimum: raise RuntimeError(f'{fn} {m}: only {len(rows)} rows')
+                  if exact is not None and len(rows)!=exact: raise RuntimeError(f'{fn} {m}: expected {exact}, got {len(rows)}')
+                  total=sum(float(x['weight']) for x in rows)
+                  if abs(total-1)>1e-6: raise RuntimeError(f'{fn} {m}: weight sum {total}')
+                  if max(float(x['weight']) for x in rows)>0.2000001: raise RuntimeError(f'{fn} {m}: cap violation')
+              print(fn,'months=',len(realized),'range=',realized[0][0],realized[-1][0])
+              print(fn,'max missing-return weight=',max(float(r.get('missingReturnWeight') or 0) for _,r in realized))
+              print(fn,'min historical-cap count=',min(int(r.get('historicalCapCount') or 0) for _,r in realized))
+              print(fn,'max proxy-cap count=',max(int(r.get('currentSharesProxyCount') or 0) for _,r in realized))
+              print(fn,'max median-cap fallback=',max(int(r.get('medianCapFallbackCount') or 0) for _,r in realized))
+
+      - name: Commit histories to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add snpi-history.json ququ-history.json
+          git commit -m 'Backfill SNPI and QUQU monthly history' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
