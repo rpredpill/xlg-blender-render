@@ -59,11 +59,57 @@ jobs:
             python /tmp/backfill_snpi_ququ.py --start "$START_MONTH" --output-dir .
           fi
 
+      - name: Normalize QUQU to exactly 100 holdings
+        shell: python
+        run: |
+          import json, math
+          from pathlib import Path
+
+          CAP=0.20
+          p=Path('ququ-history.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+
+          def capped(raw):
+              free=set(raw); out={}; remaining=1.0
+              while free:
+                  total=sum(raw[s] for s in free)
+                  over=[s for s in free if remaining*raw[s]/total > CAP+1e-12]
+                  if not over:
+                      for s in free: out[s]=remaining*raw[s]/total
+                      break
+                  for s in over:
+                      out[s]=CAP; remaining-=CAP; free.remove(s)
+              return out
+
+          changed=0
+          for month,r in (j.get('months') or {}).items():
+              rows=r.get('rows') or []
+              if not isinstance(r.get('portfolioReturn'),(int,float)) or len(rows)<=100:
+                  continue
+              # Current QUQU is defined as 100 securities. If the PIT Nasdaq-100
+              # snapshot contains 101 share classes, keep the 100 largest by
+              # contemporaneous market cap, then recompute the exact formula.
+              rows=sorted(rows,key=lambda x:float(x.get('marketCap') or 0),reverse=True)[:100]
+              raw={x['ticker']:math.sqrt(float(x['marketCap']))*((1.0+float(x.get('momentum') or 0.0))**3) for x in rows}
+              w=capped(raw)
+              for x in rows: x['weight']=w[x['ticker']]
+              rows.sort(key=lambda x:x['weight'],reverse=True)
+              r['rows']=rows
+              r['holdingsCount']=100
+              r['maxWeight']=max(x['weight'] for x in rows)
+              r['top10Weight']=sum(x['weight'] for x in rows[:10])
+              r['missingReturnWeight']=sum(x['weight'] for x in rows if x.get('monthlyReturn') is None)
+              r['portfolioReturn']=100*sum(x['weight']*(float(x['monthlyReturn']) if x.get('monthlyReturn') is not None else 0.0) for x in rows)
+              r['ququ100Rule']='If PIT Nasdaq-100 has 101 securities, retain the 100 largest by contemporaneous market cap.'
+              changed+=1
+          p.write_text(json.dumps(j,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
+          print('normalized months',changed)
+
       - name: Validate history files
         shell: python
         run: |
           import json
-          for fn, minimum in [('snpi-history.json', 495), ('ququ-history.json', 90)]:
+          for fn, minimum, exact in [('snpi-history.json', 495, None), ('ququ-history.json', 100, 100)]:
               j=json.load(open(fn, encoding='utf-8'))
               realized=[(m,r) for m,r in (j.get('months') or {}).items() if isinstance(r.get('portfolioReturn'),(int,float))]
               if len(realized) < 12:
@@ -72,6 +118,8 @@ jobs:
                   rows=r.get('rows') or []
                   if len(rows) < minimum:
                       raise RuntimeError(f'{fn} {m}: only {len(rows)} rows')
+                  if exact is not None and len(rows)!=exact:
+                      raise RuntimeError(f'{fn} {m}: expected {exact}, got {len(rows)}')
                   s=sum(float(x['weight']) for x in rows)
                   if abs(s-1)>1e-6:
                       raise RuntimeError(f'{fn} {m}: weight sum {s}')
