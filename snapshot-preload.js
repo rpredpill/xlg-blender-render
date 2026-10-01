@@ -18,6 +18,23 @@ try{
   const rows=j.rows.map(r=>({ticker:String(r.ticker||"").trim().toUpperCase(),weight:Number(r.weight)}));
   if(rows.some(r=>!r.ticker||!Number.isFinite(r.weight)||r.weight<=0))return;
   const sum=rows.reduce((a,r)=>a+r.weight,0);if(Math.abs(sum-1)>1e-6)return;
+
+  // S&P 500 may contain more than 500 securities because of multiple share classes.
+  // Make the live engine use the exact constituent count in the server snapshot.
+  const strategy=globalThis.SOMXStrategy;
+  if(strategy?.getConfig){
+    const originalGetConfig=strategy.getConfig.bind(strategy);
+    strategy.getConfig=()=>{
+      const c=originalGetConfig();
+      if(c?.mode===mode){c.holdings=rows.length;c.entryRank=rows.length;c.exitRank=rows.length}
+      return c;
+    };
+  }
+  document.addEventListener("DOMContentLoaded",()=>{
+    if(globalThis.SOMXStrategy?.getMode?.()!==mode)return;
+    for(const id of ["st-holdings","st-entry","st-exit"]){const el=document.getElementById(id);if(el)el.value=String(rows.length)}
+  },{once:true});
+
   const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date());
   const ym=`${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`;
   const holdings=rows.map(r=>r.ticker),targetWeights=Object.fromEntries(rows.map(r=>[r.ticker,r.weight]));
