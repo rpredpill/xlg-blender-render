@@ -66,6 +66,6 @@ async function syncSnpyHistory({reload=true}={}){
   }catch(e){console.warn("SNPY history sync",e)}finally{syncing=false}
 }
 window.addEventListener("load",()=>syncSnpyHistory({reload:true}),{once:true});
-window.addEventListener("somx:strategy-active",()=>syncSnpyHistory({reload:false}));
+window.addEventListener("somx:strategy-active",()=>syncSnpyHistory({reload:true}));
 globalThis.SNPYHistory={sync:syncSnpyHistory};
 })();
