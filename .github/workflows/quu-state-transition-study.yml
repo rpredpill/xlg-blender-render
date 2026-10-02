@@ -1,0 +1,46 @@
+name: QUU leadership state transition study
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/quu_state_transition_study.py'
+      - '.github/workflows/quu-state-transition-study.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Load study script
+        run: git show origin/main:tools/quu_state_transition_study.py > /tmp/quu_state_transition_study.py
+
+      - name: Run study
+        run: python /tmp/quu_state_transition_study.py
+
+      - name: Validate output
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('quu-state-transition-study.json',encoding='utf-8'))
+          assert j['exact2022_2026']['transitionMonths'] >= 30
+          assert j['pre2018Proxy']['transitionMonths'] >= 60
+          print(json.dumps(j['signReplication'],indent=2))
+          PY
+
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-state-transition-study.json
+          git commit -m 'Update QUU state transition study' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
