@@ -1,0 +1,445 @@
+{
+  "purpose": "Test, without cutoff tuning, whether High+Rising -> High+Falling rollovers are worse when leadership remains at a higher current historical percentile after the turn.",
+  "definition": {
+    "event": "Previous month High+Rising and current month High+Falling, using prior-only dispersion percentile >=50 for High.",
+    "residualLevel": "Current dispersion percentile versus prior months only, after the direction has turned down.",
+    "hypothesisDirection": "If residual extreme leadership matters, correlation(current percentile, current-month QUQU-vs-QQQ excess return) should be negative.",
+    "lookahead": "None. Current percentile and direction are signal information available before the allocation month."
+  },
+  "exact2022_2026": {
+    "events": 5,
+    "pearsonCurrentPercentileVsExcess": -0.775884064356415,
+    "spearmanCurrentPercentileVsExcess": -1.0,
+    "pearsonCurrentPercentileVsRiskReturn": -0.8210373972908012,
+    "spearmanCurrentPercentileVsRiskReturn": -1.0,
+    "slopeExcessPpPer100PercentilePoints": -71.30864917500325,
+    "avgCurrentPercentile": 89.32622205921307,
+    "medianCurrentPercentile": 87.8048780487805,
+    "avgExcessPctPoints": -4.307346566638588,
+    "medianExcessPctPoints": -2.020713793916627,
+    "negativeExcessRatePct": 60.0,
+    "eventsSortedByCurrentPercentile": [
+      {
+        "sample": "exact2022_2026",
+        "month": "2023-07",
+        "prevMonth": "2023-06",
+        "prevPercentile": 100.0,
+        "currentPercentile": 77.77777777777777,
+        "dropPct": 17.253063091909258,
+        "riskReturnPct": 4.777915896556508,
+        "QQQReturnPct": 3.6777087388386587,
+        "excessPctPoints": 1.1002071577178496
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2025-12",
+        "prevMonth": "2025-11",
+        "prevPercentile": 91.89189189189189,
+        "currentPercentile": 86.84210526315789,
+        "dropPct": 10.407417583093341,
+        "riskReturnPct": 1.1884035334105116,
+        "QQQReturnPct": 0.23979704610066488,
+        "excessPctPoints": 0.9486064873098468
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2026-03",
+        "prevMonth": "2026-02",
+        "prevPercentile": 100.0,
+        "currentPercentile": 87.8048780487805,
+        "dropPct": 27.000428161438684,
+        "riskReturnPct": -5.519400794182559,
+        "QQQReturnPct": -3.498687000265932,
+        "excessPctPoints": -2.020713793916627
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2025-02",
+        "prevMonth": "2025-01",
+        "prevPercentile": 100.0,
+        "currentPercentile": 96.42857142857143,
+        "dropPct": 2.6897718529388888,
+        "riskReturnPct": -5.617307413214899,
+        "QQQReturnPct": -1.0321992337334884,
+        "excessPctPoints": -4.585108179481411
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2026-07",
+        "prevMonth": "2026-06",
+        "prevPercentile": 100.0,
+        "currentPercentile": 97.77777777777777,
+        "dropPct": 22.02661935655745,
+        "riskReturnPct": -22.629823666870585,
+        "QQQReturnPct": -5.650099162047983,
+        "excessPctPoints": -16.979724504822602
+      }
+    ],
+    "leaveOneOut": [
+      {
+        "leftOutMonth": "2025-02",
+        "pearsonCurrentPercentileVsExcess": -0.8779953846524167,
+        "spearmanCurrentPercentileVsExcess": -1.0
+      },
+      {
+        "leftOutMonth": "2025-12",
+        "pearsonCurrentPercentileVsExcess": -0.7823327758858918,
+        "spearmanCurrentPercentileVsExcess": -1.0
+      },
+      {
+        "leftOutMonth": "2023-07",
+        "pearsonCurrentPercentileVsExcess": -0.8183865769531331,
+        "spearmanCurrentPercentileVsExcess": -1.0
+      },
+      {
+        "leftOutMonth": "2026-07",
+        "pearsonCurrentPercentileVsExcess": -0.8741169723730953,
+        "spearmanCurrentPercentileVsExcess": -1.0
+      },
+      {
+        "leftOutMonth": "2026-03",
+        "pearsonCurrentPercentileVsExcess": -0.7735681001385766,
+        "spearmanCurrentPercentileVsExcess": -1.0
+      }
+    ],
+    "allLOOPearsonNegative": true,
+    "allLOOSpearmanNegative": true
+  },
+  "pre2018Proxy": {
+    "events": 9,
+    "pearsonCurrentPercentileVsExcess": -0.2842262464326245,
+    "spearmanCurrentPercentileVsExcess": -0.03333333333333333,
+    "pearsonCurrentPercentileVsRiskReturn": -0.10040375845816149,
+    "spearmanCurrentPercentileVsRiskReturn": -0.25,
+    "slopeExcessPpPer100PercentilePoints": -3.0743329297139237,
+    "avgCurrentPercentile": 70.97966645538116,
+    "medianCurrentPercentile": 66.66666666666667,
+    "avgExcessPctPoints": -0.4929640407899752,
+    "medianExcessPctPoints": -1.3244098929766273,
+    "negativeExcessRatePct": 66.66666666666667,
+    "eventsSortedByCurrentPercentile": [
+      {
+        "sample": "pre2018Proxy",
+        "month": "2014-08",
+        "prevMonth": "2014-07",
+        "prevPercentile": 100.0,
+        "currentPercentile": 52.77777777777778,
+        "dropPct": 64.97432676922458,
+        "riskReturnPct": 3.276621433035185,
+        "QQQReturnPct": 5.231011995207568,
+        "excessPctPoints": -1.9543905621723834
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2016-04",
+        "prevMonth": "2016-03",
+        "prevPercentile": 98.18181818181819,
+        "currentPercentile": 53.57142857142857,
+        "dropPct": 58.392913979466584,
+        "riskReturnPct": -4.1385452134437415,
+        "QQQReturnPct": -2.5981374228279286,
+        "excessPctPoints": -1.540407790615813
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2017-05",
+        "prevMonth": "2017-04",
+        "prevPercentile": 100.0,
+        "currentPercentile": 55.072463768115945,
+        "dropPct": 64.75566008396608,
+        "riskReturnPct": 4.801243667415477,
+        "QQQReturnPct": 3.55468510521062,
+        "excessPctPoints": 1.2465585622048572
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2013-07",
+        "prevMonth": "2013-06",
+        "prevPercentile": 72.72727272727273,
+        "currentPercentile": 60.869565217391305,
+        "dropPct": 14.764931076111463,
+        "riskReturnPct": 5.577397788021187,
+        "QQQReturnPct": 5.6027933189140455,
+        "excessPctPoints": -0.025395530892858176
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2012-11",
+        "prevMonth": "2012-10",
+        "prevPercentile": 92.85714285714286,
+        "currentPercentile": 66.66666666666667,
+        "dropPct": 52.33673646201259,
+        "riskReturnPct": 1.3603658253886608,
+        "QQQReturnPct": 0.6731918819095295,
+        "excessPctPoints": 0.6871739434791313
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2013-02",
+        "prevMonth": "2013-01",
+        "prevPercentile": 88.23529411764706,
+        "currentPercentile": 72.22222222222223,
+        "dropPct": 11.897008671819547,
+        "riskReturnPct": 2.723848438767339,
+        "QQQReturnPct": -0.35637013278998486,
+        "excessPctPoints": 3.080218571557324
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2014-10",
+        "prevMonth": "2014-09",
+        "prevPercentile": 91.89189189189189,
+        "currentPercentile": 86.84210526315789,
+        "dropPct": 2.242854932835627,
+        "riskReturnPct": -0.02202750982084597,
+        "QQQReturnPct": 2.9337089158026908,
+        "excessPctPoints": -2.955736425623537
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2017-07",
+        "prevMonth": "2017-06",
+        "prevPercentile": 100.0,
+        "currentPercentile": 94.36619718309859,
+        "dropPct": 10.630908825244548,
+        "riskReturnPct": 1.9368870185424318,
+        "QQQReturnPct": 3.5871742606123025,
+        "excessPctPoints": -1.6502872420698707
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2013-12",
+        "prevMonth": "2013-11",
+        "prevPercentile": 100.0,
+        "currentPercentile": 96.42857142857143,
+        "dropPct": 1.7255006036074536,
+        "riskReturnPct": 1.4827735144682082,
+        "QQQReturnPct": 2.8071834074448354,
+        "excessPctPoints": -1.3244098929766273
+      }
+    ],
+    "leaveOneOut": [
+      {
+        "leftOutMonth": "2013-12",
+        "pearsonCurrentPercentileVsExcess": -0.23526675925077378,
+        "spearmanCurrentPercentileVsExcess": -0.047619047619047616
+      },
+      {
+        "leftOutMonth": "2014-10",
+        "pearsonCurrentPercentileVsExcess": -0.14462022113606401,
+        "spearmanCurrentPercentileVsExcess": 0.23809523809523808
+      },
+      {
+        "leftOutMonth": "2017-07",
+        "pearsonCurrentPercentileVsExcess": -0.20126020147980545,
+        "spearmanCurrentPercentileVsExcess": 0.09523809523809523
+      },
+      {
+        "leftOutMonth": "2013-02",
+        "pearsonCurrentPercentileVsExcess": -0.42864992337629426,
+        "spearmanCurrentPercentileVsExcess": -0.047619047619047616
+      },
+      {
+        "leftOutMonth": "2013-07",
+        "pearsonCurrentPercentileVsExcess": -0.2717839992242599,
+        "spearmanCurrentPercentileVsExcess": 0.0
+      },
+      {
+        "leftOutMonth": "2012-11",
+        "pearsonCurrentPercentileVsExcess": -0.2712974611649912,
+        "spearmanCurrentPercentileVsExcess": 0.0
+      },
+      {
+        "leftOutMonth": "2016-04",
+        "pearsonCurrentPercentileVsExcess": -0.3981351359446954,
+        "spearmanCurrentPercentileVsExcess": -0.19047619047619047
+      },
+      {
+        "leftOutMonth": "2017-05",
+        "pearsonCurrentPercentileVsExcess": -0.18921640819485913,
+        "spearmanCurrentPercentileVsExcess": 0.023809523809523808
+      },
+      {
+        "leftOutMonth": "2014-08",
+        "pearsonCurrentPercentileVsExcess": -0.45015430430888526,
+        "spearmanCurrentPercentileVsExcess": -0.3333333333333333
+      }
+    ],
+    "allLOOPearsonNegative": true,
+    "allLOOSpearmanNegative": false
+  },
+  "pooledReference": {
+    "events": 14,
+    "pearsonCurrentPercentileVsRawExcess_referenceOnly": -0.4587578606357236,
+    "spearmanCurrentPercentileVsRawExcess_referenceOnly": -0.49119061885349663,
+    "pearsonCurrentPercentileVsWithinSampleZExcess": -0.3052940904166791,
+    "spearmanCurrentPercentileVsWithinSampleZExcess": -0.2841416584399151,
+    "eventsSortedByCurrentPercentile": [
+      {
+        "sample": "pre2018Proxy",
+        "month": "2014-08",
+        "prevMonth": "2014-07",
+        "prevPercentile": 100.0,
+        "currentPercentile": 52.77777777777778,
+        "dropPct": 64.97432676922458,
+        "riskReturnPct": 3.276621433035185,
+        "QQQReturnPct": 5.231011995207568,
+        "excessPctPoints": -1.9543905621723834
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2016-04",
+        "prevMonth": "2016-03",
+        "prevPercentile": 98.18181818181819,
+        "currentPercentile": 53.57142857142857,
+        "dropPct": 58.392913979466584,
+        "riskReturnPct": -4.1385452134437415,
+        "QQQReturnPct": -2.5981374228279286,
+        "excessPctPoints": -1.540407790615813
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2017-05",
+        "prevMonth": "2017-04",
+        "prevPercentile": 100.0,
+        "currentPercentile": 55.072463768115945,
+        "dropPct": 64.75566008396608,
+        "riskReturnPct": 4.801243667415477,
+        "QQQReturnPct": 3.55468510521062,
+        "excessPctPoints": 1.2465585622048572
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2013-07",
+        "prevMonth": "2013-06",
+        "prevPercentile": 72.72727272727273,
+        "currentPercentile": 60.869565217391305,
+        "dropPct": 14.764931076111463,
+        "riskReturnPct": 5.577397788021187,
+        "QQQReturnPct": 5.6027933189140455,
+        "excessPctPoints": -0.025395530892858176
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2012-11",
+        "prevMonth": "2012-10",
+        "prevPercentile": 92.85714285714286,
+        "currentPercentile": 66.66666666666667,
+        "dropPct": 52.33673646201259,
+        "riskReturnPct": 1.3603658253886608,
+        "QQQReturnPct": 0.6731918819095295,
+        "excessPctPoints": 0.6871739434791313
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2013-02",
+        "prevMonth": "2013-01",
+        "prevPercentile": 88.23529411764706,
+        "currentPercentile": 72.22222222222223,
+        "dropPct": 11.897008671819547,
+        "riskReturnPct": 2.723848438767339,
+        "QQQReturnPct": -0.35637013278998486,
+        "excessPctPoints": 3.080218571557324
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2023-07",
+        "prevMonth": "2023-06",
+        "prevPercentile": 100.0,
+        "currentPercentile": 77.77777777777777,
+        "dropPct": 17.253063091909258,
+        "riskReturnPct": 4.777915896556508,
+        "QQQReturnPct": 3.6777087388386587,
+        "excessPctPoints": 1.1002071577178496
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2025-12",
+        "prevMonth": "2025-11",
+        "prevPercentile": 91.89189189189189,
+        "currentPercentile": 86.84210526315789,
+        "dropPct": 10.407417583093341,
+        "riskReturnPct": 1.1884035334105116,
+        "QQQReturnPct": 0.23979704610066488,
+        "excessPctPoints": 0.9486064873098468
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2014-10",
+        "prevMonth": "2014-09",
+        "prevPercentile": 91.89189189189189,
+        "currentPercentile": 86.84210526315789,
+        "dropPct": 2.242854932835627,
+        "riskReturnPct": -0.02202750982084597,
+        "QQQReturnPct": 2.9337089158026908,
+        "excessPctPoints": -2.955736425623537
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2026-03",
+        "prevMonth": "2026-02",
+        "prevPercentile": 100.0,
+        "currentPercentile": 87.8048780487805,
+        "dropPct": 27.000428161438684,
+        "riskReturnPct": -5.519400794182559,
+        "QQQReturnPct": -3.498687000265932,
+        "excessPctPoints": -2.020713793916627
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2017-07",
+        "prevMonth": "2017-06",
+        "prevPercentile": 100.0,
+        "currentPercentile": 94.36619718309859,
+        "dropPct": 10.630908825244548,
+        "riskReturnPct": 1.9368870185424318,
+        "QQQReturnPct": 3.5871742606123025,
+        "excessPctPoints": -1.6502872420698707
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2025-02",
+        "prevMonth": "2025-01",
+        "prevPercentile": 100.0,
+        "currentPercentile": 96.42857142857143,
+        "dropPct": 2.6897718529388888,
+        "riskReturnPct": -5.617307413214899,
+        "QQQReturnPct": -1.0321992337334884,
+        "excessPctPoints": -4.585108179481411
+      },
+      {
+        "sample": "pre2018Proxy",
+        "month": "2013-12",
+        "prevMonth": "2013-11",
+        "prevPercentile": 100.0,
+        "currentPercentile": 96.42857142857143,
+        "dropPct": 1.7255006036074536,
+        "riskReturnPct": 1.4827735144682082,
+        "QQQReturnPct": 2.8071834074448354,
+        "excessPctPoints": -1.3244098929766273
+      },
+      {
+        "sample": "exact2022_2026",
+        "month": "2026-07",
+        "prevMonth": "2026-06",
+        "prevPercentile": 100.0,
+        "currentPercentile": 97.77777777777777,
+        "dropPct": 22.02661935655745,
+        "riskReturnPct": -22.629823666870585,
+        "QQQReturnPct": -5.650099162047983,
+        "excessPctPoints": -16.979724504822602
+      }
+    ],
+    "note": "Pooled raw excess is reference-only because pre-2018 uses a momentum^3 proxy. Within-sample z-score pooling is more comparable but exploratory."
+  },
+  "crossSampleSignReplication": {
+    "pearsonNegativeBoth": true,
+    "spearmanNegativeBoth": true
+  },
+  "limitations": [
+    "There are only 5 recent exact and 9 pre-2018 proxy rollover events.",
+    "Pre-2018 risk sleeve is RelativeMomentum^3 without reliable historical market-cap weighting, not exact QUQU.",
+    "Correlation is descriptive and can be unstable with small event counts.",
+    "No percentile cutoff, nonlinear transform, lag, or return-maximizing parameter is selected here."
+  ]
+}
