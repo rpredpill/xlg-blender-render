@@ -1,0 +1,49 @@
+name: QUQU variant comparison
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ququ-variant-comparison.yml'
+      - 'tools/ququ_variant_compare.py'
+
+permissions:
+  contents: write
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check yfinance pandas numpy
+      - name: Load comparison script
+        run: git show origin/main:tools/ququ_variant_compare.py > /tmp/ququ_variant_compare.py
+      - name: Run comparison
+        run: python /tmp/ququ_variant_compare.py
+      - name: Validate
+        shell: python
+        run: |
+          import json
+          j=json.load(open('ququ-variant-comparison.json',encoding='utf-8'))
+          if j['period']['months'] < 36: raise RuntimeError(j['period'])
+          for name in ['QUQU p=3','QUQU p=2','QUQU/QQQ 10M','QQQ','SPY']:
+              m=j['variants'].get(name) or {}
+              for k in ['CAGRpct','MDDpct','endingIndex']:
+                  if not isinstance(m.get(k),(int,float)): raise RuntimeError((name,k,m.get(k)))
+          print(json.dumps({'period':j['period'],'variants':j['variants'],'regimeBreakdown':j['regimeBreakdown']},indent=2))
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ququ-variant-comparison.json
+          git commit -m 'Update QUQU variant comparison' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
