@@ -46,7 +46,7 @@ jobs:
           latest=json.load(open('quu-latest.json',encoding='utf-8'))
           hist=json.load(open('quu-history.json',encoding='utf-8'))
           rows=latest.get('rows') or []
-          assert latest.get('selectedSleeve') in ('QUQU','QQQ')
+          assert latest.get('selectedSleeve') in ('QUQU','QQQ','QQQE')
           assert len(rows) in (1,100), len(rows)
           assert abs(sum(float(x['weight']) for x in rows)-1)<1e-6
           months=hist.get('months') or {}
@@ -60,6 +60,12 @@ jobs:
 
       - name: Commit QUU to Pages
         run: |
+          cp quu-latest.json /tmp/quu-latest.json
+          cp quu-history.json /tmp/quu-history.json
+          git fetch origin somx-pages
+          git reset --hard origin/somx-pages
+          cp /tmp/quu-latest.json quu-latest.json
+          cp /tmp/quu-history.json quu-history.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add quu-latest.json quu-history.json
@@ -68,5 +74,4 @@ jobs:
             exit 0
           fi
           git commit -m 'Refresh QUU snapshot and history'
-          git pull --rebase origin somx-pages
           git push origin HEAD:somx-pages
