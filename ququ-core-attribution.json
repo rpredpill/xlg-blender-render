@@ -1,0 +1,369 @@
+{
+  "period": [
+    "2022-10",
+    "2026-09"
+  ],
+  "months": 28,
+  "formulae": {
+    "actual": "sqrt(MarketCap) * RelativeMomentum^3, 20% cap",
+    "mom3": "RelativeMomentum^3 only, 20% cap",
+    "sqrtcap": "sqrt(MarketCap) only, 20% cap",
+    "equal": "equal weight, 20% cap"
+  },
+  "performance": {
+    "actual": {
+      "months": 28,
+      "totalReturnPct": 190.27790493971503,
+      "CAGRpct": 57.88790004844393,
+      "MDDpct": -10.895566960579695,
+      "Calmar": 5.3129773106698455,
+      "endingIndex": 290.27790493971503
+    },
+    "mom3": {
+      "months": 28,
+      "totalReturnPct": 165.49921597300045,
+      "CAGRpct": 51.964235589899644,
+      "MDDpct": -13.40888054578173,
+      "Calmar": 3.8753597224226857,
+      "endingIndex": 265.49921597300045
+    },
+    "sqrtcap": {
+      "months": 28,
+      "totalReturnPct": 71.25907185212145,
+      "CAGRpct": 25.932333594519875,
+      "MDDpct": -8.533273666742636,
+      "Calmar": 3.0389665921049613,
+      "endingIndex": 171.25907185212145
+    },
+    "equal": {
+      "months": 28,
+      "totalReturnPct": 52.30308716585712,
+      "CAGRpct": 19.757778526382452,
+      "MDDpct": -10.852789997413037,
+      "Calmar": 1.8205252779324104,
+      "endingIndex": 152.3030871658571
+    }
+  },
+  "validation": {
+    "meanWeightMAE": 8.510732821900057e-20,
+    "meanActualMinusStoredPp": 4.7580986769649563e-17,
+    "maxAbsActualMinusStoredPp": 1.7763568394002505e-15
+  },
+  "attribution": {
+    "actualMinusMom3CAGRpp": 5.9236644585442875,
+    "actualMinusSqrtCapCAGRpp": 31.955566453924057,
+    "mom3MinusEqualCAGRpp": 32.20645706351719,
+    "sqrtCapMinusEqualCAGRpp": 6.174555068137423,
+    "actualMinusMom3TotalReturnPp": 24.778688966714583
+  },
+  "rows": [
+    {
+      "month": "2022-10",
+      "actual": 3.479174290195618,
+      "mom3": 5.275068994424536,
+      "sqrtcap": 3.3512783348286233,
+      "equal": 4.956485583032336,
+      "qqq": 3.3002421299531903,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 3.479174290195618,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2022-11",
+      "actual": 3.9107864827617864,
+      "mom3": 4.367270049856557,
+      "sqrtcap": 5.412971580101686,
+      "equal": 6.189827071296867,
+      "qqq": 4.213129769866852,
+      "weightMAE": 1.807003620809174e-20,
+      "storedWeightReturn": 3.9107864827617864,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2022-12",
+      "actual": -7.7207677137247455,
+      "mom3": -6.785350357503746,
+      "sqrtcap": -8.53327366674263,
+      "equal": -6.999227883682413,
+      "qqq": -9.115926198843383,
+      "weightMAE": 0.0,
+      "storedWeightReturn": -7.7207677137247455,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2023-01",
+      "actual": 6.002346886314624,
+      "mom3": 5.974500149677399,
+      "sqrtcap": 9.662469480125251,
+      "equal": 8.8666475356008,
+      "qqq": 9.666846166213805,
+      "weightMAE": 1.1293772630057338e-20,
+      "storedWeightReturn": 6.002346886314624,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2023-03",
+      "actual": 8.134801843589253,
+      "mom3": 5.803096573217494,
+      "sqrtcap": 6.9471829492911645,
+      "equal": 4.994018537074834,
+      "qqq": 9.604711929734577,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 8.134801843589253,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2023-04",
+      "actual": 1.7209968423279358,
+      "mom3": -0.5534512862635876,
+      "sqrtcap": -0.23918498381794973,
+      "equal": -1.6560361222683704,
+      "qqq": 1.1889402030182072,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 1.7209968423279358,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2023-06",
+      "actual": 6.631200994563123,
+      "mom3": 6.685878212735022,
+      "sqrtcap": 5.842688199176636,
+      "equal": 6.193315875801867,
+      "qqq": 6.383332626094473,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 6.631200994563123,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2023-07",
+      "actual": 4.777915896556508,
+      "mom3": 4.9562795800078385,
+      "sqrtcap": 4.839721726350726,
+      "equal": 5.003537208800962,
+      "qqq": 3.6776745347315343,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 4.777915896556508,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2024-03",
+      "actual": 1.0309542697587735,
+      "mom3": 1.0556671817638028,
+      "sqrtcap": 1.1037844071455107,
+      "equal": 1.171457459430868,
+      "qqq": 1.0677825762829496,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 1.0309542697587735,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2024-04",
+      "actual": -5.038857987095707,
+      "mom3": -5.611880756063544,
+      "sqrtcap": -4.206370692101278,
+      "equal": -5.325174608434671,
+      "qqq": -4.580078225542628,
+      "weightMAE": 0.0,
+      "storedWeightReturn": -5.038857987095707,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2024-06",
+      "actual": 3.6449017682961897,
+      "mom3": 2.3209643658680457,
+      "sqrtcap": 3.5098067587966875,
+      "equal": 2.2499397798280985,
+      "qqq": 5.566002166916206,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 3.6449017682961897,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2024-07",
+      "actual": -3.8195629581136115,
+      "mom3": -3.0886983525110545,
+      "sqrtcap": -1.3193328134009363,
+      "equal": -0.27649464832280884,
+      "qqq": -1.8686017184550763,
+      "weightMAE": 0.0,
+      "storedWeightReturn": -3.8195629581136115,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2024-12",
+      "actual": -1.4198393887070588,
+      "mom3": -4.306788583176167,
+      "sqrtcap": -1.4495907152225656,
+      "equal": -4.727136138005845,
+      "qqq": 0.20437231354293317,
+      "weightMAE": 8.213652821859882e-22,
+      "storedWeightReturn": -1.4198393887070588,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2025-01",
+      "actual": 5.875276274074131,
+      "mom3": 6.883283434213339,
+      "sqrtcap": 3.48576110277801,
+      "equal": 4.406035276149511,
+      "qqq": 1.553563904467481,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 5.875276274074131,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2025-03",
+      "actual": -9.814936811263655,
+      "mom3": -9.319092368359092,
+      "sqrtcap": -8.05672952051255,
+      "equal": -7.163700279446572,
+      "qqq": -8.191409562291852,
+      "weightMAE": 0.0,
+      "storedWeightReturn": -9.814936811263655,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2025-08",
+      "actual": 0.9346413631796033,
+      "mom3": -0.25062214816473144,
+      "sqrtcap": 2.1394880664475173,
+      "equal": 0.6120674030271599,
+      "qqq": 2.070395090428412,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 0.9346413631796033,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2025-09",
+      "actual": 10.276512525432311,
+      "mom3": 8.6727258086952,
+      "sqrtcap": 6.9568959067434255,
+      "equal": 5.141626056288278,
+      "qqq": 7.082715825155206,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 10.276512525432311,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2025-10",
+      "actual": 8.058165990546225,
+      "mom3": 6.582417465217659,
+      "sqrtcap": 4.761584024476527,
+      "equal": 2.399893705086286,
+      "qqq": 5.3418705033436265,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 8.058165990546225,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2025-11",
+      "actual": -1.1479911097918132,
+      "mom3": -1.574827824539805,
+      "sqrtcap": -1.4441656009534805,
+      "equal": -1.647292073179342,
+      "qqq": -2.4971938527798776,
+      "weightMAE": 1.3921155894713877e-18,
+      "storedWeightReturn": -1.1479911097918127,
+      "actualMinusStoredPp": -4.440892098500626e-16
+    },
+    {
+      "month": "2025-12",
+      "actual": 1.1884035334105119,
+      "mom3": 2.5116701164492152,
+      "sqrtcap": 0.6502943697864823,
+      "equal": 1.2430652897874122,
+      "qqq": 0.23979704610066488,
+      "weightMAE": 8.131516293641283e-22,
+      "storedWeightReturn": 1.1884035334105119,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-01",
+      "actual": 8.363669118391016,
+      "mom3": 9.303658529871718,
+      "sqrtcap": 0.8243421702827795,
+      "equal": 0.7542208587833715,
+      "qqq": 0.2919026829669713,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 8.363669118391016,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-02",
+      "actual": 0.9509561719819424,
+      "mom3": 3.2709001249621865,
+      "sqrtcap": -1.3271371354877726,
+      "equal": -0.240942619692408,
+      "qqq": -1.8442071035643548,
+      "weightMAE": 5.421010862427522e-22,
+      "storedWeightReturn": 0.9509561719819424,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-03",
+      "actual": -5.519400794182559,
+      "mom3": -4.940258645222646,
+      "sqrtcap": -3.4971620196477446,
+      "equal": -3.5323678276811044,
+      "qqq": -3.498687000265932,
+      "weightMAE": 5.421010862427522e-22,
+      "storedWeightReturn": -5.519400794182559,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-04",
+      "actual": 18.394529008067263,
+      "mom3": 16.483330267635584,
+      "sqrtcap": 14.367671448395814,
+      "equal": 10.859843139990858,
+      "qqq": 14.834549480750914,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 18.394529008067263,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-05",
+      "actual": 28.605558740667668,
+      "mom3": 26.632803116644858,
+      "sqrtcap": 8.624449584721878,
+      "equal": 7.324615332591278,
+      "qqq": 10.333855484207778,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 28.605558740667668,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-06",
+      "actual": 14.536328368912976,
+      "mom3": 14.470713374729524,
+      "sqrtcap": -0.6343329483954434,
+      "equal": 0.7970592187695356,
+      "qqq": 0.022966122540468703,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 14.536328368912976,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-08",
+      "actual": 4.696889643948771,
+      "mom3": 4.696542120534775,
+      "sqrtcap": 3.496344085442681,
+      "equal": 4.365927605645184,
+      "qqq": 4.134824925070957,
+      "weightMAE": 0.0,
+      "storedWeightReturn": 4.696889643948771,
+      "actualMinusStoredPp": 0.0
+    },
+    {
+      "month": "2026-09",
+      "actual": 9.873947754711338,
+      "mom3": 7.033250471318349,
+      "sqrtcap": 2.47844235135218,
+      "equal": -0.7106450713887477,
+      "qqq": 4.6863662750115775,
+      "weightMAE": 9.588070727384437e-19,
+      "storedWeightReturn": 9.873947754711336,
+      "actualMinusStoredPp": 1.7763568394002505e-15
+    }
+  ]
+}
