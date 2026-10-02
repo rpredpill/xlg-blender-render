@@ -4,10 +4,10 @@ try{
   const ACTIVE="somx.strategy.active.v1",CAP=0.20;
   let mode=localStorage.getItem(ACTIVE);
   if(mode==="core"){mode="snpi";localStorage.setItem(ACTIVE,"snpi")}
-  if(!["snpi","snpy","ququ"].includes(mode))return;
-  const file=mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
-  const sig=mode==="snpi"?"snpi-sp500-v1":mode==="snpy"?"snpy-sp500-top100-v1":"ququ-ndx100-v1";
-  const min=mode==="snpi"?495:100;
+  if(!["snpi","snpy","ququ","quu"].includes(mode))return;
+  const file=mode==="quu"?"quu-latest.json":mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
+  const sig=mode==="snpi"?"snpi-sp500-v1":mode==="snpy"?"snpy-sp500-top100-v1":mode==="quu"?"quu-ndx100-rollover-v1":"ququ-ndx100-v1";
+  const min=mode==="snpi"?495:mode==="quu"?1:100;
   const xhr=new XMLHttpRequest();
   xhr.open("GET",`./${file}?v=${Date.now()}`,false);
   xhr.setRequestHeader("Cache-Control","no-cache");
