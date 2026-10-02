@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-SYMBOLS=["SPY","QQQ","QLD","TQQQ","SPMO"]
+SYMBOLS=["SPY","QQQ","QQQE","QLD","TQQQ","SPMO"]
 START="2022-10-01"
 
 def adjusted_month_return(d: pd.DataFrame, ym: str):
