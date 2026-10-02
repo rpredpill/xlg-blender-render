@@ -1,0 +1,683 @@
+{
+  "generatedAt": "2026-10-02T09:22:51.029449+00:00",
+  "rules": {
+    "minimumPriorMonths": 8,
+    "leadership": "Prior-only Nasdaq-100 cross-sectional 6-1 momentum-dispersion percentile >=50 => QUQU; below 50 => QQQ",
+    "meanReversionOverlay": "Prior-only percentile >=90 AND current dispersion < immediately prior dispersion => QQQE for that allocation month",
+    "reset": "Reevaluate from scratch every month; no cooldown or multi-month hold rule",
+    "warmup": "Before eight prior observations exist, use expanding prior median for the QUQU/QQQ split and disable the QQQE overlay"
+  },
+  "metricsCompletedMonths": {
+    "months": 48,
+    "totalReturnPct": 381.296632852526,
+    "CAGRpct": 48.11641976528143,
+    "MDDpct": -9.814936811263653,
+    "Calmar": 4.902366738628706,
+    "endingIndex": 481.296632852526
+  },
+  "months": {
+    "2022-10": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 3.479174290195618,
+      "coverageRatio": 0.9411764705882353,
+      "decision": {
+        "momentumDispersion": 0.16016729342681005,
+        "priorMedianDispersion": null,
+        "priorDispersion": null,
+        "priorObservationCount": 0,
+        "leadershipPercentile": null,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2022-11": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 3.9107864827617864,
+      "coverageRatio": 0.9411764705882353,
+      "decision": {
+        "momentumDispersion": 0.20762013357380257,
+        "priorMedianDispersion": 0.16016729342681005,
+        "priorDispersion": 0.16016729342681005,
+        "priorObservationCount": 1,
+        "leadershipPercentile": null,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2022-12": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": -7.7207677137247455,
+      "coverageRatio": 0.9411764705882353,
+      "decision": {
+        "momentumDispersion": 0.22576411326975834,
+        "priorMedianDispersion": 0.1838937135003063,
+        "priorDispersion": 0.20762013357380257,
+        "priorObservationCount": 2,
+        "leadershipPercentile": null,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2023-01": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 6.002346886314624,
+      "coverageRatio": 0.9504950495049505,
+      "decision": {
+        "momentumDispersion": 0.2108842106646793,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.22576411326975834,
+        "priorObservationCount": 3,
+        "leadershipPercentile": null,
+        "leadershipStrong": true,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2023-02": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": -0.28870855332077117,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.18694752015684116,
+        "priorMedianDispersion": 0.20925217211924094,
+        "priorDispersion": 0.2108842106646793,
+        "priorObservationCount": 4,
+        "leadershipPercentile": null,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2023-03": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 8.134801843589253,
+      "coverageRatio": 0.9504950495049505,
+      "decision": {
+        "momentumDispersion": 0.21161461281222513,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.18694752015684116,
+        "priorObservationCount": 5,
+        "leadershipPercentile": null,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2023-04": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 1.7209968423279358,
+      "coverageRatio": 0.9504950495049505,
+      "decision": {
+        "momentumDispersion": 0.2565550444326298,
+        "priorMedianDispersion": 0.20925217211924094,
+        "priorDispersion": 0.21161461281222513,
+        "priorObservationCount": 6,
+        "leadershipPercentile": null,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2023-05": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 8.041231444097964,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.20652237170211668,
+        "priorMedianDispersion": 0.2108842106646793,
+        "priorDispersion": 0.2565550444326298,
+        "priorObservationCount": 7,
+        "leadershipPercentile": null,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "WARMUP_MEDIAN",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2023-06": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 6.631200994563123,
+      "coverageRatio": 0.9504950495049505,
+      "decision": {
+        "momentumDispersion": 0.2910667102621583,
+        "priorMedianDispersion": 0.20925217211924094,
+        "priorDispersion": 0.20652237170211668,
+        "priorObservationCount": 8,
+        "leadershipPercentile": 100.0,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2023-07": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 4.777915896556508,
+      "coverageRatio": 0.9504950495049505,
+      "decision": {
+        "momentumDispersion": 0.24084878710108348,
+        "priorMedianDispersion": 0.2108842106646793,
+        "priorDispersion": 0.2910667102621583,
+        "priorObservationCount": 9,
+        "leadershipPercentile": 77.77777777777777,
+        "leadershipStrong": true,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2023-08": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": -1.1299598244236986,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.2084929989190688,
+        "priorMedianDispersion": 0.21124941173845221,
+        "priorDispersion": 0.24084878710108348,
+        "priorObservationCount": 10,
+        "leadershipPercentile": 40.0,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2023-09": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": -5.68122759405032,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.18674563589633114,
+        "priorMedianDispersion": 0.2108842106646793,
+        "priorDispersion": 0.2084929989190688,
+        "priorObservationCount": 11,
+        "leadershipPercentile": 9.090909090909092,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2023-10": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": -2.1392444370763153,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.19860106492576385,
+        "priorMedianDispersion": 0.20968860479187407,
+        "priorDispersion": 0.18674563589633114,
+        "priorObservationCount": 12,
+        "leadershipPercentile": 25.0,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2023-11": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 10.551009518783694,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.171009469711099,
+        "priorMedianDispersion": 0.2084929989190688,
+        "priorDispersion": 0.19860106492576385,
+        "priorObservationCount": 13,
+        "leadershipPercentile": 7.6923076923076925,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2023-12": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 5.881049169508357,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.20554458170359832,
+        "priorMedianDispersion": 0.2080565662464357,
+        "priorDispersion": 0.171009469711099,
+        "priorObservationCount": 14,
+        "leadershipPercentile": 35.714285714285715,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-01": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 2.7424627991802897,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.15338607299602028,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.20554458170359832,
+        "priorObservationCount": 15,
+        "leadershipPercentile": 0.0,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-02": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 4.8258081511790785,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.16846598901407034,
+        "priorMedianDispersion": 0.2070712526379596,
+        "priorDispersion": 0.15338607299602028,
+        "priorObservationCount": 16,
+        "leadershipPercentile": 12.5,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-03": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 1.0309542697587735,
+      "coverageRatio": 0.9603960396039604,
+      "decision": {
+        "momentumDispersion": 0.23261612199128454,
+        "priorMedianDispersion": 0.20652237170211668,
+        "priorDispersion": 0.16846598901407034,
+        "priorObservationCount": 17,
+        "leadershipPercentile": 82.3529411764706,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2024-04": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": -5.038857987095707,
+      "coverageRatio": 0.9702970297029703,
+      "decision": {
+        "momentumDispersion": 0.243161095610407,
+        "priorMedianDispersion": 0.2070712526379596,
+        "priorDispersion": 0.23261612199128454,
+        "priorObservationCount": 18,
+        "leadershipPercentile": 88.88888888888889,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2024-05": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 6.513063318199852,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.19403039564459088,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.243161095610407,
+        "priorObservationCount": 19,
+        "leadershipPercentile": 31.57894736842105,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-06": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 3.6449017682961897,
+      "coverageRatio": 0.9702970297029703,
+      "decision": {
+        "momentumDispersion": 0.23864524139846785,
+        "priorMedianDispersion": 0.2070712526379596,
+        "priorDispersion": 0.19403039564459088,
+        "priorObservationCount": 20,
+        "leadershipPercentile": 80.0,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2024-07": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": -3.8195629581136115,
+      "coverageRatio": 0.9702970297029703,
+      "decision": {
+        "momentumDispersion": 0.24510372482857448,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.23864524139846785,
+        "priorObservationCount": 21,
+        "leadershipPercentile": 90.47619047619048,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2024-08": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 0.9559796457500491,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.16387238737887955,
+        "priorMedianDispersion": 0.2080565662464357,
+        "priorDispersion": 0.24510372482857448,
+        "priorObservationCount": 22,
+        "leadershipPercentile": 9.090909090909092,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-09": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 3.287374997745607,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.17802400663849086,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.16387238737887955,
+        "priorObservationCount": 23,
+        "leadershipPercentile": 21.73913043478261,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-10": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": -0.7894205598178994,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.18732567021964008,
+        "priorMedianDispersion": 0.2070712526379596,
+        "priorDispersion": 0.17802400663849086,
+        "priorObservationCount": 24,
+        "leadershipPercentile": 33.333333333333336,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-11": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 4.992780837584143,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.2025117710454883,
+        "priorMedianDispersion": 0.20652237170211668,
+        "priorDispersion": 0.18732567021964008,
+        "priorObservationCount": 25,
+        "leadershipPercentile": 44.0,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2024-12": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": -1.4198393887070588,
+      "coverageRatio": 0.9801980198019802,
+      "decision": {
+        "momentumDispersion": 0.38412950371420035,
+        "priorMedianDispersion": 0.2060334767028575,
+        "priorDispersion": 0.2025117710454883,
+        "priorObservationCount": 26,
+        "leadershipPercentile": 100.0,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2025-01": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 5.875276274074131,
+      "coverageRatio": 0.9801980198019802,
+      "decision": {
+        "momentumDispersion": 0.4378238234480197,
+        "priorMedianDispersion": 0.20652237170211668,
+        "priorDispersion": 0.38412950371420035,
+        "priorObservationCount": 27,
+        "leadershipPercentile": 100.0,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2025-02": {
+      "selectedSleeve": "QQQE",
+      "portfolioReturn": 0.2373032790616625,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.426047361479454,
+        "priorMedianDispersion": 0.2070712526379596,
+        "priorDispersion": 0.4378238234480197,
+        "priorObservationCount": 28,
+        "leadershipPercentile": 96.42857142857143,
+        "leadershipStrong": true,
+        "falling": true,
+        "meanReversionOverlay": true,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQE"
+      }
+    },
+    "2025-03": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": -9.814936811263655,
+      "coverageRatio": 0.9801980198019802,
+      "decision": {
+        "momentumDispersion": 0.2719317072083479,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.426047361479454,
+        "priorObservationCount": 29,
+        "leadershipPercentile": 86.20689655172414,
+        "leadershipStrong": true,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2025-04": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 1.748346543715873,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.19572128282194298,
+        "priorMedianDispersion": 0.2080565662464357,
+        "priorDispersion": 0.2719317072083479,
+        "priorObservationCount": 30,
+        "leadershipPercentile": 33.333333333333336,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2025-05": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 7.3850273633686125,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.175758806157867,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.19572128282194298,
+        "priorObservationCount": 31,
+        "leadershipPercentile": 16.129032258064516,
+        "leadershipStrong": false,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2025-06": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 6.770474556992956,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.18186312436379556,
+        "priorMedianDispersion": 0.2070712526379596,
+        "priorDispersion": 0.175758806157867,
+        "priorObservationCount": 32,
+        "leadershipPercentile": 21.875,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2025-07": {
+      "selectedSleeve": "QQQ",
+      "portfolioReturn": 2.7795513021962703,
+      "coverageRatio": 1.0,
+      "decision": {
+        "momentumDispersion": 0.18512457660650275,
+        "priorMedianDispersion": 0.20652237170211668,
+        "priorDispersion": 0.18186312436379556,
+        "priorObservationCount": 33,
+        "leadershipPercentile": 24.242424242424242,
+        "leadershipStrong": false,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QQQ"
+      }
+    },
+    "2025-08": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 0.9346413631796033,
+      "coverageRatio": 0.9900990099009901,
+      "decision": {
+        "momentumDispersion": 0.2111718509098479,
+        "priorMedianDispersion": 0.2060334767028575,
+        "priorDispersion": 0.18512457660650275,
+        "priorObservationCount": 34,
+        "leadershipPercentile": 61.76470588235294,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2025-09": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 10.276512525432311,
+      "coverageRatio": 0.9900990099009901,
+      "decision": {
+        "momentumDispersion": 0.22494122193185323,
+        "priorMedianDispersion": 0.20652237170211668,
+        "priorDispersion": 0.2111718509098479,
+        "priorObservationCount": 35,
+        "leadershipPercentile": 65.71428571428571,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2025-10": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 8.058165990546225,
+      "coverageRatio": 0.9900990099009901,
+      "decision": {
+        "momentumDispersion": 0.32633422029415615,
+        "priorMedianDispersion": 0.2070712526379596,
+        "priorDispersion": 0.22494122193185323,
+        "priorObservationCount": 36,
+        "leadershipPercentile": 91.66666666666667,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2025-11": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": -1.1479911097918127,
+      "coverageRatio": 0.9803921568627451,
+      "decision": {
+        "momentumDispersion": 0.34460829409365357,
+        "priorMedianDispersion": 0.20762013357380257,
+        "priorDispersion": 0.32633422029415615,
+        "priorObservationCount": 37,
+        "leadershipPercentile": 91.89189189189189,
+        "leadershipStrong": true,
+        "falling": false,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    },
+    "2025-12": {
+      "selectedSleeve": "QUQU",
+      "portfolioReturn": 1.1884035334105116,
+      "coverageRatio": 0.9900990099009901,
+      "decision": {
+        "momentumDispersion": 0.30874346990135265,
+        "priorMedianDispersion": 0.2080565662464357,
+        "priorDispersion": 0.34460829409365357,
+        "priorObservationCount": 38,
+        "leadershipPercentile": 86.84210526315789,
+        "leadershipStrong": true,
+        "falling": true,
+        "meanReversionOverlay": false,
+        "decisionMode": "MR90",
+        "selectedSleeve": "QUQU"
+      }
+    }
+  }
+}
