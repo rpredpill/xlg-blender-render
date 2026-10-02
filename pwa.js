@@ -21,5 +21,5 @@ settingsBtn?.addEventListener("click",()=>{setSettingsTab(stored(SETTINGS_TAB_KE
 document.getElementById("saveBtn")?.addEventListener("click",()=>setTimeout(updateApiStatus,0));document.getElementById("clearBtn")?.addEventListener("click",()=>setTimeout(updateApiStatus,0));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&settingsModal?.classList.contains("show"))settingsModal.classList.remove("show")});
 window.addEventListener("resize",fitClassic);window.addEventListener("orientationchange",()=>setTimeout(fitClassic,120));
-if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=32",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
+if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=33",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
 })();
