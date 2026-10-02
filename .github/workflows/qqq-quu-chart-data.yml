@@ -1,0 +1,47 @@
+name: Build exact QQQ vs QUU chart data
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/qqq-quu-chart-data.yml'
+      - 'tools/build_qqq_quu_chart_data.py'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - name: Load builder
+        run: git show origin/main:tools/build_qqq_quu_chart_data.py > /tmp/build_qqq_quu_chart_data.py
+      - name: Build exact chart data
+        run: python /tmp/build_qqq_quu_chart_data.py
+      - name: Validate
+        shell: python
+        run: |
+          import json
+          j=json.load(open('qqq-quu-chart-data.json',encoding='utf-8'))
+          assert j['months']==48, j['months']
+          assert j['start']=='2022-10'
+          assert j['end']=='2026-09'
+          assert len(j['rows'])==48
+          print(j['final'])
+      - name: Commit to Pages safely
+        run: |
+          cp qqq-quu-chart-data.json /tmp/qqq-quu-chart-data.json
+          git fetch origin somx-pages
+          git reset --hard origin/somx-pages
+          cp /tmp/qqq-quu-chart-data.json qqq-quu-chart-data.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add qqq-quu-chart-data.json
+          git commit -m 'Update exact QQQ vs QUU chart data' || exit 0
+          git push origin HEAD:somx-pages
