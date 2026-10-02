@@ -1,0 +1,52 @@
+name: QUU rollover magnitude study
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/quu_rollover_magnitude_study.py'
+      - '.github/workflows/quu-rollover-magnitude-study.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Load study script
+        run: git show origin/main:tools/quu_rollover_magnitude_study.py > /tmp/quu_rollover_magnitude_study.py
+
+      - name: Run study
+        run: python /tmp/quu_rollover_magnitude_study.py
+
+      - name: Validate output
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('quu-rollover-magnitude-study.json',encoding='utf-8'))
+          assert j['exact2022_2026']['events'] >= 5
+          assert j['pre2018Proxy']['events'] >= 8
+          print(json.dumps({
+            'exact': j['exact2022_2026'],
+            'proxy': j['pre2018Proxy'],
+            'pooled': j['pooledReference'],
+            'signs': j['crossSampleSignReplication'],
+          }, indent=2))
+          PY
+
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-rollover-magnitude-study.json
+          git commit -m 'Update QUU rollover magnitude study' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
