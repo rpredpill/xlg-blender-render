@@ -75,16 +75,17 @@ def month_build(membership,wiki,qqq_prices,month):
     signal_date=base.month_end(base.month_add(month,-1)); recent=signal_date; early=base.month_end(base.month_add(month,-6)); universe=base.members_at(membership,signal_date)
     rows=[]; bad=[]
     for s in universe:
-        df=wiki.get(s)
-        if df is None: continue
-        a=base.close_on_or_before(df,recent); b=base.close_on_or_before(df,early); mr=base.month_return(wiki,s,month)
-        if not (a and b and b[1]>0 and mr): continue
+        if s not in wiki: continue
+        a=base.close_on_or_before(wiki,s,recent,'Adj Close')
+        b=base.close_on_or_before(wiki,s,early,'Adj Close')
+        mr=base.month_return(wiki,s,month)
+        if not (a and b and b>0 and mr): continue
         ret=float(mr['return'])
         # Data-quality sanity only: a Nasdaq-100 constituent moving >+500% or below -95%
         # in one month is treated as an identity/adjustment failure, not as a strategy event.
         if ret > 5.0 or ret < -0.95:
             bad.append({'ticker':s,'monthlyReturn':ret}); continue
-        gross=float(a[1]/b[1])
+        gross=float(a/b)
         if gross<=0 or not math.isfinite(gross): continue
         rows.append({'ticker':s,'gross':gross,'momentum':gross-1.0,'monthlyReturn':ret})
     cov=len(rows)/max(1,len(universe))
