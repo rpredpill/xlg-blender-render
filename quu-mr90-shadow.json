@@ -1,0 +1,92 @@
+{
+  "strategy": "QUU-MR90 Shadow",
+  "status": "EXPERIMENTAL_SHADOW_OOS",
+  "createdAt": "2026-10-02T08:58:15.006310+00:00",
+  "frozenRule": {
+    "version": "mr90-v1-frozen-2026-10-02",
+    "frozenAt": "2026-10-02",
+    "startMonth": "2026-10",
+    "minimumPriorMonths": 8,
+    "leadershipPercentile": 50.0,
+    "extremePercentile": 90.0,
+    "leadership": "Prior-only dispersion percentile >= 50 => QUQU, otherwise QQQ.",
+    "overlay": "Prior-only dispersion percentile >= 90 AND current dispersion < immediately prior dispersion => QQQ for that allocation month.",
+    "reset": "Reevaluate from scratch every month; no cooldown and no multi-month hold rule.",
+    "decisionLock": "A month decision is written once and never retrospectively changed. Realized-return fields may be refreshed from canonical history corrections.",
+    "lookahead": "None in decision classification."
+  },
+  "updatedAt": "2026-10-02T08:58:15.006325+00:00",
+  "decisions": {
+    "2026-10": {
+      "allocationMonth": "2026-10",
+      "signalMonth": "2026-09",
+      "signalDate": "2026-09-30",
+      "lockedAt": "2026-10-02T08:58:15.006328+00:00",
+      "sourceGeneratedAt": "2026-10-02T08:39:04.186687+00:00",
+      "dispersion": 0.3325294305447196,
+      "priorDispersion": 0.39583538525248696,
+      "priorObservationCount": 48,
+      "leadershipPercentile": 75.0,
+      "leadershipStrong": true,
+      "falling": true,
+      "mr90Overlay": false,
+      "selectedSleeve": "QUQU",
+      "liveQUUSelectedSleeveAtLock": "QUQU",
+      "realizedReturnPct": null,
+      "returnSource": null,
+      "comparators": {
+        "QUQU": null,
+        "QQQ": null,
+        "liveQUU": null
+      }
+    }
+  },
+  "oos": {
+    "firstDecisionMonth": "2026-10",
+    "latestDecisionMonth": "2026-10",
+    "decisionMonths": 1,
+    "completedMonths": 0,
+    "completedMonthList": [],
+    "MR90": {
+      "months": 0,
+      "totalReturnPct": null,
+      "CAGRpct": null,
+      "MDDpct": null,
+      "Calmar": null,
+      "endingIndex": 100.0
+    },
+    "liveQUU": {
+      "sameMonthCount": 0,
+      "metrics": {
+        "months": 0,
+        "totalReturnPct": null,
+        "CAGRpct": null,
+        "MDDpct": null,
+        "Calmar": null,
+        "endingIndex": 100.0
+      }
+    },
+    "QUQU": {
+      "sameMonthCount": 0,
+      "metrics": {
+        "months": 0,
+        "totalReturnPct": null,
+        "CAGRpct": null,
+        "MDDpct": null,
+        "Calmar": null,
+        "endingIndex": 100.0
+      }
+    },
+    "QQQ": {
+      "sameMonthCount": 0,
+      "metrics": {
+        "months": 0,
+        "totalReturnPct": null,
+        "CAGRpct": null,
+        "MDDpct": null,
+        "Calmar": null,
+        "endingIndex": 100.0
+      }
+    }
+  }
+}
