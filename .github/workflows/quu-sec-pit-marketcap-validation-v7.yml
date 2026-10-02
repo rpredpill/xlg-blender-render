@@ -1,0 +1,66 @@
+name: QUU SEC PIT market-cap validation v7
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/quu_sec_pit_marketcap_validation_v7.py'
+      - '.github/workflows/quu-sec-pit-marketcap-validation-v7.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - name: Fetch main
+        run: git fetch origin main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas numpy pyarrow
+      - name: Load engines
+        run: |
+          git show origin/main:tools/backfill_snpi_ququ.py > /tmp/backfill_snpi_ququ.py
+          git show origin/main:tools/quu_max_pit_validation.py > /tmp/quu_max_pit_validation.py
+          git show origin/main:tools/quu_pre2018_proxy_validation.py > /tmp/quu_pre2018_proxy_validation.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation.py > /tmp/quu_sec_pit_marketcap_validation.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation_v2.py > /tmp/quu_sec_pit_marketcap_validation_v2.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation_v3.py > /tmp/quu_sec_pit_marketcap_validation_v3.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation_v4.py > /tmp/quu_sec_pit_marketcap_validation_v4.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation_v6.py > /tmp/quu_sec_pit_marketcap_validation_v6.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation_v7.py > /tmp/quu_sec_pit_marketcap_validation_v7.py
+      - name: Run SEC PIT v7
+        run: python /tmp/quu_sec_pit_marketcap_validation_v7.py
+      - name: Validate JSON
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-sec-pit-marketcap-validation-v7.json',encoding='utf-8'))
+          assert j['identity']['historicalCIKs'] > 100
+          print(json.dumps({'continuousStart90Pct':j['continuousStart90Pct'],'sourceCounts':j['sourceCounts'],'missingReasonCounts':j['missingReasonCounts'],'validation':j['validationAgainstRecentExact'],'performance':j['performance']},indent=2))
+      - name: Commit result to Pages safely
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp quu-sec-pit-marketcap-validation-v7.json /tmp/quu-sec-pit-marketcap-validation-v7.json
+          git reset --hard origin/somx-pages
+          cp /tmp/quu-sec-pit-marketcap-validation-v7.json quu-sec-pit-marketcap-validation-v7.json
+          git add quu-sec-pit-marketcap-validation-v7.json
+          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+          git commit -m 'Publish SEC PIT market-cap validation v7'
+          for i in 1 2 3; do
+            if git push origin HEAD:somx-pages; then exit 0; fi
+            git fetch origin somx-pages
+            git rebase origin/somx-pages || { git rebase --abort; exit 1; }
+          done
+          exit 1
