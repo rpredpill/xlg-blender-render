@@ -1,0 +1,25 @@
+name: QUQU core attribution breakdown
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - tools/ququ_core_attribution_breakdown.py
+      - .github/workflows/ququ-core-attribution-breakdown.yml
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check requests
+      - run: python tools/ququ_core_attribution_breakdown.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ququ-core-attribution-breakdown.json
+          git commit -m 'Publish QUQU attribution breakdown' || exit 0
+          git push origin HEAD:main
