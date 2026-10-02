@@ -31,6 +31,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 3.999824151175746,
+        "riskReturn": 6.268790174054876,
+        "qqqReturn": 3.999824151175746,
+        "sleeve": "QQQ",
+        "percentile": 23.880597014925375,
+        "falling": true
       }
     },
     "2022-11": {
@@ -48,6 +56,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 5.8118634544402745,
+        "riskReturn": 5.8118634544402745,
+        "qqqReturn": 5.544155762100922,
+        "sleeve": "PROXY",
+        "percentile": 76.29629629629629,
+        "falling": false
       }
     },
     "2022-12": {
@@ -65,6 +81,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -6.537608122857668,
+        "riskReturn": -6.537608122857668,
+        "qqqReturn": -9.013655132671394,
+        "sleeve": "PROXY",
+        "percentile": 80.1470588235294,
+        "falling": false
       }
     },
     "2023-01": {
@@ -82,6 +106,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 6.882658201660549,
+        "riskReturn": 6.882658201660549,
+        "qqqReturn": 10.642930638238447,
+        "sleeve": "PROXY",
+        "percentile": 77.37226277372262,
+        "falling": true
       }
     },
     "2023-02": {
@@ -99,6 +131,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": -2.0392448853240044,
+        "riskReturn": -2.0392448853240044,
+        "qqqReturn": -0.3597948606387402,
+        "sleeve": "PROXY",
+        "percentile": 60.869565217391305,
+        "falling": true
       }
     },
     "2023-03": {
@@ -116,6 +156,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 5.746366048702793,
+        "riskReturn": 5.746366048702793,
+        "qqqReturn": 9.492725713254746,
+        "sleeve": "PROXY",
+        "percentile": 78.41726618705036,
+        "falling": false
       }
     },
     "2023-04": {
@@ -133,6 +181,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -1.2672048161736778,
+        "riskReturn": -1.2672048161736778,
+        "qqqReturn": 0.5079013285117506,
+        "sleeve": "PROXY",
+        "percentile": 89.28571428571429,
+        "falling": false
       }
     },
     "2023-05": {
@@ -150,6 +206,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "WARMUP_MEDIAN",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 4.196988085359745,
+        "riskReturn": 4.196988085359745,
+        "qqqReturn": 7.883796847121993,
+        "sleeve": "PROXY",
+        "percentile": 74.46808510638297,
+        "falling": true
       }
     },
     "2023-06": {
@@ -167,6 +231,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 6.375739986200007,
+        "riskReturn": 6.375739986200007,
+        "qqqReturn": 6.303850559281066,
+        "sleeve": "PROXY",
+        "percentile": 93.66197183098592,
+        "falling": false
       }
     },
     "2023-07": {
@@ -184,6 +256,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 4.971951464216467,
+        "riskReturn": 4.971951464216467,
+        "qqqReturn": 3.860090574430086,
+        "sleeve": "PROXY",
+        "percentile": 86.7132867132867,
+        "falling": true
       }
     },
     "2023-08": {
@@ -201,6 +281,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": -2.5609955065563086,
+        "riskReturn": -2.5609955065563086,
+        "qqqReturn": -1.482994911212543,
+        "sleeve": "PROXY",
+        "percentile": 75.69444444444444,
+        "falling": true
       }
     },
     "2023-09": {
@@ -218,6 +306,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": -4.41154528186668,
+        "riskReturn": -4.41154528186668,
+        "qqqReturn": -5.079852413671626,
+        "sleeve": "PROXY",
+        "percentile": 61.37931034482759,
+        "falling": true
       }
     },
     "2023-10": {
@@ -235,6 +331,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": -4.177403384485696,
+        "riskReturn": -4.177403384485696,
+        "qqqReturn": -2.065511744391557,
+        "sleeve": "PROXY",
+        "percentile": 69.17808219178082,
+        "falling": false
       }
     },
     "2023-11": {
@@ -252,6 +356,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 10.818847976355062,
+        "riskReturn": 11.424640228330937,
+        "qqqReturn": 10.818847976355062,
+        "sleeve": "QQQ",
+        "percentile": 40.816326530612244,
+        "falling": true
       }
     },
     "2023-12": {
@@ -269,6 +381,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 6.026672041750702,
+        "riskReturn": 6.026672041750702,
+        "qqqReturn": 5.586959100392885,
+        "sleeve": "PROXY",
+        "percentile": 73.64864864864865,
+        "falling": false
       }
     },
     "2024-01": {
@@ -286,6 +406,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 1.819208053758259,
+        "riskReturn": 1.2547652400438751,
+        "qqqReturn": 1.819208053758259,
+        "sleeve": "QQQ",
+        "percentile": 14.765100671140939,
+        "falling": true
       }
     },
     "2024-02": {
@@ -303,6 +431,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 5.283353690001968,
+        "riskReturn": 4.6195974935729085,
+        "qqqReturn": 5.283353690001968,
+        "sleeve": "QQQ",
+        "percentile": 36.0,
+        "falling": false
       }
     },
     "2024-03": {
@@ -320,6 +456,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 1.1411037392498913,
+        "riskReturn": 1.1411037392498913,
+        "qqqReturn": 1.2749758105237596,
+        "sleeve": "PROXY",
+        "percentile": 82.11920529801324,
+        "falling": false
       }
     },
     "2024-04": {
@@ -337,6 +481,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -5.4779651586145315,
+        "riskReturn": -5.4779651586145315,
+        "qqqReturn": -4.373793740444276,
+        "sleeve": "PROXY",
+        "percentile": 88.15789473684211,
+        "falling": false
       }
     },
     "2024-05": {
@@ -354,6 +506,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 4.644926954471687,
+        "riskReturn": 4.644926954471687,
+        "qqqReturn": 6.151833957173869,
+        "sleeve": "PROXY",
+        "percentile": 63.39869281045752,
+        "falling": true
       }
     },
     "2024-06": {
@@ -371,6 +531,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 3.014053721417764,
+        "riskReturn": 3.014053721417764,
+        "qqqReturn": 6.470122802699341,
+        "sleeve": "PROXY",
+        "percentile": 87.01298701298701,
+        "falling": false
       }
     },
     "2024-07": {
@@ -388,6 +556,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -2.832881734863011,
+        "riskReturn": -2.832881734863011,
+        "qqqReturn": -1.6781046479119932,
+        "sleeve": "PROXY",
+        "percentile": 89.03225806451613,
+        "falling": false
       }
     },
     "2024-08": {
@@ -405,6 +581,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 1.1038590702873385,
+        "riskReturn": 0.5758937187921913,
+        "qqqReturn": 1.1038590702873385,
+        "sleeve": "QQQ",
+        "percentile": 29.487179487179485,
+        "falling": true
       }
     },
     "2024-09": {
@@ -422,6 +606,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 2.6215995510088685,
+        "riskReturn": 0.6852468056300601,
+        "qqqReturn": 2.6215995510088685,
+        "sleeve": "QQQ",
+        "percentile": 48.40764331210191,
+        "falling": false
       }
     },
     "2024-10": {
@@ -439,6 +631,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": -0.30826055002706787,
+        "riskReturn": -0.30826055002706787,
+        "qqqReturn": -0.864633419771832,
+        "sleeve": "PROXY",
+        "percentile": 58.860759493670884,
+        "falling": false
       }
     },
     "2024-11": {
@@ -456,6 +656,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 7.426212280552866,
+        "riskReturn": 7.426212280552866,
+        "qqqReturn": 5.350829236679733,
+        "sleeve": "PROXY",
+        "percentile": 67.9245283018868,
+        "falling": false
       }
     },
     "2024-12": {
@@ -473,6 +681,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -4.265242577742138,
+        "riskReturn": -4.265242577742138,
+        "qqqReturn": 0.45403295781687447,
+        "sleeve": "PROXY",
+        "percentile": 99.375,
+        "falling": false
       }
     },
     "2025-01": {
@@ -490,6 +706,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 7.877760407622566,
+        "riskReturn": 7.877760407622566,
+        "qqqReturn": 2.1634131167749038,
+        "sleeve": "PROXY",
+        "percentile": 99.37888198757764,
+        "falling": false
       }
     },
     "2025-02": {
@@ -507,6 +731,14 @@
         "meanReversionOverlay": true,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQE"
+      },
+      "proxy": {
+        "proxyReturn": -1.3272251000475244,
+        "riskReturn": -6.505584941533489,
+        "qqqReturn": -2.703484994087302,
+        "sleeve": "QQQE",
+        "percentile": 98.76543209876543,
+        "falling": true
       }
     },
     "2025-03": {
@@ -524,6 +756,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -6.113577672128034,
+        "riskReturn": -7.598160216774977,
+        "qqqReturn": -7.586175319729527,
+        "sleeve": "QQQE",
+        "percentile": 90.79754601226993,
+        "falling": true
       }
     },
     "2025-04": {
@@ -541,6 +781,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 4.140054332243818,
+        "riskReturn": 4.140054332243818,
+        "qqqReturn": 1.3968205243010123,
+        "sleeve": "PROXY",
+        "percentile": 62.19512195121951,
+        "falling": true
       }
     },
     "2025-05": {
@@ -558,6 +806,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 9.178272734752513,
+        "riskReturn": 6.037174296247527,
+        "qqqReturn": 9.178272734752513,
+        "sleeve": "QQQ",
+        "percentile": 41.81818181818182,
+        "falling": true
       }
     },
     "2025-06": {
@@ -575,6 +831,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": 5.128423077418356,
+        "riskReturn": 5.128423077418356,
+        "qqqReturn": 6.385848507613345,
+        "sleeve": "PROXY",
+        "percentile": 51.204819277108435,
+        "falling": false
       }
     },
     "2025-07": {
@@ -592,6 +856,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QQQ"
+      },
+      "proxy": {
+        "proxyReturn": -0.5076815403930541,
+        "riskReturn": -0.5076815403930541,
+        "qqqReturn": 2.42367996210735,
+        "sleeve": "PROXY",
+        "percentile": 57.48502994011976,
+        "falling": false
       }
     },
     "2025-08": {
@@ -609,6 +881,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -1.2640302029488706,
+        "riskReturn": -1.2640302029488706,
+        "qqqReturn": 0.953987232433029,
+        "sleeve": "PROXY",
+        "percentile": 75.5952380952381,
+        "falling": false
       }
     },
     "2025-09": {
@@ -626,6 +906,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 6.858182105115899,
+        "riskReturn": 6.858182105115899,
+        "qqqReturn": 5.376204396531681,
+        "sleeve": "PROXY",
+        "percentile": 78.10650887573965,
+        "falling": false
       }
     },
     "2025-10": {
@@ -643,6 +931,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 6.011127627644538,
+        "riskReturn": 6.011127627644538,
+        "qqqReturn": 4.780387767235883,
+        "sleeve": "PROXY",
+        "percentile": 94.70588235294117,
+        "falling": false
       }
     },
     "2025-11": {
@@ -660,6 +956,14 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": -0.6972558188011854,
+        "riskReturn": -0.6972558188011854,
+        "qqqReturn": -1.5610397755691507,
+        "sleeve": "PROXY",
+        "percentile": 95.90643274853801,
+        "falling": false
       }
     },
     "2025-12": {
@@ -677,7 +981,355 @@
         "meanReversionOverlay": false,
         "decisionMode": "MR90",
         "selectedSleeve": "QUQU"
+      },
+      "proxy": {
+        "proxyReturn": 0.33149793336173516,
+        "riskReturn": 1.589506598620123,
+        "qqqReturn": -0.6699217218189446,
+        "sleeve": "QQQE",
+        "percentile": 93.02325581395348,
+        "falling": true
       }
     }
+  },
+  "portfolioOverlap": {
+    "period": [
+      "2022-10",
+      "2025-12"
+    ],
+    "months": 39,
+    "pearsonMonthlyReturn": 0.9256478255270613,
+    "meanProxyMinusExactPp": -0.4042205285909088,
+    "MAEpp": 1.497490055820494,
+    "RMSEpp": 1.8371666150420396,
+    "sameSleeveMonths": 24,
+    "sameSleeveRatePct": 61.53846153846154,
+    "exactPerformance": {
+      "months": 39,
+      "totalReturnPct": 141.25505860007937,
+      "CAGRpct": 31.124865241270893,
+      "MDDpct": -9.814936811263653,
+      "Calmar": 3.1711732678250053
+    },
+    "proxyPerformance": {
+      "months": 39,
+      "totalReturnPct": 107.46976664607821,
+      "CAGRpct": 25.177005913316176,
+      "MDDpct": -10.750413150062654,
+      "Calmar": 2.3419570542895314
+    }
+  },
+  "riskSleeveOverlap": {
+    "period": [
+      "2023-06",
+      "2025-12"
+    ],
+    "months": 31,
+    "pearsonMonthlyReturn": 0.9623211233992579,
+    "meanProxyMinusExactPp": -0.46928031866221986,
+    "MAEpp": 1.0632849526384016,
+    "RMSEpp": 1.4197706327572577,
+    "exactPerformance": {
+      "months": 31,
+      "totalReturnPct": 81.17836634425979,
+      "CAGRpct": 25.867072548402792,
+      "MDDpct": -14.880909051377078,
+      "Calmar": 1.7382723366627293
+    },
+    "proxyPerformance": {
+      "months": 31,
+      "totalReturnPct": 57.49584597899191,
+      "CAGRpct": 19.223600622991487,
+      "MDDpct": -13.609440391412363,
+      "Calmar": 1.4125195504086774
+    }
+  },
+  "stateOverlap": {
+    "months": 31,
+    "sameLevelRatePct": 67.74193548387096,
+    "sameDirectionRatePct": 100.0,
+    "sameFullStateRatePct": 67.74193548387096,
+    "pearsonPercentile": 0.9334999151082044,
+    "rows": [
+      {
+        "month": "2023-06",
+        "exactPercentile": 100.0,
+        "proxyPercentile": 93.66197183098592,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2023-07",
+        "exactPercentile": 77.77777777777777,
+        "proxyPercentile": 86.7132867132867,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "High+Falling",
+        "proxyState": "High + Falling"
+      },
+      {
+        "month": "2023-08",
+        "exactPercentile": 40.0,
+        "proxyPercentile": 75.69444444444444,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "High + Falling"
+      },
+      {
+        "month": "2023-09",
+        "exactPercentile": 9.090909090909092,
+        "proxyPercentile": 61.37931034482759,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "High + Falling"
+      },
+      {
+        "month": "2023-10",
+        "exactPercentile": 25.0,
+        "proxyPercentile": 69.17808219178082,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2023-11",
+        "exactPercentile": 7.6923076923076925,
+        "proxyPercentile": 40.816326530612244,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "Low + Falling"
+      },
+      {
+        "month": "2023-12",
+        "exactPercentile": 35.714285714285715,
+        "proxyPercentile": 73.64864864864865,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2024-01",
+        "exactPercentile": 0.0,
+        "proxyPercentile": 14.765100671140939,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "Low + Falling"
+      },
+      {
+        "month": "2024-02",
+        "exactPercentile": 12.5,
+        "proxyPercentile": 36.0,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "Low + Rising"
+      },
+      {
+        "month": "2024-03",
+        "exactPercentile": 82.3529411764706,
+        "proxyPercentile": 82.11920529801324,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2024-04",
+        "exactPercentile": 88.88888888888889,
+        "proxyPercentile": 88.15789473684211,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2024-05",
+        "exactPercentile": 31.57894736842105,
+        "proxyPercentile": 63.39869281045752,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "High + Falling"
+      },
+      {
+        "month": "2024-06",
+        "exactPercentile": 80.0,
+        "proxyPercentile": 87.01298701298701,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2024-07",
+        "exactPercentile": 90.47619047619048,
+        "proxyPercentile": 89.03225806451613,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2024-08",
+        "exactPercentile": 9.090909090909092,
+        "proxyPercentile": 29.487179487179485,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "Low + Falling"
+      },
+      {
+        "month": "2024-09",
+        "exactPercentile": 21.73913043478261,
+        "proxyPercentile": 48.40764331210191,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "Low + Rising"
+      },
+      {
+        "month": "2024-10",
+        "exactPercentile": 33.333333333333336,
+        "proxyPercentile": 58.860759493670884,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2024-11",
+        "exactPercentile": 44.0,
+        "proxyPercentile": 67.9245283018868,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2024-12",
+        "exactPercentile": 100.0,
+        "proxyPercentile": 99.375,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-01",
+        "exactPercentile": 100.0,
+        "proxyPercentile": 99.37888198757764,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-02",
+        "exactPercentile": 96.42857142857143,
+        "proxyPercentile": 98.76543209876543,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "High+Falling",
+        "proxyState": "High + Falling"
+      },
+      {
+        "month": "2025-03",
+        "exactPercentile": 86.20689655172414,
+        "proxyPercentile": 90.79754601226993,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "High+Falling",
+        "proxyState": "High + Falling"
+      },
+      {
+        "month": "2025-04",
+        "exactPercentile": 33.333333333333336,
+        "proxyPercentile": 62.19512195121951,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "High + Falling"
+      },
+      {
+        "month": "2025-05",
+        "exactPercentile": 16.129032258064516,
+        "proxyPercentile": 41.81818181818182,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "Low+Falling",
+        "proxyState": "Low + Falling"
+      },
+      {
+        "month": "2025-06",
+        "exactPercentile": 21.875,
+        "proxyPercentile": 51.204819277108435,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-07",
+        "exactPercentile": 24.242424242424242,
+        "proxyPercentile": 57.48502994011976,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "Low+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-08",
+        "exactPercentile": 61.76470588235294,
+        "proxyPercentile": 75.5952380952381,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-09",
+        "exactPercentile": 65.71428571428571,
+        "proxyPercentile": 78.10650887573965,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-10",
+        "exactPercentile": 91.66666666666667,
+        "proxyPercentile": 94.70588235294117,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-11",
+        "exactPercentile": 91.89189189189189,
+        "proxyPercentile": 95.90643274853801,
+        "exactFalling": false,
+        "proxyFalling": false,
+        "exactState": "High+Rising",
+        "proxyState": "High + Rising"
+      },
+      {
+        "month": "2025-12",
+        "exactPercentile": 86.84210526315789,
+        "proxyPercentile": 93.02325581395348,
+        "exactFalling": true,
+        "proxyFalling": true,
+        "exactState": "High+Falling",
+        "proxyState": "High + Falling"
+      }
+    ]
   }
 }
