@@ -1,0 +1,55 @@
+name: QUU pre-2018 regime proxy validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/quu_pre2018_proxy_validation.py'
+      - '.github/workflows/quu-pre2018-proxy-validation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - name: Fetch main
+        run: git fetch origin main
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas numpy
+      - name: Load frozen engines
+        run: |
+          git show origin/main:tools/backfill_snpi_ququ.py > /tmp/backfill_snpi_ququ.py
+          git show origin/main:tools/quu_max_pit_validation.py > /tmp/quu_max_pit_validation.py
+          git show origin/main:tools/quu_pre2018_proxy_validation.py > /tmp/quu_pre2018_proxy_validation.py
+      - name: Run independent historical validation
+        run: python /tmp/quu_pre2018_proxy_validation.py
+      - name: Validate result
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-pre2018-proxy-validation.json',encoding='utf-8'))
+          if j['data']['cleanRunMonths'] < 36: raise RuntimeError(j['data'])
+          print(j['data'])
+          print(j['headline'])
+          print(j['randomSameCountSwitchSanity'])
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-pre2018-proxy-validation.json
+          git commit -m 'Publish pre-2018 QUU regime proxy validation' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
