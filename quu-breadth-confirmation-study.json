@@ -1,0 +1,345 @@
+{
+  "purpose": "Test whether already-known prior-month Nasdaq-100 equal-weight breadth confirms MR90 mean reversion. No threshold optimization.",
+  "definition": {
+    "mr90": "Prior-only leadership percentile >=90 AND dispersion falling versus immediately prior dispersion.",
+    "breadth": "Previous calendar month QQQE return minus QQQ return. This is fully known before the allocation month begins.",
+    "confirmed": "Previous-month QQQE - QQQ > 0 percentage points.",
+    "lookahead": "None. Allocation-month returns are outcomes only."
+  },
+  "candidateRules": {
+    "CurrentQUU_MR90_QQQE": "MR90 => QQQE; otherwise LeadershipBaseline.",
+    "ConfirmOnly": "MR90 AND prior-month breadth >0 => QQQE; otherwise LeadershipBaseline.",
+    "BreadthRoute": "MR90 AND breadth >0 => QQQE; MR90 AND breadth <=0 => QQQ; otherwise LeadershipBaseline."
+  },
+  "priceMethod": "Yahoo Finance auto-adjusted daily prices; monthly return = first trading-day Open to last trading-day Close.",
+  "exact2022_2026": {
+    "period": {
+      "start": "2023-06",
+      "end": "2026-09",
+      "months": 40
+    },
+    "strategies": {
+      "LeadershipBaseline": {
+        "months": 40,
+        "totalReturnPct": 192.32980488137034,
+        "CAGRpct": 37.96277746958976,
+        "MDDpct": -22.629823666870585,
+        "Calmar": 1.67755516032439,
+        "endingIndex": 292.3298048813703
+      },
+      "CurrentQUU_MR90_QQQE": {
+        "months": 40,
+        "totalReturnPct": 286.1624071230891,
+        "CAGRpct": 49.97918797510825,
+        "MDDpct": -9.814936811263653,
+        "Calmar": 5.0921558575651735,
+        "endingIndex": 386.1624071230891
+      },
+      "MR90_QQQE_only_if_breadth_confirmed": {
+        "months": 40,
+        "totalReturnPct": 286.1624071230891,
+        "CAGRpct": 49.97918797510825,
+        "MDDpct": -9.814936811263653,
+        "Calmar": 5.0921558575651735,
+        "endingIndex": 386.1624071230891
+      },
+      "MR90_breadth_route_QQQE_else_QQQ": {
+        "months": 40,
+        "totalReturnPct": 286.1624071230891,
+        "CAGRpct": 49.97918797510825,
+        "MDDpct": -9.814936811263653,
+        "Calmar": 5.0921558575651735,
+        "endingIndex": 386.1624071230891
+      }
+    },
+    "mr90Events": {
+      "count": 2,
+      "confirmedCount": 2,
+      "unconfirmedCount": 0,
+      "confirmed": {
+        "count": 2,
+        "avgRiskReturnPct": -14.123565540042742,
+        "avgQQQReturnPct": -3.3411491978907355,
+        "avgQQQEReturnPct": -1.7638018789755683,
+        "avgRiskMinusQQQPctPoints": -10.782416342152008,
+        "avgRiskMinusQQQEPctPoints": -12.359763661067174,
+        "QQQEwinsVsQQQ": 2,
+        "riskWinsVsQQQ": 0,
+        "months": [
+          "2025-02",
+          "2026-07"
+        ]
+      },
+      "unconfirmed": {
+        "count": 0,
+        "avgRiskReturnPct": null,
+        "avgQQQReturnPct": null,
+        "avgQQQEReturnPct": null,
+        "avgRiskMinusQQQPctPoints": null,
+        "avgRiskMinusQQQEPctPoints": null,
+        "QQQEwinsVsQQQ": 0,
+        "riskWinsVsQQQ": 0,
+        "months": []
+      },
+      "rows": [
+        {
+          "month": "2025-02",
+          "percentile": 96.42857142857143,
+          "falling": true,
+          "priorMonth": "2025-01",
+          "priorQQQReturnPct": 1.553563904467481,
+          "priorQQQEReturnPct": 4.296789321724459,
+          "priorBreadthQQQEminusQQQPctPoints": 2.743225417256978,
+          "breadthConfirmed": true,
+          "riskReturnPct": -5.617307413214899,
+          "QQQReturnPct": -1.0321992337334884,
+          "QQQEReturnPct": 0.23729496749358425,
+          "bestThisMonth": "QQQE"
+        },
+        {
+          "month": "2026-07",
+          "percentile": 97.77777777777777,
+          "falling": true,
+          "priorMonth": "2026-06",
+          "priorQQQReturnPct": 0.02297435960185723,
+          "priorQQQEReturnPct": 2.740881689116592,
+          "priorBreadthQQQEminusQQQPctPoints": 2.717907329514735,
+          "breadthConfirmed": true,
+          "riskReturnPct": -22.629823666870585,
+          "QQQReturnPct": -5.650099162047983,
+          "QQQEReturnPct": -3.764898725444721,
+          "bestThisMonth": "QQQE"
+        }
+      ]
+    }
+  },
+  "pre2018Proxy": {
+    "period": {
+      "start": "2012-04",
+      "end": "2018-02",
+      "months": 71
+    },
+    "strategies": {
+      "LeadershipBaseline": {
+        "months": 71,
+        "totalReturnPct": 165.2704671024838,
+        "CAGRpct": 17.92595226494975,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.091175693781564,
+        "endingIndex": 265.2704671024838
+      },
+      "CurrentQUU_MR90_QQQE": {
+        "months": 71,
+        "totalReturnPct": 172.18002194783995,
+        "CAGRpct": 18.439572210438328,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.151092708508153,
+        "endingIndex": 272.1800219478399
+      },
+      "MR90_QQQE_only_if_breadth_confirmed": {
+        "months": 71,
+        "totalReturnPct": 166.6718057212207,
+        "CAGRpct": 18.03101174787505,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.1034315468513176,
+        "endingIndex": 266.67180572122066
+      },
+      "MR90_breadth_route_QQQE_else_QQQ": {
+        "months": 71,
+        "totalReturnPct": 170.15202965917572,
+        "CAGRpct": 18.289956112475593,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.1336390445223423,
+        "endingIndex": 270.15202965917575
+      }
+    },
+    "mr90Events": {
+      "count": 3,
+      "confirmedCount": 2,
+      "unconfirmedCount": 1,
+      "confirmed": {
+        "count": 2,
+        "avgRiskReturnPct": 0.4911590941431386,
+        "avgQQQReturnPct": 1.0625771004876494,
+        "avgQQQEReturnPct": 0.7650483824220455,
+        "avgRiskMinusQQQPctPoints": -0.5714180063445109,
+        "avgRiskMinusQQQEPctPoints": -0.27388928827890696,
+        "QQQEwinsVsQQQ": 1,
+        "riskWinsVsQQQ": 1,
+        "months": [
+          "2014-01",
+          "2017-07"
+        ]
+      },
+      "unconfirmed": {
+        "count": 1,
+        "avgRiskReturnPct": 1.4827735144682082,
+        "avgQQQReturnPct": 2.8071834074448354,
+        "avgQQQEReturnPct": 3.578942092480908,
+        "avgRiskMinusQQQPctPoints": -1.3244098929766273,
+        "avgRiskMinusQQQEPctPoints": -2.0961685780126995,
+        "QQQEwinsVsQQQ": 1,
+        "riskWinsVsQQQ": 0,
+        "months": [
+          "2013-12"
+        ]
+      },
+      "rows": [
+        {
+          "month": "2013-12",
+          "percentile": 96.42857142857143,
+          "falling": true,
+          "priorMonth": "2013-11",
+          "priorQQQReturnPct": 3.2021001058030407,
+          "priorQQQEReturnPct": 1.6345425378680334,
+          "priorBreadthQQQEminusQQQPctPoints": -1.5675575679350073,
+          "breadthConfirmed": false,
+          "riskReturnPct": 1.4827735144682082,
+          "QQQReturnPct": 2.8071834074448354,
+          "QQQEReturnPct": 3.578942092480908,
+          "bestThisMonth": "QQQE"
+        },
+        {
+          "month": "2014-01",
+          "percentile": 93.10344827586206,
+          "falling": true,
+          "priorMonth": "2013-12",
+          "priorQQQReturnPct": 2.8071534899499317,
+          "priorQQQEReturnPct": 3.578942092480908,
+          "priorBreadthQQQEminusQQQPctPoints": 0.7717886025309761,
+          "breadthConfirmed": true,
+          "riskReturnPct": -0.9545688302561547,
+          "QQQReturnPct": -1.4620200596370037,
+          "QQQEReturnPct": -1.203733645445626,
+          "bestThisMonth": "RISK"
+        },
+        {
+          "month": "2017-07",
+          "percentile": 94.36619718309859,
+          "falling": true,
+          "priorMonth": "2017-06",
+          "priorQQQReturnPct": -2.5180197508829827,
+          "priorQQQEReturnPct": -1.526037677501546,
+          "priorBreadthQQQEminusQQQPctPoints": 0.9919820733814366,
+          "breadthConfirmed": true,
+          "riskReturnPct": 1.9368870185424318,
+          "QQQReturnPct": 3.5871742606123025,
+          "QQQEReturnPct": 2.733830410289717,
+          "bestThisMonth": "QQQ"
+        }
+      ]
+    }
+  },
+  "combinedEventOnly": {
+    "count": 5,
+    "confirmedCount": 4,
+    "unconfirmedCount": 1,
+    "confirmed": {
+      "count": 4,
+      "avgRiskReturnPct": -6.8162032229498015,
+      "avgQQQReturnPct": -1.139286048701543,
+      "avgQQQEReturnPct": -0.4993767482767614,
+      "avgRiskMinusQQQPctPoints": -5.676917174248259,
+      "avgRiskMinusQQQEPctPoints": -6.31682647467304,
+      "QQQEwinsVsQQQ": 3,
+      "riskWinsVsQQQ": 1,
+      "months": [
+        "2025-02",
+        "2026-07",
+        "2014-01",
+        "2017-07"
+      ]
+    },
+    "unconfirmed": {
+      "count": 1,
+      "avgRiskReturnPct": 1.4827735144682082,
+      "avgQQQReturnPct": 2.8071834074448354,
+      "avgQQQEReturnPct": 3.578942092480908,
+      "avgRiskMinusQQQPctPoints": -1.3244098929766273,
+      "avgRiskMinusQQQEPctPoints": -2.0961685780126995,
+      "QQQEwinsVsQQQ": 1,
+      "riskWinsVsQQQ": 0,
+      "months": [
+        "2013-12"
+      ]
+    },
+    "events": [
+      {
+        "month": "2013-12",
+        "percentile": 96.42857142857143,
+        "falling": true,
+        "priorMonth": "2013-11",
+        "priorQQQReturnPct": 3.2021001058030407,
+        "priorQQQEReturnPct": 1.6345425378680334,
+        "priorBreadthQQQEminusQQQPctPoints": -1.5675575679350073,
+        "breadthConfirmed": false,
+        "riskReturnPct": 1.4827735144682082,
+        "QQQReturnPct": 2.8071834074448354,
+        "QQQEReturnPct": 3.578942092480908,
+        "bestThisMonth": "QQQE"
+      },
+      {
+        "month": "2014-01",
+        "percentile": 93.10344827586206,
+        "falling": true,
+        "priorMonth": "2013-12",
+        "priorQQQReturnPct": 2.8071534899499317,
+        "priorQQQEReturnPct": 3.578942092480908,
+        "priorBreadthQQQEminusQQQPctPoints": 0.7717886025309761,
+        "breadthConfirmed": true,
+        "riskReturnPct": -0.9545688302561547,
+        "QQQReturnPct": -1.4620200596370037,
+        "QQQEReturnPct": -1.203733645445626,
+        "bestThisMonth": "RISK"
+      },
+      {
+        "month": "2017-07",
+        "percentile": 94.36619718309859,
+        "falling": true,
+        "priorMonth": "2017-06",
+        "priorQQQReturnPct": -2.5180197508829827,
+        "priorQQQEReturnPct": -1.526037677501546,
+        "priorBreadthQQQEminusQQQPctPoints": 0.9919820733814366,
+        "breadthConfirmed": true,
+        "riskReturnPct": 1.9368870185424318,
+        "QQQReturnPct": 3.5871742606123025,
+        "QQQEReturnPct": 2.733830410289717,
+        "bestThisMonth": "QQQ"
+      },
+      {
+        "month": "2025-02",
+        "percentile": 96.42857142857143,
+        "falling": true,
+        "priorMonth": "2025-01",
+        "priorQQQReturnPct": 1.553563904467481,
+        "priorQQQEReturnPct": 4.296789321724459,
+        "priorBreadthQQQEminusQQQPctPoints": 2.743225417256978,
+        "breadthConfirmed": true,
+        "riskReturnPct": -5.617307413214899,
+        "QQQReturnPct": -1.0321992337334884,
+        "QQQEReturnPct": 0.23729496749358425,
+        "bestThisMonth": "QQQE"
+      },
+      {
+        "month": "2026-07",
+        "percentile": 97.77777777777777,
+        "falling": true,
+        "priorMonth": "2026-06",
+        "priorQQQReturnPct": 0.02297435960185723,
+        "priorQQQEReturnPct": 2.740881689116592,
+        "priorBreadthQQQEminusQQQPctPoints": 2.717907329514735,
+        "breadthConfirmed": true,
+        "riskReturnPct": -22.629823666870585,
+        "QQQReturnPct": -5.650099162047983,
+        "QQQEReturnPct": -3.764898725444721,
+        "bestThisMonth": "QQQE"
+      }
+    ]
+  },
+  "limitations": [
+    "MR90 event count remains extremely small, so any apparent breadth-confirmation effect can be unstable.",
+    "Pre-2018 risk sleeve is Momentum^3 proxy rather than exact market-cap-weighted QUQU.",
+    "The zero threshold for QQQE-QQQ is prespecified and not optimized.",
+    "This study does not modify live QUU."
+  ]
+}
