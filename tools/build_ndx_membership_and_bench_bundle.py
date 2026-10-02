@@ -17,5 +17,6 @@ csv=requests.get(URL,timeout=30).text
 obj={'membershipCsv':csv,'QQQ':monthly_returns('QQQ'),'QQQE':monthly_returns('QQQE')}
 raw=json.dumps(obj,separators=(',',':')).encode()
 enc=base64.b85encode(zlib.compress(raw,9)).decode()
-Path('ndx-bridge.b85').write_text(enc,encoding='ascii')
-print('raw',len(raw),'compressed-text',len(enc))
+wrapped='\n'.join(enc[i:i+400] for i in range(0,len(enc),400))+'\n'
+Path('ndx-bridge.b85').write_text(wrapped,encoding='ascii')
+print('raw',len(raw),'compressed-text',len(enc),'lines',len(wrapped.splitlines()))
