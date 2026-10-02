@@ -34,10 +34,10 @@ jobs:
           import json
           j=json.load(open('ququ-leadership-guard-analysis.json',encoding='utf-8'))
           assert j['period']['months'] >= 36
-          for n in ['QUQU p=3','QQQ','Leadership p3/QQQ','Leadership + breadth guard p3/QQQ']:
+          for n in ['QUQU p=3','QQQ','Leadership p3/QQQ','Leadership + breadth guard p3/QQQ','Leadership + extreme-dispersion guard p3/QQQ']:
               assert isinstance(j['variants'][n]['CAGRpct'], (int,float))
               assert isinstance(j['variants'][n]['MDDpct'], (int,float))
-          print(json.dumps({'variants':j['variants'],'baselineMDDTroughSignal':j['baselineMDDTroughSignal'],'guardChangedMonths':j['guardChangedMonths']},indent=2))
+          print(json.dumps({'variants':j['variants'],'baselineMDDTroughSignal':j['baselineMDDTroughSignal'],'extremeGuardChangedMonths':j['extremeGuardChangedMonths']},indent=2))
       - name: Commit result to Pages
         run: |
           git config user.name 'github-actions[bot]'
