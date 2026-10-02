@@ -1,0 +1,50 @@
+name: QUQU leadership structure research
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ququ-leadership-structure.yml'
+      - 'tools/ququ_leadership_structure.py'
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Load research script
+        run: git show origin/main:tools/ququ_leadership_structure.py > /tmp/ququ_leadership_structure.py
+      - name: Run research
+        run: python /tmp/ququ_leadership_structure.py
+      - name: Validate
+        shell: python
+        run: |
+          import json
+          j=json.load(open('ququ-leadership-structure.json',encoding='utf-8'))
+          assert j['period']['months'] >= 36
+          for k in ['dispersion','top20Median','decileSpread','persistence']:
+              assert k in j['diagnostic']
+          for n in ['QUQU','QQQ','Dispersion switch','Top20-Median switch','Top10-Bottom10 switch','Top20 Persistence switch','Dispersion AND Persistence']:
+              for k in ['CAGRpct','MDDpct','endingIndex']:
+                  assert isinstance(j['variants'][n][k],(int,float)), (n,k,j['variants'][n][k])
+          print(json.dumps({'period':j['period'],'diagnostic':j['diagnostic'],'persistenceRolloverEventStudy':j['persistenceRolloverEventStudy'],'variants':j['variants']},indent=2))
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ququ-leadership-structure.json
+          git commit -m 'Update QUQU leadership structure research' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
