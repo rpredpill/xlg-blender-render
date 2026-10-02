@@ -1,0 +1,51 @@
+name: QUU SEC PIT validation v10 sensitivity85
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/quu_sec_pit_marketcap_validation_v10_sensitivity85.py'
+      - '.github/workflows/quu-sec-pit-marketcap-validation-v10-sensitivity85.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - run: git fetch origin main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check yfinance requests pandas numpy pyarrow
+      - name: Load engines
+        run: |
+          for f in backfill_snpi_ququ.py quu_max_pit_validation.py quu_pre2018_proxy_validation.py quu_sec_pit_marketcap_validation.py quu_sec_pit_marketcap_validation_v2.py quu_sec_pit_marketcap_validation_v3.py quu_sec_pit_marketcap_validation_v4.py quu_sec_pit_marketcap_validation_v6.py quu_sec_pit_marketcap_validation_v7.py quu_sec_pit_marketcap_validation_v8.py quu_sec_pit_marketcap_validation_v9.py quu_sec_pit_marketcap_validation_v10_sensitivity85.py; do git show origin/main:tools/$f > /tmp/$f; done
+      - name: Run sensitivity
+        run: python /tmp/quu_sec_pit_marketcap_validation_v10_sensitivity85.py
+      - name: Validate
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-sec-pit-marketcap-validation-v10-sensitivity85.json',encoding='utf-8'))
+          assert j['coverageThreshold']==0.85
+          print(json.dumps({'continuousStart':j['continuousStart90Pct'],'performance':j['performance'],'validation':j['validationAgainstRecentExact']},indent=2))
+      - name: Publish
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp quu-sec-pit-marketcap-validation-v10-sensitivity85.json /tmp/result.json
+          git reset --hard origin/somx-pages
+          cp /tmp/result.json quu-sec-pit-marketcap-validation-v10-sensitivity85.json
+          git add quu-sec-pit-marketcap-validation-v10-sensitivity85.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Publish QUU 85pct coverage sensitivity'
+          for i in 1 2 3; do git push origin HEAD:somx-pages && exit 0; git fetch origin somx-pages; git rebase origin/somx-pages || { git rebase --abort; exit 1; }; done
+          exit 1
