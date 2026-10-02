@@ -55,6 +55,9 @@ async function syncQuuHistory({reload=true}={}){
 }
 
 window.addEventListener("load",()=>syncQuuHistory({reload:true}),{once:true});
-window.addEventListener("somx:strategy-active",()=>syncQuuHistory({reload:false}));
+// Strategy switching loads the live engine before server history has been copied into
+// localStorage. Reload once after the sync so the in-memory history matches disk.
+// The syncing guard prevents the applyStrategy -> strategy-active loop from recurring.
+window.addEventListener("somx:strategy-active",()=>syncQuuHistory({reload:true}));
 globalThis.QUUHistory={sync:syncQuuHistory};
 })();
