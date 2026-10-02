@@ -1,0 +1,1169 @@
+{
+  "generatedAt": "2026-10-02T08:07:49.990639+00:00",
+  "purpose": "Robustness check only. Thresholds are prespecified canonical alternatives; no threshold is selected or optimized by return.",
+  "definitions": {
+    "leadership": "Current dispersion > expanding median of prior dispersions",
+    "direction": "Falling when current dispersion < immediately prior dispersion",
+    "extremeMethods": {
+      "tukey_1.5iqr": "Q3 + 1.5×IQR of prior dispersions",
+      "expanding_p90": "90th percentile of prior dispersions",
+      "mean_plus_1.5sd": "Prior mean + 1.5×population standard deviation",
+      "median_plus_2.5mad": "Prior median + 2.5×median absolute deviation"
+    },
+    "rollover": "Extreme AND falling",
+    "allocation": "QUQU/proxy only when leadership strong and not rollover; otherwise QQQ",
+    "minimumHistoryForExtreme": 8,
+    "lookahead": "All thresholds use prior months only."
+  },
+  "exact2022_2026": {
+    "label": "Exact QUQU market-cap-weighted history",
+    "months": 48,
+    "methods": {
+      "tukey_1.5iqr": {
+        "strategy": {
+          "months": 48,
+          "totalReturnPct": 365.89223775454263,
+          "CAGRpct": 46.91676897412087,
+          "MDDpct": -10.745826342439857,
+          "Calmar": 4.366045707329786,
+          "endingIndex": 465.89223775454263
+        },
+        "extremeRisingOrFlat": {
+          "months": 9,
+          "avgExcessPctPoints": 5.62920619762868,
+          "medianExcessPctPoints": 2.7951632755462974,
+          "QUQUwinRatePct": 88.88888888888889,
+          "monthsList": [
+            "2023-06",
+            "2024-12",
+            "2025-01",
+            "2025-10",
+            "2025-11",
+            "2026-01",
+            "2026-02",
+            "2026-05",
+            "2026-06"
+          ]
+        },
+        "extremeFallingRollover": {
+          "months": 2,
+          "avgExcessPctPoints": -10.782416342152008,
+          "medianExcessPctPoints": -10.782416342152008,
+          "QUQUwinRatePct": 0.0,
+          "monthsList": [
+            "2025-02",
+            "2026-07"
+          ]
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 20,
+          "avgExcessPctPoints": 0.023484565520165736,
+          "medianExcessPctPoints": -0.24978933082412635,
+          "QUQUwinRatePct": 35.0,
+          "monthsList": [
+            "2022-10",
+            "2022-11",
+            "2022-12",
+            "2023-03",
+            "2023-04",
+            "2023-10",
+            "2023-12",
+            "2024-02",
+            "2024-03",
+            "2024-04",
+            "2024-06",
+            "2024-07",
+            "2024-09",
+            "2024-10",
+            "2024-11",
+            "2025-06",
+            "2025-07",
+            "2025-08",
+            "2025-09",
+            "2026-09"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 17,
+          "avgExcessPctPoints": -0.1629822075425158,
+          "medianExcessPctPoints": -0.1341422028639292,
+          "QUQUwinRatePct": 47.05882352941176,
+          "monthsList": [
+            "2023-01",
+            "2023-02",
+            "2023-05",
+            "2023-07",
+            "2023-08",
+            "2023-09",
+            "2023-11",
+            "2024-01",
+            "2024-05",
+            "2024-08",
+            "2025-03",
+            "2025-04",
+            "2025-05",
+            "2025-12",
+            "2026-03",
+            "2026-04",
+            "2026-08"
+          ]
+        },
+        "rolloverEvents": [
+          {
+            "month": "2025-02",
+            "dispersion": 0.426047361479454,
+            "priorDispersion": 0.4378238234480196,
+            "leadershipThreshold": 0.20707125263795964,
+            "extremeThreshold": 0.31764474592273395,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -5.617307413214899,
+            "QQQ": -1.0321992337334884,
+            "excess": -4.585108179481411
+          },
+          {
+            "month": "2026-07",
+            "dispersion": 0.6488204641657997,
+            "priorDispersion": 0.8321050835704206,
+            "leadershipThreshold": 0.21161461281222513,
+            "extremeThreshold": 0.44667827032593566,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -22.629823666870585,
+            "QQQ": -5.650099162047983,
+            "excess": -16.979724504822602
+          }
+        ]
+      },
+      "expanding_p90": {
+        "strategy": {
+          "months": 48,
+          "totalReturnPct": 365.89223775454263,
+          "CAGRpct": 46.91676897412087,
+          "MDDpct": -10.745826342439857,
+          "Calmar": 4.366045707329786,
+          "endingIndex": 465.89223775454263
+        },
+        "extremeRisingOrFlat": {
+          "months": 10,
+          "avgExcessPctPoints": 4.871189468378077,
+          "medianExcessPctPoints": 2.7557242469958814,
+          "QUQUwinRatePct": 80.0,
+          "monthsList": [
+            "2023-06",
+            "2024-07",
+            "2024-12",
+            "2025-01",
+            "2025-10",
+            "2025-11",
+            "2026-01",
+            "2026-02",
+            "2026-05",
+            "2026-06"
+          ]
+        },
+        "extremeFallingRollover": {
+          "months": 2,
+          "avgExcessPctPoints": -10.782416342152008,
+          "medianExcessPctPoints": -10.782416342152008,
+          "QUQUwinRatePct": 0.0,
+          "monthsList": [
+            "2025-02",
+            "2026-07"
+          ]
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 19,
+          "avgExcessPctPoints": 0.1274027581726658,
+          "medianExcessPctPoints": -0.19720059991176786,
+          "QUQUwinRatePct": 36.84210526315789,
+          "monthsList": [
+            "2022-10",
+            "2022-11",
+            "2022-12",
+            "2023-03",
+            "2023-04",
+            "2023-10",
+            "2023-12",
+            "2024-02",
+            "2024-03",
+            "2024-04",
+            "2024-06",
+            "2024-09",
+            "2024-10",
+            "2024-11",
+            "2025-06",
+            "2025-07",
+            "2025-08",
+            "2025-09",
+            "2026-09"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 17,
+          "avgExcessPctPoints": -0.1629822075425158,
+          "medianExcessPctPoints": -0.1341422028639292,
+          "QUQUwinRatePct": 47.05882352941176,
+          "monthsList": [
+            "2023-01",
+            "2023-02",
+            "2023-05",
+            "2023-07",
+            "2023-08",
+            "2023-09",
+            "2023-11",
+            "2024-01",
+            "2024-05",
+            "2024-08",
+            "2025-03",
+            "2025-04",
+            "2025-05",
+            "2025-12",
+            "2026-03",
+            "2026-04",
+            "2026-08"
+          ]
+        },
+        "rolloverEvents": [
+          {
+            "month": "2025-02",
+            "dispersion": 0.426047361479454,
+            "priorDispersion": 0.4378238234480196,
+            "leadershipThreshold": 0.20707125263795964,
+            "extremeThreshold": 0.2669085441814884,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -5.617307413214899,
+            "QQQ": -1.0321992337334884,
+            "excess": -4.585108179481411
+          },
+          {
+            "month": "2026-07",
+            "dispersion": 0.6488204641657997,
+            "priorDispersion": 0.8321050835704206,
+            "leadershipThreshold": 0.21161461281222513,
+            "extremeThreshold": 0.4092802183733526,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -22.629823666870585,
+            "QQQ": -5.650099162047983,
+            "excess": -16.979724504822602
+          }
+        ]
+      },
+      "mean_plus_1.5sd": {
+        "strategy": {
+          "months": 48,
+          "totalReturnPct": 365.89223775454263,
+          "CAGRpct": 46.91676897412087,
+          "MDDpct": -10.745826342439857,
+          "Calmar": 4.366045707329786,
+          "endingIndex": 465.89223775454263
+        },
+        "extremeRisingOrFlat": {
+          "months": 9,
+          "avgExcessPctPoints": 5.62920619762868,
+          "medianExcessPctPoints": 2.7951632755462974,
+          "QUQUwinRatePct": 88.88888888888889,
+          "monthsList": [
+            "2023-06",
+            "2024-12",
+            "2025-01",
+            "2025-10",
+            "2025-11",
+            "2026-01",
+            "2026-02",
+            "2026-05",
+            "2026-06"
+          ]
+        },
+        "extremeFallingRollover": {
+          "months": 2,
+          "avgExcessPctPoints": -10.782416342152008,
+          "medianExcessPctPoints": -10.782416342152008,
+          "QUQUwinRatePct": 0.0,
+          "monthsList": [
+            "2025-02",
+            "2026-07"
+          ]
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 20,
+          "avgExcessPctPoints": 0.023484565520165736,
+          "medianExcessPctPoints": -0.24978933082412635,
+          "QUQUwinRatePct": 35.0,
+          "monthsList": [
+            "2022-10",
+            "2022-11",
+            "2022-12",
+            "2023-03",
+            "2023-04",
+            "2023-10",
+            "2023-12",
+            "2024-02",
+            "2024-03",
+            "2024-04",
+            "2024-06",
+            "2024-07",
+            "2024-09",
+            "2024-10",
+            "2024-11",
+            "2025-06",
+            "2025-07",
+            "2025-08",
+            "2025-09",
+            "2026-09"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 17,
+          "avgExcessPctPoints": -0.1629822075425158,
+          "medianExcessPctPoints": -0.1341422028639292,
+          "QUQUwinRatePct": 47.05882352941176,
+          "monthsList": [
+            "2023-01",
+            "2023-02",
+            "2023-05",
+            "2023-07",
+            "2023-08",
+            "2023-09",
+            "2023-11",
+            "2024-01",
+            "2024-05",
+            "2024-08",
+            "2025-03",
+            "2025-04",
+            "2025-05",
+            "2025-12",
+            "2026-03",
+            "2026-04",
+            "2026-08"
+          ]
+        },
+        "rolloverEvents": [
+          {
+            "month": "2025-02",
+            "dispersion": 0.426047361479454,
+            "priorDispersion": 0.4378238234480196,
+            "leadershipThreshold": 0.20707125263795964,
+            "extremeThreshold": 0.31379736916493806,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -5.617307413214899,
+            "QQQ": -1.0321992337334884,
+            "excess": -4.585108179481411
+          },
+          {
+            "month": "2026-07",
+            "dispersion": 0.6488204641657997,
+            "priorDispersion": 0.8321050835704206,
+            "leadershipThreshold": 0.21161461281222513,
+            "extremeThreshold": 0.44776927274831113,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -22.629823666870585,
+            "QQQ": -5.650099162047983,
+            "excess": -16.979724504822602
+          }
+        ]
+      },
+      "median_plus_2.5mad": {
+        "strategy": {
+          "months": 48,
+          "totalReturnPct": 368.86488091042713,
+          "CAGRpct": 47.15056232668875,
+          "MDDpct": -10.745826342439857,
+          "Calmar": 4.387802373138215,
+          "endingIndex": 468.86488091042713
+        },
+        "extremeRisingOrFlat": {
+          "months": 10,
+          "avgExcessPctPoints": 5.582589187787089,
+          "medianExcessPctPoints": 3.5584316969167276,
+          "QUQUwinRatePct": 90.0,
+          "monthsList": [
+            "2023-06",
+            "2024-12",
+            "2025-01",
+            "2025-10",
+            "2025-11",
+            "2026-01",
+            "2026-02",
+            "2026-05",
+            "2026-06",
+            "2026-09"
+          ]
+        },
+        "extremeFallingRollover": {
+          "months": 5,
+          "avgExcessPctPoints": -4.414975054406596,
+          "medianExcessPctPoints": -2.020713793916627,
+          "QUQUwinRatePct": 40.0,
+          "monthsList": [
+            "2025-02",
+            "2025-12",
+            "2026-03",
+            "2026-07",
+            "2026-08"
+          ]
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 19,
+          "avgExcessPctPoints": -0.24701814677944528,
+          "medianExcessPctPoints": -0.30237806173648485,
+          "QUQUwinRatePct": 31.57894736842105,
+          "monthsList": [
+            "2022-10",
+            "2022-11",
+            "2022-12",
+            "2023-03",
+            "2023-04",
+            "2023-10",
+            "2023-12",
+            "2024-02",
+            "2024-03",
+            "2024-04",
+            "2024-06",
+            "2024-07",
+            "2024-09",
+            "2024-10",
+            "2024-11",
+            "2025-06",
+            "2025-07",
+            "2025-08",
+            "2025-09"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 14,
+          "avgExcessPctPoints": -0.16147535289241446,
+          "medianExcessPctPoints": -0.2694391093314903,
+          "QUQUwinRatePct": 42.857142857142854,
+          "monthsList": [
+            "2023-01",
+            "2023-02",
+            "2023-05",
+            "2023-07",
+            "2023-08",
+            "2023-09",
+            "2023-11",
+            "2024-01",
+            "2024-05",
+            "2024-08",
+            "2025-03",
+            "2025-04",
+            "2025-05",
+            "2026-04"
+          ]
+        },
+        "rolloverEvents": [
+          {
+            "month": "2025-02",
+            "dispersion": 0.426047361479454,
+            "priorDispersion": 0.4378238234480196,
+            "leadershipThreshold": 0.20707125263795964,
+            "extremeThreshold": 0.2753113968289517,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -5.617307413214899,
+            "QQQ": -1.0321992337334884,
+            "excess": -4.585108179481411
+          },
+          {
+            "month": "2025-12",
+            "dispersion": 0.3087434699013526,
+            "priorDispersion": 0.34460829409365357,
+            "leadershipThreshold": 0.2080565662464357,
+            "extremeThreshold": 0.2783390681096669,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": 1.1884035334105116,
+            "QQQ": 0.23979704610066488,
+            "excess": 0.9486064873098468
+          },
+          {
+            "month": "2026-03",
+            "dispersion": 0.3436948685767877,
+            "priorDispersion": 0.47081764991289204,
+            "leadershipThreshold": 0.2108842106646793,
+            "extremeThreshold": 0.28579565175568966,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -5.519400794182559,
+            "QQQ": -3.498687000265932,
+            "excess": -2.020713793916627
+          },
+          {
+            "month": "2026-07",
+            "dispersion": 0.6488204641657997,
+            "priorDispersion": 0.8321050835704206,
+            "leadershipThreshold": 0.21161461281222513,
+            "extremeThreshold": 0.29533739285309846,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -22.629823666870585,
+            "QQQ": -5.650099162047983,
+            "excess": -16.979724504822602
+          },
+          {
+            "month": "2026-08",
+            "dispersion": 0.3932441270365843,
+            "priorDispersion": 0.6488204641657997,
+            "leadershipThreshold": 0.2182779173720392,
+            "extremeThreshold": 0.3111924114315821,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": 4.696889643948771,
+            "QQQ": 4.134824925070957,
+            "excess": 0.5620647188778145
+          }
+        ]
+      }
+    },
+    "signAgreement": {
+      "tukey_1.5iqr": {
+        "extremeRisingPositive": true,
+        "extremeFallingNegative": true,
+        "rolloverEventCount": 2
+      },
+      "expanding_p90": {
+        "extremeRisingPositive": true,
+        "extremeFallingNegative": true,
+        "rolloverEventCount": 2
+      },
+      "mean_plus_1.5sd": {
+        "extremeRisingPositive": true,
+        "extremeFallingNegative": true,
+        "rolloverEventCount": 2
+      },
+      "median_plus_2.5mad": {
+        "extremeRisingPositive": true,
+        "extremeFallingNegative": true,
+        "rolloverEventCount": 5
+      }
+    }
+  },
+  "pre2018Proxy": {
+    "label": "2011-2018 PIT RelativeMomentum^3 proxy; not exact QUQU",
+    "months": 79,
+    "methods": {
+      "tukey_1.5iqr": {
+        "strategy": {
+          "months": 79,
+          "totalReturnPct": 183.97656223110852,
+          "CAGRpct": 17.179876938506688,
+          "MDDpct": -13.318498089688225,
+          "Calmar": 1.2899259978726967,
+          "endingIndex": 283.9765622311085
+        },
+        "extremeRisingOrFlat": {
+          "months": 0,
+          "avgExcessPctPoints": null,
+          "medianExcessPctPoints": null,
+          "QUQUwinRatePct": null,
+          "monthsList": []
+        },
+        "extremeFallingRollover": {
+          "months": 0,
+          "avgExcessPctPoints": null,
+          "medianExcessPctPoints": null,
+          "QUQUwinRatePct": null,
+          "monthsList": []
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 38,
+          "avgExcessPctPoints": 0.06464979866676843,
+          "medianExcessPctPoints": 0.5564151340400365,
+          "QUQUwinRatePct": 55.26315789473685,
+          "monthsList": [
+            "2011-08",
+            "2011-09",
+            "2011-12",
+            "2012-04",
+            "2012-07",
+            "2012-10",
+            "2012-12",
+            "2013-01",
+            "2013-06",
+            "2013-08",
+            "2013-10",
+            "2013-11",
+            "2014-03",
+            "2014-05",
+            "2014-06",
+            "2014-07",
+            "2014-09",
+            "2015-01",
+            "2015-04",
+            "2015-05",
+            "2015-06",
+            "2015-07",
+            "2015-09",
+            "2015-11",
+            "2015-12",
+            "2016-02",
+            "2016-03",
+            "2016-06",
+            "2016-07",
+            "2016-10",
+            "2016-11",
+            "2017-01",
+            "2017-03",
+            "2017-04",
+            "2017-06",
+            "2017-10",
+            "2018-01",
+            "2018-02"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 41,
+          "avgExcessPctPoints": -0.19562727742300784,
+          "medianExcessPctPoints": 0.01736799809669165,
+          "QUQUwinRatePct": 51.21951219512195,
+          "monthsList": [
+            "2011-10",
+            "2011-11",
+            "2012-01",
+            "2012-02",
+            "2012-03",
+            "2012-05",
+            "2012-06",
+            "2012-08",
+            "2012-09",
+            "2012-11",
+            "2013-02",
+            "2013-03",
+            "2013-04",
+            "2013-05",
+            "2013-07",
+            "2013-09",
+            "2013-12",
+            "2014-01",
+            "2014-02",
+            "2014-04",
+            "2014-08",
+            "2014-10",
+            "2014-11",
+            "2014-12",
+            "2015-02",
+            "2015-03",
+            "2015-08",
+            "2015-10",
+            "2016-01",
+            "2016-04",
+            "2016-05",
+            "2016-08",
+            "2016-09",
+            "2016-12",
+            "2017-02",
+            "2017-05",
+            "2017-07",
+            "2017-08",
+            "2017-09",
+            "2017-11",
+            "2017-12"
+          ]
+        },
+        "rolloverEvents": []
+      },
+      "expanding_p90": {
+        "strategy": {
+          "months": 79,
+          "totalReturnPct": 190.84222454486402,
+          "CAGRpct": 17.60586510656632,
+          "MDDpct": -13.318498089688225,
+          "Calmar": 1.3219106980386601,
+          "endingIndex": 290.84222454486405
+        },
+        "extremeRisingOrFlat": {
+          "months": 12,
+          "avgExcessPctPoints": 0.05114022412718833,
+          "medianExcessPctPoints": 1.0881191470341611,
+          "QUQUwinRatePct": 58.333333333333336,
+          "monthsList": [
+            "2012-10",
+            "2013-01",
+            "2013-11",
+            "2014-03",
+            "2014-07",
+            "2014-09",
+            "2015-01",
+            "2016-02",
+            "2016-03",
+            "2017-03",
+            "2017-04",
+            "2017-06"
+          ]
+        },
+        "extremeFallingRollover": {
+          "months": 3,
+          "avgExcessPctPoints": -0.8224153018885496,
+          "medianExcessPctPoints": -1.3244098929766273,
+          "QUQUwinRatePct": 33.33333333333333,
+          "monthsList": [
+            "2013-12",
+            "2014-01",
+            "2017-07"
+          ]
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 26,
+          "avgExcessPctPoints": 0.07088498691580539,
+          "medianExcessPctPoints": 0.37778047601567466,
+          "QUQUwinRatePct": 53.84615384615385,
+          "monthsList": [
+            "2011-08",
+            "2011-09",
+            "2011-12",
+            "2012-04",
+            "2012-07",
+            "2012-12",
+            "2013-06",
+            "2013-08",
+            "2013-10",
+            "2014-05",
+            "2014-06",
+            "2015-04",
+            "2015-05",
+            "2015-06",
+            "2015-07",
+            "2015-09",
+            "2015-11",
+            "2015-12",
+            "2016-06",
+            "2016-07",
+            "2016-10",
+            "2016-11",
+            "2017-01",
+            "2017-10",
+            "2018-01",
+            "2018-02"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 38,
+          "avgExcessPctPoints": -0.14614401233362292,
+          "medianExcessPctPoints": 0.028665351774234793,
+          "QUQUwinRatePct": 52.63157894736842,
+          "monthsList": [
+            "2011-10",
+            "2011-11",
+            "2012-01",
+            "2012-02",
+            "2012-03",
+            "2012-05",
+            "2012-06",
+            "2012-08",
+            "2012-09",
+            "2012-11",
+            "2013-02",
+            "2013-03",
+            "2013-04",
+            "2013-05",
+            "2013-07",
+            "2013-09",
+            "2014-02",
+            "2014-04",
+            "2014-08",
+            "2014-10",
+            "2014-11",
+            "2014-12",
+            "2015-02",
+            "2015-03",
+            "2015-08",
+            "2015-10",
+            "2016-01",
+            "2016-04",
+            "2016-05",
+            "2016-08",
+            "2016-09",
+            "2016-12",
+            "2017-02",
+            "2017-05",
+            "2017-08",
+            "2017-09",
+            "2017-11",
+            "2017-12"
+          ]
+        },
+        "rolloverEvents": [
+          {
+            "month": "2013-12",
+            "dispersion": 5.705476745026417,
+            "priorDispersion": 5.805653328248705,
+            "leadershipThreshold": 2.2792028159077224,
+            "extremeThreshold": 4.6422970448118805,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": 1.4827735144682082,
+            "QQQ": 2.8071834074448354,
+            "excess": -1.3244098929766273
+          },
+          {
+            "month": "2014-01",
+            "dispersion": 4.982382800647773,
+            "priorDispersion": 5.705476745026417,
+            "leadershipThreshold": 2.3285781354986046,
+            "extremeThreshold": 4.891770254740355,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": -0.9545688302561547,
+            "QQQ": -1.4620200596370037,
+            "excess": 0.507451229380849
+          },
+          {
+            "month": "2017-07",
+            "dispersion": 6.659961235656119,
+            "priorDispersion": 7.452197564181331,
+            "leadershipThreshold": 2.3666860140564476,
+            "extremeThreshold": 5.805653328248705,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": 1.9368870185424318,
+            "QQQ": 3.5871742606123025,
+            "excess": -1.6502872420698707
+          }
+        ]
+      },
+      "mean_plus_1.5sd": {
+        "strategy": {
+          "months": 79,
+          "totalReturnPct": 192.34000483719873,
+          "CAGRpct": 17.69766186692745,
+          "MDDpct": -13.318498089688225,
+          "Calmar": 1.328803123876991,
+          "endingIndex": 292.3400048371987
+        },
+        "extremeRisingOrFlat": {
+          "months": 11,
+          "avgExcessPctPoints": -0.18609870515562266,
+          "medianExcessPctPoints": 0.44505693374009425,
+          "QUQUwinRatePct": 54.54545454545454,
+          "monthsList": [
+            "2012-10",
+            "2013-11",
+            "2014-03",
+            "2014-07",
+            "2014-09",
+            "2015-01",
+            "2016-02",
+            "2016-03",
+            "2017-03",
+            "2017-04",
+            "2017-06"
+          ]
+        },
+        "extremeFallingRollover": {
+          "months": 2,
+          "avgExcessPctPoints": -1.487348567523249,
+          "medianExcessPctPoints": -1.487348567523249,
+          "QUQUwinRatePct": 0.0,
+          "monthsList": [
+            "2013-12",
+            "2017-07"
+          ]
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 27,
+          "avgExcessPctPoints": 0.1668065965203352,
+          "medianExcessPctPoints": 0.6677733343399788,
+          "QUQUwinRatePct": 55.55555555555556,
+          "monthsList": [
+            "2011-08",
+            "2011-09",
+            "2011-12",
+            "2012-04",
+            "2012-07",
+            "2012-12",
+            "2013-01",
+            "2013-06",
+            "2013-08",
+            "2013-10",
+            "2014-05",
+            "2014-06",
+            "2015-04",
+            "2015-05",
+            "2015-06",
+            "2015-07",
+            "2015-09",
+            "2015-11",
+            "2015-12",
+            "2016-06",
+            "2016-07",
+            "2016-10",
+            "2016-11",
+            "2017-01",
+            "2017-10",
+            "2018-01",
+            "2018-02"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 39,
+          "avgExcessPctPoints": -0.12938515998196978,
+          "medianExcessPctPoints": 0.039962705451777936,
+          "QUQUwinRatePct": 53.84615384615385,
+          "monthsList": [
+            "2011-10",
+            "2011-11",
+            "2012-01",
+            "2012-02",
+            "2012-03",
+            "2012-05",
+            "2012-06",
+            "2012-08",
+            "2012-09",
+            "2012-11",
+            "2013-02",
+            "2013-03",
+            "2013-04",
+            "2013-05",
+            "2013-07",
+            "2013-09",
+            "2014-01",
+            "2014-02",
+            "2014-04",
+            "2014-08",
+            "2014-10",
+            "2014-11",
+            "2014-12",
+            "2015-02",
+            "2015-03",
+            "2015-08",
+            "2015-10",
+            "2016-01",
+            "2016-04",
+            "2016-05",
+            "2016-08",
+            "2016-09",
+            "2016-12",
+            "2017-02",
+            "2017-05",
+            "2017-08",
+            "2017-09",
+            "2017-11",
+            "2017-12"
+          ]
+        },
+        "rolloverEvents": [
+          {
+            "month": "2013-12",
+            "dispersion": 5.705476745026417,
+            "priorDispersion": 5.805653328248705,
+            "leadershipThreshold": 2.2792028159077224,
+            "extremeThreshold": 4.974220750589856,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": 1.4827735144682082,
+            "QQQ": 2.8071834074448354,
+            "excess": -1.3244098929766273
+          },
+          {
+            "month": "2017-07",
+            "dispersion": 6.659961235656119,
+            "priorDispersion": 7.452197564181331,
+            "leadershipThreshold": 2.3666860140564476,
+            "extremeThreshold": 5.947792621982443,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": 1.9368870185424318,
+            "QQQ": 3.5871742606123025,
+            "excess": -1.6502872420698707
+          }
+        ]
+      },
+      "median_plus_2.5mad": {
+        "strategy": {
+          "months": 79,
+          "totalReturnPct": 188.57394509617103,
+          "CAGRpct": 17.46607930249009,
+          "MDDpct": -13.318498089688225,
+          "Calmar": 1.311415084859539,
+          "endingIndex": 288.57394509617103
+        },
+        "extremeRisingOrFlat": {
+          "months": 5,
+          "avgExcessPctPoints": 0.8709906175617224,
+          "medianExcessPctPoints": 1.7572752822922526,
+          "QUQUwinRatePct": 60.0,
+          "monthsList": [
+            "2012-10",
+            "2014-07",
+            "2017-03",
+            "2017-04",
+            "2017-06"
+          ]
+        },
+        "extremeFallingRollover": {
+          "months": 1,
+          "avgExcessPctPoints": -1.6502872420698707,
+          "medianExcessPctPoints": -1.6502872420698707,
+          "QUQUwinRatePct": 0.0,
+          "monthsList": [
+            "2017-07"
+          ]
+        },
+        "nonExtremeRisingOrFlat": {
+          "months": 33,
+          "avgExcessPctPoints": -0.057523052680951925,
+          "medianExcessPctPoints": 0.44505693374009425,
+          "QUQUwinRatePct": 54.54545454545454,
+          "monthsList": [
+            "2011-08",
+            "2011-09",
+            "2011-12",
+            "2012-04",
+            "2012-07",
+            "2012-12",
+            "2013-01",
+            "2013-06",
+            "2013-08",
+            "2013-10",
+            "2013-11",
+            "2014-03",
+            "2014-05",
+            "2014-06",
+            "2014-09",
+            "2015-01",
+            "2015-04",
+            "2015-05",
+            "2015-06",
+            "2015-07",
+            "2015-09",
+            "2015-11",
+            "2015-12",
+            "2016-02",
+            "2016-03",
+            "2016-06",
+            "2016-07",
+            "2016-10",
+            "2016-11",
+            "2017-01",
+            "2017-10",
+            "2018-01",
+            "2018-02"
+          ]
+        },
+        "nonExtremeFalling": {
+          "months": 40,
+          "avgExcessPctPoints": -0.15926077830683624,
+          "medianExcessPctPoints": 0.028665351774234793,
+          "QUQUwinRatePct": 52.5,
+          "monthsList": [
+            "2011-10",
+            "2011-11",
+            "2012-01",
+            "2012-02",
+            "2012-03",
+            "2012-05",
+            "2012-06",
+            "2012-08",
+            "2012-09",
+            "2012-11",
+            "2013-02",
+            "2013-03",
+            "2013-04",
+            "2013-05",
+            "2013-07",
+            "2013-09",
+            "2013-12",
+            "2014-01",
+            "2014-02",
+            "2014-04",
+            "2014-08",
+            "2014-10",
+            "2014-11",
+            "2014-12",
+            "2015-02",
+            "2015-03",
+            "2015-08",
+            "2015-10",
+            "2016-01",
+            "2016-04",
+            "2016-05",
+            "2016-08",
+            "2016-09",
+            "2016-12",
+            "2017-02",
+            "2017-05",
+            "2017-08",
+            "2017-09",
+            "2017-11",
+            "2017-12"
+          ]
+        },
+        "rolloverEvents": [
+          {
+            "month": "2017-07",
+            "dispersion": 6.659961235656119,
+            "priorDispersion": 7.452197564181331,
+            "leadershipThreshold": 2.3666860140564476,
+            "extremeThreshold": 6.570892724068694,
+            "leadership": true,
+            "extreme": true,
+            "falling": true,
+            "rollover": true,
+            "riskReturn": 1.9368870185424318,
+            "QQQ": 3.5871742606123025,
+            "excess": -1.6502872420698707
+          }
+        ]
+      }
+    },
+    "signAgreement": {
+      "tukey_1.5iqr": {
+        "extremeRisingPositive": null,
+        "extremeFallingNegative": null,
+        "rolloverEventCount": 0
+      },
+      "expanding_p90": {
+        "extremeRisingPositive": true,
+        "extremeFallingNegative": true,
+        "rolloverEventCount": 3
+      },
+      "mean_plus_1.5sd": {
+        "extremeRisingPositive": false,
+        "extremeFallingNegative": true,
+        "rolloverEventCount": 2
+      },
+      "median_plus_2.5mad": {
+        "extremeRisingPositive": true,
+        "extremeFallingNegative": true,
+        "rolloverEventCount": 1
+      }
+    }
+  }
+}
