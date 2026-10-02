@@ -1,0 +1,233 @@
+{
+  "period": [
+    "2022-10",
+    "2026-09"
+  ],
+  "months": 28,
+  "byYear": {
+    "2022": {
+      "months": 3,
+      "actual": {
+        "months": 3,
+        "totalReturnPct": -0.7758106825151989,
+        "CAGRpct": -3.0673162135531507,
+        "MDDpct": -7.720767713724741
+      },
+      "mom3": {
+        "months": 3,
+        "totalReturnPct": 2.417466855037542,
+        "CAGRpct": 10.026201545600655,
+        "MDDpct": -6.78535035750375
+      },
+      "sqrtCapContributionArithmeticPp": -3.1877956275446873,
+      "avgMonthlyActualMinusMom3Pp": -1.0625985425148958,
+      "positiveContributionMonths": 0
+    },
+    "2023": {
+      "months": 5,
+      "actual": {
+        "months": 5,
+        "totalReturnPct": 30.27036602158408,
+        "CAGRpct": 88.63814632627758,
+        "MDDpct": 0.0
+      },
+      "mom3": {
+        "months": 5,
+        "totalReturnPct": 24.854682668432936,
+        "CAGRpct": 70.3615585060179,
+        "MDDpct": -0.5534512862635843
+      },
+      "sqrtCapContributionArithmeticPp": 4.400959233977278,
+      "avgMonthlyActualMinusMom3Pp": 0.8801918467954556,
+      "positiveContributionMonths": 3
+    },
+    "2024": {
+      "months": 5,
+      "actual": {
+        "months": 5,
+        "totalReturnPct": -5.7189098049160725,
+        "CAGRpct": -13.180150280942993,
+        "MDDpct": -6.680986162569836
+      },
+      "mom3": {
+        "months": 5,
+        "totalReturnPct": -9.489661904184455,
+        "CAGRpct": -21.28171038155594,
+        "MDDpct": -10.435168437392917
+      },
+      "sqrtCapContributionArithmeticPp": 4.028331848257503,
+      "avgMonthlyActualMinusMom3Pp": 0.8056663696515006,
+      "positiveContributionMonths": 3
+    },
+    "2025": {
+      "months": 7,
+      "actual": {
+        "months": 7,
+        "totalReturnPct": 14.875198208294327,
+        "CAGRpct": 26.836731113870528,
+        "MDDpct": -9.814936811263653
+      },
+      "mom3": {
+        "months": 7,
+        "totalReturnPct": 12.985174331911399,
+        "CAGRpct": 23.280370668353157,
+        "MDDpct": -9.54635880704079
+      },
+      "sqrtCapContributionArithmeticPp": 1.8645172820755314,
+      "avgMonthlyActualMinusMom3Pp": 0.2663596117250759,
+      "positiveContributionMonths": 4
+    },
+    "2026": {
+      "months": 8,
+      "actual": {
+        "months": 8,
+        "totalReturnPct": 107.34803202492951,
+        "CAGRpct": 198.57254954685243,
+        "MDDpct": -5.51940079418255
+      },
+      "mom3": {
+        "months": 8,
+        "totalReturnPct": 103.0321111687396,
+        "CAGRpct": 189.29910880345483,
+        "MDDpct": -4.940258645222661
+      },
+      "sqrtCapContributionArithmeticPp": 2.951538652024067,
+      "avgMonthlyActualMinusMom3Pp": 0.36894233150300837,
+      "positiveContributionMonths": 5
+    }
+  },
+  "contributionSummary": {
+    "arithmeticTotalActualMinusMom3Pp": 10.057551388789692,
+    "positiveMonths": 15,
+    "negativeMonths": 13,
+    "medianMonthlyContributionPp": 0.027846736637224367,
+    "top3PositiveContributionPp": 8.059351748233857,
+    "top5PositiveContributionPp": 12.30655550084819,
+    "top3ShareOfNetPct": 80.13234470983602,
+    "top5ShareOfNetPct": 122.36134845470711
+  },
+  "topPositiveMonths": [
+    {
+      "month": "2024-12",
+      "actualMinusMom3Pp": 2.886949194469108,
+      "actual": -1.4198393887070588,
+      "mom3": -4.306788583176167
+    },
+    {
+      "month": "2026-09",
+      "actualMinusMom3Pp": 2.8406972833929895,
+      "actual": 9.873947754711338,
+      "mom3": 7.033250471318349
+    },
+    {
+      "month": "2023-03",
+      "actualMinusMom3Pp": 2.331705270371759,
+      "actual": 8.134801843589253,
+      "mom3": 5.803096573217494
+    },
+    {
+      "month": "2023-04",
+      "actualMinusMom3Pp": 2.2744481285915237,
+      "actual": 1.7209968423279358,
+      "mom3": -0.5534512862635876
+    },
+    {
+      "month": "2026-05",
+      "actualMinusMom3Pp": 1.9727556240228097,
+      "actual": 28.605558740667668,
+      "mom3": 26.632803116644858
+    },
+    {
+      "month": "2026-04",
+      "actualMinusMom3Pp": 1.9111987404316793,
+      "actual": 18.394529008067263,
+      "mom3": 16.483330267635584
+    },
+    {
+      "month": "2025-09",
+      "actualMinusMom3Pp": 1.6037867167371118,
+      "actual": 10.276512525432311,
+      "mom3": 8.6727258086952
+    },
+    {
+      "month": "2025-10",
+      "actualMinusMom3Pp": 1.4757485253285667,
+      "actual": 8.058165990546225,
+      "mom3": 6.582417465217659
+    },
+    {
+      "month": "2024-06",
+      "actualMinusMom3Pp": 1.323937402428144,
+      "actual": 3.6449017682961897,
+      "mom3": 2.3209643658680457
+    },
+    {
+      "month": "2025-08",
+      "actualMinusMom3Pp": 1.1852635113443348,
+      "actual": 0.9346413631796033,
+      "mom3": -0.25062214816473144
+    }
+  ],
+  "topNegativeMonths": [
+    {
+      "month": "2026-02",
+      "actualMinusMom3Pp": -2.3199439529802444,
+      "actual": 0.9509561719819424,
+      "mom3": 3.2709001249621865
+    },
+    {
+      "month": "2022-10",
+      "actualMinusMom3Pp": -1.7958947042289175,
+      "actual": 3.479174290195618,
+      "mom3": 5.275068994424536
+    },
+    {
+      "month": "2025-12",
+      "actualMinusMom3Pp": -1.3232665830387034,
+      "actual": 1.1884035334105119,
+      "mom3": 2.5116701164492152
+    },
+    {
+      "month": "2025-01",
+      "actualMinusMom3Pp": -1.0080071601392078,
+      "actual": 5.875276274074131,
+      "mom3": 6.883283434213339
+    },
+    {
+      "month": "2026-01",
+      "actualMinusMom3Pp": -0.9399894114807026,
+      "actual": 8.363669118391016,
+      "mom3": 9.303658529871718
+    },
+    {
+      "month": "2022-12",
+      "actualMinusMom3Pp": -0.9354173562209995,
+      "actual": -7.7207677137247455,
+      "mom3": -6.785350357503746
+    },
+    {
+      "month": "2024-07",
+      "actualMinusMom3Pp": -0.730864605602557,
+      "actual": -3.8195629581136115,
+      "mom3": -3.0886983525110545
+    },
+    {
+      "month": "2026-03",
+      "actualMinusMom3Pp": -0.5791421489599129,
+      "actual": -5.519400794182559,
+      "mom3": -4.940258645222646
+    },
+    {
+      "month": "2025-03",
+      "actualMinusMom3Pp": -0.49584444290456275,
+      "actual": -9.814936811263655,
+      "mom3": -9.319092368359092
+    },
+    {
+      "month": "2022-11",
+      "actualMinusMom3Pp": -0.4564835670947702,
+      "actual": 3.9107864827617864,
+      "mom3": 4.367270049856557
+    }
+  ]
+}
