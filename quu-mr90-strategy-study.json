@@ -1,0 +1,343 @@
+{
+  "purpose": "Compare a prespecified mean-reversion overlay (MR90) with QUQU/proxy, QQQ, Leadership baseline, and the frozen Tukey QUU rule. No threshold optimization.",
+  "mr90Rule": {
+    "leadership": "Use risk sleeve when prior-only dispersion percentile >=50; otherwise QQQ.",
+    "overlay": "If prior-only dispersion percentile >=90 and dispersion is falling versus immediately prior month, use QQQ for that month; reevaluate from scratch next month.",
+    "thresholdSelection": "90th percentile was prespecified as a representative extreme threshold; it was not selected by return maximization.",
+    "lookahead": "None."
+  },
+  "exact2022_2026_commonWindow": {
+    "period": {
+      "start": "2023-06",
+      "end": "2026-09",
+      "months": 40
+    },
+    "commonWindowNote": "Only months with >=8 prior dispersion observations are used so MR90 percentile is fully causal and all strategies share the identical evaluation window.",
+    "strategies": {
+      "RiskSleeveOnly": {
+        "months": 40,
+        "totalReturnPct": 190.59143753169764,
+        "CAGRpct": 37.71614079463272,
+        "MDDpct": -22.629823666870585,
+        "Calmar": 1.666656415438538,
+        "endingIndex": 290.59143753169764,
+        "riskMonths": 40,
+        "qqqMonths": 0,
+        "sleeveTransitions": 0
+      },
+      "QQQ": {
+        "months": 40,
+        "totalReturnPct": 126.57011656229358,
+        "CAGRpct": 27.808809170669548,
+        "MDDpct": -9.139057129291395,
+        "Calmar": 3.0428531934153398,
+        "endingIndex": 226.57011656229358,
+        "riskMonths": 0,
+        "qqqMonths": 40,
+        "sleeveTransitions": 0
+      },
+      "LeadershipBaseline": {
+        "months": 40,
+        "totalReturnPct": 192.32980488137034,
+        "CAGRpct": 37.96277746958976,
+        "MDDpct": -22.629823666870585,
+        "Calmar": 1.67755516032439,
+        "endingIndex": 292.3298048813703,
+        "riskMonths": 24,
+        "qqqMonths": 16,
+        "sleeveTransitions": 8
+      },
+      "ExistingQUU_Tukey_commonWindow": {
+        "months": 40,
+        "totalReturnPct": 273.8027695534332,
+        "CAGRpct": 48.52267221616027,
+        "MDDpct": -10.745826342439857,
+        "Calmar": 4.515490076786698,
+        "endingIndex": 373.8027695534332,
+        "riskMonths": 22,
+        "qqqMonths": 18,
+        "sleeveTransitions": 12
+      },
+      "MR90": {
+        "months": 40,
+        "totalReturnPct": 273.8027695534332,
+        "CAGRpct": 48.52267221616027,
+        "MDDpct": -10.745826342439857,
+        "Calmar": 4.515490076786698,
+        "endingIndex": 373.8027695534332,
+        "riskMonths": 22,
+        "qqqMonths": 18,
+        "sleeveTransitions": 12
+      }
+    },
+    "tukey": {
+      "count": 2,
+      "interventions": [
+        {
+          "month": "2025-02",
+          "percentile": 96.42857142857143,
+          "falling": true,
+          "riskReturnPct": -5.617307413214899,
+          "QQQReturnPct": -1.0321992337334884,
+          "savedPctPoints": 4.585108179481411
+        },
+        {
+          "month": "2026-07",
+          "percentile": 97.77777777777777,
+          "falling": true,
+          "riskReturnPct": -22.629823666870585,
+          "QQQReturnPct": -5.650099162047983,
+          "savedPctPoints": 16.979724504822602
+        }
+      ],
+      "sumSavedPctPoints": 21.564832684304015,
+      "positiveSavedCount": 2,
+      "negativeSavedCount": 0,
+      "largestSavedIntervention": {
+        "month": "2026-07",
+        "percentile": 97.77777777777777,
+        "falling": true,
+        "riskReturnPct": -22.629823666870585,
+        "QQQReturnPct": -5.650099162047983,
+        "savedPctPoints": 16.979724504822602
+      },
+      "leaveOneInterventionOut": [
+        {
+          "removedIntervention": "2025-02",
+          "metrics": {
+            "months": 40,
+            "totalReturnPct": 256.48475174438784,
+            "CAGRpct": 46.424006987973,
+            "MDDpct": -14.880909051377078,
+            "Calmar": 3.1197023533771904,
+            "endingIndex": 356.48475174438784
+          }
+        },
+        {
+          "removedIntervention": "2026-07",
+          "metrics": {
+            "months": 40,
+            "totalReturnPct": 206.53117742894108,
+            "CAGRpct": 39.94016963236091,
+            "MDDpct": -22.629823666870585,
+            "Calmar": 1.764935079491237,
+            "endingIndex": 306.5311774289411
+          }
+        }
+      ]
+    },
+    "mr90": {
+      "count": 2,
+      "interventions": [
+        {
+          "month": "2025-02",
+          "percentile": 96.42857142857143,
+          "falling": true,
+          "riskReturnPct": -5.617307413214899,
+          "QQQReturnPct": -1.0321992337334884,
+          "savedPctPoints": 4.585108179481411
+        },
+        {
+          "month": "2026-07",
+          "percentile": 97.77777777777777,
+          "falling": true,
+          "riskReturnPct": -22.629823666870585,
+          "QQQReturnPct": -5.650099162047983,
+          "savedPctPoints": 16.979724504822602
+        }
+      ],
+      "sumSavedPctPoints": 21.564832684304015,
+      "positiveSavedCount": 2,
+      "negativeSavedCount": 0,
+      "largestSavedIntervention": {
+        "month": "2026-07",
+        "percentile": 97.77777777777777,
+        "falling": true,
+        "riskReturnPct": -22.629823666870585,
+        "QQQReturnPct": -5.650099162047983,
+        "savedPctPoints": 16.979724504822602
+      },
+      "leaveOneInterventionOut": [
+        {
+          "removedIntervention": "2025-02",
+          "metrics": {
+            "months": 40,
+            "totalReturnPct": 256.48475174438784,
+            "CAGRpct": 46.424006987973,
+            "MDDpct": -14.880909051377078,
+            "Calmar": 3.1197023533771904,
+            "endingIndex": 356.48475174438784
+          }
+        },
+        {
+          "removedIntervention": "2026-07",
+          "metrics": {
+            "months": 40,
+            "totalReturnPct": 206.53117742894108,
+            "CAGRpct": 39.94016963236091,
+            "MDDpct": -22.629823666870585,
+            "Calmar": 1.764935079491237,
+            "endingIndex": 306.5311774289411
+          }
+        }
+      ]
+    },
+    "sameInterventionMonths": true
+  },
+  "pre2018Proxy_commonWindow": {
+    "period": {
+      "start": "2012-04",
+      "end": "2018-02",
+      "months": 71
+    },
+    "commonWindowNote": "Only months with >=8 prior dispersion observations are used so MR90 percentile is fully causal and all strategies share the identical evaluation window.",
+    "strategies": {
+      "RiskSleeveOnly": {
+        "months": 71,
+        "totalReturnPct": 164.09782588187278,
+        "CAGRpct": 17.837683380377946,
+        "MDDpct": -9.055810159270038,
+        "Calmar": 1.9697501456695496,
+        "endingIndex": 264.0978258818728,
+        "riskMonths": 71,
+        "qqqMonths": 0,
+        "sleeveTransitions": 0
+      },
+      "QQQ": {
+        "months": 71,
+        "totalReturnPct": 146.22055254237378,
+        "CAGRpct": 16.449953265261197,
+        "MDDpct": -7.935542114496508,
+        "Calmar": 2.072946375674916,
+        "endingIndex": 246.22055254237378,
+        "riskMonths": 0,
+        "qqqMonths": 71,
+        "sleeveTransitions": 0
+      },
+      "LeadershipBaseline": {
+        "months": 71,
+        "totalReturnPct": 165.2704671024838,
+        "CAGRpct": 17.92595226494975,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.091175693781564,
+        "endingIndex": 265.2704671024838,
+        "riskMonths": 38,
+        "qqqMonths": 33,
+        "sleeveTransitions": 32
+      },
+      "ExistingQUU_Tukey_commonWindow": {
+        "months": 71,
+        "totalReturnPct": 165.2704671024838,
+        "CAGRpct": 17.92595226494975,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.091175693781564,
+        "endingIndex": 265.2704671024838,
+        "riskMonths": 38,
+        "qqqMonths": 33,
+        "sleeveTransitions": 32
+      },
+      "MR90": {
+        "months": 71,
+        "totalReturnPct": 171.68387472538348,
+        "CAGRpct": 18.403054527142103,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.1468326898171743,
+        "endingIndex": 271.6838747253835,
+        "riskMonths": 35,
+        "qqqMonths": 36,
+        "sleeveTransitions": 32
+      }
+    },
+    "tukey": {
+      "count": 0,
+      "interventions": [],
+      "sumSavedPctPoints": 0,
+      "positiveSavedCount": 0,
+      "negativeSavedCount": 0,
+      "largestSavedIntervention": null,
+      "leaveOneInterventionOut": []
+    },
+    "mr90": {
+      "count": 3,
+      "interventions": [
+        {
+          "month": "2013-12",
+          "percentile": 96.42857142857143,
+          "falling": true,
+          "riskReturnPct": 1.4827735144682082,
+          "QQQReturnPct": 2.8071834074448354,
+          "savedPctPoints": 1.3244098929766273
+        },
+        {
+          "month": "2014-01",
+          "percentile": 93.10344827586206,
+          "falling": true,
+          "riskReturnPct": -0.9545688302561547,
+          "QQQReturnPct": -1.4620200596370037,
+          "savedPctPoints": -0.507451229380849
+        },
+        {
+          "month": "2017-07",
+          "percentile": 94.36619718309859,
+          "falling": true,
+          "riskReturnPct": 1.9368870185424318,
+          "QQQReturnPct": 3.5871742606123025,
+          "savedPctPoints": 1.6502872420698707
+        }
+      ],
+      "sumSavedPctPoints": 2.467245905665649,
+      "positiveSavedCount": 2,
+      "negativeSavedCount": 1,
+      "largestSavedIntervention": {
+        "month": "2017-07",
+        "percentile": 94.36619718309859,
+        "falling": true,
+        "riskReturnPct": 1.9368870185424318,
+        "QQQReturnPct": 3.5871742606123025,
+        "savedPctPoints": 1.6502872420698707
+      },
+      "leaveOneInterventionOut": [
+        {
+          "removedIntervention": "2013-12",
+          "metrics": {
+            "months": 71,
+            "totalReturnPct": 168.18391684770782,
+            "CAGRpct": 18.14386258279694,
+            "MDDpct": -8.572188514937007,
+            "Calmar": 2.1165963104032683,
+            "endingIndex": 268.1839168477078
+          }
+        },
+        {
+          "removedIntervention": "2014-01",
+          "metrics": {
+            "months": 71,
+            "totalReturnPct": 173.0829932816579,
+            "CAGRpct": 18.505891460093316,
+            "MDDpct": -8.572188514937007,
+            "Calmar": 2.158829268377249,
+            "endingIndex": 273.0829932816579
+          }
+        },
+        {
+          "removedIntervention": "2017-07",
+          "metrics": {
+            "months": 71,
+            "totalReturnPct": 167.35557408840108,
+            "CAGRpct": 18.08210796265477,
+            "MDDpct": -8.572188514937007,
+            "Calmar": 2.10939224343314,
+            "endingIndex": 267.3555740884011
+          }
+        }
+      ]
+    },
+    "sameInterventionMonths": false
+  },
+  "limitations": [
+    "Exact recent sample is short and contains very few MR90 interventions.",
+    "Pre-2018 risk sleeve is RelativeMomentum^3 without reliable historical market-cap weighting, not exact QUQU.",
+    "The common-window comparison starts only after 8 prior dispersion observations; it is intentionally not the same as the full 48-month/79-month headline backtests.",
+    "MR90 is a research variant and does not modify the live QUU rule."
+  ]
+}
