@@ -1,0 +1,60 @@
+name: QUU leadership split ablation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/quu-leadership-split-ablation.yml'
+      - 'tools/quu_leadership_split_ablation.py'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Load study script
+        run: git show origin/main:tools/quu_leadership_split_ablation.py > /tmp/study.py
+
+      - name: Refresh Pages inputs
+        run: |
+          git fetch origin somx-pages main
+          git checkout origin/somx-pages -- quu-leadership-percentile-study.json quu-mr90-equal-weight-study.json
+
+      - name: Run study
+        run: python /tmp/study.py
+
+      - name: Validate output
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-leadership-split-ablation.json',encoding='utf-8'))
+          for s in ['exact2022_2026','pre2018Proxy']:
+              z=j[s]['strategies']
+              assert 'CurrentQUU' in z and 'No50Split_AlwaysRiskExceptMR90' in z
+              assert j[s]['lowLeadership']['months']>0
+          print(json.dumps(j,indent=2))
+
+      - name: Commit study to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp quu-leadership-split-ablation.json /tmp/out.json
+          git fetch origin somx-pages
+          git reset --hard origin/somx-pages
+          cp /tmp/out.json quu-leadership-split-ablation.json
+          git add quu-leadership-split-ablation.json
+          git commit -m 'Publish QUU leadership split ablation' || exit 0
+          git push origin HEAD:somx-pages
