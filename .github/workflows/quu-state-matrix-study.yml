@@ -1,0 +1,53 @@
+name: QUU leadership state matrix study
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/quu-state-matrix-study.yml'
+      - 'tools/quu_state_matrix_study.py'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - name: Load study script
+        run: git show origin/main:tools/quu_state_matrix_study.py > /tmp/quu_state_matrix_study.py
+      - name: Run study
+        run: python /tmp/quu_state_matrix_study.py
+      - name: Validate output
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('quu-state-matrix-study.json',encoding='utf-8'))
+          assert j['exact2022_2026']['months'] >= 36
+          assert j['pre2018Proxy']['months'] >= 60
+          for sample in ('exact2022_2026','pre2018Proxy'):
+              for state in ('Low+Rising','Low+Falling','High+Rising','High+Falling'):
+                  assert 'months' in j[sample]['states'][state]
+          print(json.dumps({
+              'exact':j['exact2022_2026']['states'],
+              'proxy':j['pre2018Proxy']['states'],
+              'contrasts':{
+                  'exact':j['exact2022_2026']['contrasts'],
+                  'proxy':j['pre2018Proxy']['contrasts'],
+              },
+              'signs':j['crossSampleSignCheck'],
+          },indent=2))
+          PY
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-state-matrix-study.json
+          git commit -m 'Update QUU leadership state matrix study' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
