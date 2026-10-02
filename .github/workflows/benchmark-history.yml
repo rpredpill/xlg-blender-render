@@ -37,7 +37,7 @@ jobs:
           j=json.load(open('benchmark-history.json',encoding='utf-8'))
           months=j.get('months') or {}
           if len(months)<48: raise RuntimeError(f'only {len(months)} months')
-          for s in ['SPY','QQQ','QLD','TQQQ','SPMO']:
+          for s in ['SPY','QQQ','QQQE','QLD','TQQQ','SPMO']:
               n=sum(1 for x in months.values() if isinstance(x.get(s),(int,float)))
               if n<48: raise RuntimeError(f'{s}: only {n} months')
           print('validated',len(months),min(months),max(months))
