@@ -8,28 +8,6 @@ from pathlib import Path
 
 import numpy as np
 
-CAP = 0.20
-
-
-def cap_and_redistribute(raw: dict[str, float], cap: float = CAP) -> dict[str, float]:
-    free = set(raw)
-    out: dict[str, float] = {}
-    remaining = 1.0
-    while free:
-        total = sum(raw[s] for s in free)
-        if not math.isfinite(total) or total <= 0:
-            raise RuntimeError('raw sum <= 0')
-        over = [s for s in free if remaining * raw[s] / total > cap + 1e-12]
-        if not over:
-            for s in free:
-                out[s] = remaining * raw[s] / total
-            break
-        for s in over:
-            out[s] = cap
-            remaining -= cap
-            free.remove(s)
-    return out
-
 
 def metrics(returns_pct: list[float], months: list[str]) -> dict:
     arr = np.asarray(returns_pct, dtype=float) / 100.0
@@ -78,11 +56,7 @@ def main():
 
     prior_disps: list[float] = []
     rows_out = []
-    r_p3: list[float] = []
-    r_qqq: list[float] = []
-    r_base: list[float] = []
-    r_breadth: list[float] = []
-    r_extreme: list[float] = []
+    r_p3, r_qqq, r_base, r_roll = [], [], [], []
 
     for m in months:
         rec = qhist['months'][m]
@@ -92,92 +66,80 @@ def main():
             raise RuntimeError(f'{m}: only {len(moms)} momentums')
 
         disp = float(np.std(moms, ddof=0))
-        median_mom = float(np.median(moms))
-        positive_breadth = float(np.mean(moms > 0))
         threshold = float(np.median(prior_disps)) if prior_disps else None
         upper_fence = tukey_upper_fence(prior_disps)
+        prev_disp = prior_disps[-1] if prior_disps else None
 
         leadership = True if threshold is None else disp > threshold
-        broad_positive = median_mom > 0.0
-        breadth_guarded = leadership and broad_positive
-        extreme_dispersion = bool(upper_fence is not None and disp > upper_fence)
-        extreme_guarded = leadership and not extreme_dispersion
+        extreme = bool(upper_fence is not None and disp > upper_fence)
+        rolling_over = bool(extreme and prev_disp is not None and disp < prev_disp)
+        rollover_ququ = leadership and not rolling_over
 
         p3 = float(rec['portfolioReturn'])
         qqq = float(bench['months'][m]['QQQ'])
         base_ret = p3 if leadership else qqq
-        breadth_ret = p3 if breadth_guarded else qqq
-        extreme_ret = p3 if extreme_guarded else qqq
+        roll_ret = p3 if rollover_ququ else qqq
 
         rows_out.append({
             'month': m,
             'momentumDispersion': disp,
+            'priorDispersion': prev_disp,
             'priorExpandingMedianDispersion': threshold,
             'priorTukeyUpperFence': upper_fence,
-            'dispersionVsMedian': (disp / threshold) if threshold else None,
-            'dispersionVsUpperFence': (disp / upper_fence) if upper_fence else None,
-            'medianMomentum': median_mom,
-            'positiveMomentumBreadth': positive_breadth,
             'leadershipStrong': leadership,
-            'broadTrendPositive': broad_positive,
-            'extremeDispersion': extreme_dispersion,
-            'breadthGuardedQUQU': breadth_guarded,
-            'extremeGuardedQUQU': extreme_guarded,
+            'extremeDispersion': extreme,
+            'extremeDispersionRollover': rolling_over,
+            'rolloverGuardedQUQU': rollover_ququ,
             'QUQU_p3': p3,
             'QQQ': qqq,
             'leadershipSwitch': base_ret,
-            'leadershipBreadthGuardSwitch': breadth_ret,
-            'leadershipExtremeGuardSwitch': extreme_ret,
+            'leadershipRolloverSwitch': roll_ret,
         })
-        r_p3.append(p3)
-        r_qqq.append(qqq)
-        r_base.append(base_ret)
-        r_breadth.append(breadth_ret)
-        r_extreme.append(extreme_ret)
+        r_p3.append(p3); r_qqq.append(qqq); r_base.append(base_ret); r_roll.append(roll_ret)
         prior_disps.append(disp)
 
     variants = {
         'QUQU p=3': metrics(r_p3, months),
         'QQQ': metrics(r_qqq, months),
         'Leadership p3/QQQ': metrics(r_base, months),
-        'Leadership + breadth guard p3/QQQ': metrics(r_breadth, months),
-        'Leadership + extreme-dispersion guard p3/QQQ': metrics(r_extreme, months),
+        'Leadership rollover guard p3/QQQ': metrics(r_roll, months),
     }
 
+    changed = [r for r in rows_out if r['leadershipStrong'] != r['rolloverGuardedQUQU']]
     trough = variants['Leadership p3/QQQ']['mddTroughMonth']
     trough_row = next((r for r in rows_out if r['month'] == trough), None)
-    extreme_changed = [r for r in rows_out if r['leadershipStrong'] != r['extremeGuardedQUQU']]
 
     out = {
         'generatedAt': datetime.now(timezone.utc).isoformat(),
         'period': {'start': months[0], 'end': months[-1], 'months': len(months)},
         'rules': {
             'leadership': 'Current Nasdaq-100 cross-sectional 6-1 momentum dispersion > median of all prior monthly dispersions',
-            'breadthGuard': 'Additionally require current cross-sectional median 6-1 momentum > 0',
-            'extremeDispersionGuard': 'If current dispersion exceeds the prior-history Tukey upper fence Q3 + 1.5×IQR, treat it as an extreme/outlier regime and hold QQQ instead of QUQU',
-            'lookahead': 'All current-month inputs are pre-allocation signal rows; both median threshold and Tukey fence use prior months only',
+            'extreme': 'Current dispersion > prior-history Tukey upper fence Q3 + 1.5×IQR',
+            'rollover': 'Extreme dispersion AND current dispersion < immediately prior month dispersion',
+            'allocation': 'If leadership is strong and no extreme-dispersion rollover, hold QUQU p=3; otherwise hold QQQ',
+            'lookahead': 'Current dispersion is from pre-allocation signal rows; median, Tukey fence and prior dispersion are all known before the allocation month',
         },
         'variants': variants,
         'baselineMDDTroughSignal': trough_row,
-        'extremeGuardChangedMonths': [r['month'] for r in extreme_changed],
-        'extremeGuardChangedMonthDetails': [{
+        'rolloverGuardChangedMonths': [r['month'] for r in changed],
+        'rolloverGuardChangedMonthDetails': [{
             'month': r['month'],
             'dispersion': r['momentumDispersion'],
+            'priorDispersion': r['priorDispersion'],
             'upperFence': r['priorTukeyUpperFence'],
-            'dispersionVsUpperFence': r['dispersionVsUpperFence'],
             'QUQU': r['QUQU_p3'],
             'QQQ': r['QQQ'],
             'differencePctPoints': r['QQQ'] - r['QUQU_p3'],
-        } for r in extreme_changed],
+        } for r in changed],
         'months': rows_out,
     }
-    Path('ququ-leadership-guard-analysis.json').write_text(json.dumps(out, ensure_ascii=False, indent=2, allow_nan=False), encoding='utf-8')
+    Path('ququ-leadership-rollover-analysis.json').write_text(json.dumps(out, ensure_ascii=False, indent=2, allow_nan=False), encoding='utf-8')
     print(json.dumps({
         'period': out['period'],
         'variants': variants,
         'baselineMDDTroughSignal': trough_row,
-        'extremeGuardChangedMonths': out['extremeGuardChangedMonths'],
-        'extremeGuardChangedMonthDetails': out['extremeGuardChangedMonthDetails'],
+        'rolloverGuardChangedMonths': out['rolloverGuardChangedMonths'],
+        'rolloverGuardChangedMonthDetails': out['rolloverGuardChangedMonthDetails'],
     }, ensure_ascii=False, indent=2, allow_nan=False))
 
 
