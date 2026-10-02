@@ -12,6 +12,13 @@ const snpi={
   factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1},marketCap:{enabled:true,weight:100}},
   cap:0.20,filters:{}
 };
+const snpy={
+  mode:"snpy",label:"SNPY",universe:"sp500",
+  holdings:100,entryRank:100,exitRank:100,rebalanceMonths:1,
+  factor:"snpiScoreTop100",weighting:"sqrtCapMomentumCubeCap20",
+  factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1},marketCap:{enabled:true,weight:100}},
+  cap:0.20,filters:{}
+};
 const ququ={
   mode:"ququ",label:"QUQU",universe:"nasdaq100",
   holdings:100,entryRank:100,exitRank:100,rebalanceMonths:1,
@@ -54,19 +61,24 @@ function loadCustom(){
 }
 function saveCustom(c){try{localStorage.setItem(STORE,JSON.stringify(normalizeCustom(c)))}catch{}}
 
+const fixedModes=["snpi","snpy","ququ"];
+const allModes=[...fixedModes,"custom"];
 function loadMode(){
   try{
     const old=localStorage.getItem(ACTIVE_STORE);
     if(old==="core")return"snpi";
-    return ["snpi","ququ","custom"].includes(old)?old:"snpi";
+    return allModes.includes(old)?old:"snpi";
   }catch{return"snpi"}
 }
-function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,["snpi","ququ","custom"].includes(m)?m:"snpi")}catch{}}
+function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,allModes.includes(m)?m:"snpi")}catch{}}
 
 let custom=loadCustom(),activeMode=loadMode();
-function config(mode=activeMode){return clone(mode==="custom"?custom:mode==="ququ"?ququ:snpi)}
+function config(mode=activeMode){
+  return clone(mode==="custom"?custom:mode==="ququ"?ququ:mode==="snpy"?snpy:snpi);
+}
 function signature(c=config()){
   if(c.mode==="snpi")return"snpi-sp500-v1";
+  if(c.mode==="snpy")return"snpy-sp500-top100-v1";
   if(c.mode==="ququ")return"ququ-ndx100-v1";
   const raw=JSON.stringify(c);let h=2166136261;
   for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
@@ -106,23 +118,51 @@ function weightsFor({holdings,marketCapBySymbol,config:c=config()}){
   const w=1/names.length;return Object.fromEntries(names.map(s=>[s,w]));
 }
 
+function capAndRedistribute(raw,cap=0.20){
+  const free=new Set(Object.keys(raw)),out={};let remaining=1;
+  while(free.size){
+    let total=0;for(const s of free)total+=raw[s];
+    if(!(total>0))throw new Error("SNPY raw weight sum <= 0");
+    const over=[...free].filter(s=>remaining*raw[s]/total>cap+1e-12);
+    if(!over.length){for(const s of free)out[s]=remaining*raw[s]/total;break}
+    for(const s of over){out[s]=cap;remaining-=cap;free.delete(s)}
+  }
+  return out;
+}
+function deriveSnpyRows(sourceRows){
+  const ranked=(sourceRows||[]).map(x=>{
+    const ticker=String(x.ticker||"").trim().toUpperCase(),marketCap=Number(x.marketCap),momentum=Number(x.momentum),gross=1+momentum,stored=Number(x.rawWeightScore);
+    const raw=Number.isFinite(stored)&&stored>0?stored:(marketCap>0&&gross>0?Math.sqrt(marketCap)*(gross**3):NaN);
+    return{ticker,marketCap,momentum,raw};
+  }).filter(x=>x.ticker&&Number.isFinite(x.raw)&&x.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,100);
+  if(ranked.length!==100)throw new Error(`SNPY snapshot ${ranked.length}/100`);
+  const raw=Object.fromEntries(ranked.map(x=>[x.ticker,x.raw])),weights=capAndRedistribute(raw,0.20);
+  return ranked.map(x=>({ticker:x.ticker,weight:weights[x.ticker],momentum:x.momentum,marketCap:x.marketCap}))
+    .sort((a,b)=>b.weight-a.weight);
+}
+
 function currentNYMonth(){
   const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date());
   return`${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`;
 }
 function storageKey(kind,c){return `somx.${kind}.v2.${signature(c)}`}
 async function fetchSnapshot(c){
-  const isSnpi=c.mode==="snpi",name=isSnpi?"SNPI":"QUQU",file=isSnpi?"snpi-latest.json":"ququ-latest.json";
+  const mode=c.mode,name=mode==="snpi"?"SNPI":mode==="snpy"?"SNPY":"QUQU";
+  const file=mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
   const r=await fetch(`./${file}?v=${Date.now()}`,{cache:"no-store"});
   if(!r.ok)throw new Error(`${name} snapshot HTTP ${r.status}`);
   const j=await r.json();
-  const min=isSnpi?495:100;
-  if(!Array.isArray(j.rows)||j.rows.length<min)throw new Error(`${name} snapshot ${j.rows?.length||0}/${min}+`);
-  const rows=j.rows.map(x=>({ticker:String(x.ticker||"").trim().toUpperCase(),weight:Number(x.weight),momentum:Number(x.momentum),marketCap:Number(x.marketCap)}));
+  let rows;
+  if(mode==="snpy")rows=deriveSnpyRows(j.rows);
+  else{
+    const min=mode==="snpi"?495:100;
+    if(!Array.isArray(j.rows)||j.rows.length<min)throw new Error(`${name} snapshot ${j.rows?.length||0}/${min}+`);
+    rows=j.rows.map(x=>({ticker:String(x.ticker||"").trim().toUpperCase(),weight:Number(x.weight),momentum:Number(x.momentum),marketCap:Number(x.marketCap)}));
+  }
   if(rows.some(x=>!x.ticker||!Number.isFinite(x.weight)||x.weight<=0))throw new Error(`${name} 목표비중 데이터가 올바르지 않습니다.`);
   const sum=rows.reduce((a,x)=>a+x.weight,0);
   if(!(sum>0)||Math.abs(sum-1)>1e-6)throw new Error(`${name} 비중합 오류 ${sum}`);
-  return{...j,rows};
+  return{...j,strategy:name,holdings:rows.length,rows};
 }
 async function seedSnapshotContext(c){
   const j=await fetchSnapshot(c),ym=currentNYMonth(),holdings=j.rows.map(x=>x.ticker),targetWeights=Object.fromEntries(j.rows.map(x=>[x.ticker,x.weight]));
@@ -141,17 +181,17 @@ async function seedSnapshotContext(c){
 globalThis.SOMXStrategy={
   getConfig:()=>config(),getMode:()=>activeMode,getCustom:()=>clone(custom),
   setCustom:c=>{custom=normalizeCustom(c);saveCustom(custom)},
-  setMode:m=>{activeMode=["snpi","ququ","custom"].includes(m)?m:"snpi";saveMode(activeMode)},
+  setMode:m=>{activeMode=allModes.includes(m)?m:"snpi";saveMode(activeMode)},
   signature,isTradeMonth,requiredCalendarDays,score,weightsFor,
   fetchSnapshot,seedSnapshotContext,
-  presets:{snpi:clone(snpi),core:clone(snpi),ququ:clone(ququ),custom:clone(defaultCustom)}
+  presets:{snpi:clone(snpi),core:clone(snpi),snpy:clone(snpy),ququ:clone(ququ),custom:clone(defaultCustom)}
 };
 
 function initUI(){
   const root=document.getElementById("strategy-settings-root");if(!root)return;
   root.innerHTML=`
-    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>SNPI · QUQU는 고정 규칙, Custom은 직접 설정</small></div>
-    <div class="strategy-tabs"><button data-mode="snpi" type="button">SNPI</button><button data-mode="ququ" type="button">QUQU</button><button data-mode="custom" type="button">Custom</button></div>
+    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>SNPI · SNPY · QUQU는 고정 규칙, Custom은 직접 설정</small></div>
+    <div class="strategy-tabs"><button data-mode="snpi" type="button">SNPI</button><button data-mode="snpy" type="button">SNPY</button><button data-mode="ququ" type="button">QUQU</button><button data-mode="custom" type="button">Custom</button></div>
     <div class="strategy-body">
       <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title"></div><div class="core-rule"></div></div>
       <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="600"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="600"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="600"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
@@ -190,7 +230,7 @@ function initUI(){
     q("#marketcap-note").hidden=!(c.factor==="marketCap"||c.weighting==="marketCap");
   }
   function fill(c){
-    working=clone(c);const snap=editMode==="snpi"||editMode==="ququ";
+    working=clone(c);const snap=fixedModes.includes(editMode);
     q("#st-holdings").value=c.holdings;q("#st-entry").value=c.entryRank;q("#st-exit").value=c.exitRank;q("#st-rebalance").value=String(c.rebalanceMonths);
     q("#st-weighting").value=["equal","marketCap"].includes(c.weighting)?c.weighting:"equal";
     q("#st-mom-look").value=c.factors?.momentum?.lookback??6;q("#st-mom-skip").value=c.factors?.momentum?.skip??1;
@@ -201,6 +241,8 @@ function initUI(){
       q("#core-lock-note .strategy-section-title").textContent=`${c.label} · Locked`;
       q("#core-lock-note .core-rule").textContent=c.mode==="snpi"
         ?"S&P 500 전체 구성종목 · 월간 6-1 · √시총 × 상대모멘텀³ · 단일종목 최대 20% · 초과분 비례 재분배"
+        :c.mode==="snpy"
+        ?"S&P 500 · SNPI raw score 상위 100 · 월간 6-1 · Top100 안에서 √시총 × 상대모멘텀³ 재계산 · 단일종목 최대 20%"
         :"Nasdaq-100 전체 구성종목 · 월간 6-1 · √시총 × 상대모멘텀³ · 단일종목 최대 20% · 초과분 비례 재분배";
     }
     qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
@@ -213,7 +255,7 @@ function initUI(){
 
   q("#strategy-preview-btn").onclick=async()=>{
     const c=pull(),box=q("#strategy-preview");
-    if(editMode==="snpi"||editMode==="ququ"){
+    if(fixedModes.includes(editMode)){
       box.textContent=`최신 ${c.label} 스냅샷을 불러오는 중…`;
       try{
         const j=await fetchSnapshot(c),rows=[...j.rows].sort((a,b)=>b.weight-a.weight);
@@ -234,7 +276,7 @@ function initUI(){
     if(editMode==="custom"){custom=normalizeCustom(c);saveCustom(custom)}
     q("#strategy-apply-btn").textContent="Applying…";
     try{
-      if(editMode==="snpi"||editMode==="ququ"){
+      if(fixedModes.includes(editMode)){
         const j=await seedSnapshotContext(c);
         c.holdings=j.rows.length;c.entryRank=j.rows.length;c.exitRank=j.rows.length;
         box.textContent=`${c.label} 최신 스냅샷 적용 · ${(j.generatedAt||"").slice(0,10)} · ${j.rows.length}종목`;
