@@ -9,14 +9,9 @@ from statistics import median, pstdev
 
 import numpy as np
 
-
-def tukey_upper_fence(xs: list[float]) -> float | None:
-    if len(xs) < 8:
-        return None
-    a = np.asarray(xs, dtype=float)
-    q1 = float(np.quantile(a, 0.25))
-    q3 = float(np.quantile(a, 0.75))
-    return q3 + 1.5 * (q3 - q1)
+MIN_PRIOR_PERCENTILE = 8
+LEADERSHIP_PERCENTILE = 50.0
+EXTREME_PERCENTILE = 90.0
 
 
 def next_month(ym_or_date: str) -> str:
@@ -33,23 +28,43 @@ def dispersion(rows: list[dict]) -> float:
     return float(pstdev(moms))
 
 
+def percentile_rank_prior(prior_disps: list[float], current_disp: float) -> float | None:
+    if len(prior_disps) < MIN_PRIOR_PERCENTILE:
+        return None
+    return 100.0 * sum(1 for x in prior_disps if x <= current_disp) / len(prior_disps)
+
+
 def decision(current_disp: float, prior_disps: list[float]) -> dict:
     med = float(median(prior_disps)) if prior_disps else None
-    fence = tukey_upper_fence(prior_disps)
     prev = float(prior_disps[-1]) if prior_disps else None
-    leadership = True if med is None else current_disp > med
-    extreme = bool(fence is not None and current_disp > fence)
-    rollover = bool(extreme and prev is not None and current_disp < prev)
-    use_ququ = bool(leadership and not rollover)
+    pct = percentile_rank_prior(prior_disps, current_disp)
+    falling = bool(prev is not None and current_disp < prev)
+
+    # First eight observations are only a warm-up for the causal percentile.
+    # During warm-up, preserve the prior expanding-median leadership split and
+    # do not allow the mean-reversion overlay to fire.
+    if pct is None:
+        leadership = True if med is None else current_disp > med
+        overlay = False
+        selected = 'QUQU' if leadership else 'QQQ'
+        mode = 'WARMUP_MEDIAN'
+    else:
+        leadership = bool(pct >= LEADERSHIP_PERCENTILE)
+        overlay = bool(pct >= EXTREME_PERCENTILE and falling)
+        selected = 'QQQE' if overlay else ('QUQU' if leadership else 'QQQ')
+        mode = 'MR90'
+
     return {
         'momentumDispersion': current_disp,
         'priorMedianDispersion': med,
-        'priorTukeyUpperFence': fence,
         'priorDispersion': prev,
+        'priorObservationCount': len(prior_disps),
+        'leadershipPercentile': pct,
         'leadershipStrong': leadership,
-        'extremeDispersion': extreme,
-        'extremeDispersionRollover': rollover,
-        'selectedSleeve': 'QUQU' if use_ququ else 'QQQ',
+        'falling': falling,
+        'meanReversionOverlay': overlay,
+        'decisionMode': mode,
+        'selectedSleeve': selected,
     }
 
 
@@ -68,10 +83,10 @@ def compact_ququ_rows(rows: list[dict], include_returns: bool = True) -> list[di
     return out
 
 
-def qqq_rows(qqq_return_pct: float | None = None) -> list[dict]:
-    r = {'ticker': 'QQQ', 'weight': 1.0, 'momentum': None, 'marketCap': None}
-    if isinstance(qqq_return_pct, (int, float)):
-        r['monthlyReturn'] = float(qqq_return_pct) / 100.0
+def etf_rows(ticker: str, return_pct: float | None = None) -> list[dict]:
+    r = {'ticker': ticker, 'weight': 1.0, 'momentum': None, 'marketCap': None}
+    if isinstance(return_pct, (int, float)):
+        r['monthlyReturn'] = float(return_pct) / 100.0
     return [r]
 
 
@@ -113,7 +128,9 @@ def main() -> None:
             continue
         d = dispersion(rows)
         dec = decision(d, prior_disps)
-        qqq_ret = (bmonths.get(m) or {}).get('QQQ')
+        bench_row = bmonths.get(m) or {}
+        qqq_ret = bench_row.get('QQQ')
+        qqqe_ret = bench_row.get('QQQE')
         ququ_ret = rec.get('portfolioReturn')
 
         if dec['selectedSleeve'] == 'QUQU':
@@ -122,8 +139,14 @@ def main() -> None:
             universe_count = int(rec.get('universeCount') or len(rows))
             coverage = float(rec.get('coverageRatio') or 1.0)
             missing_weight = float(rec.get('missingReturnWeight') or 0.0)
+        elif dec['selectedSleeve'] == 'QQQE':
+            target_rows = etf_rows('QQQE', float(qqqe_ret) if isinstance(qqqe_ret, (int, float)) else None)
+            port = float(qqqe_ret) if isinstance(qqqe_ret, (int, float)) else None
+            universe_count = 1
+            coverage = 1.0
+            missing_weight = 0.0
         else:
-            target_rows = qqq_rows(float(qqq_ret) if isinstance(qqq_ret, (int, float)) else None)
+            target_rows = etf_rows('QQQ', float(qqq_ret) if isinstance(qqq_ret, (int, float)) else None)
             port = float(qqq_ret) if isinstance(qqq_ret, (int, float)) else None
             universe_count = 1
             coverage = 1.0
@@ -136,7 +159,7 @@ def main() -> None:
             'generatedAt': rec.get('generatedAt'),
             'selectedSleeve': dec['selectedSleeve'],
             'decision': dec,
-            'rule': 'Leadership Rollover: high dispersion => QUQU; weak leadership or extreme-dispersion rollover => QQQ',
+            'rule': 'MR90: percentile <50 => QQQ; >=50 => QUQU; >=90 and falling => QQQE',
             'universeCount': universe_count,
             'coverageRatio': coverage,
             'missingReturnWeight': missing_weight,
@@ -158,7 +181,6 @@ def main() -> None:
     if len(current_rows) != 100:
         raise RuntimeError(f'QUQU latest {len(current_rows)}/100')
 
-    # Do not let the current allocation month leak into its own threshold history.
     prior_month_disps = []
     for m in sorted(k for k in qmonths if k < allocation_month):
         rows = (qmonths[m] or {}).get('rows') or []
@@ -170,17 +192,17 @@ def main() -> None:
     if cur_dec['selectedSleeve'] == 'QUQU':
         latest_rows = compact_ququ_rows(current_rows, include_returns=False)
     else:
-        latest_rows = qqq_rows()
+        latest_rows = etf_rows(cur_dec['selectedSleeve'])
 
     latest_payload = {
         'strategy': 'QUU',
-        'universe': 'Nasdaq-100 / QQQ regime switch',
+        'universe': 'Nasdaq-100 / QQQ / QQQE regime switch',
         'generatedAt': datetime.now(timezone.utc).isoformat(),
         'sourceGeneratedAt': latest.get('generatedAt'),
         'signal': {
             'recentDate': recent_date,
             'allocationMonth': allocation_month,
-            'rule': 'Leadership Rollover: QUQU p=3 unless leadership is weak or extreme dispersion rolls over; otherwise QQQ',
+            'rule': 'MR90: leadership percentile <50 => QQQ; >=50 => QUQU; >=90 with falling dispersion => QQQE',
         },
         'decision': cur_dec,
         'selectedSleeve': cur_dec['selectedSleeve'],
@@ -191,7 +213,6 @@ def main() -> None:
         'rows': latest_rows,
     }
 
-    # Keep current target in history even before the month has a realized return.
     current_record = {
         'allocationMonth': allocation_month,
         'signalMonth': recent_date[:7],
@@ -214,14 +235,15 @@ def main() -> None:
 
     history_payload = {
         'strategy': 'QUU',
-        'universe': 'Nasdaq-100 / QQQ regime switch',
-        'description': 'QUU monthly holdings and returns. Uses QUQU p=3 during strong leadership, QQQ during weak leadership or an extreme-dispersion rollover.',
+        'universe': 'Nasdaq-100 / QQQ / QQQE regime switch',
+        'description': 'QUU monthly holdings and returns. Uses QUQU during strong leadership, QQQ during weak leadership, and QQQE when extreme leadership begins mean-reverting.',
         'generatedAt': latest_payload['generatedAt'],
         'rules': {
-            'leadership': 'Current Nasdaq-100 cross-sectional 6-1 momentum dispersion > median of all prior monthly dispersions',
-            'extreme': 'Current dispersion > prior-history Tukey upper fence Q3 + 1.5×IQR',
-            'rollover': 'Extreme dispersion AND current dispersion < immediately prior month dispersion',
-            'allocation': 'Leadership strong and no rollover => QUQU p=3; otherwise QQQ',
+            'minimumPriorMonths': MIN_PRIOR_PERCENTILE,
+            'leadership': 'Prior-only Nasdaq-100 cross-sectional 6-1 momentum-dispersion percentile >=50 => QUQU; below 50 => QQQ',
+            'meanReversionOverlay': 'Prior-only percentile >=90 AND current dispersion < immediately prior dispersion => QQQE for that allocation month',
+            'reset': 'Reevaluate from scratch every month; no cooldown or multi-month hold rule',
+            'warmup': 'Before eight prior observations exist, use expanding prior median for the QUQU/QQQ split and disable the QQQE overlay',
         },
         'metricsCompletedMonths': metrics(completed_returns) if completed_returns else None,
         'months': {k: out_months[k] for k in sorted(out_months)},
