@@ -1,0 +1,71 @@
+name: QUU breadth confirmation study
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/quu-breadth-confirmation-study.yml'
+      - 'tools/quu_breadth_confirmation_study.py'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --disable-pip-version-check pandas yfinance
+
+      - name: Load study script
+        run: git show origin/main:tools/quu_breadth_confirmation_study.py > /tmp/quu_breadth_confirmation_study.py
+
+      - name: Refresh Pages inputs
+        run: |
+          git fetch origin somx-pages
+          git reset --hard origin/somx-pages
+
+      - name: Run study
+        run: python /tmp/quu_breadth_confirmation_study.py
+
+      - name: Validate output
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-breadth-confirmation-study.json',encoding='utf-8'))
+          assert j['exact2022_2026']['mr90Events']['count'] >= 2
+          assert j['pre2018Proxy']['mr90Events']['count'] >= 3
+          assert j['combinedEventOnly']['count'] >= 5
+          print(json.dumps(j['combinedEventOnly'],indent=2))
+
+      - name: Commit study to Pages
+        run: |
+          cp quu-breadth-confirmation-study.json /tmp/quu-breadth-confirmation-study.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin somx-pages
+            git reset --hard origin/somx-pages
+            cp /tmp/quu-breadth-confirmation-study.json quu-breadth-confirmation-study.json
+            git add quu-breadth-confirmation-study.json
+            if git diff --cached --quiet; then
+              echo 'No study changes'
+              exit 0
+            fi
+            git commit -m 'Publish QUU breadth confirmation study'
+            if git push origin HEAD:somx-pages; then
+              exit 0
+            fi
+            echo "Push conflict on attempt $attempt; retrying"
+          done
+          exit 1
