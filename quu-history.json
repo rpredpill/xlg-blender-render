@@ -2,7 +2,7 @@
   "strategy": "QUU",
   "universe": "Nasdaq-100 / QQQ / QQQE regime switch",
   "description": "QUU monthly holdings and returns. Uses QUQU during strong leadership, QQQ during weak leadership, and QQQE when extreme leadership begins mean-reverting.",
-  "generatedAt": "2026-10-02T13:57:59.124363+00:00",
+  "generatedAt": "2026-10-02T14:56:29.626344+00:00",
   "rules": {
     "minimumPriorMonths": 8,
     "leadership": "Prior-only Nasdaq-100 cross-sectional 6-1 momentum-dispersion percentile >=50 => QUQU; below 50 => QQQ",
@@ -20750,7 +20750,7 @@
       "allocationMonth": "2026-10",
       "signalMonth": "2026-09",
       "signalDate": "2026-09-30",
-      "generatedAt": "2026-10-02T13:57:59.124363+00:00",
+      "generatedAt": "2026-10-02T14:56:29.626344+00:00",
       "selectedSleeve": "QUQU",
       "decision": {
         "momentumDispersion": 0.3325294305447196,
