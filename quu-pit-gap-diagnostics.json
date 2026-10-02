@@ -1,0 +1,9148 @@
+{
+  "generatedAt": "2026-10-02T12:22:49.899520+00:00",
+  "period": [
+    "2012-05",
+    "2018-12"
+  ],
+  "method": "SEC PIT v2 gap diagnostic. Counts one reason per constituent-month in priority: missing price/return, missing CIK, missing PIT share fact, cap reconstruction price gap.",
+  "summary": {
+    "symbols": 171,
+    "mappedSymbols": 164,
+    "reasonCounts": {
+      "NO_PIT_SHARE_FACT": 687,
+      "CAP_RECON_PRICE_GAP": 6,
+      "PRICE_OR_RETURN": 477,
+      "NO_CIK": 95
+    },
+    "totalMissingConstituentMonths": 1265
+  },
+  "topMissingSymbols": [
+    {
+      "ticker": "BIDU",
+      "missingMonths": 80,
+      "reasons": {
+        "CAP_RECON_PRICE_GAP": 3,
+        "NO_PIT_SHARE_FACT": 77
+      },
+      "cik": "0001329099",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "FOXA",
+      "missingMonths": 80,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 71,
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0001754301",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "QRTEA",
+      "missingMonths": 80,
+      "reasons": {
+        "PRICE_OR_RETURN": 80
+      },
+      "cik": "0001355096",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "AVGO",
+      "missingMonths": 74,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 74
+      },
+      "cik": "0001730168",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "VOD",
+      "missingMonths": 74,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 74
+      },
+      "cik": "0000839923",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "WFMI",
+      "missingMonths": 56,
+      "reasons": {
+        "PRICE_OR_RETURN": 56
+      },
+      "cik": "0000865436",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "NDOI",
+      "missingMonths": 51,
+      "reasons": {
+        "PRICE_OR_RETURN": 51
+      },
+      "cik": "0002008861",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "LMCK",
+      "missingMonths": 50,
+      "reasons": {
+        "PRICE_OR_RETURN": 50
+      },
+      "cik": "0001805284",
+      "mappingSource": "ticker-changes-old"
+    },
+    {
+      "ticker": "FOX",
+      "missingMonths": 48,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 39,
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0001754301",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "SNDK",
+      "missingMonths": 47,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 47
+      },
+      "cik": "0002023554",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "GOOG",
+      "missingMonths": 46,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 46
+      },
+      "cik": "0001652044",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "MYL",
+      "missingMonths": 46,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 37,
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0001623613",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "ALTR",
+      "missingMonths": 42,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 42
+      },
+      "cik": "0001701732",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "LMCA",
+      "missingMonths": 37,
+      "reasons": {
+        "PRICE_OR_RETURN": 1,
+        "NO_CIK": 36
+      },
+      "cik": null,
+      "mappingSource": null
+    },
+    {
+      "ticker": "CTRX",
+      "missingMonths": 31,
+      "reasons": {
+        "NO_CIK": 31
+      },
+      "cik": null,
+      "mappingSource": null
+    },
+    {
+      "ticker": "LBTYA",
+      "missingMonths": 30,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 30
+      },
+      "cik": "0001570585",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "VIP",
+      "missingMonths": 26,
+      "reasons": {
+        "NO_CIK": 26
+      },
+      "cik": null,
+      "mappingSource": null
+    },
+    {
+      "ticker": "SHPG",
+      "missingMonths": 26,
+      "reasons": {
+        "PRICE_OR_RETURN": 26
+      },
+      "cik": "0000936402",
+      "mappingSource": "2017-sec-snapshot"
+    },
+    {
+      "ticker": "DISCA",
+      "missingMonths": 23,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 23
+      },
+      "cik": "0001437107",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "DISCK",
+      "missingMonths": 23,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 23
+      },
+      "cik": "0001437107",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "GOOGL",
+      "missingMonths": 22,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 22
+      },
+      "cik": "0001652044",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "GOLD",
+      "missingMonths": 19,
+      "reasons": {
+        "CAP_RECON_PRICE_GAP": 3,
+        "NO_PIT_SHARE_FACT": 16
+      },
+      "cik": "0000756894",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "DELL",
+      "missingMonths": 18,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 18
+      },
+      "cik": "0001571996",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "LIFE",
+      "missingMonths": 16,
+      "reasons": {
+        "PRICE_OR_RETURN": 16
+      },
+      "cik": "0001788451",
+      "mappingSource": "ticker-changes"
+    },
+    {
+      "ticker": "LBTYK",
+      "missingMonths": 16,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 16
+      },
+      "cik": "0001570585",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "BMC",
+      "missingMonths": 15,
+      "reasons": {
+        "PRICE_OR_RETURN": 15
+      },
+      "cik": "0000835729",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "PRGO",
+      "missingMonths": 14,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 14
+      },
+      "cik": "0001585364",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "VMED",
+      "missingMonths": 14,
+      "reasons": {
+        "PRICE_OR_RETURN": 14
+      },
+      "cik": null,
+      "mappingSource": null
+    },
+    {
+      "ticker": "ESRX",
+      "missingMonths": 10,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 1,
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0001532063",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "ALXN",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000899866",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "ATVI",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000718877",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "CELG",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000816284",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "CERN",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000804753",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "CTXS",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000877890",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "EA",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000712515",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "HOLX",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000859737",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "MXIM",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000743316",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "WBA",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0001618921",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "XLNX",
+      "missingMonths": 9,
+      "reasons": {
+        "PRICE_OR_RETURN": 9
+      },
+      "cik": "0000743988",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "INFY",
+      "missingMonths": 8,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 8
+      },
+      "cik": "0001067491",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "MRVL",
+      "missingMonths": 8,
+      "reasons": {
+        "NO_PIT_SHARE_FACT": 8
+      },
+      "cik": "0001835632",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "WCRX",
+      "missingMonths": 8,
+      "reasons": {
+        "PRICE_OR_RETURN": 8
+      },
+      "cik": null,
+      "mappingSource": null
+    },
+    {
+      "ticker": "CA",
+      "missingMonths": 8,
+      "reasons": {
+        "PRICE_OR_RETURN": 8
+      },
+      "cik": "0000356028",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "KHC",
+      "missingMonths": 5,
+      "reasons": {
+        "PRICE_OR_RETURN": 5
+      },
+      "cik": "0001637459",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "LILA",
+      "missingMonths": 5,
+      "reasons": {
+        "PRICE_OR_RETURN": 5
+      },
+      "cik": "0001712184",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "LILAK",
+      "missingMonths": 5,
+      "reasons": {
+        "PRICE_OR_RETURN": 4,
+        "NO_PIT_SHARE_FACT": 1
+      },
+      "cik": "0001712184",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "DISH",
+      "missingMonths": 4,
+      "reasons": {
+        "PRICE_OR_RETURN": 4
+      },
+      "cik": "0001001082",
+      "mappingSource": "sp500-history"
+    },
+    {
+      "ticker": "KFT",
+      "missingMonths": 3,
+      "reasons": {
+        "PRICE_OR_RETURN": 3
+      },
+      "cik": "0001103982",
+      "mappingSource": "ticker-changes-old"
+    },
+    {
+      "ticker": "STRZA",
+      "missingMonths": 2,
+      "reasons": {
+        "NO_CIK": 2
+      },
+      "cik": null,
+      "mappingSource": null
+    },
+    {
+      "ticker": "BATRA",
+      "missingMonths": 2,
+      "reasons": {
+        "PRICE_OR_RETURN": 2
+      },
+      "cik": "0001958140",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "BATRK",
+      "missingMonths": 2,
+      "reasons": {
+        "PRICE_OR_RETURN": 2
+      },
+      "cik": "0001958140",
+      "mappingSource": "current-sec-map"
+    },
+    {
+      "ticker": "PYPL",
+      "missingMonths": 1,
+      "reasons": {
+        "PRICE_OR_RETURN": 1
+      },
+      "cik": "0001633917",
+      "mappingSource": "current-sec-map"
+    }
+  ],
+  "months": [
+    {
+      "month": "2012-05",
+      "universeCount": 103,
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.7864077669902912,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 12,
+        "CAP_RECON_PRICE_GAP": 2,
+        "PRICE_OR_RETURN": 8
+      }
+    },
+    {
+      "month": "2012-06",
+      "universeCount": 103,
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 11,
+        "CAP_RECON_PRICE_GAP": 2,
+        "PRICE_OR_RETURN": 8
+      }
+    },
+    {
+      "month": "2012-07",
+      "universeCount": 103,
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 11,
+        "CAP_RECON_PRICE_GAP": 2,
+        "PRICE_OR_RETURN": 8
+      }
+    },
+    {
+      "month": "2012-08",
+      "universeCount": 103,
+      "priceCoverage": 0.912621359223301,
+      "capCoverage": 0.7864077669902912,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 13,
+        "PRICE_OR_RETURN": 9
+      }
+    },
+    {
+      "month": "2012-09",
+      "universeCount": 103,
+      "priceCoverage": 0.912621359223301,
+      "capCoverage": 0.7864077669902912,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 13,
+        "PRICE_OR_RETURN": 9
+      }
+    },
+    {
+      "month": "2012-10",
+      "universeCount": 103,
+      "priceCoverage": 0.912621359223301,
+      "capCoverage": 0.7864077669902912,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 13,
+        "PRICE_OR_RETURN": 9
+      }
+    },
+    {
+      "month": "2012-11",
+      "universeCount": 103,
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 13,
+        "PRICE_OR_RETURN": 8
+      }
+    },
+    {
+      "month": "2012-12",
+      "universeCount": 103,
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 13,
+        "PRICE_OR_RETURN": 8
+      }
+    },
+    {
+      "month": "2013-01",
+      "universeCount": 103,
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 12,
+        "PRICE_OR_RETURN": 8,
+        "NO_CIK": 1
+      }
+    },
+    {
+      "month": "2013-02",
+      "universeCount": 103,
+      "priceCoverage": 0.9320388349514563,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 12,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2013-03",
+      "universeCount": 103,
+      "priceCoverage": 0.9320388349514563,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 12,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2013-04",
+      "universeCount": 103,
+      "priceCoverage": 0.9320388349514563,
+      "capCoverage": 0.8058252427184466,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 12,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 1
+      }
+    },
+    {
+      "month": "2013-05",
+      "universeCount": 103,
+      "priceCoverage": 0.9320388349514563,
+      "capCoverage": 0.8058252427184466,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 12,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 1
+      }
+    },
+    {
+      "month": "2013-06",
+      "universeCount": 103,
+      "priceCoverage": 0.9320388349514563,
+      "capCoverage": 0.8058252427184466,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 12,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 1
+      }
+    },
+    {
+      "month": "2013-07",
+      "universeCount": 103,
+      "priceCoverage": 0.941747572815534,
+      "capCoverage": 0.8155339805825242,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 11,
+        "PRICE_OR_RETURN": 6,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2013-08",
+      "universeCount": 103,
+      "priceCoverage": 0.9514563106796117,
+      "capCoverage": 0.8252427184466019,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 11,
+        "NO_CIK": 2,
+        "PRICE_OR_RETURN": 5
+      }
+    },
+    {
+      "month": "2013-09",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8349514563106796,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 11,
+        "NO_CIK": 2,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2013-10",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8349514563106796,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 11,
+        "NO_CIK": 2,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2013-11",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8349514563106796,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 10,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2013-12",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8446601941747572,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-01",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8446601941747572,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-02",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8446601941747572,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-03",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8543689320388349,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 8,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-04",
+      "universeCount": 103,
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8543689320388349,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 8,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-05",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-06",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-07",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-08",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-09",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-10",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-11",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2014-12",
+      "universeCount": 104,
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-01",
+      "universeCount": 106,
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.839622641509434,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 10,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-02",
+      "universeCount": 106,
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.839622641509434,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 10,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-03",
+      "universeCount": 106,
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.839622641509434,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 10,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-04",
+      "universeCount": 106,
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.839622641509434,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 10,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-05",
+      "universeCount": 106,
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.839622641509434,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 10,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-06",
+      "universeCount": 106,
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.8490566037735849,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-07",
+      "universeCount": 106,
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.8490566037735849,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "NO_CIK": 3,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2015-08",
+      "universeCount": 107,
+      "priceCoverage": 0.9345794392523364,
+      "capCoverage": 0.8317757009345794,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2015-09",
+      "universeCount": 108,
+      "priceCoverage": 0.9351851851851852,
+      "capCoverage": 0.8333333333333334,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2015-10",
+      "universeCount": 108,
+      "priceCoverage": 0.9351851851851852,
+      "capCoverage": 0.8333333333333334,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2015-11",
+      "universeCount": 108,
+      "priceCoverage": 0.9351851851851852,
+      "capCoverage": 0.8425925925925926,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 8,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2015-12",
+      "universeCount": 108,
+      "priceCoverage": 0.9351851851851852,
+      "capCoverage": 0.8333333333333334,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 7,
+        "NO_CIK": 2
+      }
+    },
+    {
+      "month": "2016-01",
+      "universeCount": 105,
+      "priceCoverage": 0.9619047619047619,
+      "capCoverage": 0.8761904761904762,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 8,
+        "NO_CIK": 1,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2016-02",
+      "universeCount": 105,
+      "priceCoverage": 0.9619047619047619,
+      "capCoverage": 0.8571428571428571,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 10,
+        "NO_CIK": 1,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2016-03",
+      "universeCount": 105,
+      "priceCoverage": 0.9619047619047619,
+      "capCoverage": 0.8761904761904762,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 8,
+        "NO_CIK": 1,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2016-04",
+      "universeCount": 105,
+      "priceCoverage": 0.9619047619047619,
+      "capCoverage": 0.8857142857142857,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "NO_CIK": 1,
+        "PRICE_OR_RETURN": 4
+      }
+    },
+    {
+      "month": "2016-05",
+      "universeCount": 107,
+      "priceCoverage": 0.9439252336448598,
+      "capCoverage": 0.8691588785046729,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 6,
+        "NO_CIK": 1
+      }
+    },
+    {
+      "month": "2016-06",
+      "universeCount": 107,
+      "priceCoverage": 0.9439252336448598,
+      "capCoverage": 0.8691588785046729,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 6,
+        "NO_CIK": 1
+      }
+    },
+    {
+      "month": "2016-07",
+      "universeCount": 104,
+      "priceCoverage": 0.9711538461538461,
+      "capCoverage": 0.9038461538461539,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 3
+      }
+    },
+    {
+      "month": "2016-08",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.9134615384615384,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2016-09",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.9134615384615384,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2016-10",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.9134615384615384,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2016-11",
+      "universeCount": 104,
+      "priceCoverage": 0.9711538461538461,
+      "capCoverage": 0.9038461538461539,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 3
+      }
+    },
+    {
+      "month": "2016-12",
+      "universeCount": 104,
+      "priceCoverage": 0.9711538461538461,
+      "capCoverage": 0.9038461538461539,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 3
+      }
+    },
+    {
+      "month": "2017-01",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.9134615384615384,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-02",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-03",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-04",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-05",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-06",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-07",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-08",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-09",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-10",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-11",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2017-12",
+      "universeCount": 104,
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 9,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2018-01",
+      "universeCount": 103,
+      "priceCoverage": 0.9805825242718447,
+      "capCoverage": 0.912621359223301,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2018-02",
+      "universeCount": 103,
+      "priceCoverage": 0.9805825242718447,
+      "capCoverage": 0.912621359223301,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2018-03",
+      "universeCount": 103,
+      "priceCoverage": 0.9805825242718447,
+      "capCoverage": 0.912621359223301,
+      "missingByReason": {
+        "NO_PIT_SHARE_FACT": 7,
+        "PRICE_OR_RETURN": 2
+      }
+    },
+    {
+      "month": "2018-04",
+      "universeCount": 103,
+      "priceCoverage": 0.8252427184466019,
+      "capCoverage": 0.7766990291262136,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 18,
+        "NO_PIT_SHARE_FACT": 5
+      }
+    },
+    {
+      "month": "2018-05",
+      "universeCount": 103,
+      "priceCoverage": 0.8252427184466019,
+      "capCoverage": 0.7766990291262136,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 18,
+        "NO_PIT_SHARE_FACT": 5
+      }
+    },
+    {
+      "month": "2018-06",
+      "universeCount": 103,
+      "priceCoverage": 0.8252427184466019,
+      "capCoverage": 0.7961165048543689,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 18,
+        "NO_PIT_SHARE_FACT": 3
+      }
+    },
+    {
+      "month": "2018-07",
+      "universeCount": 103,
+      "priceCoverage": 0.8252427184466019,
+      "capCoverage": 0.8155339805825242,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 18,
+        "NO_PIT_SHARE_FACT": 1
+      }
+    },
+    {
+      "month": "2018-08",
+      "universeCount": 103,
+      "priceCoverage": 0.8349514563106796,
+      "capCoverage": 0.8252427184466019,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 17,
+        "NO_PIT_SHARE_FACT": 1
+      }
+    },
+    {
+      "month": "2018-09",
+      "universeCount": 103,
+      "priceCoverage": 0.8349514563106796,
+      "capCoverage": 0.8252427184466019,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 17,
+        "NO_PIT_SHARE_FACT": 1
+      }
+    },
+    {
+      "month": "2018-10",
+      "universeCount": 103,
+      "priceCoverage": 0.8349514563106796,
+      "capCoverage": 0.8252427184466019,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 17,
+        "NO_PIT_SHARE_FACT": 1
+      }
+    },
+    {
+      "month": "2018-11",
+      "universeCount": 103,
+      "priceCoverage": 0.8349514563106796,
+      "capCoverage": 0.8252427184466019,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 17,
+        "NO_PIT_SHARE_FACT": 1
+      }
+    },
+    {
+      "month": "2018-12",
+      "universeCount": 103,
+      "priceCoverage": 0.8446601941747572,
+      "capCoverage": 0.8349514563106796,
+      "missingByReason": {
+        "PRICE_OR_RETURN": 16,
+        "NO_PIT_SHARE_FACT": 1
+      }
+    }
+  ],
+  "details": [
+    {
+      "month": "2012-05",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "BIDU",
+      "reason": "CAP_RECON_PRICE_GAP",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "ESRX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "GOLD",
+      "reason": "CAP_RECON_PRICE_GAP",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-05",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-05",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-05",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "BIDU",
+      "reason": "CAP_RECON_PRICE_GAP",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "GOLD",
+      "reason": "CAP_RECON_PRICE_GAP",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-06",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-06",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-06",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "BIDU",
+      "reason": "CAP_RECON_PRICE_GAP",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "GOLD",
+      "reason": "CAP_RECON_PRICE_GAP",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-07",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-07",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-07",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "KFT",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001103982"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-08",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-08",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-08",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "KFT",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001103982"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-09",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-09",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-09",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "KFT",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001103982"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-10",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-10",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-10",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-11",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-11",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-11",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "INFY",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001067491"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "MRVL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001835632"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-12",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2012-12",
+      "ticker": "WCRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2012-12",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-01",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "LMCA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2013-01",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2013-01",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-01",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-02",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "STRZA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-02",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2013-02",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-02",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-03",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "STRZA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-03",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2013-03",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-03",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-04",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2013-04",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-04",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-05",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2013-05",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-05",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-06",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "PRGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001585364"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "VMED",
+      "reason": "PRICE_OR_RETURN",
+      "cik": null
+    },
+    {
+      "month": "2013-06",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-06",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "BMC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000835729"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-07",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-07",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-07",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-08",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "LIFE",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001788451"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-08",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-08",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-09",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-09",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-09",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-10",
+      "ticker": "DELL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001571996"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-10",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-10",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-11",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "GOLD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000756894"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-11",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-11",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-11",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-12",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-12",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2013-12",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2013-12",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-01",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-01",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-01",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-01",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-02",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-02",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-02",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-02",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-03",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-03",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-03",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-03",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-04",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-04",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-04",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-04",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-05",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-05",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-05",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-05",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-06",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-06",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-06",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-06",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-07",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-07",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-07",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-07",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-08",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-08",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-08",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-08",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-09",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-09",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-09",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-09",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-10",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-10",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-10",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-10",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-11",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-11",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-11",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-11",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-12",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-12",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2014-12",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2014-12",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-01",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-01",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-01",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-01",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-02",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-02",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-02",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-02",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-03",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-03",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-03",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-03",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-04",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-04",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-04",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-04",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-05",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-05",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "MYL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-05",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-05",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-06",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-06",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-06",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-06",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "CTRX",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-07",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-07",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-07",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-07",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "KHC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001637459"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "LILA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "LILAK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-08",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-08",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-08",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "KHC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001637459"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "LILA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "LILAK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-09",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-09",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-09",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "ALTR",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001701732"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "KHC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001637459"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "LILA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "LILAK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-10",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-10",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-10",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "KHC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001637459"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "LILA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "LILAK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-11",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-11",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-11",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "KHC",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001637459"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "LILA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "LILAK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001712184"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-12",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "PYPL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001633917"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "VIP",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2015-12",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2015-12",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2016-01",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-01",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "GOOG",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "GOOGL",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001652044"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2016-02",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-02",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2016-03",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "SNDK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0002023554"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-03",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2016-04",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-04",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "BATRA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001958140"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "BATRK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001958140"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2016-05",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-05",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "BATRA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001958140"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "BATRK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001958140"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "LMCA",
+      "reason": "NO_CIK",
+      "cik": null
+    },
+    {
+      "month": "2016-06",
+      "ticker": "LMCK",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001805284"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-06",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "NDOI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0002008861"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-07",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-08",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-09",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-10",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-11",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2016-12",
+      "ticker": "WFMI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000865436"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-01",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-02",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-03",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-04",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-05",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-06",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-07",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-08",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-09",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-10",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-11",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "DISCA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "DISCK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001437107"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2017-12",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-01",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-02",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "FOX",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "FOXA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-03",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "DISH",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001001082"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-04",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "DISH",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001001082"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "LBTYA",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "LBTYK",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001570585"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-05",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "AVGO",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001730168"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "DISH",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001001082"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "VOD",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0000839923"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-06",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "DISH",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001001082"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-07",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-08",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-09",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-10",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "CA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000356028"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-11",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "ALXN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000899866"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "ATVI",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000718877"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "BIDU",
+      "reason": "NO_PIT_SHARE_FACT",
+      "cik": "0001329099"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "CELG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000816284"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "CERN",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000804753"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "CTXS",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000877890"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "EA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000712515"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "ESRX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001532063"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "FOX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "FOXA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001754301"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "HOLX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000859737"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "MXIM",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743316"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "MYL",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001623613"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "QRTEA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001355096"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "SHPG",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000936402"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "WBA",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0001618921"
+    },
+    {
+      "month": "2018-12",
+      "ticker": "XLNX",
+      "reason": "PRICE_OR_RETURN",
+      "cik": "0000743988"
+    }
+  ],
+  "priceRecovery": {
+    "direct": [],
+    "aliases": [
+      "CTRP->TCOM",
+      "FB->META",
+      "NLOK->GEN",
+      "PCLN->BKNG",
+      "RIMM->BB"
+    ],
+    "stillMissing": [
+      "ALTR",
+      "ALXN",
+      "APOL",
+      "ATVI",
+      "BBBY",
+      "BMC",
+      "BRCM",
+      "CA",
+      "CELG",
+      "CERN",
+      "CTRX",
+      "CTXS",
+      "DISCA",
+      "DISCK",
+      "DISH",
+      "DTV",
+      "EA",
+      "ESRX",
+      "FLIR",
+      "FOX",
+      "FOXA",
+      "GMCR",
+      "HANS",
+      "HOLX",
+      "JOYG",
+      "KFT",
+      "KRFT",
+      "LIFE",
+      "LLTC",
+      "LMCA",
+      "LMCK",
+      "MXIM",
+      "MYL",
+      "NDOI",
+      "NIHD",
+      "NUAN",
+      "QRTEA",
+      "SHLD",
+      "SHPG",
+      "SIAL",
+      "SNDK",
+      "SPLS",
+      "SRCL",
+      "STRZA",
+      "VIAB",
+      "VMED",
+      "WBA",
+      "WCRX",
+      "WFMI",
+      "XLNX",
+      "YHOO"
+    ]
+  },
+  "wikiMerge": {
+    "newSymbols": [
+      "ALTR",
+      "ALXN",
+      "APOL",
+      "ATVI",
+      "BBBY",
+      "BRCM",
+      "CA",
+      "CELG",
+      "CERN",
+      "CTRX",
+      "CTXS",
+      "DISCA",
+      "DISCK",
+      "DISH",
+      "DTV",
+      "EA",
+      "ESRX",
+      "FLIR",
+      "FOX",
+      "FOXA",
+      "GMCR",
+      "HOLX",
+      "KRFT",
+      "LIFE",
+      "LLTC",
+      "LMCA",
+      "MXIM",
+      "MYL",
+      "NIHD",
+      "NUAN",
+      "SHLD",
+      "SIAL",
+      "SNDK",
+      "SPLS",
+      "SRCL",
+      "STRZA",
+      "VIAB",
+      "WBA",
+      "XLNX",
+      "YHOO"
+    ],
+    "extendedSymbols": [
+      "AAL",
+      "AAPL",
+      "ADBE",
+      "ADI",
+      "ADP",
+      "ADSK",
+      "AKAM",
+      "ALGN",
+      "AMAT",
+      "AMGN",
+      "AMZN",
+      "AVGO",
+      "BIDU",
+      "BIIB",
+      "BKNG",
+      "BMRN",
+      "CDNS",
+      "CHKP",
+      "CHRW",
+      "CHTR",
+      "CMCSA",
+      "COST",
+      "CSCO",
+      "CSX",
+      "CTAS",
+      "CTSH",
+      "DELL",
+      "DLTR",
+      "EBAY",
+      "EQIX",
+      "EXPD",
+      "EXPE",
+      "FAST",
+      "FB",
+      "FFIV",
+      "FISV",
+      "FOSL",
+      "FSLR",
+      "GILD",
+      "GOLD",
+      "GOOG",
+      "GOOGL",
+      "GRMN",
+      "HAS",
+      "HSIC",
+      "IDXX",
+      "ILMN",
+      "INCY",
+      "INTC",
+      "INTU",
+      "ISRG",
+      "JBHT",
+      "KHC",
+      "KLAC",
+      "LBTYA",
+      "LRCX",
+      "MAR",
+      "MAT",
+      "MCHP",
+      "MDLZ",
+      "MNST",
+      "MRVL",
+      "MSFT",
+      "MU",
+      "NCLH",
+      "NFLX",
+      "NTAP",
+      "NVDA",
+      "ORCL",
+      "ORLY",
+      "PAYX",
+      "PCAR",
+      "PCLN",
+      "PEP",
+      "PRGO",
+      "PYPL",
+      "QCOM",
+      "QGEN",
+      "REGN",
+      "ROST",
+      "SBAC",
+      "SBUX",
+      "SIRI",
+      "SNPS",
+      "STX",
+      "SWKS",
+      "TMUS",
+      "TRIP",
+      "TSCO",
+      "TSLA",
+      "TTWO",
+      "TXN",
+      "ULTA",
+      "URBN",
+      "VOD",
+      "VRSK",
+      "VRSN",
+      "VRTX",
+      "WDAY",
+      "WDC",
+      "WYNN",
+      "XEL",
+      "XRAY"
+    ]
+  }
+}
