@@ -2,7 +2,7 @@
   "strategy": "QUU",
   "universe": "Nasdaq-100 / QQQ / QQQE regime switch",
   "description": "QUU monthly holdings and returns. Uses QUQU during strong leadership, QQQ during weak leadership, and QQQE when extreme leadership begins mean-reverting.",
-  "generatedAt": "2026-10-02T09:22:51.029449+00:00",
+  "generatedAt": "2026-10-02T13:57:59.124363+00:00",
   "rules": {
     "minimumPriorMonths": 8,
     "leadership": "Prior-only Nasdaq-100 cross-sectional 6-1 momentum-dispersion percentile >=50 => QUQU; below 50 => QQQ",
@@ -12,11 +12,11 @@
   },
   "metricsCompletedMonths": {
     "months": 48,
-    "totalReturnPct": 381.296632852526,
-    "CAGRpct": 48.11641976528143,
+    "totalReturnPct": 381.2970407241361,
+    "CAGRpct": 48.1164511453386,
     "MDDpct": -9.814936811263653,
-    "Calmar": 4.902366738628706,
-    "endingIndex": 481.296632852526
+    "Calmar": 4.902369935802338,
+    "endingIndex": 481.2970407241361
   },
   "months": {
     "2022-10": {
@@ -2843,10 +2843,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": -0.0028870855332077117
+          "monthlyReturn": -0.00288698482769123
         }
       ],
-      "portfolioReturn": -0.28870855332077117,
+      "portfolioReturn": -0.288698482769123,
       "lastDate": "2023-02-28"
     },
     "2023-03": {
@@ -4275,10 +4275,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.08041231444097964
+          "monthlyReturn": 0.08041230670267696
         }
       ],
-      "portfolioReturn": 8.041231444097964,
+      "portfolioReturn": 8.041230670267696,
       "lastDate": "2023-05-31"
     },
     "2023-06": {
@@ -5707,10 +5707,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": -0.011299598244236986
+          "monthlyReturn": -0.01129959926372337
         }
       ],
-      "portfolioReturn": -1.1299598244236986,
+      "portfolioReturn": -1.129959926372337,
       "lastDate": "2023-08-31"
     },
     "2023-09": {
@@ -5775,10 +5775,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": -0.021392444370763153
+          "monthlyReturn": -0.021392273725757138
         }
       ],
-      "portfolioReturn": -2.1392444370763153,
+      "portfolioReturn": -2.139227372575714,
       "lastDate": "2023-10-31"
     },
     "2023-11": {
@@ -5809,10 +5809,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.10551009518783694
+          "monthlyReturn": 0.10551010306659192
         }
       ],
-      "portfolioReturn": 10.551009518783694,
+      "portfolioReturn": 10.551010306659192,
       "lastDate": "2023-11-30"
     },
     "2023-12": {
@@ -5843,10 +5843,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.05881049169508357
+          "monthlyReturn": 0.058810575972709556
         }
       ],
-      "portfolioReturn": 5.881049169508357,
+      "portfolioReturn": 5.881057597270956,
       "lastDate": "2023-12-29"
     },
     "2024-01": {
@@ -5911,10 +5911,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.048258081511790785
+          "monthlyReturn": 0.048258161438289315
         }
       ],
-      "portfolioReturn": 4.8258081511790785,
+      "portfolioReturn": 4.8258161438289315,
       "lastDate": "2024-02-29"
     },
     "2024-03": {
@@ -7364,10 +7364,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.06513063318199852
+          "monthlyReturn": 0.06513055505382326
         }
       ],
-      "portfolioReturn": 6.513063318199852,
+      "portfolioReturn": 6.513055505382326,
       "lastDate": "2024-05-31"
     },
     "2024-06": {
@@ -8824,10 +8824,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.009559796457500491
+          "monthlyReturn": 0.009559929692627867
         }
       ],
-      "portfolioReturn": 0.9559796457500491,
+      "portfolioReturn": 0.9559929692627867,
       "lastDate": "2024-08-30"
     },
     "2024-09": {
@@ -8892,10 +8892,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": -0.007894205598178994
+          "monthlyReturn": -0.007894142390385661
         }
       ],
-      "portfolioReturn": -0.7894205598178994,
+      "portfolioReturn": -0.7894142390385661,
       "lastDate": "2024-10-31"
     },
     "2024-11": {
@@ -10400,10 +10400,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.002373032790616625
+          "monthlyReturn": 0.0023731975504619474
         }
       ],
-      "portfolioReturn": 0.2373032790616625,
+      "portfolioReturn": 0.23731975504619474,
       "lastDate": "2025-02-28"
     },
     "2025-03": {
@@ -11154,10 +11154,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.01748346543715873
+          "monthlyReturn": 0.017483597348258995
         }
       ],
-      "portfolioReturn": 1.748346543715873,
+      "portfolioReturn": 1.7483597348258995,
       "lastDate": "2025-04-30"
     },
     "2025-05": {
@@ -11222,10 +11222,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.06770474556992956
+          "monthlyReturn": 0.06770462674313404
         }
       ],
-      "portfolioReturn": 6.770474556992956,
+      "portfolioReturn": 6.770462674313404,
       "lastDate": "2025-06-30"
     },
     "2025-07": {
@@ -11256,10 +11256,10 @@
           "weight": 1.0,
           "momentum": null,
           "marketCap": null,
-          "monthlyReturn": 0.027795513021962703
+          "monthlyReturn": 0.027795628379603476
         }
       ],
-      "portfolioReturn": 2.7795513021962703,
+      "portfolioReturn": 2.7795628379603476,
       "lastDate": "2025-07-31"
     },
     "2025-08": {
@@ -20750,7 +20750,7 @@
       "allocationMonth": "2026-10",
       "signalMonth": "2026-09",
       "signalDate": "2026-09-30",
-      "generatedAt": "2026-10-02T09:22:51.029449+00:00",
+      "generatedAt": "2026-10-02T13:57:59.124363+00:00",
       "selectedSleeve": "QUQU",
       "decision": {
         "momentumDispersion": 0.3325294305447196,
