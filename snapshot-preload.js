@@ -1,12 +1,12 @@
 (()=>{
 "use strict";
 try{
-  const ACTIVE="somx.strategy.active.v1";
+  const ACTIVE="somx.strategy.active.v1",CAP=0.20;
   let mode=localStorage.getItem(ACTIVE);
   if(mode==="core"){mode="snpi";localStorage.setItem(ACTIVE,"snpi")}
-  if(mode!=="snpi"&&mode!=="ququ")return;
-  const file=mode==="snpi"?"snpi-latest.json":"ququ-latest.json";
-  const sig=mode==="snpi"?"snpi-sp500-v1":"ququ-ndx100-v1";
+  if(!["snpi","snpy","ququ"].includes(mode))return;
+  const file=mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
+  const sig=mode==="snpi"?"snpi-sp500-v1":mode==="snpy"?"snpy-sp500-top100-v1":"ququ-ndx100-v1";
   const min=mode==="snpi"?495:100;
   const xhr=new XMLHttpRequest();
   xhr.open("GET",`./${file}?v=${Date.now()}`,false);
@@ -14,13 +14,34 @@ try{
   xhr.send(null);
   if(xhr.status<200||xhr.status>=300)return;
   const j=JSON.parse(xhr.responseText||"{}");
-  if(!Array.isArray(j.rows)||j.rows.length<min)return;
-  const rows=j.rows.map(r=>({ticker:String(r.ticker||"").trim().toUpperCase(),weight:Number(r.weight)}));
-  if(rows.some(r=>!r.ticker||!Number.isFinite(r.weight)||r.weight<=0))return;
+  if(!Array.isArray(j.rows)||(mode!=="snpy"&&j.rows.length<min))return;
+
+  const capAndRedistribute=raw=>{
+    const free=new Set(Object.keys(raw)),out={};let remaining=1;
+    while(free.size){let total=0;for(const s of free)total+=raw[s];if(!(total>0))return null;
+      const over=[...free].filter(s=>remaining*raw[s]/total>CAP+1e-12);
+      if(!over.length){for(const s of free)out[s]=remaining*raw[s]/total;break}
+      for(const s of over){out[s]=CAP;remaining-=CAP;free.delete(s)}
+    }
+    return out;
+  };
+  const deriveSnpy=rows=>{
+    const ranked=rows.map(r=>{
+      const ticker=String(r.ticker||"").trim().toUpperCase(),cap=Number(r.marketCap),gross=1+Number(r.momentum),stored=Number(r.rawWeightScore);
+      const raw=Number.isFinite(stored)&&stored>0?stored:(cap>0&&gross>0?Math.sqrt(cap)*(gross**3):NaN);
+      return{ticker,raw};
+    }).filter(r=>r.ticker&&Number.isFinite(r.raw)&&r.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,100);
+    if(ranked.length!==100)return null;
+    const raw=Object.fromEntries(ranked.map(r=>[r.ticker,r.raw])),w=capAndRedistribute(raw);if(!w)return null;
+    return ranked.map(r=>({ticker:r.ticker,weight:w[r.ticker]})).sort((a,b)=>b.weight-a.weight);
+  };
+
+  let rows;
+  if(mode==="snpy")rows=deriveSnpy(j.rows);
+  else rows=j.rows.map(r=>({ticker:String(r.ticker||"").trim().toUpperCase(),weight:Number(r.weight)}));
+  if(!Array.isArray(rows)||rows.length<min||rows.some(r=>!r.ticker||!Number.isFinite(r.weight)||r.weight<=0))return;
   const sum=rows.reduce((a,r)=>a+r.weight,0);if(Math.abs(sum-1)>1e-6)return;
 
-  // S&P 500 may contain more than 500 securities because of multiple share classes.
-  // Make the live engine use the exact constituent count in the server snapshot.
   const strategy=globalThis.SOMXStrategy;
   if(strategy?.getConfig){
     const originalGetConfig=strategy.getConfig.bind(strategy);
