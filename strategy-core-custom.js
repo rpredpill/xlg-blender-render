@@ -26,6 +26,13 @@ const ququ={
   factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1},marketCap:{enabled:true,weight:100}},
   cap:0.20,filters:{}
 };
+const quu={
+  mode:"quu",label:"QUU",universe:"nasdaq100",
+  holdings:100,entryRank:100,exitRank:100,rebalanceMonths:1,
+  factor:"quuLeadershipRollover",weighting:"leadershipRollover",
+  factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1},marketCap:{enabled:true,weight:100}},
+  cap:0.20,filters:{}
+};
 const defaultCustom={
   mode:"custom",label:"Custom",
   holdings:6,entryRank:6,exitRank:16,rebalanceMonths:1,
@@ -61,7 +68,7 @@ function loadCustom(){
 }
 function saveCustom(c){try{localStorage.setItem(STORE,JSON.stringify(normalizeCustom(c)))}catch{}}
 
-const fixedModes=["snpi","snpy","ququ"];
+const fixedModes=["snpi","snpy","ququ","quu"];
 const allModes=[...fixedModes,"custom"];
 function loadMode(){
   try{
@@ -74,12 +81,13 @@ function saveMode(m){try{localStorage.setItem(ACTIVE_STORE,allModes.includes(m)?
 
 let custom=loadCustom(),activeMode=loadMode();
 function config(mode=activeMode){
-  return clone(mode==="custom"?custom:mode==="ququ"?ququ:mode==="snpy"?snpy:snpi);
+  return clone(mode==="custom"?custom:mode==="quu"?quu:mode==="ququ"?ququ:mode==="snpy"?snpy:snpi);
 }
 function signature(c=config()){
   if(c.mode==="snpi")return"snpi-sp500-v1";
   if(c.mode==="snpy")return"snpy-sp500-top100-v1";
   if(c.mode==="ququ")return"ququ-ndx100-v1";
+  if(c.mode==="quu")return"quu-ndx100-rollover-v1";
   const raw=JSON.stringify(c);let h=2166136261;
   for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
   return`custom-${(h>>>0).toString(36)}`;
@@ -147,17 +155,17 @@ function currentNYMonth(){
 }
 function storageKey(kind,c){return `somx.${kind}.v2.${signature(c)}`}
 async function fetchSnapshot(c){
-  const mode=c.mode,name=mode==="snpi"?"SNPI":mode==="snpy"?"SNPY":"QUQU";
-  const file=mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
+  const mode=c.mode,name=mode==="snpi"?"SNPI":mode==="snpy"?"SNPY":mode==="quu"?"QUU":"QUQU";
+  const file=mode==="quu"?"quu-latest.json":mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
   const r=await fetch(`./${file}?v=${Date.now()}`,{cache:"no-store"});
   if(!r.ok)throw new Error(`${name} snapshot HTTP ${r.status}`);
   const j=await r.json();
   let rows;
   if(mode==="snpy")rows=deriveSnpyRows(j.rows);
   else{
-    const min=mode==="snpi"?495:100;
+    const min=mode==="snpi"?495:mode==="quu"?1:100;
     if(!Array.isArray(j.rows)||j.rows.length<min)throw new Error(`${name} snapshot ${j.rows?.length||0}/${min}+`);
-    rows=j.rows.map(x=>({ticker:String(x.ticker||"").trim().toUpperCase(),weight:Number(x.weight),momentum:Number(x.momentum),marketCap:Number(x.marketCap)}));
+    rows=j.rows.map(x=>({ticker:String(x.ticker||"").trim().toUpperCase(),weight:Number(x.weight),momentum:x.momentum==null?null:Number(x.momentum),marketCap:x.marketCap==null?null:Number(x.marketCap)}));
   }
   if(rows.some(x=>!x.ticker||!Number.isFinite(x.weight)||x.weight<=0))throw new Error(`${name} 목표비중 데이터가 올바르지 않습니다.`);
   const sum=rows.reduce((a,x)=>a+x.weight,0);
@@ -184,17 +192,17 @@ globalThis.SOMXStrategy={
   setMode:m=>{activeMode=allModes.includes(m)?m:"snpi";saveMode(activeMode)},
   signature,isTradeMonth,requiredCalendarDays,score,weightsFor,
   fetchSnapshot,seedSnapshotContext,
-  presets:{snpi:clone(snpi),core:clone(snpi),snpy:clone(snpy),ququ:clone(ququ),custom:clone(defaultCustom)}
+  presets:{snpi:clone(snpi),core:clone(snpi),snpy:clone(snpy),ququ:clone(ququ),quu:clone(quu),custom:clone(defaultCustom)}
 };
 
 function initUI(){
   const root=document.getElementById("strategy-settings-root");if(!root)return;
   root.innerHTML=`
-    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>SNPI · SNPY · QUQU는 고정 규칙, Custom은 직접 설정</small></div>
-    <div class="strategy-tabs"><button data-mode="snpi" type="button">SNPI</button><button data-mode="snpy" type="button">SNPY</button><button data-mode="ququ" type="button">QUQU</button><button data-mode="custom" type="button">Custom</button></div>
+    <div class="strategy-settings-head"><div><strong>Strategy</strong><span id="strategy-current"></span></div><small>SNPI · SNPY · QUQU · QUU는 고정 규칙, Custom은 직접 설정</small></div>
+    <div class="strategy-tabs"><button data-mode="snpi" type="button">SNPI</button><button data-mode="snpy" type="button">SNPY</button><button data-mode="ququ" type="button">QUQU</button><button data-mode="quu" type="button">QUU</button><button data-mode="custom" type="button">Custom</button></div>
     <div class="strategy-body">
       <div id="core-lock-note" class="strategy-section" style="display:none"><div class="strategy-section-title"></div><div class="core-rule"></div></div>
-      <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="3" max="600"></label><label>Entry Top<input id="st-entry" type="number" min="3" max="600"></label><label>Exit Rank<input id="st-exit" type="number" min="4" max="600"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
+      <section class="strategy-section"><div class="strategy-section-title">Portfolio</div><div class="strategy-grid"><label>Holdings<input id="st-holdings" type="number" min="1" max="600"></label><label>Entry Top<input id="st-entry" type="number" min="1" max="600"></label><label>Exit Rank<input id="st-exit" type="number" min="1" max="600"></label><label>Rebalance<select id="st-rebalance"><option value="1">Monthly</option><option value="2">Every 2 months</option><option value="3">Quarterly</option></select></label></div></section>
       <section class="strategy-section"><div class="strategy-section-title">Factor · 어떤 종목을 고를지</div><div class="factor-choice-grid">
         <label class="factor-choice" data-factor-choice="momentum"><input type="radio" name="st-factor" value="momentum"><span><strong>Momentum</strong><small>가격 모멘텀 순위</small></span></label>
         <label class="factor-choice" data-factor-choice="marketCap"><input type="radio" name="st-factor" value="marketCap"><span><strong>Market Cap</strong><small>시가총액 큰 순서</small></span></label>
@@ -243,6 +251,8 @@ function initUI(){
         ?"S&P 500 전체 구성종목 · 월간 6-1 · √시총 × 상대모멘텀³ · 단일종목 최대 20% · 초과분 비례 재분배"
         :c.mode==="snpy"
         ?"S&P 500 · SNPI raw score 상위 100 · 월간 6-1 · Top100 안에서 √시총 × 상대모멘텀³ 재계산 · 단일종목 최대 20%"
+        :c.mode==="quu"
+        ?"Nasdaq-100 · 리더십 분산 강함=QUQU p=3 · 리더십 약함=QQQ · 극단적 분산이 고점 후 꺾이면 QQQ · 월간 전환"
         :"Nasdaq-100 전체 구성종목 · 월간 6-1 · √시총 × 상대모멘텀³ · 단일종목 최대 20% · 초과분 비례 재분배";
     }
     qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
@@ -259,7 +269,8 @@ function initUI(){
       box.textContent=`최신 ${c.label} 스냅샷을 불러오는 중…`;
       try{
         const j=await fetchSnapshot(c),rows=[...j.rows].sort((a,b)=>b.weight-a.weight);
-        box.innerHTML=rows.slice(0,20).map((r,i)=>`<div class="preview-row"><span>${i+1}</span><strong>${r.ticker}</strong><em>${(r.weight*100).toFixed(2)}%</em></div>`).join("");
+        const sleeve=c.mode==="quu"&&j.selectedSleeve?` · 현재 ${j.selectedSleeve}`:"";
+        box.innerHTML=`${c.mode==="quu"?`<div class="preview-row"><span>Regime</span><strong>${j.selectedSleeve||"--"}</strong><em>${j.decision?.extremeDispersionRollover?"Rollover":j.decision?.leadershipStrong?"Leadership":"Weak"}</em></div>`:""}`+rows.slice(0,20).map((r,i)=>`<div class="preview-row"><span>${i+1}</span><strong>${r.ticker}</strong><em>${(r.weight*100).toFixed(2)}%</em></div>`).join("");
       }catch(e){box.textContent=e.message||`${c.label} Preview 실패`}
       return;
     }
@@ -279,7 +290,8 @@ function initUI(){
       if(fixedModes.includes(editMode)){
         const j=await seedSnapshotContext(c);
         c.holdings=j.rows.length;c.entryRank=j.rows.length;c.exitRank=j.rows.length;
-        box.textContent=`${c.label} 최신 스냅샷 적용 · ${(j.generatedAt||"").slice(0,10)} · ${j.rows.length}종목`;
+        const sleeve=c.mode==="quu"&&j.selectedSleeve?` · ${j.selectedSleeve}`:"";
+        box.textContent=`${c.label} 최신 스냅샷 적용${sleeve} · ${(j.generatedAt||"").slice(0,10)} · ${j.rows.length}종목`;
       }
       activeMode=editMode;saveMode(activeMode);
       if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(c);
