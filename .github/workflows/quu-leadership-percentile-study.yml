@@ -1,0 +1,55 @@
+name: QUU leadership percentile study
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/quu-leadership-percentile-study.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Load study script
+        run: git show origin/main:tools/quu_leadership_percentile_study.py > /tmp/quu_leadership_percentile_study.py
+
+      - name: Run study
+        run: python /tmp/quu_leadership_percentile_study.py
+
+      - name: Validate output
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('quu-leadership-percentile-study.json',encoding='utf-8'))
+          assert j['exact2022_2026']['monthsClassified'] >= 36
+          assert j['pre2018Proxy']['monthsClassified'] >= 60
+          print(json.dumps({
+            'exact':j['exact2022_2026']['bins'],
+            'proxy':j['pre2018Proxy']['bins'],
+            'exactDirection':j['exact2022_2026']['topPercentileDirection'],
+            'proxyDirection':j['pre2018Proxy']['topPercentileDirection'],
+          },indent=2))
+          PY
+
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-leadership-percentile-study.json
+          git commit -m 'Update QUU leadership percentile study' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
