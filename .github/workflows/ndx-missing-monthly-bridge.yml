@@ -1,0 +1,26 @@
+name: Build NDX missing monthly bridge
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/build_ndx_missing_monthly_bridge.py'
+      - '.github/workflows/ndx-missing-monthly-bridge.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install --disable-pip-version-check yfinance pandas
+      - run: python tools/build_ndx_missing_monthly_bridge.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ndx-missing-monthly.b85
+          git commit -m 'Publish missing Nasdaq monthly bridge' || exit 0
+          git push origin HEAD:main
