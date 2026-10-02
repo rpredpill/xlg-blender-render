@@ -1,0 +1,62 @@
+name: QUU PIT cap-gap diagnostics
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/quu_pit_gap_diagnostics.py'
+      - '.github/workflows/quu-pit-gap-diagnostics.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - name: Fetch main
+        run: git fetch origin main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas numpy pyarrow
+      - name: Load engines
+        run: |
+          git show origin/main:tools/backfill_snpi_ququ.py > /tmp/backfill_snpi_ququ.py
+          git show origin/main:tools/quu_max_pit_validation.py > /tmp/quu_max_pit_validation.py
+          git show origin/main:tools/quu_pre2018_proxy_validation.py > /tmp/quu_pre2018_proxy_validation.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation.py > /tmp/quu_sec_pit_marketcap_validation.py
+          git show origin/main:tools/quu_sec_pit_marketcap_validation_v2.py > /tmp/quu_sec_pit_marketcap_validation_v2.py
+          git show origin/main:tools/quu_pit_gap_diagnostics.py > /tmp/quu_pit_gap_diagnostics.py
+      - name: Run diagnostics
+        run: python /tmp/quu_pit_gap_diagnostics.py
+      - name: Validate JSON
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('quu-pit-gap-diagnostics.json',encoding='utf-8'))
+          assert j['summary']['totalMissingConstituentMonths'] > 0
+          print(json.dumps({'summary':j['summary'],'top20':j['topMissingSymbols'][:20]},ensure_ascii=False,indent=2))
+          PY
+      - name: Commit result to Pages safely
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp quu-pit-gap-diagnostics.json /tmp/quu-pit-gap-diagnostics.json
+          git reset --hard origin/somx-pages
+          cp /tmp/quu-pit-gap-diagnostics.json quu-pit-gap-diagnostics.json
+          git add quu-pit-gap-diagnostics.json
+          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+          git commit -m 'Publish QUU PIT gap diagnostics'
+          for i in 1 2 3; do
+            if git push origin HEAD:somx-pages; then exit 0; fi
+            git fetch origin somx-pages
+            git rebase origin/somx-pages || { git rebase --abort; exit 1; }
+          done
+          exit 1
