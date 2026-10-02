@@ -1,0 +1,47 @@
+name: QUU extreme definition robustness
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/quu-extreme-definition-validation.yml'
+      - 'tools/quu_extreme_definition_validation.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Load validation script
+        run: git show origin/main:tools/quu_extreme_definition_validation.py > /tmp/quu_extreme_definition_validation.py
+      - name: Run validation
+        run: python /tmp/quu_extreme_definition_validation.py
+      - name: Validate output
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-extreme-definition-validation.json',encoding='utf-8'))
+          assert j['exact2022_2026']['months'] >= 36
+          for n,x in j['exact2022_2026']['methods'].items():
+              assert isinstance(x['strategy']['CAGRpct'], (int,float)), n
+          print(json.dumps({'exactSigns':j['exact2022_2026']['signAgreement'],'proxySigns':j.get('pre2018Proxy',{}).get('signAgreement')},indent=2))
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-extreme-definition-validation.json
+          git commit -m 'Update QUU extreme definition validation' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
