@@ -1,0 +1,225 @@
+{
+  "purpose": "Test Nasdaq-100 equal weight (QQQE) as the defensive sleeve only when the already-frozen MR90 condition fires. MR90 signal definition is unchanged; this study changes only the intervention sleeve.",
+  "rule": {
+    "baseline": "Prior-only leadership percentile >=50 => risk sleeve (QUQU in exact sample / Momentum^3 proxy pre-2018); otherwise QQQ.",
+    "mr90Trigger": "Prior-only leadership percentile >=90 AND dispersion falling versus immediately prior month.",
+    "MR90_QQQ": "Use QQQ on MR90 trigger months.",
+    "MR90_QQQE": "Use QQQE on the exact same MR90 trigger months; all other months identical to LeadershipBaseline.",
+    "thresholdOptimization": "None. 50/90 and falling are unchanged from the frozen MR90 study."
+  },
+  "priceMethod": "Yahoo Finance auto-adjusted daily prices; monthly return = adjusted first trading-day Open to adjusted last trading-day Close.",
+  "exact2022_2026": {
+    "period": {
+      "start": "2023-06",
+      "end": "2026-09",
+      "months": 40
+    },
+    "strategies": {
+      "LeadershipBaseline": {
+        "months": 40,
+        "totalReturnPct": 192.32980488137034,
+        "CAGRpct": 37.96277746958976,
+        "MDDpct": -22.629823666870585,
+        "Calmar": 1.67755516032439,
+        "endingIndex": 292.3298048813703
+      },
+      "MR90_QQQ": {
+        "months": 40,
+        "totalReturnPct": 273.8027695534332,
+        "CAGRpct": 48.52267221616027,
+        "MDDpct": -10.745826342439857,
+        "Calmar": 4.515490076786698,
+        "endingIndex": 373.8027695534332
+      },
+      "MR90_QQQE": {
+        "months": 40,
+        "totalReturnPct": 286.1624071230891,
+        "CAGRpct": 49.97918797510825,
+        "MDDpct": -9.814936811263653,
+        "Calmar": 5.0921558575651735,
+        "endingIndex": 386.1624071230891
+      }
+    },
+    "interventions": {
+      "count": 2,
+      "rows": [
+        {
+          "month": "2025-02",
+          "percentile": 96.42857142857143,
+          "falling": true,
+          "riskReturnPct": -5.617307413214899,
+          "QQQReturnPct": -1.0321992337334884,
+          "QQQEReturnPct": 0.23729496749358425,
+          "QQQEsavedVsRiskPctPoints": 5.854602380708483,
+          "QQQEsavedVsQQQPctPoints": 1.2694942012270727,
+          "betterDefensiveSleeve": "QQQE"
+        },
+        {
+          "month": "2026-07",
+          "percentile": 97.77777777777777,
+          "falling": true,
+          "riskReturnPct": -22.629823666870585,
+          "QQQReturnPct": -5.650099162047983,
+          "QQQEReturnPct": -3.764898725444721,
+          "QQQEsavedVsRiskPctPoints": 18.864924941425866,
+          "QQQEsavedVsQQQPctPoints": 1.8852004366032622,
+          "betterDefensiveSleeve": "QQQE"
+        }
+      ],
+      "QQQEwinsVsQQQ": 2,
+      "QQQwinsVsQQQE": 0,
+      "ties": 0,
+      "avgQQQEminusQQQPctPoints": 1.5773473189151674,
+      "sumQQQEminusQQQPctPoints": 3.154694637830335,
+      "avgQQQEminusRiskPctPoints": 12.359763661067174
+    }
+  },
+  "pre2018Proxy": {
+    "period": {
+      "start": "2012-04",
+      "end": "2018-02",
+      "months": 71
+    },
+    "strategies": {
+      "LeadershipBaseline": {
+        "months": 71,
+        "totalReturnPct": 165.2704671024838,
+        "CAGRpct": 17.92595226494975,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.091175693781564,
+        "endingIndex": 265.2704671024838
+      },
+      "MR90_QQQ": {
+        "months": 71,
+        "totalReturnPct": 171.68387472538348,
+        "CAGRpct": 18.403054527142103,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.1468326898171743,
+        "endingIndex": 271.6838747253835
+      },
+      "MR90_QQQE": {
+        "months": 71,
+        "totalReturnPct": 172.18020182758175,
+        "CAGRpct": 18.43958544000499,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.1510942518207665,
+        "endingIndex": 272.18020182758175
+      }
+    },
+    "interventions": {
+      "count": 3,
+      "rows": [
+        {
+          "month": "2013-12",
+          "percentile": 96.42857142857143,
+          "falling": true,
+          "riskReturnPct": 1.4827735144682082,
+          "QQQReturnPct": 2.8071834074448354,
+          "QQQEReturnPct": 3.57893277006589,
+          "QQQEsavedVsRiskPctPoints": 2.096159255597682,
+          "QQQEsavedVsQQQPctPoints": 0.7717493626210548,
+          "betterDefensiveSleeve": "QQQE"
+        },
+        {
+          "month": "2014-01",
+          "percentile": 93.10344827586206,
+          "falling": true,
+          "riskReturnPct": -0.9545688302561547,
+          "QQQReturnPct": -1.4620200596370037,
+          "QQQEReturnPct": -1.2037416248117938,
+          "QQQEsavedVsRiskPctPoints": -0.24917279455563912,
+          "QQQEsavedVsQQQPctPoints": 0.25827843482520985,
+          "betterDefensiveSleeve": "QQQE"
+        },
+        {
+          "month": "2017-07",
+          "percentile": 94.36619718309859,
+          "falling": true,
+          "riskReturnPct": 1.9368870185424318,
+          "QQQReturnPct": 3.5871742606123025,
+          "QQQEReturnPct": 2.733915849308577,
+          "QQQEsavedVsRiskPctPoints": 0.7970288307661451,
+          "QQQEsavedVsQQQPctPoints": -0.8532584113037256,
+          "betterDefensiveSleeve": "QQQ"
+        }
+      ],
+      "QQQEwinsVsQQQ": 2,
+      "QQQwinsVsQQQE": 1,
+      "ties": 0,
+      "avgQQQEminusQQQPctPoints": 0.05892312871417967,
+      "sumQQQEminusQQQPctPoints": 0.176769386142539,
+      "avgQQQEminusRiskPctPoints": 0.8813384306027293
+    }
+  },
+  "combinedInterventionOnly": {
+    "count": 5,
+    "QQQEwinsVsQQQ": 4,
+    "QQQwinsVsQQQE": 1,
+    "ties": 0,
+    "avgQQQEminusQQQPctPoints": 0.6662928047945748,
+    "medianQQQEminusQQQPctPoints": 0.7717493626210548,
+    "events": [
+      {
+        "month": "2013-12",
+        "percentile": 96.42857142857143,
+        "falling": true,
+        "riskReturnPct": 1.4827735144682082,
+        "QQQReturnPct": 2.8071834074448354,
+        "QQQEReturnPct": 3.57893277006589,
+        "QQQEsavedVsRiskPctPoints": 2.096159255597682,
+        "QQQEsavedVsQQQPctPoints": 0.7717493626210548,
+        "betterDefensiveSleeve": "QQQE"
+      },
+      {
+        "month": "2014-01",
+        "percentile": 93.10344827586206,
+        "falling": true,
+        "riskReturnPct": -0.9545688302561547,
+        "QQQReturnPct": -1.4620200596370037,
+        "QQQEReturnPct": -1.2037416248117938,
+        "QQQEsavedVsRiskPctPoints": -0.24917279455563912,
+        "QQQEsavedVsQQQPctPoints": 0.25827843482520985,
+        "betterDefensiveSleeve": "QQQE"
+      },
+      {
+        "month": "2017-07",
+        "percentile": 94.36619718309859,
+        "falling": true,
+        "riskReturnPct": 1.9368870185424318,
+        "QQQReturnPct": 3.5871742606123025,
+        "QQQEReturnPct": 2.733915849308577,
+        "QQQEsavedVsRiskPctPoints": 0.7970288307661451,
+        "QQQEsavedVsQQQPctPoints": -0.8532584113037256,
+        "betterDefensiveSleeve": "QQQ"
+      },
+      {
+        "month": "2025-02",
+        "percentile": 96.42857142857143,
+        "falling": true,
+        "riskReturnPct": -5.617307413214899,
+        "QQQReturnPct": -1.0321992337334884,
+        "QQQEReturnPct": 0.23729496749358425,
+        "QQQEsavedVsRiskPctPoints": 5.854602380708483,
+        "QQQEsavedVsQQQPctPoints": 1.2694942012270727,
+        "betterDefensiveSleeve": "QQQE"
+      },
+      {
+        "month": "2026-07",
+        "percentile": 97.77777777777777,
+        "falling": true,
+        "riskReturnPct": -22.629823666870585,
+        "QQQReturnPct": -5.650099162047983,
+        "QQQEReturnPct": -3.764898725444721,
+        "QQQEsavedVsRiskPctPoints": 18.864924941425866,
+        "QQQEsavedVsQQQPctPoints": 1.8852004366032622,
+        "betterDefensiveSleeve": "QQQE"
+      }
+    ]
+  },
+  "limitations": [
+    "Only five MR90 interventions exist across the two samples, so event counts are very small.",
+    "Pre-2018 risk sleeve is Momentum^3 proxy, not exact market-cap-weighted QUQU.",
+    "QQQE is evaluated as a replacement sleeve only on already-defined MR90 intervention months; no attempt is made to optimize an equal-weight threshold or holding period.",
+    "This is a research study and does not modify live QUU or the frozen MR90 OOS shadow rule."
+  ]
+}
