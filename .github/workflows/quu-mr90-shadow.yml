@@ -1,0 +1,64 @@
+name: Track QUU MR90 shadow OOS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/quu_mr90_shadow.py'
+      - '.github/workflows/quu-mr90-shadow.yml'
+  workflow_run:
+    workflows: ['Build QUU snapshot and history']
+    types: [completed]
+  schedule:
+    - cron: '10 9 2 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  track:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Load frozen MR90 tracker
+        run: git show origin/main:tools/quu_mr90_shadow.py > /tmp/quu_mr90_shadow.py
+
+      - name: Update OOS shadow record
+        run: python /tmp/quu_mr90_shadow.py
+
+      - name: Validate frozen record
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-mr90-shadow.json',encoding='utf-8'))
+          r=j['frozenRule']
+          assert r['version']=='mr90-v1-frozen-2026-10-02'
+          assert r['startMonth']=='2026-10'
+          assert r['leadershipPercentile']==50.0
+          assert r['extremePercentile']==90.0
+          d=j.get('decisions') or {}
+          assert all(m >= '2026-10' for m in d)
+          assert all(x.get('selectedSleeve') in ('QUQU','QQQ') for x in d.values())
+          if '2026-10' in d:
+              print('2026-10 locked:', d['2026-10'])
+          print('OOS:', j.get('oos'))
+
+      - name: Commit shadow record to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-mr90-shadow.json
+          if git diff --cached --quiet; then
+            echo 'No MR90 shadow changes'
+            exit 0
+          fi
+          git commit -m 'Update frozen MR90 shadow OOS record'
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
