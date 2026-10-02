@@ -1,0 +1,2053 @@
+{
+  "purpose": "Test whether extreme cross-sectional momentum leadership dispersion mean-reverts after reaching high prior-only percentiles, and whether a prespecified High+Rising -> High+Falling rollover marks the start of normalization.",
+  "definitions": {
+    "extremeCuts": [
+      80,
+      90,
+      95
+    ],
+    "horizonsMonths": [
+      1,
+      2,
+      3,
+      6
+    ],
+    "dispersionChangePct": "100 * (future dispersion / current dispersion - 1); negative means normalization.",
+    "gapClosedPct": "100 * (current dispersion - future dispersion) / (current dispersion - current-date prior-median dispersion); positive means movement toward the prior median.",
+    "percentile": "Current dispersion percentile versus prior months only.",
+    "rollover": "Previous classified month High+Rising and current classified month High+Falling, with High defined as prior-only percentile >=50.",
+    "lookahead": "No lookahead in signal classification or baseline. Future dispersion is used only as the outcome being measured."
+  },
+  "exact2022_2026": {
+    "months": 40,
+    "cuts": {
+      "80": {
+        "1": {
+          "allExtreme": {
+            "events": 18,
+            "avgDispersionChangePct": -6.425005897577237,
+            "medianDispersionChangePct": -6.5485947180161155,
+            "dispersionLowerRatePct": 55.55555555555556,
+            "avgGapClosedPct": 24.032744791912844,
+            "medianGapClosedPct": 15.397412699252001,
+            "reachedOrCrossedPriorMedianRatePct": 16.666666666666668,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-03",
+              "2025-10",
+              "2025-11",
+              "2025-12",
+              "2026-01",
+              "2026-02",
+              "2026-03",
+              "2026-05",
+              "2026-06",
+              "2026-07",
+              "2026-08"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 12,
+            "avgDispersionChangePct": 0.15474555955284328,
+            "medianDispersionChangePct": 0.00826978538546741,
+            "dispersionLowerRatePct": 50.0,
+            "avgGapClosedPct": 12.968134896349486,
+            "medianGapClosedPct": -4.96832656321978,
+            "reachedOrCrossedPriorMedianRatePct": 16.666666666666668,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-01",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 6,
+            "avgDispersionChangePct": -19.5845088118374,
+            "medianDispersionChangePct": -26.74212342488836,
+            "dispersionLowerRatePct": 66.66666666666667,
+            "avgGapClosedPct": 46.161964583039556,
+            "medianGapClosedPct": 63.716417250646444,
+            "reachedOrCrossedPriorMedianRatePct": 16.666666666666668,
+            "months": [
+              "2025-02",
+              "2025-03",
+              "2025-12",
+              "2026-03",
+              "2026-07",
+              "2026-08"
+            ]
+          }
+        },
+        "2": {
+          "allExtreme": {
+            "events": 17,
+            "avgDispersionChangePct": -12.146079864053503,
+            "medianDispersionChangePct": -16.58772660140012,
+            "dispersionLowerRatePct": 70.58823529411765,
+            "avgGapClosedPct": 40.12827057940522,
+            "medianGapClosedPct": 60.783863424287816,
+            "reachedOrCrossedPriorMedianRatePct": 29.41176470588235,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-03",
+              "2025-10",
+              "2025-11",
+              "2025-12",
+              "2026-01",
+              "2026-02",
+              "2026-03",
+              "2026-05",
+              "2026-06",
+              "2026-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 12,
+            "avgDispersionChangePct": -15.734707113856922,
+            "medianDispersionChangePct": -10.989067986397332,
+            "dispersionLowerRatePct": 75.0,
+            "avgGapClosedPct": 56.93368757618753,
+            "medianGapClosedPct": 42.4406720842491,
+            "reachedOrCrossedPriorMedianRatePct": 25.0,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-01",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 5,
+            "avgDispersionChangePct": -3.5333744645252976,
+            "medianDispersionChangePct": -35.36656392069626,
+            "dispersionLowerRatePct": 60.0,
+            "avgGapClosedPct": -0.20473021287234588,
+            "medianGapClosedPct": 60.783863424287816,
+            "reachedOrCrossedPriorMedianRatePct": 40.0,
+            "months": [
+              "2025-02",
+              "2025-03",
+              "2025-12",
+              "2026-03",
+              "2026-07"
+            ]
+          }
+        },
+        "3": {
+          "allExtreme": {
+            "events": 16,
+            "avgDispersionChangePct": -7.298178623412551,
+            "medianDispersionChangePct": -24.368561706468178,
+            "dispersionLowerRatePct": 56.25,
+            "avgGapClosedPct": 21.93218583993132,
+            "medianGapClosedPct": 54.17818392730003,
+            "reachedOrCrossedPriorMedianRatePct": 31.25,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-03",
+              "2025-10",
+              "2025-11",
+              "2025-12",
+              "2026-01",
+              "2026-02",
+              "2026-03",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 12,
+            "avgDispersionChangePct": -14.86072791477836,
+            "medianDispersionChangePct": -24.368561706468178,
+            "dispersionLowerRatePct": 58.333333333333336,
+            "avgGapClosedPct": 42.118053340989626,
+            "medianGapClosedPct": 54.17818392730003,
+            "reachedOrCrossedPriorMedianRatePct": 25.0,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-01",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 4,
+            "avgDispersionChangePct": 15.389469250684876,
+            "medianDispersionChangePct": -10.900617585349211,
+            "dispersionLowerRatePct": 50.0,
+            "avgGapClosedPct": -38.62541666324359,
+            "medianGapClosedPct": 39.187015524218026,
+            "reachedOrCrossedPriorMedianRatePct": 50.0,
+            "months": [
+              "2025-02",
+              "2025-03",
+              "2025-12",
+              "2026-03"
+            ]
+          }
+        },
+        "6": {
+          "allExtreme": {
+            "events": 14,
+            "avgDispersionChangePct": 14.939146692116877,
+            "medianDispersionChangePct": -16.878296831872888,
+            "dispersionLowerRatePct": 57.142857142857146,
+            "avgGapClosedPct": -74.46465826651763,
+            "medianGapClosedPct": 43.53543667416139,
+            "reachedOrCrossedPriorMedianRatePct": 28.571428571428573,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-03",
+              "2025-10",
+              "2025-11",
+              "2025-12",
+              "2026-01",
+              "2026-02",
+              "2026-03"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 10,
+            "avgDispersionChangePct": 9.217895655845796,
+            "medianDispersionChangePct": -18.984745220524974,
+            "dispersionLowerRatePct": 60.0,
+            "avgGapClosedPct": -65.62373129569227,
+            "medianGapClosedPct": 43.53543667416139,
+            "reachedOrCrossedPriorMedianRatePct": 40.0,
+            "months": [
+              "2024-03",
+              "2024-04",
+              "2024-06",
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-01",
+              "2026-02"
+            ]
+          },
+          "falling": {
+            "events": 4,
+            "avgDispersionChangePct": 29.242274282794575,
+            "medianDispersionChangePct": -1.0548344848941298,
+            "dispersionLowerRatePct": 50.0,
+            "avgGapClosedPct": -96.56697569358104,
+            "medianGapClosedPct": 15.719014440402127,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2025-02",
+              "2025-03",
+              "2025-12",
+              "2026-03"
+            ]
+          }
+        }
+      },
+      "90": {
+        "1": {
+          "allExtreme": {
+            "events": 10,
+            "avgDispersionChangePct": -9.827007460634885,
+            "medianDispersionChangePct": -16.217018469825398,
+            "dispersionLowerRatePct": 70.0,
+            "avgGapClosedPct": 31.151102029919834,
+            "medianGapClosedPct": 28.08461262460869,
+            "reachedOrCrossedPriorMedianRatePct": 10.0,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-10",
+              "2025-11",
+              "2026-02",
+              "2026-05",
+              "2026-06",
+              "2026-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 8,
+            "avgDispersionChangePct": -2.838224326025428,
+            "medianDispersionChangePct": -6.5485947180161155,
+            "dispersionLowerRatePct": 62.5,
+            "avgGapClosedPct": 22.586137130235496,
+            "medianGapClosedPct": 15.397412699252001,
+            "reachedOrCrossedPriorMedianRatePct": 12.5,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 2,
+            "avgDispersionChangePct": -37.78213999907271,
+            "medianDispersionChangePct": -37.78213999907271,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 65.41096162865719,
+            "medianGapClosedPct": 65.41096162865719,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2025-02",
+              "2026-07"
+            ]
+          }
+        },
+        "2": {
+          "allExtreme": {
+            "events": 10,
+            "avgDispersionChangePct": -23.24870883413399,
+            "medianDispersionChangePct": -32.62902154190588,
+            "dispersionLowerRatePct": 80.0,
+            "avgGapClosedPct": 51.98606454752724,
+            "medianGapClosedPct": 65.64131960917605,
+            "reachedOrCrossedPriorMedianRatePct": 20.0,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-10",
+              "2025-11",
+              "2026-02",
+              "2026-05",
+              "2026-06",
+              "2026-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 8,
+            "avgDispersionChangePct": -17.429300740834254,
+            "medianDispersionChangePct": -16.379149765887135,
+            "dispersionLowerRatePct": 75.0,
+            "avgGapClosedPct": 44.416907681038204,
+            "medianGapClosedPct": 42.4406720842491,
+            "reachedOrCrossedPriorMedianRatePct": 12.5,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 2,
+            "avgDispersionChangePct": -46.52634120733295,
+            "medianDispersionChangePct": -46.52634120733295,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 82.26269201348342,
+            "medianGapClosedPct": 82.26269201348342,
+            "reachedOrCrossedPriorMedianRatePct": 50.0,
+            "months": [
+              "2025-02",
+              "2026-07"
+            ]
+          }
+        },
+        "3": {
+          "allExtreme": {
+            "events": 9,
+            "avgDispersionChangePct": -21.099967116043054,
+            "medianDispersionChangePct": -27.702277604526582,
+            "dispersionLowerRatePct": 66.66666666666667,
+            "avgGapClosedPct": 45.60932092462864,
+            "medianGapClosedPct": 61.11887048177896,
+            "reachedOrCrossedPriorMedianRatePct": 33.333333333333336,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-10",
+              "2025-11",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 8,
+            "avgDispersionChangePct": -16.394131666385306,
+            "medianDispersionChangePct": -25.637588528668793,
+            "dispersionLowerRatePct": 62.5,
+            "avgGapClosedPct": 37.218879767346266,
+            "medianGapClosedPct": 54.17818392730003,
+            "reachedOrCrossedPriorMedianRatePct": 25.0,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -58.74665071330505,
+            "medianDispersionChangePct": -58.74665071330505,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 112.73285018288766,
+            "medianGapClosedPct": 112.73285018288766,
+            "reachedOrCrossedPriorMedianRatePct": 100.0,
+            "months": [
+              "2025-02"
+            ]
+          }
+        },
+        "6": {
+          "allExtreme": {
+            "events": 7,
+            "avgDispersionChangePct": -8.901561693385325,
+            "medianDispersionChangePct": -21.49314914614312,
+            "dispersionLowerRatePct": 71.42857142857143,
+            "avgGapClosedPct": -32.72437326631003,
+            "medianGapClosedPct": 57.34753445939783,
+            "reachedOrCrossedPriorMedianRatePct": 28.571428571428573,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-10",
+              "2025-11",
+              "2026-02"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 6,
+            "avgDispersionChangePct": -1.979379723208383,
+            "medianDispersionChangePct": -18.984745220524974,
+            "dispersionLowerRatePct": 66.66666666666667,
+            "avgGapClosedPct": -54.3088365857217,
+            "medianGapClosedPct": 43.53543667416139,
+            "reachedOrCrossedPriorMedianRatePct": 33.333333333333336,
+            "months": [
+              "2024-07",
+              "2024-12",
+              "2025-01",
+              "2025-10",
+              "2025-11",
+              "2026-02"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -50.43465351444698,
+            "medianDispersionChangePct": -50.43465351444698,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 96.78240665015998,
+            "medianGapClosedPct": 96.78240665015998,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2025-02"
+            ]
+          }
+        }
+      },
+      "95": {
+        "1": {
+          "allExtreme": {
+            "events": 7,
+            "avgDispersionChangePct": -8.617263320636738,
+            "medianDispersionChangePct": -22.026619356557454,
+            "dispersionLowerRatePct": 71.42857142857143,
+            "avgGapClosedPct": 13.617225551067703,
+            "medianGapClosedPct": 30.379014722042,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2026-02",
+              "2026-05",
+              "2026-06",
+              "2026-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 5,
+            "avgDispersionChangePct": 3.0486873507376506,
+            "medianDispersionChangePct": -2.6897718529388936,
+            "dispersionLowerRatePct": 60.0,
+            "avgGapClosedPct": -7.100268879968095,
+            "medianGapClosedPct": 5.004614871328622,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 2,
+            "avgDispersionChangePct": -37.78213999907271,
+            "medianDispersionChangePct": -37.78213999907271,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 65.41096162865719,
+            "medianGapClosedPct": 65.41096162865719,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2025-02",
+              "2026-07"
+            ]
+          }
+        },
+        "2": {
+          "allExtreme": {
+            "events": 7,
+            "avgDispersionChangePct": -28.438758706875124,
+            "medianDispersionChangePct": -38.99153816589006,
+            "dispersionLowerRatePct": 71.42857142857143,
+            "avgGapClosedPct": 47.75437561078024,
+            "medianGapClosedPct": 70.49877579406429,
+            "reachedOrCrossedPriorMedianRatePct": 14.285714285714286,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2026-02",
+              "2026-05",
+              "2026-06",
+              "2026-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 5,
+            "avgDispersionChangePct": -21.203725706691994,
+            "medianDispersionChangePct": -37.89015292343203,
+            "dispersionLowerRatePct": 60.0,
+            "avgGapClosedPct": 33.951049049698966,
+            "medianGapClosedPct": 70.49877579406429,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 2,
+            "avgDispersionChangePct": -46.52634120733295,
+            "medianDispersionChangePct": -46.52634120733295,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 82.26269201348342,
+            "medianGapClosedPct": 82.26269201348342,
+            "reachedOrCrossedPriorMedianRatePct": 50.0,
+            "months": [
+              "2025-02",
+              "2026-07"
+            ]
+          }
+        },
+        "3": {
+          "allExtreme": {
+            "events": 6,
+            "avgDispersionChangePct": -34.64271941448277,
+            "medianDispersionChangePct": -40.81898275834,
+            "dispersionLowerRatePct": 83.33333333333333,
+            "avgGapClosedPct": 61.37904711924828,
+            "medianGapClosedPct": 66.71479740666649,
+            "reachedOrCrossedPriorMedianRatePct": 33.333333333333336,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 5,
+            "avgDispersionChangePct": -29.821933154718312,
+            "medianDispersionChangePct": -29.208325687299897,
+            "dispersionLowerRatePct": 80.0,
+            "avgGapClosedPct": 51.1082865065204,
+            "medianGapClosedPct": 61.11887048177896,
+            "reachedOrCrossedPriorMedianRatePct": 20.0,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2026-02",
+              "2026-05",
+              "2026-06"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -58.74665071330505,
+            "medianDispersionChangePct": -58.74665071330505,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 112.73285018288766,
+            "medianGapClosedPct": 112.73285018288766,
+            "reachedOrCrossedPriorMedianRatePct": 100.0,
+            "months": [
+              "2025-02"
+            ]
+          }
+        },
+        "6": {
+          "allExtreme": {
+            "events": 4,
+            "avgDispersionChangePct": -44.32097011921193,
+            "medianDispersionChangePct": -51.545215840809064,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 86.01944129729233,
+            "medianGapClosedPct": 102.08570053877189,
+            "reachedOrCrossedPriorMedianRatePct": 50.0,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2026-02"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 3,
+            "avgDispersionChangePct": -42.28307565413358,
+            "medianDispersionChangePct": -52.65577816717114,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 82.43178617966977,
+            "medianGapClosedPct": 107.38899442738379,
+            "reachedOrCrossedPriorMedianRatePct": 66.66666666666667,
+            "months": [
+              "2024-12",
+              "2025-01",
+              "2026-02"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -50.43465351444698,
+            "medianDispersionChangePct": -50.43465351444698,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 96.78240665015998,
+            "medianGapClosedPct": 96.78240665015998,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2025-02"
+            ]
+          }
+        }
+      }
+    },
+    "rolloverForwardPaths": [
+      {
+        "month": "2023-07",
+        "currentPercentile": 77.77777777777777,
+        "currentDispersion": 0.24084878710108346,
+        "priorMedianDispersion": 0.29106671026215836,
+        "forward": {
+          "1": {
+            "futureMonth": "2023-08",
+            "futureDispersion": 0.2084929989190688,
+            "dispersionChangePct": -13.43406731312914,
+            "gapClosedPct": -64.43075727809943
+          },
+          "2": {
+            "futureMonth": "2023-09",
+            "futureDispersion": 0.18674563589633114,
+            "dispersionChangePct": -22.463534841072462,
+            "gapClosedPct": -107.73673580887738
+          },
+          "3": {
+            "futureMonth": "2023-10",
+            "futureDispersion": 0.19860106492576385,
+            "dispersionChangePct": -17.54118120494764,
+            "gapClosedPct": -84.1287721911742
+          },
+          "6": {
+            "futureMonth": "2024-01",
+            "futureDispersion": 0.15338607299602025,
+            "dispersionChangePct": -36.314367681808335,
+            "gapClosedPct": -174.16633066350624
+          }
+        }
+      },
+      {
+        "month": "2025-02",
+        "currentPercentile": 96.42857142857143,
+        "currentDispersion": 0.426047361479454,
+        "priorMedianDispersion": 0.2040281763745433,
+        "forward": {
+          "1": {
+            "futureMonth": "2025-03",
+            "futureDispersion": 0.271931707208348,
+            "dispersionChangePct": -36.17336197927333,
+            "gapClosedPct": 69.41546704546356
+          },
+          "2": {
+            "futureMonth": "2025-04",
+            "futureDispersion": 0.19572128282194298,
+            "dispersionChangePct": -54.061144248775825,
+            "gapClosedPct": 103.74152060267902
+          },
+          "3": {
+            "futureMonth": "2025-05",
+            "futureDispersion": 0.175758806157867,
+            "dispersionChangePct": -58.74665071330505,
+            "gapClosedPct": 112.73285018288766
+          },
+          "6": {
+            "futureMonth": "2025-08",
+            "futureDispersion": 0.2111718509098479,
+            "dispersionChangePct": -50.43465351444698,
+            "gapClosedPct": 96.78240665015998
+          }
+        }
+      },
+      {
+        "month": "2025-12",
+        "currentPercentile": 86.84210526315789,
+        "currentDispersion": 0.30874346990135265,
+        "priorMedianDispersion": 0.20701879031133358,
+        "forward": {
+          "1": {
+            "futureMonth": "2026-01",
+            "futureDispersion": 0.3423425708513025,
+            "dispersionChangePct": 10.882530069602826,
+            "gapClosedPct": -33.02944878800727
+          },
+          "2": {
+            "futureMonth": "2026-02",
+            "futureDispersion": 0.470817649912892,
+            "dispersionChangePct": 52.49477181276872,
+            "gapClosedPct": -159.32631163327014
+          },
+          "3": {
+            "futureMonth": "2026-03",
+            "futureDispersion": 0.3436948685767877,
+            "dispersionChangePct": 11.320530499512248,
+            "gapClosedPct": -34.35881913445161
+          },
+          "6": {
+            "futureMonth": "2026-06",
+            "futureDispersion": 0.8321050835704207,
+            "dispersionChangePct": 169.51341961541354,
+            "gapClosedPct": -514.4883383052884
+          }
+        }
+      },
+      {
+        "month": "2026-03",
+        "currentPercentile": 87.8048780487805,
+        "currentDispersion": 0.3436948685767877,
+        "priorMedianDispersion": 0.2111718509098479,
+        "forward": {
+          "1": {
+            "futureMonth": "2026-04",
+            "futureDispersion": 0.2561947196114299,
+            "dispersionChangePct": -25.458671910840202,
+            "gapClosedPct": 66.02637828944205
+          },
+          "2": {
+            "futureMonth": "2026-05",
+            "futureDispersion": 0.5439232578939519,
+            "dispersionChangePct": 58.25760219996694,
+            "gapClosedPct": -151.08951851698941
+          },
+          "3": {
+            "futureMonth": "2026-06",
+            "futureDispersion": 0.8321050835704207,
+            "dispersionChangePct": 142.10576288674298,
+            "gapClosedPct": -368.54745959763596
+          },
+          "6": {
+            "futureMonth": "2026-09",
+            "futureDispersion": 0.39583538525248696,
+            "dispersionChangePct": 15.170583399050685,
+            "gapClosedPct": -39.344498483078695
+          }
+        }
+      },
+      {
+        "month": "2026-07",
+        "currentPercentile": 97.77777777777777,
+        "currentDispersion": 0.6488204641657999,
+        "priorMedianDispersion": 0.23261612199128454,
+        "forward": {
+          "1": {
+            "futureMonth": "2026-08",
+            "futureDispersion": 0.3932441270365843,
+            "dispersionChangePct": -39.39091801887209,
+            "gapClosedPct": 61.40645621185084
+          },
+          "2": {
+            "futureMonth": "2026-09",
+            "futureDispersion": 0.39583538525248696,
+            "dispersionChangePct": -38.99153816589006,
+            "gapClosedPct": 60.783863424287816
+          }
+        }
+      }
+    ],
+    "rolloverAggregate": {
+      "1": {
+        "events": 5,
+        "avgDispersionChangePct": -20.714897830502387,
+        "medianDispersionChangePct": -25.458671910840202,
+        "dispersionLowerRatePct": 80.0,
+        "avgGapClosedPct": 19.877619096129948,
+        "medianGapClosedPct": 61.40645621185084,
+        "reachedOrCrossedPriorMedianRatePct": 20.0,
+        "months": [
+          "2023-07",
+          "2025-02",
+          "2025-12",
+          "2026-03",
+          "2026-07"
+        ]
+      },
+      "2": {
+        "events": 5,
+        "avgDispersionChangePct": -0.9527686486005387,
+        "medianDispersionChangePct": -22.463534841072462,
+        "dispersionLowerRatePct": 60.0,
+        "avgGapClosedPct": -50.72543638643402,
+        "medianGapClosedPct": -107.73673580887738,
+        "reachedOrCrossedPriorMedianRatePct": 40.0,
+        "months": [
+          "2023-07",
+          "2025-02",
+          "2025-12",
+          "2026-03",
+          "2026-07"
+        ]
+      },
+      "3": {
+        "events": 4,
+        "avgDispersionChangePct": 19.284615367000633,
+        "medianDispersionChangePct": -3.1103253527176964,
+        "dispersionLowerRatePct": 50.0,
+        "avgGapClosedPct": -93.57555018509353,
+        "medianGapClosedPct": -59.24379566281291,
+        "reachedOrCrossedPriorMedianRatePct": 50.0,
+        "months": [
+          "2023-07",
+          "2025-02",
+          "2025-12",
+          "2026-03"
+        ]
+      },
+      "6": {
+        "events": 4,
+        "avgDispersionChangePct": 24.483745454552228,
+        "medianDispersionChangePct": -10.571892141378825,
+        "dispersionLowerRatePct": 50.0,
+        "avgGapClosedPct": -157.80419020042834,
+        "medianGapClosedPct": -106.75541457329247,
+        "reachedOrCrossedPriorMedianRatePct": 25.0,
+        "months": [
+          "2023-07",
+          "2025-02",
+          "2025-12",
+          "2026-03"
+        ]
+      }
+    }
+  },
+  "pre2018Proxy": {
+    "months": 71,
+    "cuts": {
+      "80": {
+        "1": {
+          "allExtreme": {
+            "events": 18,
+            "avgDispersionChangePct": -41.51413534037787,
+            "medianDispersionChangePct": -55.36482522073958,
+            "dispersionLowerRatePct": 83.33333333333333,
+            "avgGapClosedPct": 75.12745492166283,
+            "medianGapClosedPct": 79.05166469467952,
+            "reachedOrCrossedPriorMedianRatePct": 33.333333333333336,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2014-10",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 14,
+            "avgDispersionChangePct": -35.85008126913679,
+            "medianDispersionChangePct": -32.11687256691606,
+            "dispersionLowerRatePct": 78.57142857142857,
+            "avgGapClosedPct": 60.49097110805737,
+            "medianGapClosedPct": 40.6705540016554,
+            "reachedOrCrossedPriorMedianRatePct": 21.428571428571427,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 4,
+            "avgDispersionChangePct": -61.33832458972165,
+            "medianDispersionChangePct": -68.99232457588056,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 126.35514826928194,
+            "medianGapClosedPct": 120.97413258055485,
+            "reachedOrCrossedPriorMedianRatePct": 75.0,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2014-10",
+              "2017-07"
+            ]
+          }
+        },
+        "2": {
+          "allExtreme": {
+            "events": 18,
+            "avgDispersionChangePct": -52.46423070376599,
+            "medianDispersionChangePct": -67.80802452069919,
+            "dispersionLowerRatePct": 88.88888888888889,
+            "avgGapClosedPct": 88.75506697217615,
+            "medianGapClosedPct": 100.15004424719329,
+            "reachedOrCrossedPriorMedianRatePct": 50.0,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2014-10",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 14,
+            "avgDispersionChangePct": -48.38957402136511,
+            "medianDispersionChangePct": -61.29928983579907,
+            "dispersionLowerRatePct": 92.85714285714286,
+            "avgGapClosedPct": 80.65855728635765,
+            "medianGapClosedPct": 95.00103194435124,
+            "reachedOrCrossedPriorMedianRatePct": 42.857142857142854,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 4,
+            "avgDispersionChangePct": -66.72552909216908,
+            "medianDispersionChangePct": -90.26412210619557,
+            "dispersionLowerRatePct": 75.0,
+            "avgGapClosedPct": 117.09285087254094,
+            "medianGapClosedPct": 158.50339814648353,
+            "reachedOrCrossedPriorMedianRatePct": 75.0,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2014-10",
+              "2017-07"
+            ]
+          }
+        },
+        "3": {
+          "allExtreme": {
+            "events": 18,
+            "avgDispersionChangePct": -55.502600064998425,
+            "medianDispersionChangePct": -69.98893168114057,
+            "dispersionLowerRatePct": 88.88888888888889,
+            "avgGapClosedPct": 95.4429783097982,
+            "medianGapClosedPct": 113.89745009834135,
+            "reachedOrCrossedPriorMedianRatePct": 61.111111111111114,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2014-10",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 14,
+            "avgDispersionChangePct": -60.86236710879193,
+            "medianDispersionChangePct": -70.83566763639456,
+            "dispersionLowerRatePct": 92.85714285714286,
+            "avgGapClosedPct": 100.49441551100917,
+            "medianGapClosedPct": 118.56980458830293,
+            "reachedOrCrossedPriorMedianRatePct": 71.42857142857143,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 4,
+            "avgDispersionChangePct": -36.743415411721166,
+            "medianDispersionChangePct": -33.44398206619442,
+            "dispersionLowerRatePct": 75.0,
+            "avgGapClosedPct": 77.76294810555986,
+            "medianGapClosedPct": 52.39220353214015,
+            "reachedOrCrossedPriorMedianRatePct": 25.0,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2014-10",
+              "2017-07"
+            ]
+          }
+        },
+        "6": {
+          "allExtreme": {
+            "events": 18,
+            "avgDispersionChangePct": -56.906892427015514,
+            "medianDispersionChangePct": -68.44751672710788,
+            "dispersionLowerRatePct": 88.88888888888889,
+            "avgGapClosedPct": 89.3935522736229,
+            "medianGapClosedPct": 122.27387153714818,
+            "reachedOrCrossedPriorMedianRatePct": 55.55555555555556,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2014-10",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 14,
+            "avgDispersionChangePct": -62.10414457442809,
+            "medianDispersionChangePct": -85.6255799525829,
+            "dispersionLowerRatePct": 92.85714285714286,
+            "avgGapClosedPct": 96.73111246016856,
+            "medianGapClosedPct": 123.20573291173733,
+            "reachedOrCrossedPriorMedianRatePct": 57.142857142857146,
+            "months": [
+              "2012-10",
+              "2012-12",
+              "2013-01",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2015-07",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 4,
+            "avgDispersionChangePct": -38.7165099110715,
+            "medianDispersionChangePct": -59.91504293727865,
+            "dispersionLowerRatePct": 75.0,
+            "avgGapClosedPct": 63.71209162071311,
+            "medianGapClosedPct": 106.0687558416547,
+            "reachedOrCrossedPriorMedianRatePct": 50.0,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2014-10",
+              "2017-07"
+            ]
+          }
+        }
+      },
+      "90": {
+        "1": {
+          "allExtreme": {
+            "events": 14,
+            "avgDispersionChangePct": -41.198186993803695,
+            "medianDispersionChangePct": -55.36482522073958,
+            "dispersionLowerRatePct": 85.71428571428571,
+            "avgGapClosedPct": 74.00768529629606,
+            "medianGapClosedPct": 79.05166469467952,
+            "reachedOrCrossedPriorMedianRatePct": 28.571428571428573,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 11,
+            "avgDispersionChangePct": -36.5247542226454,
+            "medianDispersionChangePct": -52.33673646201258,
+            "dispersionLowerRatePct": 81.81818181818181,
+            "avgGapClosedPct": 60.69898365295273,
+            "medianGapClosedPct": 63.67852649780329,
+            "reachedOrCrossedPriorMedianRatePct": 18.181818181818183,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 3,
+            "avgDispersionChangePct": -58.33410715471744,
+            "medianDispersionChangePct": -67.63367225702682,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 122.80625798855496,
+            "medianGapClosedPct": 104.94644604964682,
+            "reachedOrCrossedPriorMedianRatePct": 66.66666666666667,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2017-07"
+            ]
+          }
+        },
+        "2": {
+          "allExtreme": {
+            "events": 14,
+            "avgDispersionChangePct": -52.9540379692851,
+            "medianDispersionChangePct": -67.80802452069919,
+            "dispersionLowerRatePct": 85.71428571428571,
+            "avgGapClosedPct": 88.91549668511396,
+            "medianGapClosedPct": 100.15004424719329,
+            "reachedOrCrossedPriorMedianRatePct": 50.0,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 11,
+            "avgDispersionChangePct": -50.874122610829964,
+            "medianDispersionChangePct": -64.60008756941005,
+            "dispersionLowerRatePct": 90.9090909090909,
+            "avgGapClosedPct": 85.66257704703901,
+            "medianGapClosedPct": 96.1367290750066,
+            "reachedOrCrossedPriorMedianRatePct": 45.45454545454545,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 3,
+            "avgDispersionChangePct": -60.580394283620606,
+            "medianDispersionChangePct": -95.36731069457663,
+            "dispersionLowerRatePct": 66.66666666666667,
+            "avgGapClosedPct": 100.84286869138877,
+            "medianGapClosedPct": 151.16399887696963,
+            "reachedOrCrossedPriorMedianRatePct": 66.66666666666667,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2017-07"
+            ]
+          }
+        },
+        "3": {
+          "allExtreme": {
+            "events": 14,
+            "avgDispersionChangePct": -53.05412349472296,
+            "medianDispersionChangePct": -68.9526925378645,
+            "dispersionLowerRatePct": 92.85714285714286,
+            "avgGapClosedPct": 93.94735482434872,
+            "medianGapClosedPct": 113.89745009834135,
+            "reachedOrCrossedPriorMedianRatePct": 57.142857142857146,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 11,
+            "avgDispersionChangePct": -53.6016612216619,
+            "medianDispersionChangePct": -69.73739844676274,
+            "dispersionLowerRatePct": 90.9090909090909,
+            "avgGapClosedPct": 90.20035268719145,
+            "medianGapClosedPct": 114.21190522932571,
+            "reachedOrCrossedPriorMedianRatePct": 63.63636363636363,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 3,
+            "avgDispersionChangePct": -51.0464851626135,
+            "medianDispersionChangePct": -63.85957403841891,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 107.68636266059201,
+            "medianGapClosedPct": 99.09021819941277,
+            "reachedOrCrossedPriorMedianRatePct": 33.333333333333336,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2017-07"
+            ]
+          }
+        },
+        "6": {
+          "allExtreme": {
+            "events": 14,
+            "avgDispersionChangePct": -59.25765422733508,
+            "medianDispersionChangePct": -78.41094982691708,
+            "dispersionLowerRatePct": 85.71428571428571,
+            "avgGapClosedPct": 90.26997251231357,
+            "medianGapClosedPct": 123.20573291173733,
+            "reachedOrCrossedPriorMedianRatePct": 57.142857142857146,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2013-12",
+              "2014-01",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06",
+              "2017-07"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 11,
+            "avgDispersionChangePct": -67.35876453158981,
+            "medianDispersionChangePct": -89.24435698708282,
+            "dispersionLowerRatePct": 90.9090909090909,
+            "avgGapClosedPct": 103.44179440833886,
+            "medianGapClosedPct": 130.79221255136815,
+            "reachedOrCrossedPriorMedianRatePct": 63.63636363636363,
+            "months": [
+              "2012-10",
+              "2013-11",
+              "2014-03",
+              "2014-07",
+              "2014-09",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 3,
+            "avgDispersionChangePct": -29.553583111734394,
+            "medianDispersionChangePct": -53.6247955654745,
+            "dispersionLowerRatePct": 66.66666666666667,
+            "avgGapClosedPct": 41.973292226887516,
+            "medianGapClosedPct": 83.20902188111953,
+            "reachedOrCrossedPriorMedianRatePct": 33.333333333333336,
+            "months": [
+              "2013-12",
+              "2014-01",
+              "2017-07"
+            ]
+          }
+        }
+      },
+      "95": {
+        "1": {
+          "allExtreme": {
+            "events": 9,
+            "avgDispersionChangePct": -30.249710915681355,
+            "medianDispersionChangePct": -12.673681388833636,
+            "dispersionLowerRatePct": 77.77777777777777,
+            "avgGapClosedPct": 47.94964720821842,
+            "medianGapClosedPct": 23.829933793823773,
+            "reachedOrCrossedPriorMedianRatePct": 11.11111111111111,
+            "months": [
+              "2013-11",
+              "2013-12",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 8,
+            "avgDispersionChangePct": -32.44671460653732,
+            "medianDispersionChangePct": -34.511911402355565,
+            "dispersionLowerRatePct": 75.0,
+            "avgGapClosedPct": 50.964611385017754,
+            "medianGapClosedPct": 55.00247430655748,
+            "reachedOrCrossedPriorMedianRatePct": 12.5,
+            "months": [
+              "2013-11",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -12.673681388833636,
+            "medianDispersionChangePct": -12.673681388833636,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 23.829933793823773,
+            "medianGapClosedPct": 23.829933793823773,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2013-12"
+            ]
+          }
+        },
+        "2": {
+          "allExtreme": {
+            "events": 9,
+            "avgDispersionChangePct": -53.810420626026286,
+            "medianDispersionChangePct": -64.60008756941005,
+            "dispersionLowerRatePct": 88.88888888888889,
+            "avgGapClosedPct": 88.27625587207075,
+            "medianGapClosedPct": 96.1367290750066,
+            "reachedOrCrossedPriorMedianRatePct": 44.44444444444444,
+            "months": [
+              "2013-11",
+              "2013-12",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 8,
+            "avgDispersionChangePct": -48.61580936745749,
+            "medianDispersionChangePct": -61.29928983579907,
+            "dispersionLowerRatePct": 87.5,
+            "avgGapClosedPct": 76.8962597661091,
+            "medianGapClosedPct": 95.00103194435124,
+            "reachedOrCrossedPriorMedianRatePct": 37.5,
+            "months": [
+              "2013-11",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -95.36731069457663,
+            "medianDispersionChangePct": -95.36731069457663,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 179.31622471976405,
+            "medianGapClosedPct": 179.31622471976405,
+            "reachedOrCrossedPriorMedianRatePct": 100.0,
+            "months": [
+              "2013-12"
+            ]
+          }
+        },
+        "3": {
+          "allExtreme": {
+            "events": 9,
+            "avgDispersionChangePct": -47.81162462311708,
+            "medianDispersionChangePct": -68.16798662896623,
+            "dispersionLowerRatePct": 88.88888888888889,
+            "avgGapClosedPct": 76.5649218767433,
+            "medianGapClosedPct": 113.58299496735701,
+            "reachedOrCrossedPriorMedianRatePct": 55.55555555555556,
+            "months": [
+              "2013-11",
+              "2013-12",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 8,
+            "avgDispersionChangePct": -53.409528939260476,
+            "medianDispersionChangePct": -69.20422577224232,
+            "dispersionLowerRatePct": 87.5,
+            "avgGapClosedPct": 85.42376350322776,
+            "medianGapClosedPct": 113.89745009834135,
+            "reachedOrCrossedPriorMedianRatePct": 62.5,
+            "months": [
+              "2013-11",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -3.028390093969935,
+            "medianDispersionChangePct": -3.028390093969935,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 5.6941888648675265,
+            "medianGapClosedPct": 5.6941888648675265,
+            "reachedOrCrossedPriorMedianRatePct": 0.0,
+            "months": [
+              "2013-12"
+            ]
+          }
+        },
+        "6": {
+          "allExtreme": {
+            "events": 9,
+            "avgDispersionChangePct": -69.5495171460188,
+            "medianDispersionChangePct": -86.16803157945559,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 111.14770349605976,
+            "medianGapClosedPct": 132.84829773087344,
+            "reachedOrCrossedPriorMedianRatePct": 66.66666666666667,
+            "months": [
+              "2013-11",
+              "2013-12",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "risingOrFlat": {
+            "events": 8,
+            "avgDispersionChangePct": -69.41147327997382,
+            "medianDispersionChangePct": -87.70619428326921,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 108.43512921670805,
+            "medianGapClosedPct": 137.33325051274,
+            "reachedOrCrossedPriorMedianRatePct": 62.5,
+            "months": [
+              "2013-11",
+              "2014-07",
+              "2015-01",
+              "2016-02",
+              "2016-03",
+              "2017-03",
+              "2017-04",
+              "2017-06"
+            ]
+          },
+          "falling": {
+            "events": 1,
+            "avgDispersionChangePct": -70.65386807437856,
+            "medianDispersionChangePct": -70.65386807437856,
+            "dispersionLowerRatePct": 100.0,
+            "avgGapClosedPct": 132.84829773087344,
+            "medianGapClosedPct": 132.84829773087344,
+            "reachedOrCrossedPriorMedianRatePct": 100.0,
+            "months": [
+              "2013-12"
+            ]
+          }
+        }
+      }
+    },
+    "rolloverForwardPaths": [
+      {
+        "month": "2012-11",
+        "currentPercentile": 66.66666666666667,
+        "currentDispersion": 2.3285781354986046,
+        "priorMedianDispersion": 0.9839861198138333,
+        "forward": {
+          "1": {
+            "futureMonth": "2012-12",
+            "futureDispersion": 4.192360654199138,
+            "dispersionChangePct": 80.0395095310578,
+            "gapClosedPct": -138.6132370978977
+          },
+          "2": {
+            "futureMonth": "2013-01",
+            "futureDispersion": 4.5380767422050265,
+            "dispersionChangePct": 94.88616993448301,
+            "gapClosedPct": -164.32483466601374
+          },
+          "3": {
+            "futureMonth": "2013-02",
+            "futureDispersion": 3.9981813586510686,
+            "dispersionChangePct": 71.70054539720059,
+            "gapClosedPct": -124.17173415254676
+          },
+          "6": {
+            "futureMonth": "2013-05",
+            "futureDispersion": 0.20242192258791727,
+            "dispersionChangePct": -91.30705903735655,
+            "gapClosedPct": 158.12649399289214
+          }
+        }
+      },
+      {
+        "month": "2013-02",
+        "currentPercentile": 72.22222222222223,
+        "currentDispersion": 3.9981813586510686,
+        "priorMedianDispersion": 1.904968225376682,
+        "forward": {
+          "1": {
+            "futureMonth": "2013-03",
+            "futureDispersion": 1.197720950388925,
+            "dispersionChangePct": -70.04335614247825,
+            "gapClosedPct": 133.78763794976857
+          },
+          "2": {
+            "futureMonth": "2013-04",
+            "futureDispersion": 0.24298929391033944,
+            "dispersionChangePct": -93.92250445606798,
+            "gapClosedPct": 179.3984570919699
+          },
+          "3": {
+            "futureMonth": "2013-05",
+            "futureDispersion": 0.20242192258791727,
+            "dispersionChangePct": -94.93715005824019,
+            "gapClosedPct": 181.33650012626728
+          },
+          "6": {
+            "futureMonth": "2013-08",
+            "futureDispersion": 3.3148231652688565,
+            "dispersionChangePct": -17.091725764355214,
+            "gapClosedPct": 32.64637425206881
+          }
+        }
+      },
+      {
+        "month": "2013-07",
+        "currentPercentile": 60.869565217391305,
+        "currentDispersion": 3.1301393685681647,
+        "priorMedianDispersion": 1.4813583152547596,
+        "forward": {
+          "1": {
+            "futureMonth": "2013-08",
+            "futureDispersion": 3.3148231652688565,
+            "dispersionChangePct": 5.900178073705797,
+            "gapClosedPct": -11.201232348561357
+          },
+          "2": {
+            "futureMonth": "2013-09",
+            "futureDispersion": 1.3197682006082185,
+            "dispersionChangePct": -57.836759159643215,
+            "gapClosedPct": 109.80058051503006
+          },
+          "3": {
+            "futureMonth": "2013-10",
+            "futureDispersion": 3.0135885032365386,
+            "dispersionChangePct": -3.723504023558555,
+            "gapClosedPct": 7.068911005339636
+          },
+          "6": {
+            "futureMonth": "2014-01",
+            "futureDispersion": 4.982382800647773,
+            "dispersionChangePct": 59.17447161232599,
+            "gapClosedPct": -112.3401696275757
+          }
+        }
+      },
+      {
+        "month": "2013-12",
+        "currentPercentile": 96.42857142857143,
+        "currentDispersion": 5.705476745026417,
+        "priorMedianDispersion": 2.671083319367572,
+        "forward": {
+          "1": {
+            "futureMonth": "2014-01",
+            "futureDispersion": 4.982382800647773,
+            "dispersionChangePct": -12.673681388833636,
+            "gapClosedPct": 23.829933793823773
+          },
+          "2": {
+            "futureMonth": "2014-02",
+            "futureDispersion": 0.264317010990256,
+            "dispersionChangePct": -95.36731069457663,
+            "gapClosedPct": 179.31622471976405
+          },
+          "3": {
+            "futureMonth": "2014-03",
+            "futureDispersion": 5.532692652466279,
+            "dispersionChangePct": -3.028390093969935,
+            "gapClosedPct": 5.6941888648675265
+          },
+          "6": {
+            "futureMonth": "2014-06",
+            "futureDispersion": 1.6743367325811045,
+            "dispersionChangePct": -70.65386807437856,
+            "gapClosedPct": 132.84829773087344
+          }
+        }
+      },
+      {
+        "month": "2014-08",
+        "currentPercentile": 52.77777777777778,
+        "currentDispersion": 2.3666860140564476,
+        "priorMedianDispersion": 2.671083319367572,
+        "forward": {
+          "1": {
+            "futureMonth": "2014-09",
+            "futureDispersion": 5.656484766474107,
+            "dispersionChangePct": 139.0044447332081,
+            "gapClosedPct": 1080.758171973684
+          },
+          "2": {
+            "futureMonth": "2014-10",
+            "futureDispersion": 5.529618018864147,
+            "dispersionChangePct": 133.64392175481294,
+            "gapClosedPct": 1039.0801592592516
+          },
+          "3": {
+            "futureMonth": "2014-11",
+            "futureDispersion": 1.639477724045966,
+            "dispersionChangePct": -30.726859654866622,
+            "gapClosedPct": -238.9010274802541
+          },
+          "6": {
+            "futureMonth": "2015-02",
+            "futureDispersion": 2.319824186724996,
+            "dispersionChangePct": -1.980061024281432,
+            "gapClosedPct": -15.394954723253605
+          }
+        }
+      },
+      {
+        "month": "2014-10",
+        "currentPercentile": 86.84210526315789,
+        "currentDispersion": 5.529618018864147,
+        "priorMedianDispersion": 2.690137258646493,
+        "forward": {
+          "1": {
+            "futureMonth": "2014-11",
+            "futureDispersion": 1.639477724045966,
+            "dispersionChangePct": -70.3509768947343,
+            "gapClosedPct": 137.00181911146288
+          },
+          "2": {
+            "futureMonth": "2014-12",
+            "futureDispersion": 0.8205436940301595,
+            "dispersionChangePct": -85.1609335178145,
+            "gapClosedPct": 165.84279741599744
+          },
+          "3": {
+            "futureMonth": "2015-01",
+            "futureDispersion": 5.870562866099658,
+            "dispersionChangePct": 6.165793840955858,
+            "gapClosedPct": -12.007295559536637
+          },
+          "6": {
+            "futureMonth": "2015-04",
+            "futureDispersion": 1.868718356491786,
+            "dispersionChangePct": -66.2052903090828,
+            "gapClosedPct": 128.9284898021899
+          }
+        }
+      },
+      {
+        "month": "2016-04",
+        "currentPercentile": 53.57142857142857,
+        "currentDispersion": 2.580518649744329,
+        "priorMedianDispersion": 2.3744678517399045,
+        "forward": {
+          "1": {
+            "futureMonth": "2016-05",
+            "futureDispersion": 1.4772415510932497,
+            "dispersionChangePct": -42.754083515745535,
+            "gapClosedPct": 535.4393719103132
+          },
+          "2": {
+            "futureMonth": "2016-06",
+            "futureDispersion": 1.8457201077558396,
+            "dispersionChangePct": -28.474839430487798,
+            "gapClosedPct": 356.61038399507237
+          },
+          "3": {
+            "futureMonth": "2016-07",
+            "futureDispersion": 2.36788987533791,
+            "dispersionChangePct": -8.239768948288194,
+            "gapClosedPct": 103.19240520575569
+          },
+          "6": {
+            "futureMonth": "2016-10",
+            "futureDispersion": 0.8285044930020079,
+            "dispersionChangePct": -67.89387695050783,
+            "gapClosedPct": 850.2826359860541
+          }
+        }
+      },
+      {
+        "month": "2017-05",
+        "currentPercentile": 55.072463768115945,
+        "currentDispersion": 2.5128519586531977,
+        "priorMedianDispersion": 2.3666860140564476,
+        "forward": {
+          "1": {
+            "futureMonth": "2017-06",
+            "futureDispersion": 7.452197564181331,
+            "dispersionChangePct": 196.56333468110287,
+            "gapClosedPct": -3379.2725242224165
+          },
+          "2": {
+            "futureMonth": "2017-07",
+            "futureDispersion": 6.659961235656119,
+            "dispersionChangePct": 165.03595696204997,
+            "gapClosedPct": -2837.260955993665
+          },
+          "3": {
+            "futureMonth": "2017-08",
+            "futureDispersion": 2.1555848810874267,
+            "dispersionChangePct": -14.217593532937522,
+            "gapClosedPct": 244.4256619087417
+          },
+          "6": {
+            "futureMonth": "2017-11",
+            "futureDispersion": 0.815611787696253,
+            "dispersionChangePct": -67.54238605710012,
+            "gapClosedPct": 1161.1734700852353
+          }
+        }
+      },
+      {
+        "month": "2017-07",
+        "currentPercentile": 94.36619718309859,
+        "currentDispersion": 6.659961235656119,
+        "priorMedianDispersion": 2.36788987533791,
+        "forward": {
+          "1": {
+            "futureMonth": "2017-08",
+            "futureDispersion": 2.1555848810874267,
+            "dispersionChangePct": -67.63367225702682,
+            "gapClosedPct": 104.94644604964682
+          },
+          "2": {
+            "futureMonth": "2017-09",
+            "futureDispersion": 0.17189453274596553,
+            "dispersionChangePct": -97.4189859871004,
+            "gapClosedPct": 151.16399887696963
+          },
+          "3": {
+            "futureMonth": "2017-10",
+            "futureDispersion": 2.4069383594423006,
+            "dispersionChangePct": -63.85957403841891,
+            "gapClosedPct": 99.09021819941277
+          },
+          "6": {
+            "futureMonth": "2018-01",
+            "futureDispersion": 3.0885706382956757,
+            "dispersionChangePct": -53.6247955654745,
+            "gapClosedPct": 83.20902188111953
+          }
+        }
+      }
+    ],
+    "rolloverAggregate": {
+      "1": {
+        "events": 9,
+        "avgDispersionChangePct": 17.561299646695115,
+        "medianDispersionChangePct": -12.673681388833636,
+        "dispersionLowerRatePct": 55.55555555555556,
+        "avgGapClosedPct": -168.14706809779736,
+        "medianGapClosedPct": 104.94644604964682,
+        "reachedOrCrossedPriorMedianRatePct": 44.44444444444444,
+        "months": [
+          "2012-11",
+          "2013-02",
+          "2013-07",
+          "2013-12",
+          "2014-08",
+          "2014-10",
+          "2016-04",
+          "2017-05",
+          "2017-07"
+        ]
+      },
+      "2": {
+        "events": 9,
+        "avgDispersionChangePct": -7.179476066038291,
+        "medianDispersionChangePct": -57.836759159643215,
+        "dispersionLowerRatePct": 66.66666666666667,
+        "avgGapClosedPct": -91.15257653173597,
+        "medianGapClosedPct": 165.84279741599744,
+        "reachedOrCrossedPriorMedianRatePct": 66.66666666666667,
+        "months": [
+          "2012-11",
+          "2013-02",
+          "2013-07",
+          "2013-12",
+          "2014-08",
+          "2014-10",
+          "2016-04",
+          "2017-05",
+          "2017-07"
+        ]
+      },
+      "3": {
+        "events": 9,
+        "avgDispersionChangePct": -15.65183345690261,
+        "medianDispersionChangePct": -8.239768948288194,
+        "dispersionLowerRatePct": 77.77777777777777,
+        "avgGapClosedPct": 29.525314235338566,
+        "medianGapClosedPct": 7.068911005339636,
+        "reachedOrCrossedPriorMedianRatePct": 44.44444444444444,
+        "months": [
+          "2012-11",
+          "2013-02",
+          "2013-07",
+          "2013-12",
+          "2014-08",
+          "2014-10",
+          "2016-04",
+          "2017-05",
+          "2017-07"
+        ]
+      },
+      "6": {
+        "events": 9,
+        "avgDispersionChangePct": -41.90273235224567,
+        "medianDispersionChangePct": -66.2052903090828,
+        "dispersionLowerRatePct": 88.88888888888889,
+        "avgGapClosedPct": 268.8310732644004,
+        "medianGapClosedPct": 128.9284898021899,
+        "reachedOrCrossedPriorMedianRatePct": 66.66666666666667,
+        "months": [
+          "2012-11",
+          "2013-02",
+          "2013-07",
+          "2013-12",
+          "2014-08",
+          "2014-10",
+          "2016-04",
+          "2017-05",
+          "2017-07"
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Recent exact history is short and 6-month forward observations are few.",
+    "Overlapping extreme months create overlapping forward windows, so event observations are not independent.",
+    "The pre-2018 sleeve is a RelativeMomentum^3 proxy without reliable historical market-cap weighting, but the dispersion process itself is directly measured from the historical constituent sample.",
+    "Fixed 80/90/95 percentile cutoffs and 1/2/3/6 month horizons are descriptive; no cutoff is chosen by return optimization."
+  ]
+}
