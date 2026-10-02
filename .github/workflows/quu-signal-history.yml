@@ -1,0 +1,72 @@
+name: Build QUU snapshot and history
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/quu-signal-history.yml'
+      - 'tools/build_quu.py'
+  workflow_run:
+    workflows: ['Archive QUQU monthly targets', 'Publish benchmark history']
+    types: [completed]
+  schedule:
+    - cron: '40 8 2 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --disable-pip-version-check numpy
+
+      - name: Load QUU builder
+        run: git show origin/main:tools/build_quu.py > /tmp/build_quu.py
+
+      - name: Build QUU
+        run: python /tmp/build_quu.py
+
+      - name: Validate QUU
+        shell: python
+        run: |
+          import json, math
+          latest=json.load(open('quu-latest.json',encoding='utf-8'))
+          hist=json.load(open('quu-history.json',encoding='utf-8'))
+          rows=latest.get('rows') or []
+          assert latest.get('selectedSleeve') in ('QUQU','QQQ')
+          assert len(rows) in (1,100), len(rows)
+          assert abs(sum(float(x['weight']) for x in rows)-1)<1e-6
+          months=hist.get('months') or {}
+          assert len(months)>=48, len(months)
+          completed=[r for r in months.values() if isinstance(r.get('portfolioReturn'),(int,float))]
+          assert len(completed)>=48, len(completed)
+          m=hist.get('metricsCompletedMonths') or {}
+          for k in ['CAGRpct','MDDpct','Calmar','endingIndex']:
+              assert isinstance(m.get(k),(int,float)), (k,m.get(k))
+          print(json.dumps({'selectedSleeve':latest['selectedSleeve'],'decision':latest.get('decision'),'holdings':len(rows),'historyMonths':len(months),'metrics':m},indent=2))
+
+      - name: Commit QUU to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-latest.json quu-history.json
+          if git diff --cached --quiet; then
+            echo 'No QUU changes'
+            exit 0
+          fi
+          git commit -m 'Refresh QUU snapshot and history'
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
