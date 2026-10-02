@@ -1,0 +1,67 @@
+name: QUU long proxy 2012-2026
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/quu_long_proxy_2012_2026.py'
+      - '.github/workflows/quu-long-proxy-2012-2026.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - name: Fetch main
+        run: git fetch origin main
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas numpy
+      - name: Load engines
+        run: |
+          git show origin/main:tools/backfill_snpi_ququ.py > /tmp/backfill_snpi_ququ.py
+          git show origin/main:tools/quu_max_pit_validation.py > /tmp/quu_max_pit_validation.py
+          git show origin/main:tools/quu_pre2018_proxy_validation.py > /tmp/quu_pre2018_proxy_validation.py
+          git show origin/main:tools/quu_long_proxy_2012_2026.py > /tmp/quu_long_proxy_2012_2026.py
+      - name: Run long proxy
+        run: python /tmp/quu_long_proxy_2012_2026.py
+      - name: Validate output
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-long-proxy-2012-2026.json',encoding='utf-8'))
+          assert j['period']['investmentStart']=='2012-04'
+          assert j['period']['end']=='2026-09'
+          assert j['period']['months'] >= 170, j['period']
+          assert j['dataQuality']['minimumCoverageRatio'] >= .90, j['dataQuality']
+          for k in ['QUUProxy','QQQ']:
+              assert j['metrics'][k]['months']==j['period']['months']
+          print(json.dumps({'period':j['period'],'quality':j['dataQuality']['minimumCoverageRatio'],'metrics':j['metrics'],'sleeves':j['sleeveCounts'],'overlap':j['exactOverlap']},indent=2))
+      - name: Commit to Pages safely
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp quu-long-proxy-2012-2026.json /tmp/quu-long-proxy-2012-2026.json
+          git reset --hard origin/somx-pages
+          cp /tmp/quu-long-proxy-2012-2026.json quu-long-proxy-2012-2026.json
+          git add quu-long-proxy-2012-2026.json
+          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+          git commit -m 'Publish continuous long-history QUU proxy'
+          for i in 1 2 3; do
+            if git push origin HEAD:somx-pages; then exit 0; fi
+            git fetch origin somx-pages
+            git rebase origin/somx-pages || { git rebase --abort; exit 1; }
+          done
+          exit 1
