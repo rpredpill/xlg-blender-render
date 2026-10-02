@@ -1,0 +1,62 @@
+name: QUU MR90 equal-weight sleeve study
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/quu-mr90-equal-weight-study.yml'
+      - 'tools/quu_mr90_equal_weight_study.py'
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --disable-pip-version-check pandas yfinance
+
+      - name: Load study script
+        run: git show origin/main:tools/quu_mr90_equal_weight_study.py > /tmp/quu_mr90_equal_weight_study.py
+
+      - name: Run study
+        run: python /tmp/quu_mr90_equal_weight_study.py
+
+      - name: Validate output
+        shell: python
+        run: |
+          import json
+          x=json.load(open('quu-mr90-equal-weight-study.json',encoding='utf-8'))
+          assert x['exact2022_2026']['interventions']['count'] == 2
+          assert x['pre2018Proxy']['interventions']['count'] == 3
+          assert x['combinedInterventionOnly']['count'] == 5
+          for section in ['exact2022_2026','pre2018Proxy']:
+              s=x[section]['strategies']
+              for name in ['LeadershipBaseline','MR90_QQQ','MR90_QQQE']:
+                  for k in ['CAGRpct','MDDpct','Calmar','endingIndex']:
+                      assert isinstance(s[name][k],(int,float)), (section,name,k,s[name][k])
+          print(json.dumps(x['combinedInterventionOnly'],indent=2))
+
+      - name: Commit study to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-mr90-equal-weight-study.json
+          if git diff --cached --quiet; then
+            echo 'No study changes'
+            exit 0
+          fi
+          git commit -m 'Update MR90 equal-weight sleeve study'
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
