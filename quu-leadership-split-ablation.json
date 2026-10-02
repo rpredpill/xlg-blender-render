@@ -1,0 +1,258 @@
+{
+  "purpose": "Ablate the 50th-percentile Leadership split while keeping the MR90->QQQE overlay fixed. No threshold optimization.",
+  "currentRule": "P<50 => QQQ; P>=50 => risk sleeve; P>=90 and falling => QQQE.",
+  "no50Rule": "Always risk sleeve except P>=90 and falling => QQQE.",
+  "exact2022_2026": {
+    "period": {
+      "start": "2023-06",
+      "end": "2026-09",
+      "months": 40
+    },
+    "strategies": {
+      "CurrentQUU": {
+        "months": 40,
+        "totalReturnPct": 286.1624071230891,
+        "CAGRpct": 49.97918797510825,
+        "MDDpct": -9.814936811263653,
+        "Calmar": 5.0921558575651735,
+        "endingIndex": 386.1624071230891
+      },
+      "No50Split_AlwaysRiskExceptMR90": {
+        "months": 40,
+        "totalReturnPct": 283.86605516374556,
+        "CAGRpct": 49.7110695092917,
+        "MDDpct": -10.342345858102153,
+        "Calmar": 4.806556480641018,
+        "endingIndex": 383.86605516374556
+      }
+    },
+    "lowLeadership": {
+      "months": 16,
+      "avgRiskReturnPct": 3.011514883464585,
+      "avgQQQReturnPct": 3.0433202979332323,
+      "avgRiskMinusQQQPctPoints": -0.031805414468647396,
+      "riskWinRatePct": 37.5,
+      "monthsList": [
+        "2023-08",
+        "2023-09",
+        "2023-10",
+        "2023-11",
+        "2023-12",
+        "2024-01",
+        "2024-02",
+        "2024-05",
+        "2024-08",
+        "2024-09",
+        "2024-10",
+        "2024-11",
+        "2025-04",
+        "2025-05",
+        "2025-06",
+        "2025-07"
+      ]
+    },
+    "highLeadership": {
+      "months": 24,
+      "avgRiskReturnPct": 3.0336494130321445,
+      "avgQQQReturnPct": 1.597065771259328,
+      "avgRiskMinusQQQPctPoints": 1.4365836417728168,
+      "riskWinRatePct": 58.333333333333336,
+      "monthsList": [
+        "2023-06",
+        "2023-07",
+        "2024-03",
+        "2024-04",
+        "2024-06",
+        "2024-07",
+        "2024-12",
+        "2025-01",
+        "2025-02",
+        "2025-03",
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    },
+    "splitContribution": {
+      "lowLeadershipMonths": 16,
+      "avgQQQminusRiskPctPoints": 0.031805414468647396,
+      "sumQQQminusRiskPctPoints": 0.5088866314983583,
+      "QQQWinsVsRisk": 10,
+      "RiskWinsVsQQQ": 6,
+      "ties": 0
+    },
+    "mr90OverlayMonths": [
+      {
+        "month": "2025-02",
+        "QQQEReturnPct": 0.23729496749358425,
+        "percentile": 96.42857142857143
+      },
+      {
+        "month": "2026-07",
+        "QQQEReturnPct": -3.764898725444721,
+        "percentile": 97.77777777777777
+      }
+    ]
+  },
+  "pre2018Proxy": {
+    "period": {
+      "start": "2012-04",
+      "end": "2018-02",
+      "months": 71
+    },
+    "strategies": {
+      "CurrentQUU": {
+        "months": 71,
+        "totalReturnPct": 172.18020182758175,
+        "CAGRpct": 18.43958544000499,
+        "MDDpct": -8.572188514937007,
+        "Calmar": 2.1510942518207665,
+        "endingIndex": 272.18020182758175
+      },
+      "No50Split_AlwaysRiskExceptMR90": {
+        "months": 71,
+        "totalReturnPct": 170.97701578284963,
+        "CAGRpct": 18.3509320952989,
+        "MDDpct": -9.055810159270028,
+        "Calmar": 2.026426324376276,
+        "endingIndex": 270.9770157828496
+      }
+    },
+    "lowLeadership": {
+      "months": 33,
+      "avgRiskReturnPct": 1.5530596420458072,
+      "avgQQQReturnPct": 1.5636318578136246,
+      "avgRiskMinusQQQPctPoints": -0.010572215767817287,
+      "riskWinRatePct": 54.54545454545455,
+      "monthsList": [
+        "2012-05",
+        "2012-06",
+        "2012-07",
+        "2012-08",
+        "2012-09",
+        "2013-03",
+        "2013-04",
+        "2013-05",
+        "2013-09",
+        "2014-02",
+        "2014-04",
+        "2014-05",
+        "2014-06",
+        "2014-11",
+        "2014-12",
+        "2015-02",
+        "2015-03",
+        "2015-04",
+        "2015-08",
+        "2015-10",
+        "2015-11",
+        "2016-01",
+        "2016-05",
+        "2016-06",
+        "2016-08",
+        "2016-09",
+        "2016-10",
+        "2016-12",
+        "2017-02",
+        "2017-08",
+        "2017-09",
+        "2017-11",
+        "2017-12"
+      ]
+    },
+    "highLeadership": {
+      "months": 38,
+      "avgRiskReturnPct": 1.334116953341442,
+      "avgQQQReturnPct": 1.137817357099652,
+      "avgRiskMinusQQQPctPoints": 0.19629959624179003,
+      "riskWinRatePct": 57.89473684210526,
+      "monthsList": [
+        "2012-04",
+        "2012-10",
+        "2012-11",
+        "2012-12",
+        "2013-01",
+        "2013-02",
+        "2013-06",
+        "2013-07",
+        "2013-08",
+        "2013-10",
+        "2013-11",
+        "2013-12",
+        "2014-01",
+        "2014-03",
+        "2014-07",
+        "2014-08",
+        "2014-09",
+        "2014-10",
+        "2015-01",
+        "2015-05",
+        "2015-06",
+        "2015-07",
+        "2015-09",
+        "2015-12",
+        "2016-02",
+        "2016-03",
+        "2016-04",
+        "2016-07",
+        "2016-11",
+        "2017-01",
+        "2017-03",
+        "2017-04",
+        "2017-05",
+        "2017-06",
+        "2017-07",
+        "2017-10",
+        "2018-01",
+        "2018-02"
+      ]
+    },
+    "splitContribution": {
+      "lowLeadershipMonths": 33,
+      "avgQQQminusRiskPctPoints": 0.010572215767817287,
+      "sumQQQminusRiskPctPoints": 0.3488831203379705,
+      "QQQWinsVsRisk": 15,
+      "RiskWinsVsQQQ": 18,
+      "ties": 0
+    },
+    "mr90OverlayMonths": [
+      {
+        "month": "2013-12",
+        "QQQEReturnPct": 3.57893277006589,
+        "percentile": 96.42857142857143
+      },
+      {
+        "month": "2014-01",
+        "QQQEReturnPct": -1.2037416248117938,
+        "percentile": 93.10344827586206
+      },
+      {
+        "month": "2017-07",
+        "QQQEReturnPct": 2.733915849308577,
+        "percentile": 94.36619718309859
+      }
+    ]
+  },
+  "crossSample": {
+    "splitHelpsCAGRBothSamples": true,
+    "splitHelpsMDDBothSamples": true,
+    "lowLeadershipRiskExcessSignExact": "negative",
+    "lowLeadershipRiskExcessSignPre2018": "negative"
+  },
+  "limitations": [
+    "Exact sample is recent and short; pre-2018 uses Momentum^3 proxy rather than exact QUQU.",
+    "This is an ablation of the already-used 50 split, not a search over alternative cutoffs.",
+    "Live QUU is not modified by this research workflow."
+  ]
+}
