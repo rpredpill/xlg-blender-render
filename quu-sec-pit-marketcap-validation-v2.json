@@ -1,0 +1,1866 @@
+{
+  "generatedAt": "2026-10-02T11:55:12.997267+00:00",
+  "method": "SEC PIT v2: filed<=signal date. Prefer actual shares outstanding; when unavailable use latest SEC-filed quarterly basic/diluted weighted-average shares. Convert fact-end shares to market cap at fact-end raw close, then roll to signal date with adjusted-price ratio. Max fact staleness 550 days. Require >=90% cap coverage before allowing <=10% cross-sectional median-cap fallback.",
+  "mapping": {
+    "unionSymbols": 228,
+    "mappedSymbols": 221,
+    "unmappedSymbols": [
+      "CTRX",
+      "HANS",
+      "LMCA",
+      "STRZA",
+      "VIP",
+      "VMED",
+      "WCRX"
+    ],
+    "mappingSourceCounts": {
+      "2017-sec-snapshot": 5,
+      "current-sec-map": 175,
+      "manual-same-company-alias": 6,
+      "sp500-history": 29,
+      "ticker-changes": 4,
+      "ticker-changes-old": 2
+    }
+  },
+  "companyfacts": {
+    "uniqueCIKs": 211,
+    "withShareFacts": 211
+  },
+  "priceRecovery": {
+    "direct": [],
+    "aliases": [
+      "CTRP->TCOM",
+      "NLOK->GEN",
+      "RIMM->BB",
+      "WLTW->WTW"
+    ],
+    "stillMissing": [
+      "ALTR",
+      "ALXN",
+      "ANSS",
+      "APOL",
+      "ATVI",
+      "BBBY",
+      "BMC",
+      "BRCM",
+      "CA",
+      "CELG",
+      "CERN",
+      "CTRX",
+      "CTXS",
+      "DISCA",
+      "DISCK",
+      "DISH",
+      "DTV",
+      "EA",
+      "ESRX",
+      "FLIR",
+      "GMCR",
+      "HANS",
+      "HOLX",
+      "JOYG",
+      "KFT",
+      "KRFT",
+      "LIFE",
+      "LLTC",
+      "LMCA",
+      "LMCK",
+      "MXIM",
+      "MYL",
+      "NDOI",
+      "NIHD",
+      "NUAN",
+      "QRTEA",
+      "SGEN",
+      "SHPG",
+      "SIAL",
+      "SPLK",
+      "SPLS",
+      "SRCL",
+      "STRZA",
+      "VIAB",
+      "VMED",
+      "WBA",
+      "WCRX",
+      "WFMI",
+      "XLNX",
+      "YHOO"
+    ]
+  },
+  "wikiMerge": {
+    "newSymbols": [
+      "ALTR",
+      "ALXN",
+      "ANSS",
+      "APOL",
+      "ATVI",
+      "BBBY",
+      "BRCM",
+      "CA",
+      "CELG",
+      "CERN",
+      "CTRX",
+      "CTXS",
+      "DISCA",
+      "DISCK",
+      "DISH",
+      "DTV",
+      "EA",
+      "ESRX",
+      "FLIR",
+      "GMCR",
+      "HOLX",
+      "KRFT",
+      "LIFE",
+      "LLTC",
+      "LMCA",
+      "MXIM",
+      "MYL",
+      "NIHD",
+      "NUAN",
+      "SGEN",
+      "SIAL",
+      "SPLK",
+      "SPLS",
+      "SRCL",
+      "STRZA",
+      "VIAB",
+      "WBA",
+      "XLNX",
+      "YHOO"
+    ],
+    "extendedSymbols": [
+      "AAL",
+      "AAPL",
+      "ADBE",
+      "ADI",
+      "ADP",
+      "ADSK",
+      "AEP",
+      "AKAM",
+      "ALGN",
+      "AMAT",
+      "AMD",
+      "AMGN",
+      "AMZN",
+      "APP",
+      "AVGO",
+      "BIDU",
+      "BIIB",
+      "BKNG",
+      "BMRN",
+      "CDNS",
+      "CHKP",
+      "CHRW",
+      "CHTR",
+      "CMCSA",
+      "COST",
+      "CPRT",
+      "CSCO",
+      "CSGP",
+      "CSX",
+      "CTAS",
+      "CTSH",
+      "DELL",
+      "DLTR",
+      "DXCM",
+      "EBAY",
+      "ENPH",
+      "EQIX",
+      "EXC",
+      "EXPD",
+      "EXPE",
+      "FANG",
+      "FAST",
+      "FB",
+      "FFIV",
+      "FISV",
+      "FOSL",
+      "FOX",
+      "FOXA",
+      "FSLR",
+      "FTNT",
+      "GILD",
+      "GOLD",
+      "GOOG",
+      "GOOGL",
+      "GRMN",
+      "HAS",
+      "HON",
+      "HSIC",
+      "IDXX",
+      "ILMN",
+      "INCY",
+      "INTC",
+      "INTU",
+      "ISRG",
+      "JBHT",
+      "KHC",
+      "KLAC",
+      "LBTYA",
+      "LRCX",
+      "MAR",
+      "MAT",
+      "MCHP",
+      "MDLZ",
+      "MNST",
+      "MRVL",
+      "MSFT",
+      "MSTR",
+      "MU",
+      "NCLH",
+      "NFLX",
+      "NTAP",
+      "NVDA",
+      "ODFL",
+      "ORCL",
+      "ORLY",
+      "PANW",
+      "PAYX",
+      "PCAR",
+      "PCLN",
+      "PEP",
+      "PRGO",
+      "PYPL",
+      "QCOM",
+      "QGEN",
+      "REGN",
+      "ROP",
+      "ROST",
+      "SBAC",
+      "SBUX",
+      "SHLD",
+      "SIRI",
+      "SMCI",
+      "SNDK",
+      "SNPS",
+      "STX",
+      "SWKS",
+      "TMUS",
+      "TRI",
+      "TRIP",
+      "TSCO",
+      "TSLA",
+      "TTWO",
+      "TXN",
+      "UAL",
+      "ULTA",
+      "URBN",
+      "VOD",
+      "VRSK",
+      "VRSN",
+      "VRTX",
+      "WDAY",
+      "WDC",
+      "WLTW",
+      "WYNN",
+      "XEL",
+      "XRAY"
+    ]
+  },
+  "coverageByMonth": [
+    {
+      "month": "2012-05",
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.7864077669902912,
+      "universeCount": 103
+    },
+    {
+      "month": "2012-06",
+      "priceCoverage": 0.8543689320388349,
+      "capCoverage": 0.7378640776699029,
+      "universeCount": 103
+    },
+    {
+      "month": "2012-07",
+      "priceCoverage": 0.8446601941747572,
+      "capCoverage": 0.7281553398058253,
+      "universeCount": 103
+    },
+    {
+      "month": "2012-08",
+      "priceCoverage": 0.9029126213592233,
+      "capCoverage": 0.7766990291262136,
+      "universeCount": 103
+    },
+    {
+      "month": "2012-09",
+      "priceCoverage": 0.912621359223301,
+      "capCoverage": 0.7864077669902912,
+      "universeCount": 103
+    },
+    {
+      "month": "2012-10",
+      "priceCoverage": 0.912621359223301,
+      "capCoverage": 0.7864077669902912,
+      "universeCount": 103
+    },
+    {
+      "month": "2012-11",
+      "priceCoverage": 0.8640776699029126,
+      "capCoverage": 0.7475728155339806,
+      "universeCount": 103
+    },
+    {
+      "month": "2012-12",
+      "priceCoverage": 0.8543689320388349,
+      "capCoverage": 0.7378640776699029,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-01",
+      "priceCoverage": 0.8737864077669902,
+      "capCoverage": 0.7572815533980582,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-02",
+      "priceCoverage": 0.8737864077669902,
+      "capCoverage": 0.7475728155339806,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-03",
+      "priceCoverage": 0.8737864077669902,
+      "capCoverage": 0.7475728155339806,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-04",
+      "priceCoverage": 0.9320388349514563,
+      "capCoverage": 0.8058252427184466,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-05",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.7669902912621359,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-06",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.7766990291262136,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-07",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.7669902912621359,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-08",
+      "priceCoverage": 0.9514563106796117,
+      "capCoverage": 0.8252427184466019,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-09",
+      "priceCoverage": 0.912621359223301,
+      "capCoverage": 0.7961165048543689,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-10",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.7766990291262136,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-11",
+      "priceCoverage": 0.912621359223301,
+      "capCoverage": 0.7961165048543689,
+      "universeCount": 103
+    },
+    {
+      "month": "2013-12",
+      "priceCoverage": 0.9029126213592233,
+      "capCoverage": 0.7961165048543689,
+      "universeCount": 103
+    },
+    {
+      "month": "2014-01",
+      "priceCoverage": 0.9514563106796117,
+      "capCoverage": 0.8349514563106796,
+      "universeCount": 103
+    },
+    {
+      "month": "2014-02",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.7766990291262136,
+      "universeCount": 103
+    },
+    {
+      "month": "2014-03",
+      "priceCoverage": 0.9514563106796117,
+      "capCoverage": 0.8446601941747572,
+      "universeCount": 103
+    },
+    {
+      "month": "2014-04",
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8543689320388349,
+      "universeCount": 103
+    },
+    {
+      "month": "2014-05",
+      "priceCoverage": 0.9519230769230769,
+      "capCoverage": 0.8365384615384616,
+      "universeCount": 104
+    },
+    {
+      "month": "2014-06",
+      "priceCoverage": 0.8846153846153846,
+      "capCoverage": 0.7884615384615384,
+      "universeCount": 104
+    },
+    {
+      "month": "2014-07",
+      "priceCoverage": 0.9134615384615384,
+      "capCoverage": 0.8076923076923077,
+      "universeCount": 104
+    },
+    {
+      "month": "2014-08",
+      "priceCoverage": 0.9615384615384616,
+      "capCoverage": 0.8461538461538461,
+      "universeCount": 104
+    },
+    {
+      "month": "2014-09",
+      "priceCoverage": 0.8846153846153846,
+      "capCoverage": 0.7980769230769231,
+      "universeCount": 104
+    },
+    {
+      "month": "2014-10",
+      "priceCoverage": 0.8846153846153846,
+      "capCoverage": 0.7980769230769231,
+      "universeCount": 104
+    },
+    {
+      "month": "2014-11",
+      "priceCoverage": 0.9519230769230769,
+      "capCoverage": 0.8365384615384616,
+      "universeCount": 104
+    },
+    {
+      "month": "2014-12",
+      "priceCoverage": 0.9423076923076923,
+      "capCoverage": 0.8365384615384616,
+      "universeCount": 104
+    },
+    {
+      "month": "2015-01",
+      "priceCoverage": 0.8962264150943396,
+      "capCoverage": 0.7924528301886793,
+      "universeCount": 106
+    },
+    {
+      "month": "2015-02",
+      "priceCoverage": 0.8584905660377359,
+      "capCoverage": 0.7641509433962265,
+      "universeCount": 106
+    },
+    {
+      "month": "2015-03",
+      "priceCoverage": 0.8962264150943396,
+      "capCoverage": 0.7830188679245284,
+      "universeCount": 106
+    },
+    {
+      "month": "2015-04",
+      "priceCoverage": 0.8584905660377359,
+      "capCoverage": 0.7641509433962265,
+      "universeCount": 106
+    },
+    {
+      "month": "2015-05",
+      "priceCoverage": 0.9622641509433962,
+      "capCoverage": 0.839622641509434,
+      "universeCount": 106
+    },
+    {
+      "month": "2015-06",
+      "priceCoverage": 0.8584905660377359,
+      "capCoverage": 0.7735849056603774,
+      "universeCount": 106
+    },
+    {
+      "month": "2015-07",
+      "priceCoverage": 0.8679245283018868,
+      "capCoverage": 0.7735849056603774,
+      "universeCount": 106
+    },
+    {
+      "month": "2015-08",
+      "priceCoverage": 0.8411214953271028,
+      "capCoverage": 0.7570093457943925,
+      "universeCount": 107
+    },
+    {
+      "month": "2015-09",
+      "priceCoverage": 0.9259259259259259,
+      "capCoverage": 0.8240740740740741,
+      "universeCount": 108
+    },
+    {
+      "month": "2015-10",
+      "priceCoverage": 0.8611111111111112,
+      "capCoverage": 0.7777777777777778,
+      "universeCount": 108
+    },
+    {
+      "month": "2015-11",
+      "priceCoverage": 0.8518518518518519,
+      "capCoverage": 0.7777777777777778,
+      "universeCount": 108
+    },
+    {
+      "month": "2015-12",
+      "priceCoverage": 0.9259259259259259,
+      "capCoverage": 0.8240740740740741,
+      "universeCount": 108
+    },
+    {
+      "month": "2016-01",
+      "priceCoverage": 0.8857142857142857,
+      "capCoverage": 0.819047619047619,
+      "universeCount": 105
+    },
+    {
+      "month": "2016-02",
+      "priceCoverage": 0.9523809523809523,
+      "capCoverage": 0.8476190476190476,
+      "universeCount": 105
+    },
+    {
+      "month": "2016-03",
+      "priceCoverage": 0.8761904761904762,
+      "capCoverage": 0.8,
+      "universeCount": 105
+    },
+    {
+      "month": "2016-04",
+      "priceCoverage": 0.8857142857142857,
+      "capCoverage": 0.819047619047619,
+      "universeCount": 105
+    },
+    {
+      "month": "2016-05",
+      "priceCoverage": 0.9252336448598131,
+      "capCoverage": 0.8504672897196262,
+      "universeCount": 107
+    },
+    {
+      "month": "2016-06",
+      "priceCoverage": 0.9252336448598131,
+      "capCoverage": 0.8504672897196262,
+      "universeCount": 107
+    },
+    {
+      "month": "2016-07",
+      "priceCoverage": 0.9038461538461539,
+      "capCoverage": 0.8461538461538461,
+      "universeCount": 104
+    },
+    {
+      "month": "2016-08",
+      "priceCoverage": 0.9038461538461539,
+      "capCoverage": 0.8461538461538461,
+      "universeCount": 104
+    },
+    {
+      "month": "2016-09",
+      "priceCoverage": 0.9711538461538461,
+      "capCoverage": 0.9038461538461539,
+      "universeCount": 104
+    },
+    {
+      "month": "2016-10",
+      "priceCoverage": 0.9711538461538461,
+      "capCoverage": 0.9038461538461539,
+      "universeCount": 104
+    },
+    {
+      "month": "2016-11",
+      "priceCoverage": 0.8942307692307693,
+      "capCoverage": 0.8365384615384616,
+      "universeCount": 104
+    },
+    {
+      "month": "2016-12",
+      "priceCoverage": 0.9519230769230769,
+      "capCoverage": 0.8846153846153846,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-01",
+      "priceCoverage": 0.8942307692307693,
+      "capCoverage": 0.8365384615384616,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-02",
+      "priceCoverage": 0.9711538461538461,
+      "capCoverage": 0.8846153846153846,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-03",
+      "priceCoverage": 0.9038461538461539,
+      "capCoverage": 0.8269230769230769,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-04",
+      "priceCoverage": 0.9230769230769231,
+      "capCoverage": 0.8365384615384616,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-05",
+      "priceCoverage": 0.8846153846153846,
+      "capCoverage": 0.8076923076923077,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-06",
+      "priceCoverage": 0.8942307692307693,
+      "capCoverage": 0.8173076923076923,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-07",
+      "priceCoverage": 0.9038461538461539,
+      "capCoverage": 0.8269230769230769,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-08",
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-09",
+      "priceCoverage": 0.8942307692307693,
+      "capCoverage": 0.8173076923076923,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-10",
+      "priceCoverage": 0.9038461538461539,
+      "capCoverage": 0.8269230769230769,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-11",
+      "priceCoverage": 0.9038461538461539,
+      "capCoverage": 0.8269230769230769,
+      "universeCount": 104
+    },
+    {
+      "month": "2017-12",
+      "priceCoverage": 0.9807692307692307,
+      "capCoverage": 0.8942307692307693,
+      "universeCount": 104
+    },
+    {
+      "month": "2018-01",
+      "priceCoverage": 0.9611650485436893,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-02",
+      "priceCoverage": 0.9223300970873787,
+      "capCoverage": 0.8640776699029126,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-03",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8349514563106796,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-04",
+      "priceCoverage": 0.7961165048543689,
+      "capCoverage": 0.7475728155339806,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-05",
+      "priceCoverage": 0.7961165048543689,
+      "capCoverage": 0.7475728155339806,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-06",
+      "priceCoverage": 0.8058252427184466,
+      "capCoverage": 0.7766990291262136,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-07",
+      "priceCoverage": 0.8058252427184466,
+      "capCoverage": 0.7961165048543689,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-08",
+      "priceCoverage": 0.7378640776699029,
+      "capCoverage": 0.7281553398058253,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-09",
+      "priceCoverage": 0.8252427184466019,
+      "capCoverage": 0.8155339805825242,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-10",
+      "priceCoverage": 0.8252427184466019,
+      "capCoverage": 0.8155339805825242,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-11",
+      "priceCoverage": 0.8252427184466019,
+      "capCoverage": 0.8155339805825242,
+      "universeCount": 103
+    },
+    {
+      "month": "2018-12",
+      "priceCoverage": 0.8349514563106796,
+      "capCoverage": 0.8252427184466019,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-01",
+      "priceCoverage": 0.8737864077669902,
+      "capCoverage": 0.8640776699029126,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-02",
+      "priceCoverage": 0.8737864077669902,
+      "capCoverage": 0.8640776699029126,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-03",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8640776699029126,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-04",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-05",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-06",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-07",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-08",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-09",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-10",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-11",
+      "priceCoverage": 0.8932038834951457,
+      "capCoverage": 0.8932038834951457,
+      "universeCount": 103
+    },
+    {
+      "month": "2019-12",
+      "priceCoverage": 0.9029126213592233,
+      "capCoverage": 0.9029126213592233,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-01",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.883495145631068,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-02",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.883495145631068,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-03",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.883495145631068,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-04",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.883495145631068,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-05",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.883495145631068,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-06",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.8737864077669902,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-07",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.8737864077669902,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-08",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.8737864077669902,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-09",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.8737864077669902,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-10",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.8737864077669902,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-11",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.8737864077669902,
+      "universeCount": 103
+    },
+    {
+      "month": "2020-12",
+      "priceCoverage": 0.883495145631068,
+      "capCoverage": 0.8737864077669902,
+      "universeCount": 103
+    },
+    {
+      "month": "2021-01",
+      "priceCoverage": 0.8921568627450981,
+      "capCoverage": 0.8627450980392157,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-02",
+      "priceCoverage": 0.8921568627450981,
+      "capCoverage": 0.8627450980392157,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-03",
+      "priceCoverage": 0.8921568627450981,
+      "capCoverage": 0.8627450980392157,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-04",
+      "priceCoverage": 0.8921568627450981,
+      "capCoverage": 0.8627450980392157,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-05",
+      "priceCoverage": 0.8921568627450981,
+      "capCoverage": 0.8627450980392157,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-06",
+      "priceCoverage": 0.8921568627450981,
+      "capCoverage": 0.8627450980392157,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-07",
+      "priceCoverage": 0.8921568627450981,
+      "capCoverage": 0.8725490196078431,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-08",
+      "priceCoverage": 0.9019607843137255,
+      "capCoverage": 0.8823529411764706,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-09",
+      "priceCoverage": 0.9117647058823529,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-10",
+      "priceCoverage": 0.9117647058823529,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-11",
+      "priceCoverage": 0.9117647058823529,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2021-12",
+      "priceCoverage": 0.9117647058823529,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-01",
+      "priceCoverage": 0.9207920792079208,
+      "capCoverage": 0.900990099009901,
+      "universeCount": 101
+    },
+    {
+      "month": "2022-02",
+      "priceCoverage": 0.9207920792079208,
+      "capCoverage": 0.900990099009901,
+      "universeCount": 101
+    },
+    {
+      "month": "2022-03",
+      "priceCoverage": 0.9215686274509803,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-04",
+      "priceCoverage": 0.9215686274509803,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-05",
+      "priceCoverage": 0.9215686274509803,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-06",
+      "priceCoverage": 0.9215686274509803,
+      "capCoverage": 0.8921568627450981,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-07",
+      "priceCoverage": 0.9411764705882353,
+      "capCoverage": 0.9117647058823529,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-08",
+      "priceCoverage": 0.9411764705882353,
+      "capCoverage": 0.9117647058823529,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-09",
+      "priceCoverage": 0.9411764705882353,
+      "capCoverage": 0.9117647058823529,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-10",
+      "priceCoverage": 0.9411764705882353,
+      "capCoverage": 0.9117647058823529,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-11",
+      "priceCoverage": 0.9411764705882353,
+      "capCoverage": 0.9117647058823529,
+      "universeCount": 102
+    },
+    {
+      "month": "2022-12",
+      "priceCoverage": 0.9411764705882353,
+      "capCoverage": 0.9215686274509803,
+      "universeCount": 102
+    },
+    {
+      "month": "2023-01",
+      "priceCoverage": 0.9504950495049505,
+      "capCoverage": 0.9405940594059405,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-02",
+      "priceCoverage": 0.9504950495049505,
+      "capCoverage": 0.9306930693069307,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-03",
+      "priceCoverage": 0.9504950495049505,
+      "capCoverage": 0.9405940594059405,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-04",
+      "priceCoverage": 0.9504950495049505,
+      "capCoverage": 0.9405940594059405,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-05",
+      "priceCoverage": 0.9504950495049505,
+      "capCoverage": 0.9405940594059405,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-06",
+      "priceCoverage": 0.9504950495049505,
+      "capCoverage": 0.9405940594059405,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-07",
+      "priceCoverage": 0.9504950495049505,
+      "capCoverage": 0.9405940594059405,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-08",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-09",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-10",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-11",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2023-12",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-01",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-02",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-03",
+      "priceCoverage": 0.9603960396039604,
+      "capCoverage": 0.9504950495049505,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-04",
+      "priceCoverage": 0.9702970297029703,
+      "capCoverage": 0.9603960396039604,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-05",
+      "priceCoverage": 0.9702970297029703,
+      "capCoverage": 0.9603960396039604,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-06",
+      "priceCoverage": 0.9702970297029703,
+      "capCoverage": 0.9603960396039604,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-07",
+      "priceCoverage": 0.9702970297029703,
+      "capCoverage": 0.9603960396039604,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-08",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-09",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-10",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-11",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2024-12",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-01",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-02",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-03",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-04",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-05",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-06",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-07",
+      "priceCoverage": 0.9801980198019802,
+      "capCoverage": 0.9702970297029703,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-08",
+      "priceCoverage": 0.9900990099009901,
+      "capCoverage": 0.9801980198019802,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-09",
+      "priceCoverage": 0.9900990099009901,
+      "capCoverage": 0.9801980198019802,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-10",
+      "priceCoverage": 0.9900990099009901,
+      "capCoverage": 0.9801980198019802,
+      "universeCount": 101
+    },
+    {
+      "month": "2025-11",
+      "priceCoverage": 0.9803921568627451,
+      "capCoverage": 0.9705882352941176,
+      "universeCount": 102
+    },
+    {
+      "month": "2025-12",
+      "priceCoverage": 0.9900990099009901,
+      "capCoverage": 0.9801980198019802,
+      "universeCount": 101
+    }
+  ],
+  "continuousStart90Pct": "2022-07",
+  "validationAgainstRecentExact": {
+    "capPairCount": 1930,
+    "logMarketCapCorrelation": 0.9284028074824152,
+    "meanWeightMAE": 0.0007311478018295979,
+    "riskReturnOverlapMonths": 20,
+    "meanRiskMinusExactPp": -0.043593914058077776,
+    "MAERiskReturnPp": 0.28109591924631655,
+    "overlapMonths": [
+      "2022-10",
+      "2022-11",
+      "2022-12",
+      "2023-01",
+      "2023-03",
+      "2023-04",
+      "2023-06",
+      "2023-07",
+      "2024-03",
+      "2024-04",
+      "2024-06",
+      "2024-07",
+      "2024-12",
+      "2025-01",
+      "2025-03",
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12"
+    ]
+  },
+  "performance": {
+    "period": [
+      "2022-07",
+      "2025-12"
+    ],
+    "months": 42,
+    "QUU_SEC_PIT": {
+      "months": 42,
+      "totalReturnPct": 126.62614363705065,
+      "CAGRpct": 26.33309773876531,
+      "MDDpct": -13.290523829444624,
+      "Calmar": 1.9813438564720367,
+      "endingIndex": 226.62614363705066
+    },
+    "QQQ": {
+      "months": 42,
+      "totalReturnPct": 128.38347821255027,
+      "CAGRpct": 26.612219988356255,
+      "MDDpct": -15.764190500341446,
+      "Calmar": 1.6881437703876927,
+      "endingIndex": 228.38347821255027
+    },
+    "RiskSleeve": {
+      "months": 42,
+      "totalReturnPct": 104.51385548621923,
+      "CAGRpct": 22.681174361169454,
+      "MDDpct": -14.648486030407925,
+      "Calmar": 1.5483630399815342,
+      "endingIndex": 204.51385548621923
+    },
+    "sleeveCounts": {
+      "RISK": 25,
+      "QQQ": 16,
+      "QQQE": 1
+    },
+    "mr90Months": [
+      "2025-02"
+    ]
+  },
+  "monthly": [
+    {
+      "month": "2022-07",
+      "riskReturn": 7.997419583551836,
+      "QQQ": 13.0883718215407,
+      "QQQE": 11.187327542530557,
+      "QUU": 13.0883718215407,
+      "sleeve": "QQQ",
+      "dispersion": 0.18485565168909524,
+      "percentile": 40.0,
+      "falling": true,
+      "capCoverage": 0.9117647058823529,
+      "medianCapFallbackCount": 3
+    },
+    {
+      "month": "2022-08",
+      "riskReturn": -2.6273945231842264,
+      "QQQ": -4.584718222020623,
+      "QQQE": -3.9433882574297363,
+      "QUU": -4.584718222020623,
+      "sleeve": "QQQ",
+      "dispersion": 0.17388285136116727,
+      "percentile": 16.666666666666668,
+      "falling": true,
+      "capCoverage": 0.9117647058823529,
+      "medianCapFallbackCount": 3
+    },
+    {
+      "month": "2022-09",
+      "riskReturn": -8.914761554779506,
+      "QQQ": -9.766656545307306,
+      "QQQE": -8.267065039833433,
+      "QUU": -8.914761554779506,
+      "sleeve": "RISK",
+      "dispersion": 0.1858775930554837,
+      "percentile": 57.142857142857146,
+      "falling": false,
+      "capCoverage": 0.9117647058823529,
+      "medianCapFallbackCount": 3
+    },
+    {
+      "month": "2022-10",
+      "riskReturn": 2.568509064492214,
+      "QQQ": 3.300242317614499,
+      "QQQE": 4.938479725960221,
+      "QUU": 3.300242317614499,
+      "sleeve": "QQQ",
+      "dispersion": 0.16016727848163873,
+      "percentile": 12.5,
+      "falling": true,
+      "capCoverage": 0.9117647058823529,
+      "medianCapFallbackCount": 3
+    },
+    {
+      "month": "2022-11",
+      "riskReturn": 4.334147917577692,
+      "QQQ": 4.213141606870052,
+      "QQQE": 5.708976321160275,
+      "QUU": 4.334147917577692,
+      "sleeve": "RISK",
+      "dispersion": 0.20762015726474012,
+      "percentile": 77.77777777777777,
+      "falling": false,
+      "capCoverage": 0.9117647058823529,
+      "medianCapFallbackCount": 3
+    },
+    {
+      "month": "2022-12",
+      "riskReturn": -7.429456839978332,
+      "QQQ": -9.115894279216096,
+      "QQQE": -6.944510508174262,
+      "QUU": -7.429456839978332,
+      "sleeve": "RISK",
+      "dispersion": 0.225764132849017,
+      "percentile": 80.0,
+      "falling": false,
+      "capCoverage": 0.9215686274509803,
+      "medianCapFallbackCount": 2
+    },
+    {
+      "month": "2023-01",
+      "riskReturn": 6.538725720499235,
+      "QQQ": 9.666856447655082,
+      "QQQE": 8.292000331892456,
+      "QUU": 6.538725720499235,
+      "sleeve": "RISK",
+      "dispersion": 0.21088421876943667,
+      "percentile": 72.72727272727273,
+      "falling": true,
+      "capCoverage": 0.9405940594059405,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-02",
+      "riskReturn": -3.190625873131317,
+      "QQQ": -0.28874031883123763,
+      "QQQE": -0.9171888389097993,
+      "QUU": -3.190625873131317,
+      "sleeve": "RISK",
+      "dispersion": 0.18694751267621834,
+      "percentile": 50.0,
+      "falling": true,
+      "capCoverage": 0.9306930693069307,
+      "medianCapFallbackCount": 2
+    },
+    {
+      "month": "2023-03",
+      "riskReturn": 6.592318752532582,
+      "QQQ": 9.604713033139145,
+      "QQQE": 5.254129545466446,
+      "QUU": 6.592318752532582,
+      "sleeve": "RISK",
+      "dispersion": 0.21161461448037858,
+      "percentile": 76.92307692307692,
+      "falling": false,
+      "capCoverage": 0.9405940594059405,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-04",
+      "riskReturn": 1.5573933589019004,
+      "QQQ": 1.188949967246189,
+      "QQQE": -1.841569799841225,
+      "QUU": 1.5573933589019004,
+      "sleeve": "RISK",
+      "dispersion": 0.2565550169178084,
+      "percentile": 92.85714285714286,
+      "falling": false,
+      "capCoverage": 0.9405940594059405,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-05",
+      "riskReturn": 6.101825448787091,
+      "QQQ": 8.041220232856784,
+      "QQQE": 3.173963292546178,
+      "QUU": 6.101825448787091,
+      "sleeve": "RISK",
+      "dispersion": 0.20652238971920564,
+      "percentile": 53.333333333333336,
+      "falling": true,
+      "capCoverage": 0.9405940594059405,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-06",
+      "riskReturn": 6.699241278939386,
+      "QQQ": 6.383304861807981,
+      "QQQE": 5.672445874507748,
+      "QUU": 6.699241278939386,
+      "sleeve": "RISK",
+      "dispersion": 0.29106671356794234,
+      "percentile": 93.75,
+      "falling": false,
+      "capCoverage": 0.9405940594059405,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-07",
+      "riskReturn": 4.79002577320575,
+      "QQQ": 3.6776745347315565,
+      "QQQE": 4.924006580493634,
+      "QUU": 4.79002577320575,
+      "sleeve": "RISK",
+      "dispersion": 0.24084882541415203,
+      "percentile": 82.3529411764706,
+      "falling": true,
+      "capCoverage": 0.9405940594059405,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-08",
+      "riskReturn": -1.3430642546653997,
+      "QQQ": -1.1299762888418385,
+      "QQQE": -2.748057034662299,
+      "QUU": -1.3430642546653997,
+      "sleeve": "RISK",
+      "dispersion": 0.20849299535479235,
+      "percentile": 55.55555555555556,
+      "falling": true,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-09",
+      "riskReturn": -5.173408285778588,
+      "QQQ": -5.681235765132097,
+      "QQQE": -4.945808509052285,
+      "QUU": -5.681235765132097,
+      "sleeve": "QQQ",
+      "dispersion": 0.1867456225391865,
+      "percentile": 31.57894736842105,
+      "falling": true,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-10",
+      "riskReturn": -3.820724798930448,
+      "QQQ": -2.139235780340354,
+      "QQQE": -4.6555297526119315,
+      "QUU": -2.139235780340354,
+      "sleeve": "QQQ",
+      "dispersion": 0.19860106902872188,
+      "percentile": 45.0,
+      "falling": false,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-11",
+      "riskReturn": 12.749153259303744,
+      "QQQ": 10.551009518783694,
+      "QQQE": 10.529272829920133,
+      "QUU": 10.551009518783694,
+      "sleeve": "QQQ",
+      "dispersion": 0.17100944380769864,
+      "percentile": 9.523809523809524,
+      "falling": true,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2023-12",
+      "riskReturn": 5.302391795940934,
+      "QQQ": 5.881041164901513,
+      "QQQE": 7.826202261621229,
+      "QUU": 5.302391795940934,
+      "sleeve": "RISK",
+      "dispersion": 0.2055445769730116,
+      "percentile": 50.0,
+      "falling": false,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-01",
+      "riskReturn": 1.2597515424038028,
+      "QQQ": 2.742463071662593,
+      "QQQE": 1.3930265050279944,
+      "QUU": 2.742463071662593,
+      "sleeve": "QQQ",
+      "dispersion": 0.15338606771409555,
+      "percentile": 4.3478260869565215,
+      "falling": true,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-02",
+      "riskReturn": 4.275073161283162,
+      "QQQ": 4.825815843832282,
+      "QQQE": 3.2873074416567505,
+      "QUU": 4.825815843832282,
+      "sleeve": "QQQ",
+      "dispersion": 0.16846601137537426,
+      "percentile": 12.5,
+      "falling": false,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-03",
+      "riskReturn": 0.8818389443573174,
+      "QQQ": 1.0677896141803922,
+      "QQQE": 1.1251193181393893,
+      "QUU": 0.8818389443573174,
+      "sleeve": "RISK",
+      "dispersion": 0.23261610708257616,
+      "percentile": 84.0,
+      "falling": false,
+      "capCoverage": 0.9504950495049505,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-04",
+      "riskReturn": -5.0070739074972845,
+      "QQQ": -4.580078225542628,
+      "QQQE": -5.679801194889156,
+      "QUU": -5.0070739074972845,
+      "sleeve": "RISK",
+      "dispersion": 0.2431611065169299,
+      "percentile": 88.46153846153847,
+      "falling": false,
+      "capCoverage": 0.9603960396039604,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-05",
+      "riskReturn": 6.712016191305565,
+      "QQQ": 6.513047692565932,
+      "QQQE": 3.42157069053326,
+      "QUU": 6.513047692565932,
+      "sleeve": "QQQ",
+      "dispersion": 0.19403041622004652,
+      "percentile": 44.44444444444444,
+      "falling": true,
+      "capCoverage": 0.9603960396039604,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-06",
+      "riskReturn": 3.4700878066501915,
+      "QQQ": 5.566023375049212,
+      "QQQE": 2.0191823055283997,
+      "QUU": 3.4700878066501915,
+      "sleeve": "RISK",
+      "dispersion": 0.23864523481721592,
+      "percentile": 82.14285714285714,
+      "falling": false,
+      "capCoverage": 0.9603960396039604,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-07",
+      "riskReturn": -3.453695391071748,
+      "QQQ": -1.8685890019083717,
+      "QQQE": -0.2701453989651492,
+      "QUU": -3.453695391071748,
+      "sleeve": "RISK",
+      "dispersion": 0.24510372669714905,
+      "percentile": 89.65517241379311,
+      "falling": false,
+      "capCoverage": 0.9603960396039604,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-08",
+      "riskReturn": 0.12929530595908728,
+      "QQQ": 0.9559932057158882,
+      "QQQE": 1.8299521818576636,
+      "QUU": 0.9559932057158882,
+      "sleeve": "QQQ",
+      "dispersion": 0.16387240034477624,
+      "percentile": 10.0,
+      "falling": true,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-09",
+      "riskReturn": 2.6675157067766753,
+      "QQQ": 3.28738190200637,
+      "QQQE": 1.4611805455386095,
+      "QUU": 3.28738190200637,
+      "sleeve": "QQQ",
+      "dispersion": 0.1780240028622201,
+      "percentile": 22.580645161290324,
+      "falling": false,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-10",
+      "riskReturn": -0.55295482938194,
+      "QQQ": -0.789407918259244,
+      "QQQE": -1.472199194089474,
+      "QUU": -0.789407918259244,
+      "sleeve": "QQQ",
+      "dispersion": 0.18732566399712225,
+      "percentile": 43.75,
+      "falling": false,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-11",
+      "riskReturn": 6.104069869151807,
+      "QQQ": 4.9927938270444505,
+      "QQQE": 5.69639419050616,
+      "QUU": 6.104069869151807,
+      "sleeve": "RISK",
+      "dispersion": 0.20251176776946314,
+      "percentile": 51.515151515151516,
+      "falling": false,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2024-12",
+      "riskReturn": -1.3534911802574485,
+      "QQQ": 0.20436635684737414,
+      "QQQE": -5.115971049960921,
+      "QUU": -1.3534911802574485,
+      "sleeve": "RISK",
+      "dispersion": 0.3841295109732244,
+      "percentile": 97.05882352941177,
+      "falling": false,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-01",
+      "riskReturn": 5.869453902694675,
+      "QQQ": 1.5535700301268607,
+      "QQQE": 4.296788897527404,
+      "QUU": 5.869453902694675,
+      "sleeve": "RISK",
+      "dispersion": 0.4378238346071398,
+      "percentile": 100.0,
+      "falling": false,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-02",
+      "riskReturn": -5.396061766418011,
+      "QQQ": -1.032193239846535,
+      "QQQE": 0.23729496749358425,
+      "QUU": 0.23729496749358425,
+      "sleeve": "QQQE",
+      "dispersion": 0.4260473555948353,
+      "percentile": 97.22222222222223,
+      "falling": true,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-03",
+      "riskReturn": -9.780168179833256,
+      "QQQ": -8.191403545554799,
+      "QQQE": -6.934758127940865,
+      "QUU": -9.780168179833256,
+      "sleeve": "RISK",
+      "dispersion": 0.27193170076950474,
+      "percentile": 86.48648648648648,
+      "falling": true,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-04",
+      "riskReturn": 4.57408981898604,
+      "QQQ": 1.748346543715873,
+      "QQQE": 0.8626505661230688,
+      "QUU": 1.748346543715873,
+      "sleeve": "QQQ",
+      "dispersion": 0.19572127846905066,
+      "percentile": 42.10526315789474,
+      "falling": true,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-05",
+      "riskReturn": 6.38691386907446,
+      "QQQ": 7.385040077621796,
+      "QQQE": 6.016308972616025,
+      "QUU": 7.385040077621796,
+      "sleeve": "QQQ",
+      "dispersion": 0.17575881031527968,
+      "percentile": 17.94871794871795,
+      "falling": true,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-06",
+      "riskReturn": 6.1548455637635975,
+      "QQQ": 6.77046267431336,
+      "QQQE": 5.447392548998153,
+      "QUU": 6.77046267431336,
+      "sleeve": "QQQ",
+      "dispersion": 0.18186311749891443,
+      "percentile": 22.5,
+      "falling": false,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-07",
+      "riskReturn": 2.5578438768560408,
+      "QQQ": 2.7795513021962703,
+      "QQQE": 0.5109274550231468,
+      "QUU": 2.7795513021962703,
+      "sleeve": "QQQ",
+      "dispersion": 0.18512457435470203,
+      "percentile": 29.26829268292683,
+      "falling": false,
+      "capCoverage": 0.9702970297029703,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-08",
+      "riskReturn": 1.2146062166223763,
+      "QQQ": 2.0704064040887094,
+      "QQQE": 0.6260217481832475,
+      "QUU": 1.2146062166223763,
+      "sleeve": "RISK",
+      "dispersion": 0.21117186003761243,
+      "percentile": 64.28571428571429,
+      "falling": false,
+      "capCoverage": 0.9801980198019802,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-09",
+      "riskReturn": 10.497964676627666,
+      "QQQ": 7.082716510578169,
+      "QQQE": 5.350112078406299,
+      "QUU": 10.497964676627666,
+      "sleeve": "RISK",
+      "dispersion": 0.22494123446518544,
+      "percentile": 67.44186046511628,
+      "falling": false,
+      "capCoverage": 0.9801980198019802,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-10",
+      "riskReturn": 7.982793297439334,
+      "QQQ": 5.3418705033436265,
+      "QQQE": 2.248084432449571,
+      "QUU": 7.982793297439334,
+      "sleeve": "RISK",
+      "dispersion": 0.3263342162102877,
+      "percentile": 90.9090909090909,
+      "falling": false,
+      "capCoverage": 0.9801980198019802,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-11",
+      "riskReturn": -1.3730132911158428,
+      "QQQ": -2.4972033121204995,
+      "QQQE": -1.8071633728906855,
+      "QUU": -1.3730132911158428,
+      "sleeve": "RISK",
+      "dispersion": 0.34515176924171725,
+      "percentile": 91.11111111111111,
+      "falling": false,
+      "capCoverage": 0.9705882352941176,
+      "medianCapFallbackCount": 1
+    },
+    {
+      "month": "2025-12",
+      "riskReturn": 1.2320367903620428,
+      "QQQ": 0.23979704610066488,
+      "QQQE": 1.0038704405295862,
+      "QUU": 1.2320367903620428,
+      "sleeve": "RISK",
+      "dispersion": 0.30874346260701885,
+      "percentile": 86.95652173913044,
+      "falling": true,
+      "capCoverage": 0.9801980198019802,
+      "medianCapFallbackCount": 1
+    }
+  ],
+  "shareFactFallback": "actual shares outstanding > generic shares-outstanding > diluted weighted-average > basic weighted-average; latest fact period wins subject to PIT filing constraint."
+}
