@@ -2,7 +2,7 @@
   "strategy": "SNPI",
   "universe": "S&P 500",
   "holdings": 503,
-  "generatedAt": "2026-10-01T23:10:16.658525+00:00",
+  "generatedAt": "2026-10-02T08:54:37.643204+00:00",
   "membershipDate": "2026-08-18",
   "signal": {
     "earlyDate": "2026-04-30",
@@ -27,8 +27,8 @@
     "HONA"
   ],
   "weightSum": 1.0,
-  "maxWeight": 0.08890132457875757,
-  "top10Weight": 0.31941919856883166,
+  "maxWeight": 0.08890132412219522,
+  "top10Weight": 0.3194192004712017,
   "rows": [
     {
       "ticker": "MRNA",
@@ -40,7 +40,7 @@
       "momentum": 3.191772161095816,
       "relativeMomentum": 4.245695582117692,
       "rawWeightScore": 21220502.23386008,
-      "weight": 0.08890132457875757,
+      "weight": 0.08890132412219522,
       "weightRank": 1
     },
     {
@@ -53,7 +53,7 @@
       "momentum": 1.5787937757421537,
       "relativeMomentum": 2.611967664291856,
       "rawWeightScore": 10421709.4378398,
-      "weight": 0.04366078442387379,
+      "weight": 0.043660784199649125,
       "weightRank": 2
     },
     {
@@ -66,7 +66,7 @@
       "momentum": 1.059853543135699,
       "relativeMomentum": 2.0863517270973175,
       "rawWeightScore": 9960528.512822686,
-      "weight": 0.04172870974191561,
+      "weight": 0.04172870952761332,
       "weightRank": 3
     },
     {
@@ -79,7 +79,7 @@
       "momentum": 1.3757711721817163,
       "relativeMomentum": 2.4063333554888593,
       "rawWeightScore": 7254734.41650141,
-      "weight": 0.030393036507164503,
+      "weight": 0.030393036351077783,
       "weightRank": 4
     },
     {
@@ -92,7 +92,7 @@
       "momentum": 1.2156478994574162,
       "relativeMomentum": 2.2441502392619355,
       "rawWeightScore": 6443134.313783389,
-      "weight": 0.026992913203543564,
+      "weight": 0.026992913064918547,
       "weightRank": 5
     },
     {
@@ -105,7 +105,7 @@
       "momentum": 0.7257469226737632,
       "relativeMomentum": 1.747947122091142,
       "rawWeightScore": 5337018.216356036,
-      "weight": 0.022358942474883285,
+      "weight": 0.022358942360056522,
       "weightRank": 6
     },
     {
@@ -118,7 +118,7 @@
       "momentum": 0.22946107814115702,
       "relativeMomentum": 1.2452770015260013,
       "rawWeightScore": 4257188.786798685,
-      "weight": 0.017835097301530368,
+      "weight": 0.017835097209936302,
       "weightRank": 7
     },
     {
@@ -131,20 +131,20 @@
       "momentum": 0.26288325607272034,
       "relativeMomentum": 1.2791291260536126,
       "rawWeightScore": 4084356.9984997497,
-      "weight": 0.017111034565419726,
+      "weight": 0.01711103447754416,
       "weightRank": 8
     },
     {
       "ticker": "NVDA",
       "marketCap": 5503958000000.0,
-      "earlyPrice": 199.11488342285156,
+      "earlyPrice": 199.1148681640625,
       "recentPrice": 228.3800048828125,
-      "momentumGross": 1.146976062044603,
+      "momentumGross": 1.1469761499409312,
       "momentumFallback": null,
-      "momentum": 0.146976062044603,
-      "relativeMomentum": 1.1617308890530145,
-      "rawWeightScore": 3678359.449535672,
-      "weight": 0.015410145515723095,
+      "momentum": 0.14697614994093122,
+      "relativeMomentum": 1.1617309780800509,
+      "rawWeightScore": 3678360.295187971,
+      "weight": 0.01541014897936443,
       "weightRank": 9
     },
     {
@@ -157,7 +157,7 @@
       "momentum": 1.1202704267972652,
       "relativeMomentum": 2.147545820237192,
       "rawWeightScore": 3586953.8538096976,
-      "weight": 0.015027210256020176,
+      "weight": 0.015027210178846317,
       "weightRank": 10
     },
     {
@@ -170,7 +170,7 @@
       "momentum": 1.232846563473403,
       "relativeMomentum": 2.2615701487953563,
       "rawWeightScore": 3368667.424823433,
-      "weight": 0.01411271952151338,
+      "weight": 0.014112719449035986,
       "weightRank": 11
     },
     {
@@ -183,7 +183,7 @@
       "momentum": 1.071639314969381,
       "relativeMomentum": 2.0982891124043066,
       "rawWeightScore": 2896976.3730547256,
-      "weight": 0.012136613639001594,
+      "weight": 0.012136613576672705,
       "weightRank": 12
     },
     {
@@ -196,7 +196,7 @@
       "momentum": 0.18714351644941307,
       "relativeMomentum": 1.2024150620369856,
       "rawWeightScore": 2362891.387588831,
-      "weight": 0.009899114162208693,
+      "weight": 0.009899114111370724,
       "weightRank": 13
     },
     {
@@ -209,7 +209,7 @@
       "momentum": 0.5867525140243204,
       "relativeMomentum": 1.6071646739850578,
       "rawWeightScore": 2095273.6406093675,
-      "weight": 0.008777954449537306,
+      "weight": 0.008777954404457174,
       "weightRank": 14
     },
     {
@@ -222,7 +222,7 @@
       "momentum": 0.24195667288750045,
       "relativeMomentum": 1.2579333409861628,
       "rawWeightScore": 2077455.6964616813,
-      "weight": 0.008703307826260309,
+      "weight": 0.008703307781563531,
       "weightRank": 15
     },
     {
@@ -235,7 +235,7 @@
       "momentum": 0.6002129641412708,
       "relativeMomentum": 1.6207982808221029,
       "rawWeightScore": 2049446.3911811383,
-      "weight": 0.008585965441403939,
+      "weight": 0.008585965397309787,
       "weightRank": 16
     },
     {
@@ -248,7 +248,7 @@
       "momentum": 0.2725444441689924,
       "relativeMomentum": 1.2889145967428466,
       "rawWeightScore": 1706884.762680611,
-      "weight": 0.007150835292836602,
+      "weight": 0.007150835256112715,
       "weightRank": 17
     },
     {
@@ -261,7 +261,7 @@
       "momentum": 0.3446193820075283,
       "relativeMomentum": 1.3619167145589262,
       "rawWeightScore": 1693252.9553207827,
-      "weight": 0.007093726101106093,
+      "weight": 0.007093726064675497,
       "weightRank": 18
     },
     {
@@ -274,7 +274,7 @@
       "momentum": -0.10471200072672382,
       "relativeMomentum": 0.9068050831855909,
       "rawWeightScore": 1529624.3240131396,
-      "weight": 0.006408219137041533,
+      "weight": 0.006408219104131432,
       "weightRank": 19
     },
     {
@@ -287,7 +287,7 @@
       "momentum": 0.348404978729038,
       "relativeMomentum": 1.3657510096156478,
       "rawWeightScore": 1525323.7202743988,
-      "weight": 0.006390202156828296,
+      "weight": 0.006390202124010723,
       "weightRank": 20
     },
     {
@@ -300,7 +300,7 @@
       "momentum": -0.10675390989288036,
       "relativeMomentum": 0.9047369066739244,
       "rawWeightScore": 1511790.835236442,
-      "weight": 0.00633350739098403,
+      "weight": 0.00633350735845762,
       "weightRank": 21
     },
     {
@@ -313,7 +313,7 @@
       "momentum": 0.4119021487109553,
       "relativeMomentum": 1.4300650142200217,
       "rawWeightScore": 1461126.489020589,
-      "weight": 0.006121253814802446,
+      "weight": 0.0061212537833660865,
       "weightRank": 22
     },
     {
@@ -326,7 +326,7 @@
       "momentum": 0.9023027546824047,
       "relativeMomentum": 1.9267741878637819,
       "rawWeightScore": 1453036.6431589725,
-      "weight": 0.006087362156404837,
+      "weight": 0.0060873621251425316,
       "weightRank": 23
     },
     {
@@ -339,7 +339,7 @@
       "momentum": 0.29930609956402376,
       "relativeMomentum": 1.3160205170348356,
       "rawWeightScore": 1451977.810947153,
-      "weight": 0.006082926277126391,
+      "weight": 0.006082926245886866,
       "weightRank": 24
     },
     {
@@ -352,7 +352,7 @@
       "momentum": 0.6030286896357699,
       "relativeMomentum": 1.6236502281210052,
       "rawWeightScore": 1426344.5599396988,
-      "weight": 0.00597553815111935,
+      "weight": 0.005975538120431329,
       "weightRank": 25
     },
     {
@@ -365,7 +365,7 @@
       "momentum": -0.06002415984551701,
       "relativeMomentum": 0.9520677933979034,
       "rawWeightScore": 1414720.311248486,
-      "weight": 0.005926839440104265,
+      "weight": 0.005926839409666341,
       "weightRank": 26
     },
     {
@@ -378,7 +378,7 @@
       "momentum": 0.2762378793089977,
       "relativeMomentum": 1.292655544641279,
       "rawWeightScore": 1384921.125005371,
-      "weight": 0.005801998515078707,
+      "weight": 0.005801998485281918,
       "weightRank": 27
     },
     {
@@ -391,7 +391,7 @@
       "momentum": 0.8301597100272462,
       "relativeMomentum": 1.8537030870974527,
       "rawWeightScore": 1369370.0887565333,
-      "weight": 0.005736848892046319,
+      "weight": 0.005736848862584113,
       "weightRank": 28
     },
     {
@@ -404,7 +404,7 @@
       "momentum": 0.24669670382684727,
       "relativeMomentum": 1.2627343482081357,
       "rawWeightScore": 1368923.6879155634,
-      "weight": 0.005734978737154698,
+      "weight": 0.005734978707702096,
       "weightRank": 29
     },
     {
@@ -417,7 +417,7 @@
       "momentum": 0.5174951671572656,
       "relativeMomentum": 1.5370163929425649,
       "rawWeightScore": 1351650.3816176848,
-      "weight": 0.005662613823600215,
+      "weight": 0.005662613794519251,
       "weightRank": 30
     },
     {
@@ -430,7 +430,7 @@
       "momentum": 0.16413185621663184,
       "relativeMomentum": 1.1791073772600602,
       "rawWeightScore": 1309390.6532399058,
-      "weight": 0.005485570613796804,
+      "weight": 0.005485570585625064,
       "weightRank": 31
     },
     {
@@ -443,7 +443,7 @@
       "momentum": 0.5478527863431393,
       "relativeMomentum": 1.5677645359015993,
       "rawWeightScore": 1287305.2447011746,
-      "weight": 0.005393045844527992,
+      "weight": 0.005393045816831423,
       "weightRank": 32
     },
     {
@@ -456,7 +456,7 @@
       "momentum": 0.05141470817083005,
       "relativeMomentum": 1.0649402233463654,
       "rawWeightScore": 1250134.1893676978,
-      "weight": 0.005237321158150705,
+      "weight": 0.005237321131253876,
       "weightRank": 33
     },
     {
@@ -469,7 +469,7 @@
       "momentum": 0.3712629148964359,
       "relativeMomentum": 1.3889029928037988,
       "rawWeightScore": 1230585.9673607203,
-      "weight": 0.0051554256963737945,
+      "weight": 0.00515542566989755,
       "weightRank": 34
     },
     {
@@ -482,7 +482,7 @@
       "momentum": 0.5434216071070077,
       "relativeMomentum": 1.5632763534853353,
       "rawWeightScore": 1215019.5186972453,
-      "weight": 0.005090211504460749,
+      "weight": 0.005090211478319419,
       "weightRank": 35
     },
     {
@@ -495,7 +495,7 @@
       "momentum": 0.06094673166377795,
       "relativeMomentum": 1.0745948678445223,
       "rawWeightScore": 1163668.900657346,
-      "weight": 0.004875082856166996,
+      "weight": 0.004875082831130482,
       "weightRank": 36
     },
     {
@@ -508,7 +508,7 @@
       "momentum": 0.1806845106328132,
       "relativeMomentum": 1.195872966854684,
       "rawWeightScore": 1114069.9286409146,
-      "weight": 0.004667292566313739,
+      "weight": 0.004667292542344354,
       "weightRank": 37
     },
     {
@@ -521,7 +521,7 @@
       "momentum": 0.09369341185455426,
       "relativeMomentum": 1.1077628049536457,
       "rawWeightScore": 1089230.0284909827,
-      "weight": 0.004563228110091332,
+      "weight": 0.004563228086656381,
       "weightRank": 38
     },
     {
@@ -534,20 +534,20 @@
       "momentum": 0.6976069608676649,
       "relativeMomentum": 1.7194451647018647,
       "rawWeightScore": 1069387.0641951344,
-      "weight": 0.004480097852850996,
+      "weight": 0.00448009782984297,
       "weightRank": 39
     },
     {
       "ticker": "XOM",
       "marketCap": 669213671490.0,
-      "earlyPrice": 152.30335998535156,
+      "earlyPrice": 152.30337524414062,
       "recentPrice": 162.75,
-      "momentumGross": 1.0685910016407596,
+      "momentumGross": 1.0685908945820377,
       "momentumFallback": null,
-      "momentum": 0.0685910016407596,
-      "relativeMomentum": 1.0823374745565488,
-      "rawWeightScore": 1037219.0608140876,
-      "weight": 0.004345332988282152,
+      "momentum": 0.06859089458203771,
+      "relativeMomentum": 1.0823373661206117,
+      "rawWeightScore": 1037218.7490671171,
+      "weight": 0.004345331659931233,
       "weightRank": 40
     },
     {
@@ -560,7 +560,7 @@
       "momentum": 0.30610914711335746,
       "relativeMomentum": 1.322911079740799,
       "rawWeightScore": 1006350.9157654394,
-      "weight": 0.004216013759553659,
+      "weight": 0.004216013737901865,
       "weightRank": 41
     },
     {
@@ -573,7 +573,7 @@
       "momentum": 0.443083860251974,
       "relativeMomentum": 1.4616478507494677,
       "rawWeightScore": 996689.7692407136,
-      "weight": 0.004175539282864454,
+      "weight": 0.004175539261420521,
       "weightRank": 42
     },
     {
@@ -586,7 +586,7 @@
       "momentum": -0.07027751220047385,
       "relativeMomentum": 0.9416825407834206,
       "rawWeightScore": 988519.2842346494,
-      "weight": 0.0041413097942555105,
+      "weight": 0.004141309772987367,
       "weightRank": 43
     },
     {
@@ -599,7 +599,7 @@
       "momentum": 0.09837428696050066,
       "relativeMomentum": 1.11250389535503,
       "rawWeightScore": 957017.9506569476,
-      "weight": 0.004009337880952421,
+      "weight": 0.004009337860362034,
       "weightRank": 44
     },
     {
@@ -612,7 +612,7 @@
       "momentum": 0.6176207042433919,
       "relativeMomentum": 1.6384299560195705,
       "rawWeightScore": 941470.3491581754,
-      "weight": 0.003944202647486644,
+      "weight": 0.0039442026272307655,
       "weightRank": 45
     },
     {
@@ -625,7 +625,7 @@
       "momentum": 0.23371828412185414,
       "relativeMomentum": 1.249588972675618,
       "rawWeightScore": 931443.1844174665,
-      "weight": 0.003902194771452681,
+      "weight": 0.0039021947514125384,
       "weightRank": 46
     },
     {
@@ -638,7 +638,7 @@
       "momentum": 0.16557825378844293,
       "relativeMomentum": 1.180572381450321,
       "rawWeightScore": 897344.0988659372,
-      "weight": 0.0037593398173593586,
+      "weight": 0.003759339798052863,
       "weightRank": 47
     },
     {
@@ -651,20 +651,20 @@
       "momentum": 0.17879676002319345,
       "relativeMomentum": 1.1939609320122875,
       "rawWeightScore": 862471.5834997598,
-      "weight": 0.0036132446508416,
+      "weight": 0.0036132446322853923,
       "weightRank": 48
     },
     {
       "ticker": "KO",
       "marketCap": 370363438837.0,
-      "earlyPrice": 77.79058074951172,
+      "earlyPrice": 77.79057312011719,
       "recentPrice": 86.08000183105469,
-      "momentumGross": 1.10656073012535,
+      "momentumGross": 1.1065608386524897,
       "momentumFallback": null,
-      "momentum": 0.10656073012534995,
-      "relativeMomentum": 1.12079564983082,
-      "rawWeightScore": 856827.4350582239,
-      "weight": 0.0035895990147938807,
+      "momentum": 0.10656083865248966,
+      "relativeMomentum": 1.1207957597540648,
+      "rawWeightScore": 856827.6871610789,
+      "weight": 0.003589600052520615,
       "weightRank": 49
     },
     {
@@ -677,7 +677,7 @@
       "momentum": 0.5560457870876614,
       "relativeMomentum": 1.5760629323144928,
       "rawWeightScore": 838747.1858077407,
-      "weight": 0.0035138534886339345,
+      "weight": 0.0035138534705881604,
       "weightRank": 50
     },
     {
@@ -690,7 +690,7 @@
       "momentum": 0.07536545701139818,
       "relativeMomentum": 1.0891990772708657,
       "rawWeightScore": 820783.5245789364,
-      "weight": 0.003438596397169975,
+      "weight": 0.003438596379510692,
       "weightRank": 51
     },
     {
@@ -703,7 +703,7 @@
       "momentum": -0.15581933535501158,
       "relativeMomentum": 0.8550402981481315,
       "rawWeightScore": 809385.075702519,
-      "weight": 0.0033908436535219078,
+      "weight": 0.003390843636107864,
       "weightRank": 52
     },
     {
@@ -716,7 +716,7 @@
       "momentum": 0.24282247494004583,
       "relativeMomentum": 1.2588102808121384,
       "rawWeightScore": 787209.0449459944,
-      "weight": 0.003297939230882534,
+      "weight": 0.003297939213945611,
       "weightRank": 53
     },
     {
@@ -729,7 +729,7 @@
       "momentum": 0.4940840993113722,
       "relativeMomentum": 1.5133041625287862,
       "rawWeightScore": 763842.2633417462,
-      "weight": 0.0032000462680833053,
+      "weight": 0.0032000462516491223,
       "weightRank": 54
     },
     {
@@ -742,7 +742,7 @@
       "momentum": 0.7661725690976,
       "relativeMomentum": 1.788892808504849,
       "rawWeightScore": 747735.7239778427,
-      "weight": 0.0031325694163080375,
+      "weight": 0.0031325694002203894,
       "weightRank": 55
     },
     {
@@ -755,7 +755,7 @@
       "momentum": 0.0784648058648918,
       "relativeMomentum": 1.092338296491044,
       "rawWeightScore": 741920.9844492704,
-      "weight": 0.0031082091047341816,
+      "weight": 0.0031082090887716383,
       "weightRank": 56
     },
     {
@@ -768,7 +768,7 @@
       "momentum": 0.11634471055583595,
       "relativeMomentum": 1.1307054924684459,
       "rawWeightScore": 729111.8938215384,
-      "weight": 0.0030545466083943115,
+      "weight": 0.0030545465927073576,
       "weightRank": 57
     },
     {
@@ -781,20 +781,20 @@
       "momentum": 0.14834143540470945,
       "relativeMomentum": 1.1631138267271437,
       "rawWeightScore": 717420.9678522076,
-      "weight": 0.003005568559111043,
+      "weight": 0.003005568543675621,
       "weightRank": 58
     },
     {
       "ticker": "BAC",
       "marketCap": 380615293507.0,
-      "earlyPrice": 52.9136962890625,
+      "earlyPrice": 52.913700103759766,
       "recentPrice": 54.43000030517578,
-      "momentumGross": 1.0286561726444106,
+      "momentumGross": 1.0286560984856978,
       "momentumFallback": null,
-      "momentum": 0.02865617264441056,
-      "relativeMomentum": 1.04188891950004,
-      "rawWeightScore": 697762.0982941219,
-      "weight": 0.0029232095496882523,
+      "momentum": 0.028656098485697834,
+      "relativeMomentum": 1.0418888443873415,
+      "rawWeightScore": 697761.9473832445,
+      "weight": 0.002923208902448683,
       "weightRank": 59
     },
     {
@@ -807,7 +807,7 @@
       "momentum": 0.22329072859163857,
       "relativeMomentum": 1.2390272759169492,
       "rawWeightScore": 692420.7131508724,
-      "weight": 0.0029008323123784546,
+      "weight": 0.0029008322974809174,
       "weightRank": 60
     },
     {
@@ -820,7 +820,7 @@
       "momentum": 0.15312276554701176,
       "relativeMomentum": 1.1679566644295898,
       "rawWeightScore": 684934.6966851546,
-      "weight": 0.0028694703411919864,
+      "weight": 0.0028694703264555118,
       "weightRank": 61
     },
     {
@@ -833,20 +833,20 @@
       "momentum": 0.7668443888652605,
       "relativeMomentum": 1.789573270636357,
       "rawWeightScore": 680147.1751433834,
-      "weight": 0.002849413464035061,
+      "weight": 0.002849413449401591,
       "weightRank": 62
     },
     {
       "ticker": "DE",
       "marketCap": 181066945429.0,
-      "earlyPrice": 586.9444580078125,
+      "earlyPrice": 586.9443969726562,
       "recentPrice": 671.5499877929688,
-      "momentumGross": 1.144145717079128,
+      "momentumGross": 1.1441458360565182,
       "momentumFallback": null,
-      "momentum": 0.14414571707912804,
-      "relativeMomentum": 1.1588641342166437,
-      "rawWeightScore": 662242.6604326749,
-      "weight": 0.0027744041614191214,
+      "momentum": 0.1441458360565182,
+      "relativeMomentum": 1.1588642547245722,
+      "rawWeightScore": 662242.8670285055,
+      "weight": 0.0027744050126849227,
       "weightRank": 63
     },
     {
@@ -859,7 +859,7 @@
       "momentum": 0.5325278333613834,
       "relativeMomentum": 1.5522424410285343,
       "rawWeightScore": 628152.3284529982,
-      "weight": 0.0026315858796026334,
+      "weight": 0.0026315858660878404,
       "weightRank": 64
     },
     {
@@ -872,20 +872,20 @@
       "momentum": 0.23469833912893723,
       "relativeMomentum": 1.2505816352187837,
       "rawWeightScore": 625434.6998393149,
-      "weight": 0.0026202006267557866,
+      "weight": 0.0026202006132994633,
       "weightRank": 65
     },
     {
       "ticker": "RTX",
       "marketCap": 250211299434.0,
-      "earlyPrice": 174.75909423828125,
+      "earlyPrice": 174.7590789794922,
       "recentPrice": 185.64999389648438,
-      "momentumGross": 1.0623195016297897,
+      "momentumGross": 1.0623195943843937,
       "momentumFallback": null,
-      "momentum": 0.06231950162978972,
-      "relativeMomentum": 1.075985297275314,
-      "rawWeightScore": 623121.1181282472,
-      "weight": 0.002610508090906804,
+      "momentum": 0.06231959438439372,
+      "relativeMomentum": 1.0759853912231234,
+      "rawWeightScore": 623121.2813485143,
+      "weight": 0.002610508761296414,
       "weightRank": 66
     },
     {
@@ -898,7 +898,7 @@
       "momentum": 0.6499160550775804,
       "relativeMomentum": 1.6711407578213102,
       "rawWeightScore": 620230.9149236586,
-      "weight": 0.002598399852828456,
+      "weight": 0.002598399839484093,
       "weightRank": 67
     },
     {
@@ -911,7 +911,7 @@
       "momentum": 0.42091646682981265,
       "relativeMomentum": 1.4391952935248566,
       "rawWeightScore": 619364.5995392968,
-      "weight": 0.002594770504930656,
+      "weight": 0.002594770491604932,
       "weightRank": 68
     },
     {
@@ -924,7 +924,7 @@
       "momentum": 0.0026176384856539947,
       "relativeMomentum": 1.015515422755944,
       "rawWeightScore": 601146.2015395964,
-      "weight": 0.002518446217407809,
+      "weight": 0.0025184462044740567,
       "weightRank": 69
     },
     {
@@ -937,7 +937,7 @@
       "momentum": -0.004932243187713348,
       "relativeMomentum": 1.0078684185691162,
       "rawWeightScore": 594939.6970854972,
-      "weight": 0.0024924446430391795,
+      "weight": 0.002492444630238961,
       "weightRank": 70
     },
     {
@@ -950,7 +950,7 @@
       "momentum": 0.2144324240792772,
       "relativeMomentum": 1.2300550171949118,
       "rawWeightScore": 590068.5936388724,
-      "weight": 0.0024720376072493236,
+      "weight": 0.0024720375945539077,
       "weightRank": 71
     },
     {
@@ -963,7 +963,7 @@
       "momentum": 0.49890511921938474,
       "relativeMomentum": 1.5181872005704815,
       "rawWeightScore": 574790.4871697809,
-      "weight": 0.002408031398197859,
+      "weight": 0.002408031385831154,
       "weightRank": 72
     },
     {
@@ -976,7 +976,7 @@
       "momentum": 0.44903445879182025,
       "relativeMomentum": 1.4676749984475372,
       "rawWeightScore": 570490.3398073523,
-      "weight": 0.0023900163299308244,
+      "weight": 0.0023900163176566376,
       "weightRank": 73
     },
     {
@@ -989,7 +989,7 @@
       "momentum": 0.0963199721592014,
       "relativeMomentum": 1.1104231536207572,
       "rawWeightScore": 566214.6226739935,
-      "weight": 0.0023721036098410444,
+      "weight": 0.0023721035976588503,
       "weightRank": 74
     },
     {
@@ -1002,7 +1002,7 @@
       "momentum": 0.10479154492444187,
       "relativeMomentum": 1.1190037056356756,
       "rawWeightScore": 564929.5956837798,
-      "weight": 0.002366720108532241,
+      "weight": 0.0023667200963776946,
       "weightRank": 75
     },
     {
@@ -1015,7 +1015,7 @@
       "momentum": -0.007737323525564221,
       "relativeMomentum": 1.0050272533673357,
       "rawWeightScore": 551738.0813180578,
-      "weight": 0.0023114554834358036,
+      "weight": 0.0023114554715650743,
       "weightRank": 76
     },
     {
@@ -1028,20 +1028,20 @@
       "momentum": 0.006669053368001832,
       "relativeMomentum": 1.0196189554877453,
       "rawWeightScore": 536113.5626938936,
-      "weight": 0.0022459980128120747,
+      "weight": 0.0022459980012775093,
       "weightRank": 77
     },
     {
       "ticker": "SCHW",
       "marketCap": 169025272686.0,
-      "earlyPrice": 91.0468521118164,
+      "earlyPrice": 91.04685974121094,
       "recentPrice": 97.73999786376953,
-      "momentumGross": 1.0735132033311063,
+      "momentumGross": 1.073513113374618,
       "momentumFallback": null,
-      "momentum": 0.07351320333110634,
-      "relativeMomentum": 1.087322995994225,
-      "rawWeightScore": 528507.9712144476,
-      "weight": 0.0022141350932036604,
+      "momentum": 0.07351311337461808,
+      "relativeMomentum": 1.0873229048805264,
+      "rawWeightScore": 528507.8383533416,
+      "weight": 0.002214134525223461,
       "weightRank": 78
     },
     {
@@ -1054,7 +1054,7 @@
       "momentum": 0.02167452092306843,
       "relativeMomentum": 1.0348174550382316,
       "rawWeightScore": 516434.99485432095,
-      "weight": 0.002163556479267243,
+      "weight": 0.002163556468156065,
       "weightRank": 79
     },
     {
@@ -1067,7 +1067,7 @@
       "momentum": 0.06698337906907814,
       "relativeMomentum": 1.080709171350175,
       "rawWeightScore": 514171.14890688023,
-      "weight": 0.0021540723067838704,
+      "weight": 0.002154072295721399,
       "weightRank": 80
     },
     {
@@ -1080,7 +1080,7 @@
       "momentum": 0.22839652158101909,
       "relativeMomentum": 1.2441987503924496,
       "rawWeightScore": 513877.6519242296,
-      "weight": 0.0021528427284152733,
+      "weight": 0.0021528427173591173,
       "weightRank": 81
     },
     {
@@ -1093,7 +1093,7 @@
       "momentum": -0.01625180382758562,
       "relativeMomentum": 0.9964032418483341,
       "rawWeightScore": 506509.80300421006,
-      "weight": 0.002121975809194071,
+      "weight": 0.0021219757982964354,
       "weightRank": 82
     },
     {
@@ -1106,7 +1106,7 @@
       "momentum": 0.034219174382137174,
       "relativeMomentum": 1.0475234843078287,
       "rawWeightScore": 505347.8674754173,
-      "weight": 0.002117107988138452,
+      "weight": 0.0021171079772658156,
       "weightRank": 83
     },
     {
@@ -1119,7 +1119,7 @@
       "momentum": -0.015324423155700706,
       "relativeMomentum": 0.9973425524478238,
       "rawWeightScore": 488095.22698509955,
-      "weight": 0.0020448296520666977,
+      "weight": 0.0020448296415652542,
       "weightRank": 84
     },
     {
@@ -1132,7 +1132,7 @@
       "momentum": 0.14455680534270687,
       "relativeMomentum": 1.159280510765144,
       "rawWeightScore": 483216.4081762169,
-      "weight": 0.0020243902934827455,
+      "weight": 0.0020243902830862706,
       "weightRank": 85
     },
     {
@@ -1145,7 +1145,7 @@
       "momentum": -0.08742279596591451,
       "relativeMomentum": 0.9243166981899968,
       "rawWeightScore": 482105.3802924234,
-      "weight": 0.00201973574528098,
+      "weight": 0.0020197357349084092,
       "weightRank": 86
     },
     {
@@ -1158,7 +1158,7 @@
       "momentum": 0.04649821870191517,
       "relativeMomentum": 1.05996048761277,
       "rawWeightScore": 482052.2970074378,
-      "weight": 0.0020195133577853306,
+      "weight": 0.0020195133474139016,
       "weightRank": 87
     },
     {
@@ -1171,7 +1171,7 @@
       "momentum": -0.09996706418946888,
       "relativeMomentum": 0.9116110591116264,
       "rawWeightScore": 481356.67897887324,
-      "weight": 0.0020165991306167774,
+      "weight": 0.002016599120260315,
       "weightRank": 88
     },
     {
@@ -1184,7 +1184,7 @@
       "momentum": 0.4936759783520297,
       "relativeMomentum": 1.5128907914562522,
       "rawWeightScore": 471067.7611562585,
-      "weight": 0.001973494664340154,
+      "weight": 0.001973494654205059,
       "weightRank": 89
     },
     {
@@ -1197,7 +1197,7 @@
       "momentum": 0.01883172328051974,
       "relativeMomentum": 1.031938087332171,
       "rawWeightScore": 467687.18190975615,
-      "weight": 0.001959332041347284,
+      "weight": 0.001959332031284923,
       "weightRank": 90
     },
     {
@@ -1210,7 +1210,7 @@
       "momentum": -0.2089168836080586,
       "relativeMomentum": 0.8012596971575688,
       "rawWeightScore": 467098.65579697123,
-      "weight": 0.0019568664658204107,
+      "weight": 0.001956866455770712,
       "weightRank": 91
     },
     {
@@ -1223,7 +1223,7 @@
       "momentum": 0.1772446449875964,
       "relativeMomentum": 1.1923888503970859,
       "rawWeightScore": 462296.62881874666,
-      "weight": 0.001936748819483751,
+      "weight": 0.0019367488095373682,
       "weightRank": 92
     },
     {
@@ -1236,7 +1236,7 @@
       "momentum": 0.08005706751494479,
       "relativeMomentum": 1.0939510411711932,
       "rawWeightScore": 457839.75265582604,
-      "weight": 0.0019180771504534624,
+      "weight": 0.0019180771406029703,
       "weightRank": 93
     },
     {
@@ -1249,7 +1249,7 @@
       "momentum": 0.2338291876045342,
       "relativeMomentum": 1.2497013028329738,
       "rawWeightScore": 457242.2622974349,
-      "weight": 0.0019155740200516168,
+      "weight": 0.0019155740102139796,
       "weightRank": 94
     },
     {
@@ -1262,7 +1262,7 @@
       "momentum": -0.008082823762958546,
       "relativeMomentum": 1.0046773085766478,
       "rawWeightScore": 444623.67485573905,
-      "weight": 0.001862709619128549,
+      "weight": 0.0018627096095624027,
       "weightRank": 95
     },
     {
@@ -1275,7 +1275,7 @@
       "momentum": 0.019790940224622355,
       "relativeMomentum": 1.0329096437492078,
       "rawWeightScore": 443094.1618765173,
-      "weight": 0.0018563018664601767,
+      "weight": 0.001856301856926938,
       "weightRank": 96
     },
     {
@@ -1288,7 +1288,7 @@
       "momentum": 0.08413773919258216,
       "relativeMomentum": 1.0980842070609367,
       "rawWeightScore": 439891.7860706728,
-      "weight": 0.001842885810242418,
+      "weight": 0.0018428858007780789,
       "weightRank": 97
     },
     {
@@ -1301,7 +1301,7 @@
       "momentum": 0.13104853356951573,
       "relativeMomentum": 1.1455984670887793,
       "rawWeightScore": 437447.27925675915,
-      "weight": 0.0018326447758265614,
+      "weight": 0.0018326447664148164,
       "weightRank": 98
     },
     {
@@ -1314,7 +1314,7 @@
       "momentum": 0.14417750964427412,
       "relativeMomentum": 1.1588963357648667,
       "rawWeightScore": 433872.16975773167,
-      "weight": 0.0018176671863955958,
+      "weight": 0.00181766717706077,
       "weightRank": 99
     },
     {
@@ -1327,7 +1327,7 @@
       "momentum": 0.19187714077889484,
       "relativeMomentum": 1.207209580233755,
       "rawWeightScore": 430359.2461684523,
-      "weight": 0.0018029501190618843,
+      "weight": 0.0018029501098026392,
       "weightRank": 100
     },
     {
@@ -1340,7 +1340,7 @@
       "momentum": 0.3744365577791795,
       "relativeMomentum": 1.392117461779842,
       "rawWeightScore": 428359.0438740869,
-      "weight": 0.0017945704571936173,
+      "weight": 0.0017945704479774068,
       "weightRank": 101
     },
     {
@@ -1353,7 +1353,7 @@
       "momentum": -0.03395114665474164,
       "relativeMomentum": 0.9784762127161023,
       "rawWeightScore": 426431.7003534907,
-      "weight": 0.0017864960303958439,
+      "weight": 0.0017864960212211007,
       "weightRank": 102
     },
     {
@@ -1366,20 +1366,20 @@
       "momentum": 0.0038619015858900596,
       "relativeMomentum": 1.0167756921944153,
       "rawWeightScore": 425559.62909350736,
-      "weight": 0.0017828425687913452,
+      "weight": 0.0017828425596353647,
       "weightRank": 103
     },
     {
       "ticker": "PH",
       "marketCap": 120490323539.0,
-      "earlyPrice": 905.5452270507812,
+      "earlyPrice": 905.5452880859375,
       "recentPrice": 955.4199829101562,
-      "momentumGross": 1.055077045706275,
+      "momentumGross": 1.0550769745924464,
       "momentumFallback": null,
-      "momentum": 0.05507704570627503,
-      "relativeMomentum": 1.0686496735972106,
-      "rawWeightScore": 423625.56161755364,
-      "weight": 0.0017747399726066693,
+      "momentum": 0.055076974592446426,
+      "relativeMomentum": 1.0686496015685658,
+      "rawWeightScore": 423625.4759585005,
+      "weight": 0.0017747396046316497,
       "weightRank": 104
     },
     {
@@ -1392,7 +1392,7 @@
       "momentum": -0.0024303152927434013,
       "relativeMomentum": 1.0104025315414382,
       "rawWeightScore": 421415.60925057187,
-      "weight": 0.0017654815822766255,
+      "weight": 0.0017654815732098044,
       "weightRank": 105
     },
     {
@@ -1405,20 +1405,20 @@
       "momentum": -0.046735504794996774,
       "relativeMomentum": 0.9655273951777698,
       "rawWeightScore": 421038.3578091748,
-      "weight": 0.00176390112237658,
+      "weight": 0.0017639011133178755,
       "weightRank": 106
     },
     {
       "ticker": "EMR",
       "marketCap": 86514780000.0,
-      "earlyPrice": 139.40196228027344,
+      "earlyPrice": 139.40194702148438,
       "recentPrice": 155.10000610351562,
-      "momentumGross": 1.1126099200216466,
+      "momentumGross": 1.1126100418067468,
       "momentumFallback": null,
-      "momentum": 0.1126099200216466,
-      "relativeMomentum": 1.1269226571754614,
-      "rawWeightScore": 420947.0649329131,
-      "weight": 0.001763518659344611,
+      "momentum": 0.11261004180674683,
+      "relativeMomentum": 1.1269227805272186,
+      "rawWeightScore": 420947.2031621843,
+      "weight": 0.0017635192293865697,
       "weightRank": 107
     },
     {
@@ -1431,7 +1431,7 @@
       "momentum": 0.04149844285732396,
       "relativeMomentum": 1.0548963940983431,
       "rawWeightScore": 419107.63318312337,
-      "weight": 0.0017558125307513112,
+      "weight": 0.0017558125217341464,
       "weightRank": 108
     },
     {
@@ -1444,7 +1444,7 @@
       "momentum": -0.1463060519045869,
       "relativeMomentum": 0.8646759615297841,
       "rawWeightScore": 417084.73354446073,
-      "weight": 0.0017473377804657104,
+      "weight": 0.0017473377714920686,
       "weightRank": 109
     },
     {
@@ -1457,7 +1457,7 @@
       "momentum": -0.028691401117810544,
       "relativeMomentum": 0.9838036202017643,
       "rawWeightScore": 415684.07276655704,
-      "weight": 0.0017414698421356523,
+      "weight": 0.001741469833192146,
       "weightRank": 110
     },
     {
@@ -1470,33 +1470,33 @@
       "momentum": 0.16812377381414767,
       "relativeMomentum": 1.1831506473273723,
       "rawWeightScore": 414648.0975091413,
-      "weight": 0.001737129719946267,
+      "weight": 0.0017371297110250496,
       "weightRank": 111
     },
     {
       "ticker": "COP",
       "marketCap": 150347385497.0,
-      "earlyPrice": 124.02490997314453,
+      "earlyPrice": 124.02491760253906,
       "recentPrice": 125.1500015258789,
-      "momentumGross": 1.0090714966290077,
+      "momentumGross": 1.0090714345559606,
       "momentumFallback": null,
-      "momentum": 0.009071496629007747,
-      "relativeMomentum": 1.0220523040447609,
-      "rawWeightScore": 413968.5087886462,
-      "weight": 0.0017342826460761491,
+      "momentum": 0.0090714345559606,
+      "relativeMomentum": 1.0220522411731991,
+      "rawWeightScore": 413968.4323928151,
+      "weight": 0.0017342823171163113,
       "weightRank": 112
     },
     {
       "ticker": "BDX",
       "marketCap": 48757237200.0,
-      "earlyPrice": 147.1289825439453,
+      "earlyPrice": 147.12899780273438,
       "recentPrice": 179.0,
-      "momentumGross": 1.2166195735536693,
+      "momentumGross": 1.2166194473777168,
       "momentumFallback": null,
-      "momentum": 0.21661957355366934,
-      "relativeMomentum": 1.2322703024022141,
-      "rawWeightScore": 413178.28698954044,
-      "weight": 0.0017309720851913359,
+      "momentum": 0.21661944737771677,
+      "relativeMomentum": 1.2322701746031202,
+      "rawWeightScore": 413178.1584370504,
+      "weight": 0.001730971537743019,
       "weightRank": 113
     },
     {
@@ -1509,7 +1509,7 @@
       "momentum": 0.042847916120996254,
       "relativeMomentum": 1.0562632271354377,
       "rawWeightScore": 410831.1376852384,
-      "weight": 0.0017211389210259934,
+      "weight": 0.0017211389121868986,
       "weightRank": 114
     },
     {
@@ -1522,7 +1522,7 @@
       "momentum": 0.08064064502300727,
       "relativeMomentum": 1.0945421258849093,
       "rawWeightScore": 410773.9438905825,
-      "weight": 0.0017208993129315872,
+      "weight": 0.0017208993040937232,
       "weightRank": 115
     },
     {
@@ -1535,7 +1535,7 @@
       "momentum": 0.12242252766270245,
       "relativeMomentum": 1.1368614952872624,
       "rawWeightScore": 410179.81764389673,
-      "weight": 0.0017184102761634995,
+      "weight": 0.001718410267338418,
       "weightRank": 116
     },
     {
@@ -1548,7 +1548,7 @@
       "momentum": 0.038413484740276393,
       "relativeMomentum": 1.0517717507386375,
       "rawWeightScore": 407059.22840413445,
-      "weight": 0.0017053368571735182,
+      "weight": 0.0017053368484155767,
       "weightRank": 117
     },
     {
@@ -1561,20 +1561,20 @@
       "momentum": -0.0560827879346818,
       "relativeMomentum": 0.956059867553227,
       "rawWeightScore": 396018.0778158888,
-      "weight": 0.0016590809815419632,
+      "weight": 0.0016590809730215737,
       "weightRank": 118
     },
     {
       "ticker": "PGR",
       "marketCap": 120524181639.0,
-      "earlyPrice": 201.19065856933594,
-      "recentPrice": 207.30999755859375,
-      "momentumGross": 1.0304156218423477,
+      "earlyPrice": 201.09361267089844,
+      "recentPrice": 207.20999145507812,
+      "momentumGross": 1.0304155796046566,
       "momentumFallback": null,
-      "momentum": 0.030415621842347695,
-      "relativeMomentum": 1.0436710024471938,
-      "rawWeightScore": 394664.394177183,
-      "weight": 0.0016534098495765042,
+      "momentum": 0.030415579604656573,
+      "relativeMomentum": 1.0436709596661522,
+      "rawWeightScore": 394664.34564420715,
+      "weight": 0.0016534096377608426,
       "weightRank": 119
     },
     {
@@ -1587,7 +1587,7 @@
       "momentum": 0.0764030520013006,
       "relativeMomentum": 1.0902500199975584,
       "rawWeightScore": 382509.55050702527,
-      "weight": 0.0016024882601430297,
+      "weight": 0.0016024882519132784,
       "weightRank": 120
     },
     {
@@ -1600,7 +1600,7 @@
       "momentum": 0.03518437547696651,
       "relativeMomentum": 1.0485011018563697,
       "rawWeightScore": 381594.39453064604,
-      "weight": 0.0015986542991179953,
+      "weight": 0.0015986542909079335,
       "weightRank": 121
     },
     {
@@ -1613,7 +1613,7 @@
       "momentum": 0.04963511043480606,
       "relativeMomentum": 1.063137732668101,
       "rawWeightScore": 379123.3582842685,
-      "weight": 0.001588302122107097,
+      "weight": 0.0015883021139502,
       "weightRank": 122
     },
     {
@@ -1626,7 +1626,7 @@
       "momentum": 0.08834870853549459,
       "relativeMomentum": 1.1023493467795427,
       "rawWeightScore": 377770.68384647847,
-      "weight": 0.001582635218095208,
+      "weight": 0.0015826352099674139,
       "weightRank": 123
     },
     {
@@ -1639,7 +1639,7 @@
       "momentum": 0.01716408257776436,
       "relativeMomentum": 1.0302489939148425,
       "rawWeightScore": 376344.7931000836,
-      "weight": 0.001576661581153815,
+      "weight": 0.0015766615730566991,
       "weightRank": 124
     },
     {
@@ -1652,7 +1652,7 @@
       "momentum": -0.12184902367988182,
       "relativeMomentum": 0.8894476076724535,
       "rawWeightScore": 374880.06355813984,
-      "weight": 0.0015705252326831997,
+      "weight": 0.0015705252246175977,
       "weightRank": 125
     },
     {
@@ -1665,7 +1665,7 @@
       "momentum": 0.15165323953640164,
       "relativeMomentum": 1.1664682342737334,
       "rawWeightScore": 373294.2352792099,
-      "weight": 0.0015638815522934695,
+      "weight": 0.0015638815442619869,
       "weightRank": 126
     },
     {
@@ -1678,7 +1678,7 @@
       "momentum": 0.23277774386935768,
       "relativeMomentum": 1.2486363332092152,
       "rawWeightScore": 369432.3808275665,
-      "weight": 0.0015477026714970643,
+      "weight": 0.0015477026635486702,
       "weightRank": 127
     },
     {
@@ -1691,20 +1691,20 @@
       "momentum": 0.000765753799871316,
       "relativeMomentum": 1.0136397152205985,
       "rawWeightScore": 368927.08429941593,
-      "weight": 0.0015455857785902623,
+      "weight": 0.0015455857706527397,
       "weightRank": 128
     },
     {
       "ticker": "CAH",
       "marketCap": 51521954263.0,
-      "earlyPrice": 192.46104431152344,
-      "recentPrice": 222.5,
-      "momentumGross": 1.1560781081487566,
+      "earlyPrice": 192.01470947265625,
+      "recentPrice": 221.98399353027344,
+      "momentumGross": 1.1560780637062857,
       "momentumFallback": null,
-      "momentum": 0.15607810814875656,
-      "relativeMomentum": 1.1709500248856581,
-      "rawWeightScore": 364427.58609865233,
-      "weight": 0.0015267355484882927,
+      "momentum": 0.15607806370628574,
+      "relativeMomentum": 1.1709499798714744,
+      "rawWeightScore": 364427.54407019,
+      "weight": 0.0015267353645732364,
       "weightRank": 129
     },
     {
@@ -1717,7 +1717,7 @@
       "momentum": 0.20141992569444978,
       "relativeMomentum": 1.2168751245906504,
       "rawWeightScore": 363215.8877586096,
-      "weight": 0.001521659250753558,
+      "weight": 0.0015216592429389126,
       "weightRank": 130
     },
     {
@@ -1730,7 +1730,7 @@
       "momentum": 0.07528261718342599,
       "relativeMomentum": 1.0891151717821779,
       "rawWeightScore": 360958.3203559287,
-      "weight": 0.001512201381650728,
+      "weight": 0.0015122013738846545,
       "weightRank": 131
     },
     {
@@ -1743,7 +1743,7 @@
       "momentum": -0.05370409863186609,
       "relativeMomentum": 0.9584691565785053,
       "rawWeightScore": 360039.5724658194,
-      "weight": 0.0015083523726364962,
+      "weight": 0.0015083523648901898,
       "weightRank": 132
     },
     {
@@ -1756,20 +1756,20 @@
       "momentum": -0.12227889643881285,
       "relativeMomentum": 0.8890122049827736,
       "rawWeightScore": 353516.6801840724,
-      "weight": 0.0014810253208287136,
+      "weight": 0.001481025313222748,
       "weightRank": 133
     },
     {
       "ticker": "LMT",
       "marketCap": 117530190965.0,
-      "earlyPrice": 511.437744140625,
+      "earlyPrice": 511.4377746582031,
       "recentPrice": 509.25,
-      "momentumGross": 0.9957223647145927,
+      "momentumGross": 0.9957223052996717,
       "momentumFallback": null,
-      "momentum": -0.004277635285407255,
-      "relativeMomentum": 1.0085314474199292,
-      "rawWeightScore": 351676.26223976474,
-      "weight": 0.0014733150606650123,
+      "momentum": -0.004277694700328349,
+      "relativeMomentum": 1.0085313872406878,
+      "rawWeightScore": 351676.19928602304,
+      "weight": 0.001473314789359787,
       "weightRank": 134
     },
     {
@@ -1782,7 +1782,7 @@
       "momentum": 0.03777726464996478,
       "relativeMomentum": 1.051127346242668,
       "rawWeightScore": 348393.86103969166,
-      "weight": 0.0014595637454854979,
+      "weight": 0.0014595637379897506,
       "weightRank": 135
     },
     {
@@ -1795,20 +1795,20 @@
       "momentum": 0.11182552508844745,
       "relativeMomentum": 1.1261281716990255,
       "rawWeightScore": 345310.61953170056,
-      "weight": 0.0014466467913514319,
+      "weight": 0.001446646783922021,
       "weightRank": 136
     },
     {
       "ticker": "STT",
       "marketCap": 47960181151.0,
-      "earlyPrice": 152.0830078125,
-      "recentPrice": 174.58999633789062,
-      "momentumGross": 1.1479914741897992,
+      "earlyPrice": 151.28160095214844,
+      "recentPrice": 173.6699981689453,
+      "momentumGross": 1.1479915407814762,
       "momentumFallback": null,
-      "momentum": 0.1479914741897992,
-      "relativeMomentum": 1.1627593635724314,
-      "rawWeightScore": 344278.5331915186,
-      "weight": 0.001442322961419857,
+      "momentum": 0.14799154078147625,
+      "relativeMomentum": 1.1627594310207512,
+      "rawWeightScore": 344278.59310333873,
+      "weight": 0.00144232320500766,
       "weightRank": 137
     },
     {
@@ -1821,20 +1821,20 @@
       "momentum": 0.2181596471453684,
       "relativeMomentum": 1.233830187671051,
       "rawWeightScore": 344114.81840568496,
-      "weight": 0.0014416370935194018,
+      "weight": 0.001441637086115719,
       "weightRank": 138
     },
     {
       "ticker": "PRU",
       "marketCap": 39185100000.0,
-      "earlyPrice": 95.6861572265625,
+      "earlyPrice": 95.68616485595703,
       "recentPrice": 113.58000183105469,
-      "momentumGross": 1.187005572416538,
+      "momentumGross": 1.1870054777724082,
       "momentumFallback": null,
-      "momentum": 0.18700557241653804,
-      "relativeMomentum": 1.202275343476804,
-      "rawWeightScore": 344010.9776775182,
-      "weight": 0.0014412020624264752,
+      "momentum": 0.18700547777240817,
+      "relativeMomentum": 1.2022752476151617,
+      "rawWeightScore": 344010.89538990863,
+      "weight": 0.0014412017102887252,
       "weightRank": 139
     },
     {
@@ -1847,7 +1847,7 @@
       "momentum": 0.05932372111740558,
       "relativeMomentum": 1.0729509787108482,
       "rawWeightScore": 342695.023237653,
-      "weight": 0.0014356889934378139,
+      "weight": 0.0014356889860646781,
       "weightRank": 140
     },
     {
@@ -1860,7 +1860,7 @@
       "momentum": 0.26207748580020085,
       "relativeMomentum": 1.2783129902631256,
       "rawWeightScore": 342259.98660881346,
-      "weight": 0.0014338664478581716,
+      "weight": 0.0014338664404943955,
       "weightRank": 141
     },
     {
@@ -1873,7 +1873,7 @@
       "momentum": 0.04165907344831199,
       "relativeMomentum": 1.055059091059032,
       "rawWeightScore": 341038.7114778071,
-      "weight": 0.0014287500290465413,
+      "weight": 0.0014287500217090414,
       "weightRank": 142
     },
     {
@@ -1886,7 +1886,7 @@
       "momentum": 0.26798709353502725,
       "relativeMomentum": 1.2842986198459228,
       "rawWeightScore": 338375.22588242113,
-      "weight": 0.0014175916033496968,
+      "weight": 0.001417591596069502,
       "weightRank": 143
     },
     {
@@ -1899,7 +1899,7 @@
       "momentum": 0.10843078919398841,
       "relativeMomentum": 1.122689765546294,
       "rawWeightScore": 337356.7022714954,
-      "weight": 0.0014133245932135487,
+      "weight": 0.0014133245859552677,
       "weightRank": 144
     },
     {
@@ -1912,7 +1912,7 @@
       "momentum": 0.2737483231868336,
       "relativeMomentum": 1.2901339625936177,
       "rawWeightScore": 336781.9245416576,
-      "weight": 0.001410916615261009,
+      "weight": 0.0014109166080150943,
       "weightRank": 145
     },
     {
@@ -1925,7 +1925,7 @@
       "momentum": 0.023615843785494972,
       "relativeMomentum": 1.0367837512928244,
       "rawWeightScore": 334418.77909323014,
-      "weight": 0.0014010164367344968,
+      "weight": 0.0014010164295394257,
       "weightRank": 146
     },
     {
@@ -1938,7 +1938,7 @@
       "momentum": -0.02759580915522508,
       "relativeMomentum": 0.9849133059806155,
       "rawWeightScore": 334270.3422152205,
-      "weight": 0.0014003945742108882,
+      "weight": 0.0014003945670190106,
       "weightRank": 147
     },
     {
@@ -1951,7 +1951,7 @@
       "momentum": 0.02972241121746655,
       "relativeMomentum": 1.0429688742841101,
       "rawWeightScore": 333014.682091092,
-      "weight": 0.0013951341026619333,
+      "weight": 0.0013951340954970718,
       "weightRank": 148
     },
     {
@@ -1964,7 +1964,7 @@
       "momentum": 0.24668911837717222,
       "relativeMomentum": 1.2627266651783966,
       "rawWeightScore": 325226.5908587292,
-      "weight": 0.0013625066172769508,
+      "weight": 0.0013625066102796511,
       "weightRank": 149
     },
     {
@@ -1977,7 +1977,7 @@
       "momentum": -0.02867674530937636,
       "relativeMomentum": 0.9838184645441402,
       "rawWeightScore": 324724.9341271997,
-      "weight": 0.001360404972960274,
+      "weight": 0.0013604049659737673,
       "weightRank": 150
     },
     {
@@ -1990,20 +1990,20 @@
       "momentum": 0.1933643614727183,
       "relativeMomentum": 1.208715932699188,
       "rawWeightScore": 322612.5444526523,
-      "weight": 0.0013515553124751366,
+      "weight": 0.0013515553055340785,
       "weightRank": 151
     },
     {
       "ticker": "MRSH",
       "marketCap": 81474279786.0,
-      "earlyPrice": 166.76658630371094,
-      "recentPrice": 170.72999572753906,
-      "momentumGross": 1.0237662082775387,
+      "earlyPrice": 165.79957580566406,
+      "recentPrice": 169.739990234375,
+      "momentumGross": 1.0237661309419124,
       "momentumFallback": null,
-      "momentum": 0.023766208277538725,
-      "relativeMomentum": 1.036936050090336,
-      "rawWeightScore": 318248.3680266108,
-      "weight": 0.0013332720003887998,
+      "momentum": 0.023766130941912378,
+      "relativeMomentum": 1.0369359717598556,
+      "rawWeightScore": 318248.29590486625,
+      "weight": 0.0013332716913942839,
       "weightRank": 152
     },
     {
@@ -2016,7 +2016,7 @@
       "momentum": 0.25492933367723003,
       "relativeMomentum": 1.271072883520094,
       "rawWeightScore": 318148.7842568863,
-      "weight": 0.0013328548034281674,
+      "weight": 0.0013328547965831478,
       "weightRank": 153
     },
     {
@@ -2029,7 +2029,7 @@
       "momentum": 0.0018204621201565185,
       "relativeMomentum": 1.01470799142545,
       "rawWeightScore": 315049.185063206,
-      "weight": 0.0013198693202881061,
+      "weight": 0.0013198693135097748,
       "weightRank": 154
     },
     {
@@ -2042,7 +2042,7 @@
       "momentum": 0.07695119633443026,
       "relativeMomentum": 1.0908052157200576,
       "rawWeightScore": 314393.53369671386,
-      "weight": 0.0013171225297408957,
+      "weight": 0.0013171225229766706,
       "weightRank": 155
     },
     {
@@ -2055,33 +2055,33 @@
       "momentum": 0.0046277195275183924,
       "relativeMomentum": 1.017551361702805,
       "rawWeightScore": 313729.5756457219,
-      "weight": 0.0013143409391099382,
+      "weight": 0.0013143409323599987,
       "weightRank": 156
     },
     {
       "ticker": "GLW",
       "marketCap": 132447069775.0,
-      "earlyPrice": 163.6804656982422,
+      "earlyPrice": 163.68045043945312,
       "recentPrice": 153.75999450683594,
-      "momentumGross": 0.9393912331011116,
+      "momentumGross": 0.9393913206740175,
       "momentumFallback": null,
-      "momentum": -0.06060876689888839,
-      "relativeMomentum": 0.9514756658946936,
-      "rawWeightScore": 313483.173153503,
-      "weight": 0.0013133086587380433,
+      "momentum": -0.06060867932598246,
+      "relativeMomentum": 0.9514757545941471,
+      "rawWeightScore": 313483.2608250738,
+      "weight": 0.001313309019285312,
       "weightRank": 157
     },
     {
       "ticker": "ROST",
       "marketCap": 74560355874.0,
-      "earlyPrice": 226.90573120117188,
+      "earlyPrice": 226.9057159423828,
       "recentPrice": 233.39999389648438,
-      "momentumGross": 1.028620972511068,
+      "momentumGross": 1.0286210416830162,
       "momentumFallback": null,
-      "momentum": 0.028620972511067988,
-      "relativeMomentum": 1.0418532665482862,
-      "rawWeightScore": 308797.41724113584,
-      "weight": 0.0012936781192403734,
+      "momentum": 0.028621041683016157,
+      "relativeMomentum": 1.04185333661007,
+      "rawWeightScore": 308797.47953848616,
+      "weight": 0.0012936783735855155,
       "weightRank": 158
     },
     {
@@ -2094,7 +2094,7 @@
       "momentum": -0.01270072711971959,
       "relativeMomentum": 1.0,
       "rawWeightScore": 304543.5037117029,
-      "weight": 0.0012758567433255915,
+      "weight": 0.0012758567367732914,
       "weightRank": 159
     },
     {
@@ -2107,7 +2107,7 @@
       "momentum": -0.04420317272479779,
       "relativeMomentum": 0.968092303447996,
       "rawWeightScore": 304236.83496572974,
-      "weight": 0.001274571983077061,
+      "weight": 0.0012745719765313588,
       "weightRank": 160
     },
     {
@@ -2120,7 +2120,7 @@
       "momentum": -0.013963325011656091,
       "relativeMomentum": 0.9987211599090384,
       "rawWeightScore": 302792.34079305426,
-      "weight": 0.0012685204088078977,
+      "weight": 0.0012685204022932742,
       "weightRank": 161
     },
     {
@@ -2133,7 +2133,7 @@
       "momentum": -0.08175845629566669,
       "relativeMomentum": 0.9300539045526867,
       "rawWeightScore": 300946.1342553711,
-      "weight": 0.0012607858978695042,
+      "weight": 0.0012607858913946022,
       "weightRank": 162
     },
     {
@@ -2146,7 +2146,7 @@
       "momentum": 0.02148669876520959,
       "relativeMomentum": 1.034627216715346,
       "rawWeightScore": 300881.4178600717,
-      "weight": 0.0012605147745378942,
+      "weight": 0.0012605147680643846,
       "weightRank": 163
     },
     {
@@ -2159,7 +2159,7 @@
       "momentum": 0.010097050421268294,
       "relativeMomentum": 1.0230910506745126,
       "rawWeightScore": 299993.9313632339,
-      "weight": 0.001256796732229322,
+      "weight": 0.0012567967257749069,
       "weightRank": 164
     },
     {
@@ -2172,7 +2172,7 @@
       "momentum": 0.1835642588646822,
       "relativeMomentum": 1.1987897604865356,
       "rawWeightScore": 299754.48547063215,
-      "weight": 0.001255793595885863,
+      "weight": 0.0012557935894365996,
       "weightRank": 165
     },
     {
@@ -2185,7 +2185,7 @@
       "momentum": 0.04660936972104479,
       "relativeMomentum": 1.0600730684909117,
       "rawWeightScore": 297317.3054561645,
-      "weight": 0.0012455832564162665,
+      "weight": 0.0012455832500194392,
       "weightRank": 166
     },
     {
@@ -2198,7 +2198,7 @@
       "momentum": 0.36642427841151815,
       "relativeMomentum": 1.3840021115636032,
       "rawWeightScore": 295297.29591955285,
-      "weight": 0.0012371206139449701,
+      "weight": 0.0012371206075916037,
       "weightRank": 167
     },
     {
@@ -2211,7 +2211,7 @@
       "momentum": -0.025030489676291734,
       "relativeMomentum": 0.9875116260132532,
       "rawWeightScore": 294282.4716212193,
-      "weight": 0.001232869101735584,
+      "weight": 0.0012328690954040518,
       "weightRank": 168
     },
     {
@@ -2224,7 +2224,7 @@
       "momentum": 0.019208745280644868,
       "relativeMomentum": 1.0323199593850343,
       "rawWeightScore": 293354.30520355614,
-      "weight": 0.0012289806346743233,
+      "weight": 0.0012289806283627607,
       "weightRank": 169
     },
     {
@@ -2237,7 +2237,7 @@
       "momentum": 0.20503419416618796,
       "relativeMomentum": 1.220535887412033,
       "rawWeightScore": 291626.4964763695,
-      "weight": 0.0012217421403741963,
+      "weight": 0.0012217421340998077,
       "weightRank": 170
     },
     {
@@ -2250,7 +2250,7 @@
       "momentum": -0.07181616423276216,
       "relativeMomentum": 0.9401240953610923,
       "rawWeightScore": 291528.7437403145,
-      "weight": 0.0012213326143591795,
+      "weight": 0.001221332608086894,
       "weightRank": 171
     },
     {
@@ -2263,7 +2263,7 @@
       "momentum": 0.04038182599791318,
       "relativeMomentum": 1.0537654129560667,
       "rawWeightScore": 291301.8415938697,
-      "weight": 0.0012203820288760273,
+      "weight": 0.0012203820226086238,
       "weightRank": 172
     },
     {
@@ -2276,7 +2276,7 @@
       "momentum": 0.0550444567973456,
       "relativeMomentum": 1.06861666546095,
       "rawWeightScore": 290817.443441838,
-      "weight": 0.0012183526877763428,
+      "weight": 0.0012183526815193611,
       "weightRank": 173
     },
     {
@@ -2289,7 +2289,7 @@
       "momentum": 0.009712064629804562,
       "relativeMomentum": 1.0227011123832175,
       "rawWeightScore": 289547.08096211316,
-      "weight": 0.001213030622073181,
+      "weight": 0.0012130306158435313,
       "weightRank": 174
     },
     {
@@ -2302,7 +2302,7 @@
       "momentum": 0.20568159569428945,
       "relativeMomentum": 1.2211916171850459,
       "rawWeightScore": 287882.1698454062,
-      "weight": 0.0012060556314744677,
+      "weight": 0.0012060556252806388,
       "weightRank": 175
     },
     {
@@ -2315,7 +2315,7 @@
       "momentum": 0.3086401533127723,
       "relativeMomentum": 1.3254746450840924,
       "rawWeightScore": 285256.4558609467,
-      "weight": 0.001195055446435918,
+      "weight": 0.0011950554402985819,
       "weightRank": 176
     },
     {
@@ -2328,7 +2328,7 @@
       "momentum": 0.04419823068440554,
       "relativeMomentum": 1.0576309122948424,
       "rawWeightScore": 284824.4520045005,
-      "weight": 0.001193245606374738,
+      "weight": 0.0011932456002466964,
       "weightRank": 177
     },
     {
@@ -2341,7 +2341,7 @@
       "momentum": -0.03197669708471407,
       "relativeMomentum": 0.980476061823929,
       "rawWeightScore": 282421.88807231514,
-      "weight": 0.0011831802877690543,
+      "weight": 0.0011831802816927044,
       "weightRank": 178
     },
     {
@@ -2354,7 +2354,7 @@
       "momentum": 0.15701248874650076,
       "relativeMomentum": 1.1718964254588282,
       "rawWeightScore": 281932.2055494458,
-      "weight": 0.0011811288082882018,
+      "weight": 0.0011811288022223873,
       "weightRank": 179
     },
     {
@@ -2367,7 +2367,7 @@
       "momentum": 0.07118439791138131,
       "relativeMomentum": 1.0849642325638305,
       "rawWeightScore": 281094.4821304061,
-      "weight": 0.0011776192437754239,
+      "weight": 0.0011776192377276331,
       "weightRank": 180
     },
     {
@@ -2380,7 +2380,7 @@
       "momentum": -0.012286177996654213,
       "relativeMomentum": 1.0004198819288663,
       "rawWeightScore": 280808.9738527601,
-      "weight": 0.001176423133344992,
+      "weight": 0.0011764231273033439,
       "weightRank": 181
     },
     {
@@ -2393,7 +2393,7 @@
       "momentum": 0.06645697867973177,
       "relativeMomentum": 1.0801759992879585,
       "rawWeightScore": 277580.8112079154,
-      "weight": 0.0011628990455585853,
+      "weight": 0.001162899039586392,
       "weightRank": 182
     },
     {
@@ -2406,7 +2406,7 @@
       "momentum": -0.11140486899468383,
       "relativeMomentum": 0.9000261171194713,
       "rawWeightScore": 276327.0268910304,
-      "weight": 0.0011576464325299787,
+      "weight": 0.0011576464265847604,
       "weightRank": 183
     },
     {
@@ -2419,20 +2419,20 @@
       "momentum": -0.031551299523650767,
       "relativeMomentum": 0.9809069317463004,
       "rawWeightScore": 275728.7996411433,
-      "weight": 0.0011551402149896036,
+      "weight": 0.0011551402090572563,
       "weightRank": 184
     },
     {
       "ticker": "EQIX",
       "marketCap": 99814304124.0,
-      "earlyPrice": 1072.3768310546875,
+      "earlyPrice": 1072.376708984375,
       "recentPrice": 1011.5800170898438,
-      "momentumGross": 0.9433064831277175,
+      "momentumGross": 0.943306590505765,
       "momentumFallback": null,
-      "momentum": -0.05669351687228252,
-      "relativeMomentum": 0.955441282130978,
-      "rawWeightScore": 275555.06480609905,
-      "weight": 0.0011544123690229676,
+      "momentum": -0.05669340949423496,
+      "relativeMomentum": 0.9554413908903487,
+      "rawWeightScore": 275555.1589066977,
+      "weight": 0.0011544127573200806,
       "weightRank": 185
     },
     {
@@ -2445,7 +2445,7 @@
       "momentum": 0.005261525182499893,
       "relativeMomentum": 1.018193320703881,
       "rawWeightScore": 275291.2441362379,
-      "weight": 0.0011533071168124667,
+      "weight": 0.0011533071108895336,
       "weightRank": 186
     },
     {
@@ -2458,7 +2458,7 @@
       "momentum": 0.0056768053327094226,
       "relativeMomentum": 1.0186139430639056,
       "rawWeightScore": 274717.1567229317,
-      "weight": 0.0011509020308769662,
+      "weight": 0.0011509020249663847,
       "weightRank": 187
     },
     {
@@ -2471,7 +2471,7 @@
       "momentum": 0.04257114700902176,
       "relativeMomentum": 1.0559828976349743,
       "rawWeightScore": 271169.24482377514,
-      "weight": 0.00113603838326638,
+      "weight": 0.0011360383774321322,
       "weightRank": 188
     },
     {
@@ -2484,7 +2484,7 @@
       "momentum": 0.007024291109083203,
       "relativeMomentum": 1.0199787630464452,
       "rawWeightScore": 270447.9542276148,
-      "weight": 0.0011330166032586222,
+      "weight": 0.0011330165974398933,
       "weightRank": 189
     },
     {
@@ -2497,7 +2497,7 @@
       "momentum": 0.03082474177834249,
       "relativeMomentum": 1.0440853853473262,
       "rawWeightScore": 269578.87765609816,
-      "weight": 0.0011293756876235102,
+      "weight": 0.0011293756818234794,
       "weightRank": 190
     },
     {
@@ -2510,7 +2510,7 @@
       "momentum": -0.012717001311166376,
       "relativeMomentum": 0.9999835164555533,
       "rawWeightScore": 268797.3085060356,
-      "weight": 0.0011261013762087883,
+      "weight": 0.0011261013704255733,
       "weightRank": 191
     },
     {
@@ -2523,33 +2523,33 @@
       "momentum": 0.006035243022195935,
       "relativeMomentum": 1.0189769917355014,
       "rawWeightScore": 268213.1775887419,
-      "weight": 0.0011236542139454958,
+      "weight": 0.0011236542081748484,
       "weightRank": 192
     },
     {
       "ticker": "HLT",
       "marketCap": 71597649169.0,
-      "earlyPrice": 323.7720031738281,
+      "earlyPrice": 323.77197265625,
       "recentPrice": 318.1199951171875,
-      "momentumGross": 0.9825432464782752,
+      "momentumGross": 0.9825433390892571,
       "momentumFallback": null,
-      "momentum": -0.01745675352172482,
-      "relativeMomentum": 0.9951827915479667,
-      "rawWeightScore": 263729.0404103596,
-      "weight": 0.0011048683374210967,
+      "momentum": -0.017456660910742938,
+      "relativeMomentum": 0.9951828853503065,
+      "rawWeightScore": 263729.11498481047,
+      "weight": 0.0011048686441696648,
       "weightRank": 193
     },
     {
       "ticker": "NSC",
       "marketCap": 69403987257.0,
-      "earlyPrice": 313.2298278808594,
+      "earlyPrice": 313.22979736328125,
       "recentPrice": 309.0,
-      "momentumGross": 0.9864960884808575,
+      "momentumGross": 0.9864961845939083,
       "momentumFallback": null,
-      "momentum": -0.013503911519142542,
-      "relativeMomentum": 0.9991864833475671,
-      "rawWeightScore": 262803.93394498416,
-      "weight": 0.0011009926897459432,
+      "momentum": -0.01350381540609169,
+      "relativeMomentum": 0.9991865806970269,
+      "rawWeightScore": 262804.0107589441,
+      "weight": 0.0011009930058966304,
       "weightRank": 194
     },
     {
@@ -2562,7 +2562,7 @@
       "momentum": 0.20112001001126267,
       "relativeMomentum": 1.2165713507589204,
       "rawWeightScore": 262785.70085847913,
-      "weight": 0.0011009163039222905,
+      "weight": 0.001100916298268416,
       "weightRank": 195
     },
     {
@@ -2575,7 +2575,7 @@
       "momentum": -0.15646461833015113,
       "relativeMomentum": 0.8543867141813805,
       "rawWeightScore": 260853.8220629956,
-      "weight": 0.0010928228770113073,
+      "weight": 0.0010928228713989975,
       "weightRank": 196
     },
     {
@@ -2588,7 +2588,7 @@
       "momentum": 0.005023614533739895,
       "relativeMomentum": 1.0179523495462037,
       "rawWeightScore": 260759.47374668525,
-      "weight": 0.0010924276134968377,
+      "weight": 0.0010924276078865577,
       "weightRank": 197
     },
     {
@@ -2601,20 +2601,20 @@
       "momentum": 0.20374906378032764,
       "relativeMomentum": 1.219234224966652,
       "rawWeightScore": 258568.71260608317,
-      "weight": 0.001083249623028524,
+      "weight": 0.0010832496174653786,
       "weightRank": 198
     },
     {
       "ticker": "PYPL",
       "marketCap": 44937359711.0,
-      "earlyPrice": 49.85212707519531,
+      "earlyPrice": 49.85212326049805,
       "recentPrice": 52.529998779296875,
-      "momentumGross": 1.0537162978033485,
+      "momentumGross": 1.05371637843399,
       "momentumFallback": null,
-      "momentum": 0.05371629780334852,
-      "relativeMomentum": 1.0672714208826546,
-      "rawWeightScore": 257708.30614068435,
-      "weight": 0.0010796450299982974,
+      "momentum": 0.05371637843399002,
+      "relativeMomentum": 1.0672715025505375,
+      "rawWeightScore": 257708.36530040597,
+      "weight": 0.0010796452722978255,
       "weightRank": 199
     },
     {
@@ -2627,7 +2627,7 @@
       "momentum": -0.07809191766215184,
       "relativeMomentum": 0.9337676099449923,
       "rawWeightScore": 256749.8747371622,
-      "weight": 0.0010756297705877525,
+      "weight": 0.0010756297650637396,
       "weightRank": 200
     },
     {
@@ -2640,7 +2640,7 @@
       "momentum": 0.03377245143502061,
       "relativeMomentum": 1.0470710146672777,
       "rawWeightScore": 256062.5784619996,
-      "weight": 0.0010727504066327135,
+      "weight": 0.0010727504011234879,
       "weightRank": 201
     },
     {
@@ -2653,7 +2653,7 @@
       "momentum": 0.07192605061891122,
       "relativeMomentum": 1.0857154259738755,
       "rawWeightScore": 255620.3075369138,
-      "weight": 0.0010708975536403813,
+      "weight": 0.0010708975481406712,
       "weightRank": 202
     },
     {
@@ -2666,20 +2666,20 @@
       "momentum": 0.07875624203011355,
       "relativeMomentum": 1.092633481723351,
       "rawWeightScore": 255143.418966846,
-      "weight": 0.0010688996732373505,
+      "weight": 0.001068899667747901,
       "weightRank": 203
     },
     {
       "ticker": "IBKR",
       "marketCap": 38701937367.0,
-      "earlyPrice": 79.34772491455078,
+      "earlyPrice": 79.34771728515625,
       "recentPrice": 85.41999816894531,
-      "momentumGross": 1.076527376946645,
+      "momentumGross": 1.0765274804562655,
       "momentumFallback": null,
-      "momentum": 0.07652737694664502,
-      "relativeMomentum": 1.0903759442727599,
-      "rawWeightScore": 255032.27066999272,
-      "weight": 0.0010684340277636463,
+      "momentum": 0.07652748045626545,
+      "relativeMomentum": 1.0903760491139396,
+      "rawWeightScore": 255032.34423513376,
+      "weight": 0.001068434330470917,
       "weightRank": 204
     },
     {
@@ -2692,7 +2692,7 @@
       "momentum": 0.17245375899087767,
       "relativeMomentum": 1.1875363339126546,
       "rawWeightScore": 254707.79927294978,
-      "weight": 0.001067074684960769,
+      "weight": 0.0010670746794806919,
       "weightRank": 205
     },
     {
@@ -2705,7 +2705,7 @@
       "momentum": -0.06851121103398561,
       "relativeMomentum": 0.9434715638436072,
       "rawWeightScore": 252227.1784934622,
-      "weight": 0.0010566823544379716,
+      "weight": 0.0010566823490112654,
       "weightRank": 206
     },
     {
@@ -2718,20 +2718,20 @@
       "momentum": 0.3138927094617394,
       "relativeMomentum": 1.330794770696708,
       "rawWeightScore": 251252.6624577387,
-      "weight": 0.0010525997099536757,
+      "weight": 0.0010525997045479363,
       "weightRank": 207
     },
     {
       "ticker": "PAYX",
       "marketCap": 35064076591.0,
-      "earlyPrice": 90.51129913330078,
+      "earlyPrice": 90.51129150390625,
       "recentPrice": 98.5,
-      "momentumGross": 1.0882619180499644,
+      "momentumGross": 1.0882620097819395,
       "momentumFallback": null,
-      "momentum": 0.08826191804996442,
-      "relativeMomentum": 1.1022614398116009,
-      "rawWeightScore": 250775.46690439156,
-      "weight": 0.0010506005434726881,
+      "momentum": 0.08826200978193954,
+      "relativeMomentum": 1.1022615327236263,
+      "rawWeightScore": 250775.5303196332,
+      "weight": 0.0010506008037494833,
       "weightRank": 208
     },
     {
@@ -2744,7 +2744,7 @@
       "momentum": -0.09756354743015516,
       "relativeMomentum": 0.9140454949765511,
       "rawWeightScore": 249935.16677905363,
-      "weight": 0.0010470801840880247,
+      "weight": 0.0010470801787106315,
       "weightRank": 209
     },
     {
@@ -2757,20 +2757,20 @@
       "momentum": 0.044023472679692865,
       "relativeMomentum": 1.057453906183815,
       "rawWeightScore": 248767.76875389586,
-      "weight": 0.001042189478410873,
+      "weight": 0.0010421894730585964,
       "weightRank": 210
     },
     {
       "ticker": "CME",
       "marketCap": 94202575321.0,
-      "earlyPrice": 284.9975280761719,
+      "earlyPrice": 284.99749755859375,
       "recentPrice": 261.9800109863281,
-      "momentumGross": 0.9192360816417614,
+      "momentumGross": 0.9192361800737097,
       "momentumFallback": null,
-      "momentum": -0.0807639183582386,
-      "relativeMomentum": 0.9310612363362164,
-      "rawWeightScore": 247722.8825473427,
-      "weight": 0.0010378120246271247,
+      "momentum": -0.08076381992629034,
+      "relativeMomentum": 0.9310613360344042,
+      "rawWeightScore": 247722.96212597025,
+      "weight": 0.0010378123526846015,
       "weightRank": 211
     },
     {
@@ -2783,7 +2783,7 @@
       "momentum": -0.042638652758414164,
       "relativeMomentum": 0.9696769495723868,
       "rawWeightScore": 247684.03557435033,
-      "weight": 0.0010376492788392619,
+      "weight": 0.001037649273510302,
       "weightRank": 212
     },
     {
@@ -2796,20 +2796,20 @@
       "momentum": 0.042830755234293694,
       "relativeMomentum": 1.0562458454891894,
       "rawWeightScore": 247679.73771751,
-      "weight": 0.0010376312733669246,
+      "weight": 0.001037631268038057,
       "weightRank": 213
     },
     {
       "ticker": "DOC",
       "marketCap": 13769859382.0,
-      "earlyPrice": 15.775148391723633,
+      "earlyPrice": 15.775151252746582,
       "recentPrice": 19.969999313354492,
-      "momentumGross": 1.2659151481473019,
+      "momentumGross": 1.2659149185575989,
       "momentumFallback": null,
-      "momentum": 0.2659151481473019,
-      "relativeMomentum": 1.2822000207234088,
-      "rawWeightScore": 247361.4917538638,
-      "weight": 0.0010362980114394643,
+      "momentum": 0.26591491855759886,
+      "relativeMomentum": 1.2821997881802383,
+      "rawWeightScore": 247361.3571674946,
+      "weight": 0.0010362974422803446,
       "weightRank": 214
     },
     {
@@ -2822,7 +2822,7 @@
       "momentum": 0.03080141735523023,
       "relativeMomentum": 1.0440617608762535,
       "rawWeightScore": 247237.2540965509,
-      "weight": 0.001035777529304972,
+      "weight": 0.0010357775239856247,
       "weightRank": 215
     },
     {
@@ -2835,7 +2835,7 @@
       "momentum": 0.13288341319727626,
       "relativeMomentum": 1.1474569508111543,
       "rawWeightScore": 247184.3927489205,
-      "weight": 0.0010355560715952735,
+      "weight": 0.0010355560662770637,
       "weightRank": 216
     },
     {
@@ -2848,7 +2848,7 @@
       "momentum": 0.17413238519650776,
       "relativeMomentum": 1.1892365541515826,
       "rawWeightScore": 246006.5968797285,
-      "weight": 0.0010306218051155912,
+      "weight": 0.0010306217998227217,
       "weightRank": 217
     },
     {
@@ -2861,7 +2861,7 @@
       "momentum": -0.1504804631633152,
       "relativeMomentum": 0.8604478501826034,
       "rawWeightScore": 243030.74502239877,
-      "weight": 0.0010181547499558583,
+      "weight": 0.0010181547447270147,
       "weightRank": 218
     },
     {
@@ -2874,7 +2874,7 @@
       "momentum": 0.046859555851503254,
       "relativeMomentum": 1.0603264730434427,
       "rawWeightScore": 242229.9876405832,
-      "weight": 0.0010148000512251172,
+      "weight": 0.001014800046013502,
       "weightRank": 219
     },
     {
@@ -2887,7 +2887,7 @@
       "momentum": 0.00807500854068155,
       "relativeMomentum": 1.021042997023376,
       "rawWeightScore": 241405.25631306236,
-      "weight": 0.0010113449158739279,
+      "weight": 0.001011344910680057,
       "weightRank": 220
     },
     {
@@ -2900,7 +2900,7 @@
       "momentum": -0.006556718551476326,
       "relativeMomentum": 1.0062230457744785,
       "rawWeightScore": 241175.08431452292,
-      "weight": 0.0010103806316489087,
+      "weight": 0.00101038062645999,
       "weightRank": 221
     },
     {
@@ -2913,7 +2913,7 @@
       "momentum": 0.0218772479627225,
       "relativeMomentum": 1.0350227899809616,
       "rawWeightScore": 240982.75344680218,
-      "weight": 0.0010095748793293208,
+      "weight": 0.00100957487414454,
       "weightRank": 222
     },
     {
@@ -2926,7 +2926,7 @@
       "momentum": -0.05388032994759406,
       "relativeMomentum": 0.9582906582036267,
       "rawWeightScore": 235852.31085446835,
-      "weight": 0.0009880813662584576,
+      "weight": 0.000988081361184059,
       "weightRank": 223
     },
     {
@@ -2939,7 +2939,7 @@
       "momentum": 0.05041801883261465,
       "relativeMomentum": 1.0639307124861905,
       "rawWeightScore": 235841.66191490984,
-      "weight": 0.000988036753514533,
+      "weight": 0.0009880367484403636,
       "weightRank": 224
     },
     {
@@ -2952,7 +2952,7 @@
       "momentum": -0.18341087666259626,
       "relativeMomentum": 0.8270938161993593,
       "rawWeightScore": 235307.61250082921,
-      "weight": 0.0009857994030607572,
+      "weight": 0.000985799397998078,
       "weightRank": 225
     },
     {
@@ -2965,7 +2965,7 @@
       "momentum": -0.02105422673061641,
       "relativeMomentum": 0.9915390400455508,
       "rawWeightScore": 233341.00416427807,
-      "weight": 0.0009775604799608104,
+      "weight": 0.000977560474940443,
       "weightRank": 226
     },
     {
@@ -2978,7 +2978,7 @@
       "momentum": 0.19462276731172645,
       "relativeMomentum": 1.2099905268101885,
       "rawWeightScore": 233239.12013602044,
-      "weight": 0.0009771336462805467,
+      "weight": 0.0009771336412623714,
       "weightRank": 227
     },
     {
@@ -2991,7 +2991,7 @@
       "momentum": 0.01186143209908197,
       "relativeMomentum": 1.0248781295535097,
       "rawWeightScore": 230560.02454835142,
-      "weight": 0.0009659098239698361,
+      "weight": 0.0009659098190093019,
       "weightRank": 228
     },
     {
@@ -3004,7 +3004,7 @@
       "momentum": 0.12685743693514384,
       "relativeMomentum": 1.1413534557234362,
       "rawWeightScore": 230199.80945577656,
-      "weight": 0.0009644007362719933,
+      "weight": 0.0009644007313192092,
       "weightRank": 229
     },
     {
@@ -3017,7 +3017,7 @@
       "momentum": -0.2567033289458135,
       "relativeMomentum": 0.7528585216980287,
       "rawWeightScore": 229686.0074208098,
-      "weight": 0.0009622482103338031,
+      "weight": 0.0009622482053920735,
       "weightRank": 230
     },
     {
@@ -3030,7 +3030,7 @@
       "momentum": -0.12099898530874731,
       "relativeMomentum": 0.8903085810312756,
       "rawWeightScore": 229361.1203994475,
-      "weight": 0.0009608871263114151,
+      "weight": 0.0009608871213766756,
       "weightRank": 231
     },
     {
@@ -3043,7 +3043,7 @@
       "momentum": 0.14251411059065688,
       "relativeMomentum": 1.15721153856172,
       "rawWeightScore": 227813.55185779958,
-      "weight": 0.0009544037315400422,
+      "weight": 0.0009544037266385988,
       "weightRank": 232
     },
     {
@@ -3056,7 +3056,7 @@
       "momentum": -0.053592625613310796,
       "relativeMomentum": 0.958582063598309,
       "rawWeightScore": 227748.69645458303,
-      "weight": 0.000954132025847665,
+      "weight": 0.000954132020947617,
       "weightRank": 233
     },
     {
@@ -3069,7 +3069,7 @@
       "momentum": -0.08996160855092405,
       "relativeMomentum": 0.9217452260389003,
       "rawWeightScore": 227157.80882671764,
-      "weight": 0.0009516565569725404,
+      "weight": 0.0009516565520852055,
       "weightRank": 234
     },
     {
@@ -3082,7 +3082,7 @@
       "momentum": -0.007242906637942803,
       "relativeMomentum": 1.005528030488521,
       "rawWeightScore": 225468.01164345542,
-      "weight": 0.0009445773085077345,
+      "weight": 0.0009445773036567558,
       "weightRank": 235
     },
     {
@@ -3095,7 +3095,7 @@
       "momentum": 0.051672587473695186,
       "relativeMomentum": 1.0652014200371245,
       "rawWeightScore": 223922.0665559138,
-      "weight": 0.0009381007150466629,
+      "weight": 0.0009381007102289454,
       "weightRank": 236
     },
     {
@@ -3108,7 +3108,7 @@
       "momentum": 0.2562461201789128,
       "relativeMomentum": 1.2724066093090751,
       "rawWeightScore": 223587.1764046227,
-      "weight": 0.0009366977238398547,
+      "weight": 0.0009366977190293425,
       "weightRank": 237
     },
     {
@@ -3121,7 +3121,7 @@
       "momentum": -0.10454449905130436,
       "relativeMomentum": 0.906974739621102,
       "rawWeightScore": 222444.3736330612,
-      "weight": 0.000931910057694895,
+      "weight": 0.0009319100529089704,
       "weightRank": 238
     },
     {
@@ -3134,7 +3134,7 @@
       "momentum": 0.09989038021564123,
       "relativeMomentum": 1.1140394918016046,
       "rawWeightScore": 222397.2839491005,
-      "weight": 0.0009317127798344578,
+      "weight": 0.0009317127750495463,
       "weightRank": 239
     },
     {
@@ -3147,7 +3147,7 @@
       "momentum": 0.2379541352967205,
       "relativeMomentum": 1.2538793143088178,
       "rawWeightScore": 222182.14742618584,
-      "weight": 0.000930811485339087,
+      "weight": 0.0009308114805588042,
       "weightRank": 240
     },
     {
@@ -3160,7 +3160,7 @@
       "momentum": 0.07506463680052922,
       "relativeMomentum": 1.0888943872755097,
       "rawWeightScore": 221852.8214210079,
-      "weight": 0.0009294318046059969,
+      "weight": 0.0009294317998327996,
       "weightRank": 241
     },
     {
@@ -3173,7 +3173,7 @@
       "momentum": -0.01270072711971959,
       "relativeMomentum": 1.0,
       "rawWeightScore": 221626.1802969135,
-      "weight": 0.0009284823126517556,
+      "weight": 0.0009284823078834345,
       "weightRank": 242
     },
     {
@@ -3186,20 +3186,20 @@
       "momentum": -0.09619757247568095,
       "relativeMomentum": 0.9154290419840245,
       "rawWeightScore": 221195.17813696642,
-      "weight": 0.0009266766691050887,
+      "weight": 0.0009266766643460406,
       "weightRank": 243
     },
     {
       "ticker": "PWR",
       "marketCap": 94660856305.0,
-      "earlyPrice": 727.6588134765625,
-      "recentPrice": 642.510009765625,
-      "momentumGross": 0.8829825157973159,
+      "earlyPrice": 727.5343017578125,
+      "recentPrice": 642.4000244140625,
+      "momentumGross": 0.8829824557576803,
       "momentumFallback": null,
-      "momentum": -0.1170174842026841,
-      "relativeMomentum": 0.8943413006082362,
-      "rawWeightScore": 220087.34688018606,
-      "weight": 0.0009220355128755073,
+      "momentum": -0.1170175442423197,
+      "relativeMomentum": 0.8943412397962441,
+      "rawWeightScore": 220087.30198474484,
+      "weight": 0.0009220353200550113,
       "weightRank": 244
     },
     {
@@ -3212,7 +3212,7 @@
       "momentum": -0.06561707359604196,
       "relativeMomentum": 0.946402931785873,
       "rawWeightScore": 219640.63935251057,
-      "weight": 0.0009201640731483983,
+      "weight": 0.0009201640684227964,
       "weightRank": 245
     },
     {
@@ -3225,7 +3225,7 @@
       "momentum": -0.09875674069487372,
       "relativeMomentum": 0.9128369523416136,
       "rawWeightScore": 219600.63557677972,
-      "weight": 0.0009199964810428284,
+      "weight": 0.0009199964763180872,
       "weightRank": 246
     },
     {
@@ -3238,7 +3238,7 @@
       "momentum": -0.08576864302931042,
       "relativeMomentum": 0.9259921303330576,
       "rawWeightScore": 219284.18062570784,
-      "weight": 0.0009186707223963197,
+      "weight": 0.0009186707176783871,
       "weightRank": 247
     },
     {
@@ -3251,33 +3251,33 @@
       "momentum": 0.22876968120084773,
       "relativeMomentum": 1.2445767103789287,
       "rawWeightScore": 218638.29977187415,
-      "weight": 0.0009159648645050652,
+      "weight": 0.0009159648598010288,
       "weightRank": 248
     },
     {
       "ticker": "EXPE",
       "marketCap": 30153637854.0,
-      "earlyPrice": 247.4870147705078,
+      "earlyPrice": 247.48699951171875,
       "recentPrice": 263.3599853515625,
-      "momentumGross": 1.0641365794313433,
+      "momentumGross": 1.0641366450405898,
       "momentumFallback": null,
-      "momentum": 0.06413657943134332,
-      "relativeMomentum": 1.0778257501668191,
-      "rawWeightScore": 217428.02574129082,
-      "weight": 0.0009108945337826166,
+      "momentum": 0.0641366450405898,
+      "relativeMomentum": 1.0778258166200703,
+      "rawWeightScore": 217428.0659578103,
+      "weight": 0.0009108946975879943,
       "weightRank": 249
     },
     {
       "ticker": "KVUE",
       "marketCap": 33920859427.0,
-      "earlyPrice": 16.928356170654297,
+      "earlyPrice": 16.92835807800293,
       "recentPrice": 17.65999984741211,
-      "momentumGross": 1.0432200072695856,
+      "momentumGross": 1.043219889728106,
       "momentumFallback": null,
-      "momentum": 0.043220007269585636,
-      "relativeMomentum": 1.0566401049057454,
-      "rawWeightScore": 217277.46949329192,
-      "weight": 0.0009102637923551421,
+      "momentum": 0.043219889728105976,
+      "relativeMomentum": 1.056639985852199,
+      "rawWeightScore": 217277.39605016712,
+      "weight": 0.0009102634799972309,
       "weightRank": 250
     },
     {
@@ -3290,7 +3290,7 @@
       "momentum": -0.1876609874541214,
       "relativeMomentum": 0.8227890315122136,
       "rawWeightScore": 213597.1959105575,
-      "weight": 0.0008948456277560386,
+      "weight": 0.0008948456231604623,
       "weightRank": 251
     },
     {
@@ -3303,33 +3303,33 @@
       "momentum": -0.2024288506803621,
       "relativeMomentum": 0.8078311928589368,
       "rawWeightScore": 213116.99961602478,
-      "weight": 0.0008928338899483607,
+      "weight": 0.0008928338853631158,
       "weightRank": 252
     },
     {
       "ticker": "SO",
       "marketCap": 95353586252.0,
-      "earlyPrice": 95.1204833984375,
+      "earlyPrice": 95.12047576904297,
       "recentPrice": 82.88999938964844,
-      "momentumGross": 0.871421132737957,
+      "momentumGross": 0.8714212026326412,
       "momentumFallback": null,
-      "momentum": -0.12857886726204304,
-      "relativeMomentum": 0.8826311906375983,
-      "rawWeightScore": 212327.53971735234,
-      "weight": 0.0008895265209746988,
+      "momentum": -0.12857879736735878,
+      "relativeMomentum": 0.8826312614314155,
+      "rawWeightScore": 212327.59080826683,
+      "weight": 0.0008895267304470826,
       "weightRank": 253
     },
     {
       "ticker": "AMCR",
       "marketCap": 19353790583.0,
-      "earlyPrice": 36.886722564697266,
+      "earlyPrice": 36.88672637939453,
       "recentPrice": 41.86000061035156,
-      "momentumGross": 1.1348256960734704,
+      "momentumGross": 1.1348255787137342,
       "momentumFallback": null,
-      "momentum": 0.1348256960734704,
-      "relativeMomentum": 1.149424219429238,
-      "rawWeightScore": 211263.29564623284,
-      "weight": 0.0008850679692140036,
+      "momentum": 0.13482557871373424,
+      "relativeMomentum": 1.149424100559773,
+      "rawWeightScore": 211263.23010188842,
+      "weight": 0.0008850676900766952,
       "weightRank": 254
     },
     {
@@ -3342,46 +3342,46 @@
       "momentum": -0.037219443970147204,
       "relativeMomentum": 0.9751658716622992,
       "rawWeightScore": 211073.1191479884,
-      "weight": 0.0008842712424253839,
+      "weight": 0.0008842712378841134,
       "weightRank": 255
     },
     {
       "ticker": "D",
       "marketCap": 53228910433.0,
-      "earlyPrice": 63.22185516357422,
+      "earlyPrice": 63.22185134887695,
       "recentPrice": 60.52000045776367,
-      "momentumGross": 0.9572639129487734,
+      "momentumGross": 0.9572639707084238,
       "momentumFallback": null,
-      "momentum": -0.04273608705122656,
-      "relativeMomentum": 0.9695782618740477,
-      "rawWeightScore": 210291.82893998135,
-      "weight": 0.0008809980996125144,
+      "momentum": -0.04273602929157616,
+      "relativeMomentum": 0.9695783203767246,
+      "rawWeightScore": 210291.8670059204,
+      "weight": 0.0008809982545617713,
       "weightRank": 256
     },
     {
       "ticker": "APD",
       "marketCap": 61957795012.0,
-      "earlyPrice": 298.19757080078125,
-      "recentPrice": 278.2300109863281,
-      "momentumGross": 0.9330391600413372,
+      "earlyPrice": 296.2576599121094,
+      "recentPrice": 276.4200134277344,
+      "momentumGross": 0.9330392115759633,
       "momentumFallback": null,
-      "momentum": -0.06696083995866275,
-      "relativeMomentum": 0.9450418790640366,
-      "rawWeightScore": 210087.9484750333,
-      "weight": 0.0008801439613272908,
+      "momentum": -0.06696078842403674,
+      "relativeMomentum": 0.9450419312616097,
+      "rawWeightScore": 210087.98328644826,
+      "weight": 0.0008801441026464077,
       "weightRank": 257
     },
     {
       "ticker": "AIG",
       "marketCap": 38913709637.0,
-      "earlyPrice": 73.81722259521484,
+      "earlyPrice": 73.81723022460938,
       "recentPrice": 74.41999816894531,
-      "momentumGross": 1.0081657850639525,
+      "momentumGross": 1.008165680864777,
       "momentumFallback": null,
-      "momentum": 0.008165785063952491,
-      "relativeMomentum": 1.0211349413058894,
-      "rawWeightScore": 210039.38042944393,
-      "weight": 0.0008799404900080207,
+      "momentum": 0.00816568086477698,
+      "relativeMomentum": 1.0211348357662842,
+      "rawWeightScore": 210039.31530346462,
+      "weight": 0.0008799402126497469,
       "weightRank": 258
     },
     {
@@ -3394,20 +3394,20 @@
       "momentum": 0.1432356677974882,
       "relativeMomentum": 1.1579423779603215,
       "rawWeightScore": 209808.73488255707,
-      "weight": 0.0008789742218961512,
+      "weight": 0.0008789742173820843,
       "weightRank": 259
     },
     {
       "ticker": "ARES",
       "marketCap": 38368305693.0,
-      "earlyPrice": 115.01371002197266,
+      "earlyPrice": 115.01371765136719,
       "recentPrice": 116.16999816894531,
-      "momentumGross": 1.010053480987195,
+      "momentumGross": 1.0100534139856523,
       "momentumFallback": null,
-      "momentum": 0.010053480987195051,
-      "relativeMomentum": 1.0230469207584172,
-      "rawWeightScore": 209735.99389391742,
-      "weight": 0.0008786694802755257,
+      "momentum": 0.010053413985652293,
+      "relativeMomentum": 1.023046852894959,
+      "rawWeightScore": 209735.9521556297,
+      "weight": 0.0008786693009043421,
       "weightRank": 260
     },
     {
@@ -3420,7 +3420,7 @@
       "momentum": 0.04014713944300552,
       "relativeMomentum": 1.053527707367342,
       "rawWeightScore": 208830.3609503435,
-      "weight": 0.0008748754151125715,
+      "weight": 0.0008748754106195543,
       "weightRank": 261
     },
     {
@@ -3433,20 +3433,20 @@
       "momentum": -0.06670805202305574,
       "relativeMomentum": 0.9452979188916256,
       "rawWeightScore": 206638.13962476552,
-      "weight": 0.0008656913073348249,
+      "weight": 0.0008656913028889738,
       "weightRank": 262
     },
     {
       "ticker": "WM",
       "marketCap": 81509920321.0,
-      "earlyPrice": 230.5277557373047,
+      "earlyPrice": 230.52774047851562,
       "recentPrice": 203.9199981689453,
-      "momentumGross": 0.8845789415540923,
+      "momentumGross": 0.8845790001049785,
       "momentumFallback": null,
-      "momentum": -0.11542105844590766,
-      "relativeMomentum": 0.8959582629626388,
-      "rawWeightScore": 205337.64252218645,
-      "weight": 0.0008602429954260881,
+      "momentum": -0.11542099989502153,
+      "relativeMomentum": 0.89595832226673,
+      "rawWeightScore": 205337.68329650682,
+      "weight": 0.0008602431618284474,
       "weightRank": 263
     },
     {
@@ -3459,20 +3459,20 @@
       "momentum": -0.1127755396806045,
       "relativeMomentum": 0.8986378139741424,
       "rawWeightScore": 204611.25676768617,
-      "weight": 0.0008571998697253602,
+      "weight": 0.0008571998653231177,
       "weightRank": 264
     },
     {
       "ticker": "APO",
       "marketCap": 68538439034.0,
-      "earlyPrice": 127.64032745361328,
+      "earlyPrice": 127.64031219482422,
       "recentPrice": 116.05999755859375,
-      "momentumGross": 0.9092737371797481,
+      "momentumGross": 0.9092738458790761,
       "momentumFallback": null,
-      "momentum": -0.09072626282025187,
-      "relativeMomentum": 0.9209707351724206,
-      "rawWeightScore": 204505.3129734092,
-      "weight": 0.0008567560280321559,
+      "momentum": -0.09072615412092389,
+      "relativeMomentum": 0.9209708452700688,
+      "rawWeightScore": 204505.3863163152,
+      "weight": 0.0008567563308954888,
       "weightRank": 265
     },
     {
@@ -3485,7 +3485,7 @@
       "momentum": -0.020797637909368394,
       "relativeMomentum": 0.9917989296537945,
       "rawWeightScore": 203735.83887850473,
-      "weight": 0.0008535323877284455,
+      "weight": 0.0008535323833450377,
       "weightRank": 266
     },
     {
@@ -3498,7 +3498,7 @@
       "momentum": -0.055583910032409145,
       "relativeMomentum": 0.9565651630760499,
       "rawWeightScore": 202926.8276254105,
-      "weight": 0.0008501431101700455,
+      "weight": 0.0008501431058040438,
       "weightRank": 267
     },
     {
@@ -3511,7 +3511,7 @@
       "momentum": 0.10806221411938122,
       "relativeMomentum": 1.1223164490811333,
       "rawWeightScore": 201766.10456226478,
-      "weight": 0.0008452803686267227,
+      "weight": 0.0008452803642856941,
       "weightRank": 268
     },
     {
@@ -3524,7 +3524,7 @@
       "momentum": -0.12159287930014429,
       "relativeMomentum": 0.8897070471218417,
       "rawWeightScore": 201616.70584746732,
-      "weight": 0.000844654476577162,
+      "weight": 0.0008446544722393478,
       "weightRank": 269
     },
     {
@@ -3537,7 +3537,7 @@
       "momentum": -0.04646606251464158,
       "relativeMomentum": 0.965800303593441,
       "rawWeightScore": 200780.16906285865,
-      "weight": 0.0008411498833591985,
+      "weight": 0.0008411498790393824,
       "weightRank": 270
     },
     {
@@ -3550,7 +3550,7 @@
       "momentum": -0.07034724264898229,
       "relativeMomentum": 0.9416119133147048,
       "rawWeightScore": 200715.19975483735,
-      "weight": 0.0008408777004732137,
+      "weight": 0.0008408776961547955,
       "weightRank": 271
     },
     {
@@ -3563,7 +3563,7 @@
       "momentum": -0.2146660588025472,
       "relativeMomentum": 0.7954365639370649,
       "rawWeightScore": 200047.98680125983,
-      "weight": 0.00083808247372997,
+      "weight": 0.0008380824694259071,
       "weightRank": 272
     },
     {
@@ -3576,7 +3576,7 @@
       "momentum": 0.027708806099005834,
       "relativeMomentum": 1.0409293659265415,
       "rawWeightScore": 198537.30442193756,
-      "weight": 0.0008317536101121598,
+      "weight": 0.0008317536058405993,
       "weightRank": 273
     },
     {
@@ -3589,7 +3589,7 @@
       "momentum": 0.015477139300853704,
       "relativeMomentum": 1.0285403496129082,
       "rawWeightScore": 195865.42932388815,
-      "weight": 0.0008205600373725582,
+      "weight": 0.0008205600331584836,
       "weightRank": 274
     },
     {
@@ -3602,7 +3602,7 @@
       "momentum": 0.055572994413320975,
       "relativeMomentum": 1.0691520022433152,
       "rawWeightScore": 195026.88772883292,
-      "weight": 0.0008170470451873005,
+      "weight": 0.0008170470409912672,
       "weightRank": 275
     },
     {
@@ -3615,20 +3615,20 @@
       "momentum": 0.07240652504751899,
       "relativeMomentum": 1.0862020812787114,
       "rawWeightScore": 194332.17441340903,
-      "weight": 0.0008141366082304816,
+      "weight": 0.0008141366040493952,
       "weightRank": 276
     },
     {
       "ticker": "IP",
       "marketCap": 17565833417.0,
-      "earlyPrice": 29.635387420654297,
+      "earlyPrice": 29.63538932800293,
       "recentPrice": 33.16999816894531,
-      "momentumGross": 1.1192699355712683,
+      "momentumGross": 1.1192698635344898,
       "momentumFallback": null,
-      "momentum": 0.1192699355712683,
-      "relativeMomentum": 1.133668347902238,
-      "rawWeightScore": 193104.52192169646,
-      "weight": 0.0008089934720580722,
+      "momentum": 0.11926986353448976,
+      "relativeMomentum": 1.1336682749387703,
+      "rawWeightScore": 193104.48463678503,
+      "weight": 0.0008089933117017238,
       "weightRank": 277
     },
     {
@@ -3641,7 +3641,7 @@
       "momentum": 0.08817226931989963,
       "relativeMomentum": 1.1021706378303502,
       "rawWeightScore": 191357.44417651813,
-      "weight": 0.0008016742519954766,
+      "weight": 0.000801674247878392,
       "weightRank": 278
     },
     {
@@ -3654,7 +3654,7 @@
       "momentum": -0.07839990747016379,
       "relativeMomentum": 0.933455658122002,
       "rawWeightScore": 191268.4793526758,
-      "weight": 0.0008013015421230458,
+      "weight": 0.0008013015380078753,
       "weightRank": 279
     },
     {
@@ -3667,7 +3667,7 @@
       "momentum": -0.0824689350712694,
       "relativeMomentum": 0.9293342860994795,
       "rawWeightScore": 190886.6439025942,
-      "weight": 0.0007997018779440702,
+      "weight": 0.0007997018738371149,
       "weightRank": 280
     },
     {
@@ -3680,7 +3680,7 @@
       "momentum": 0.1674539261604786,
       "relativeMomentum": 1.1824721826793483,
       "rawWeightScore": 190789.16749872686,
-      "weight": 0.0007992935095971066,
+      "weight": 0.0007992935054922484,
       "weightRank": 281
     },
     {
@@ -3693,7 +3693,7 @@
       "momentum": 0.03714003862341819,
       "relativeMomentum": 1.0504819228699882,
       "rawWeightScore": 190274.23607176857,
-      "weight": 0.0007971362521759897,
+      "weight": 0.0007971362480822103,
       "weightRank": 282
     },
     {
@@ -3706,7 +3706,7 @@
       "momentum": 0.00871316839837899,
       "relativeMomentum": 1.0216893662401139,
       "rawWeightScore": 189057.58900353443,
-      "weight": 0.0007920392222038012,
+      "weight": 0.0007920392181361983,
       "weightRank": 283
     },
     {
@@ -3719,7 +3719,7 @@
       "momentum": 0.0371927432989998,
       "relativeMomentum": 1.0505353055443498,
       "rawWeightScore": 188313.0911673146,
-      "weight": 0.0007889202176177385,
+      "weight": 0.0007889202135661536,
       "weightRank": 284
     },
     {
@@ -3732,7 +3732,7 @@
       "momentum": -0.061010252333757675,
       "relativeMomentum": 0.9510690157067541,
       "rawWeightScore": 188178.61322925048,
-      "weight": 0.000788356834777466,
+      "weight": 0.0007883568307287744,
       "weightRank": 285
     },
     {
@@ -3745,20 +3745,20 @@
       "momentum": -0.029285154695471993,
       "relativeMomentum": 0.9832022285123637,
       "rawWeightScore": 187212.8718693203,
-      "weight": 0.0007843109509830058,
+      "weight": 0.0007843109469550922,
       "weightRank": 286
     },
     {
       "ticker": "FDX",
       "marketCap": 67472374314.0,
-      "earlyPrice": 322.50640869140625,
+      "earlyPrice": 322.5063781738281,
       "recentPrice": 285.0899963378906,
-      "momentumGross": 0.883982422224304,
+      "momentumGross": 0.8839825058722702,
       "momentumFallback": null,
-      "momentum": -0.11601757777569599,
-      "relativeMomentum": 0.8953540699421698,
-      "rawWeightScore": 186443.5797066293,
-      "weight": 0.000781088072867418,
+      "momentum": -0.11601749412772977,
+      "relativeMomentum": 0.8953541546661927,
+      "rawWeightScore": 186443.63263402018,
+      "weight": 0.0007810882905904465,
       "weightRank": 287
     },
     {
@@ -3771,7 +3771,7 @@
       "momentum": -0.01274965985702392,
       "relativeMomentum": 0.9999504377865471,
       "rawWeightScore": 185867.37030019923,
-      "weight": 0.0007786740970386728,
+      "weight": 0.0007786740930397079,
       "weightRank": 288
     },
     {
@@ -3784,7 +3784,7 @@
       "momentum": 0.15552908912705798,
       "relativeMomentum": 1.1703939432224995,
       "rawWeightScore": 185438.94630953253,
-      "weight": 0.0007768792544929194,
+      "weight": 0.0007768792505031722,
       "weightRank": 289
     },
     {
@@ -3797,7 +3797,7 @@
       "momentum": -0.11460155378944181,
       "relativeMomentum": 0.8967883098177074,
       "rawWeightScore": 183809.34333916535,
-      "weight": 0.0007700521840962558,
+      "weight": 0.0007700521801415698,
       "weightRank": 290
     },
     {
@@ -3810,7 +3810,7 @@
       "momentum": 0.15270081615870823,
       "relativeMomentum": 1.1675292870376544,
       "rawWeightScore": 182715.61319289653,
-      "weight": 0.0007654701031604019,
+      "weight": 0.0007654700992292475,
       "weightRank": 291
     },
     {
@@ -3823,33 +3823,33 @@
       "momentum": -0.10034230706743885,
       "relativeMomentum": 0.9112309890677427,
       "rawWeightScore": 182558.20425480252,
-      "weight": 0.00076481065302379,
+      "weight": 0.0007648106490960223,
       "weightRank": 292
     },
     {
       "ticker": "RJF",
       "marketCap": 30396997572.0,
-      "earlyPrice": 157.75765991210938,
-      "recentPrice": 158.02000427246094,
-      "momentumGross": 1.0016629579856706,
+      "earlyPrice": 157.2185516357422,
+      "recentPrice": 157.47999572753906,
+      "momentumGross": 1.0016629341071823,
       "momentumFallback": null,
-      "momentum": 0.0016629579856706211,
-      "relativeMomentum": 1.0145484611403457,
-      "rawWeightScore": 182068.04705902032,
-      "weight": 0.0007627571849448245,
+      "momentum": 0.0016629341071823234,
+      "relativeMomentum": 1.0145484369546818,
+      "rawWeightScore": 182068.03403814457,
+      "weight": 0.0007627571264778525,
       "weightRank": 293
     },
     {
       "ticker": "SLB",
       "marketCap": 72307458214.0,
-      "earlyPrice": 56.291255950927734,
+      "earlyPrice": 56.29125213623047,
       "recentPrice": 48.720001220703125,
-      "momentumGross": 0.8654985645226161,
+      "momentumGross": 0.86549862317498,
       "momentumFallback": null,
-      "momentum": -0.1345014354773839,
-      "relativeMomentum": 0.8766324338492308,
-      "rawWeightScore": 181152.42490272128,
-      "weight": 0.0007589212709022832,
+      "momentum": -0.13450137682501995,
+      "relativeMomentum": 0.8766324932561053,
+      "rawWeightScore": 181152.46173126996,
+      "weight": 0.0007589214212945468,
       "weightRank": 294
     },
     {
@@ -3862,7 +3862,7 @@
       "momentum": -0.09977790731937941,
       "relativeMomentum": 0.9118026493166285,
       "rawWeightScore": 179968.9535513242,
-      "weight": 0.000753963227516659,
+      "weight": 0.0007539632236445994,
       "weightRank": 295
     },
     {
@@ -3875,20 +3875,20 @@
       "momentum": -0.107547996410983,
       "relativeMomentum": 0.9039326049389641,
       "rawWeightScore": 178963.32250818028,
-      "weight": 0.00074975022959664,
+      "weight": 0.0007497502257462167,
       "weightRank": 296
     },
     {
       "ticker": "AEP",
       "marketCap": 64587301841.0,
-      "earlyPrice": 135.09291076660156,
+      "earlyPrice": 135.0928955078125,
       "recentPrice": 118.63999938964844,
-      "momentumGross": 0.8782104013927228,
+      "momentumGross": 0.87821050058689,
       "momentumFallback": null,
-      "momentum": -0.12178959860727723,
-      "relativeMomentum": 0.8895077971957691,
-      "rawWeightScore": 178863.96305464164,
-      "weight": 0.0007493339723878491,
+      "momentum": -0.12178949941311001,
+      "relativeMomentum": 0.889507897665981,
+      "rawWeightScore": 178864.0236628871,
+      "weight": 0.0007493342224521815,
       "weightRank": 297
     },
     {
@@ -3901,20 +3901,20 @@
       "momentum": 0.022142136846007077,
       "relativeMomentum": 1.0352910864241582,
       "rawWeightScore": 177992.8718036942,
-      "weight": 0.0007456846164402493,
+      "weight": 0.0007456846126107054,
       "weightRank": 298
     },
     {
       "ticker": "TKO",
       "marketCap": 34015552820.0,
-      "earlyPrice": 184.6111602783203,
+      "earlyPrice": 184.61114501953125,
       "recentPrice": 179.72000122070312,
-      "momentumGross": 0.9735056155313511,
+      "momentumGross": 0.9735056959951651,
       "momentumFallback": null,
-      "momentum": -0.026494384468648935,
-      "relativeMomentum": 0.9860288995162646,
-      "rawWeightScore": 176810.35589943355,
-      "weight": 0.0007407305758117255,
+      "momentum": -0.02649430400483488,
+      "relativeMomentum": 0.986028981015174,
+      "rawWeightScore": 176810.39974151275,
+      "weight": 0.0007407307556799445,
       "weightRank": 299
     },
     {
@@ -3927,7 +3927,7 @@
       "momentum": 0.11014441192166502,
       "relativeMomentum": 1.1244254325064016,
       "rawWeightScore": 176077.45157158587,
-      "weight": 0.0007376601411529644,
+      "weight": 0.0007376601373646312,
       "weightRank": 300
     },
     {
@@ -3940,7 +3940,7 @@
       "momentum": -0.09153665223656537,
       "relativeMomentum": 0.9201499208169625,
       "rawWeightScore": 175323.3576473923,
-      "weight": 0.0007345009346469737,
+      "weight": 0.0007345009308748648,
       "weightRank": 301
     },
     {
@@ -3953,7 +3953,7 @@
       "momentum": 0.021195986830099267,
       "relativeMomentum": 1.034332765029727,
       "rawWeightScore": 175219.10681694534,
-      "weight": 0.0007340641854686068,
+      "weight": 0.000734064181698741,
       "weightRank": 302
     },
     {
@@ -3966,7 +3966,7 @@
       "momentum": 0.1964558042035791,
       "relativeMomentum": 1.2118471440914966,
       "rawWeightScore": 174381.30317377578,
-      "weight": 0.0007305542848642829,
+      "weight": 0.0007305542811124426,
       "weightRank": 303
     },
     {
@@ -3979,7 +3979,7 @@
       "momentum": -0.09624670147135028,
       "relativeMomentum": 0.9153792809875173,
       "rawWeightScore": 174014.6063681831,
-      "weight": 0.0007290180426313365,
+      "weight": 0.0007290180388873857,
       "weightRank": 304
     },
     {
@@ -3992,7 +3992,7 @@
       "momentum": 0.09354071138170328,
       "relativeMomentum": 1.107608140125011,
       "rawWeightScore": 173584.48850142126,
-      "weight": 0.0007272161037488957,
+      "weight": 0.0007272161000141989,
       "weightRank": 305
     },
     {
@@ -4005,7 +4005,7 @@
       "momentum": -0.0600176762221144,
       "relativeMomentum": 0.9520743604273549,
       "rawWeightScore": 173526.19510926775,
-      "weight": 0.0007269718889928298,
+      "weight": 0.0007269718852593873,
       "weightRank": 306
     },
     {
@@ -4018,7 +4018,7 @@
       "momentum": -0.1407444431489996,
       "relativeMomentum": 0.870309115435957,
       "rawWeightScore": 173276.11185925512,
-      "weight": 0.0007259241884277788,
+      "weight": 0.0007259241846997168,
       "weightRank": 307
     },
     {
@@ -4031,7 +4031,7 @@
       "momentum": -0.022231616498779916,
       "relativeMomentum": 0.9903465042050973,
       "rawWeightScore": 172435.43928577736,
-      "weight": 0.0007224022687062015,
+      "weight": 0.0007224022649962267,
       "weightRank": 308
     },
     {
@@ -4044,7 +4044,7 @@
       "momentum": 0.03624089008548159,
       "relativeMomentum": 1.0495712075857426,
       "rawWeightScore": 172253.6092336396,
-      "weight": 0.0007216405085788904,
+      "weight": 0.0007216405048728276,
       "weightRank": 309
     },
     {
@@ -4057,7 +4057,7 @@
       "momentum": 0.08335177204210398,
       "relativeMomentum": 1.0972881291420447,
       "rawWeightScore": 171972.94631709618,
-      "weight": 0.0007204646973390868,
+      "weight": 0.0007204646936390626,
       "weightRank": 310
     },
     {
@@ -4070,7 +4070,7 @@
       "momentum": -0.02630813777111196,
       "relativeMomentum": 0.9862175421119322,
       "rawWeightScore": 170953.6981526858,
-      "weight": 0.0007161946517533624,
+      "weight": 0.0007161946480752675,
       "weightRank": 311
     },
     {
@@ -4083,7 +4083,7 @@
       "momentum": -0.0688480495577618,
       "relativeMomentum": 0.9431303921917801,
       "rawWeightScore": 170153.3720026633,
-      "weight": 0.0007128417596281945,
+      "weight": 0.0007128417559673187,
       "weightRank": 312
     },
     {
@@ -4096,7 +4096,7 @@
       "momentum": 0.12709016970990272,
       "relativeMomentum": 1.1415891823983682,
       "rawWeightScore": 170125.2436848637,
-      "weight": 0.0007127239186514354,
+      "weight": 0.0007127239149911648,
       "weightRank": 313
     },
     {
@@ -4109,7 +4109,7 @@
       "momentum": 0.09218842309505892,
       "relativeMomentum": 1.1062384558521774,
       "rawWeightScore": 168455.31678627926,
-      "weight": 0.0007057279149000743,
+      "weight": 0.0007057279112757324,
       "weightRank": 314
     },
     {
@@ -4122,20 +4122,20 @@
       "momentum": -0.18592409442337787,
       "relativeMomentum": 0.8245482681271423,
       "rawWeightScore": 168179.2091806775,
-      "weight": 0.0007045711877126707,
+      "weight": 0.0007045711840942693,
       "weightRank": 315
     },
     {
       "ticker": "AIZ",
       "marketCap": 12996812605.0,
-      "earlyPrice": 234.73670959472656,
+      "earlyPrice": 234.7366943359375,
       "recentPrice": 263.5,
-      "momentumGross": 1.1225342659651885,
+      "momentumGross": 1.1225343389342384,
       "momentumFallback": null,
-      "momentum": 0.12253426596518846,
-      "relativeMomentum": 1.1369746710036386,
-      "rawWeightScore": 167560.17215662054,
-      "weight": 0.0007019777895548201,
+      "momentum": 0.12253433893423837,
+      "relativeMomentum": 1.1369747449113705,
+      "rawWeightScore": 167560.204832792,
+      "weight": 0.0007019779228435242,
       "weightRank": 316
     },
     {
@@ -4148,7 +4148,7 @@
       "momentum": 0.05981707405825465,
       "relativeMomentum": 1.0734506781985322,
       "rawWeightScore": 166817.29968120455,
-      "weight": 0.0006988655942669911,
+      "weight": 0.0006988655906778915,
       "weightRank": 317
     },
     {
@@ -4161,7 +4161,7 @@
       "momentum": 0.01616804859192622,
       "relativeMomentum": 1.0292401468375703,
       "rawWeightScore": 166617.29517051036,
-      "weight": 0.0006980276939323767,
+      "weight": 0.00069802769034758,
       "weightRank": 318
     },
     {
@@ -4174,7 +4174,7 @@
       "momentum": 0.20483302386181323,
       "relativeMomentum": 1.2203321292305975,
       "rawWeightScore": 165265.18305777214,
-      "weight": 0.0006923631457291014,
+      "weight": 0.0006923631421733958,
       "weightRank": 319
     },
     {
@@ -4187,7 +4187,7 @@
       "momentum": -0.00887086334810172,
       "relativeMomentum": 1.0038791315630617,
       "rawWeightScore": 164434.53470452037,
-      "weight": 0.000688883221547787,
+      "weight": 0.0006888832180099528,
       "weightRank": 320
     },
     {
@@ -4200,7 +4200,7 @@
       "momentum": -0.06797510411029295,
       "relativeMomentum": 0.944014567306102,
       "rawWeightScore": 163562.23953781326,
-      "weight": 0.0006852288219068505,
+      "weight": 0.0006852288183877839,
       "weightRank": 321
     },
     {
@@ -4213,7 +4213,7 @@
       "momentum": -0.01346716428798922,
       "relativeMomentum": 0.9992237032991692,
       "rawWeightScore": 163491.26396163847,
-      "weight": 0.000684931476317894,
+      "weight": 0.0006849314728003545,
       "weightRank": 322
     },
     {
@@ -4226,7 +4226,7 @@
       "momentum": -0.1581823568851244,
       "relativeMomentum": 0.8526468784475183,
       "rawWeightScore": 162456.617500628,
-      "weight": 0.0006805969209977194,
+      "weight": 0.0006805969175024405,
       "weightRank": 323
     },
     {
@@ -4239,7 +4239,7 @@
       "momentum": -0.08263504187877702,
       "relativeMomentum": 0.9291660424756155,
       "rawWeightScore": 158746.6457391602,
-      "weight": 0.0006650543386351775,
+      "weight": 0.0006650543352197192,
       "weightRank": 324
     },
     {
@@ -4252,7 +4252,7 @@
       "momentum": 0.05366514881703566,
       "relativeMomentum": 1.0672196139101207,
       "rawWeightScore": 157580.3738901894,
-      "weight": 0.0006601683509686378,
+      "weight": 0.000660168347578272,
       "weightRank": 325
     },
     {
@@ -4265,7 +4265,7 @@
       "momentum": 0.12749773660638986,
       "relativeMomentum": 1.142001992280521,
       "rawWeightScore": 157336.92511950107,
-      "weight": 0.0006591484449389526,
+      "weight": 0.0006591484415538246,
       "weightRank": 326
     },
     {
@@ -4278,7 +4278,7 @@
       "momentum": -0.16299542031464276,
       "relativeMomentum": 0.8477718992373371,
       "rawWeightScore": 156778.73087264627,
-      "weight": 0.0006568099419492141,
+      "weight": 0.0006568099385760957,
       "weightRank": 327
     },
     {
@@ -4291,7 +4291,7 @@
       "momentum": -0.18430166512895874,
       "relativeMomentum": 0.8261915685315739,
       "rawWeightScore": 156712.0830446009,
-      "weight": 0.0006565307270593763,
+      "weight": 0.0006565307236876918,
       "weightRank": 328
     },
     {
@@ -4304,7 +4304,7 @@
       "momentum": -0.2234644015837235,
       "relativeMomentum": 0.7865250383005589,
       "rawWeightScore": 156455.51681156363,
-      "weight": 0.0006554558666386459,
+      "weight": 0.0006554558632724816,
       "weightRank": 329
     },
     {
@@ -4317,7 +4317,7 @@
       "momentum": -0.007752511796072836,
       "relativeMomentum": 1.0050118697132342,
       "rawWeightScore": 156406.92857701084,
-      "weight": 0.0006552523107395874,
+      "weight": 0.0006552523073744685,
       "weightRank": 330
     },
     {
@@ -4330,7 +4330,7 @@
       "momentum": 0.01778763284271445,
       "relativeMomentum": 1.0308805655994149,
       "rawWeightScore": 156387.98818424714,
-      "weight": 0.000655172961722011,
+      "weight": 0.0006551729583572995,
       "weightRank": 331
     },
     {
@@ -4343,7 +4343,7 @@
       "momentum": -0.032534085615251174,
       "relativeMomentum": 0.9799115029856438,
       "rawWeightScore": 155766.88849932313,
-      "weight": 0.0006525709222378989,
+      "weight": 0.0006525709188865505,
       "weightRank": 332
     },
     {
@@ -4356,33 +4356,33 @@
       "momentum": -0.014933309641493975,
       "relativeMomentum": 0.9977386972895653,
       "rawWeightScore": 155337.69822671454,
-      "weight": 0.0006507728694250705,
+      "weight": 0.0006507728660829562,
       "weightRank": 333
     },
     {
       "ticker": "CCL",
       "marketCap": 32996732566.0,
-      "earlyPrice": 26.211334228515625,
+      "earlyPrice": 26.211336135864258,
       "recentPrice": 24.540000915527344,
-      "momentumGross": 0.9362362366441455,
+      "momentumGross": 0.9362361685160311,
       "momentumFallback": null,
-      "momentum": -0.06376376335585454,
-      "relativeMomentum": 0.948280083214113,
-      "rawWeightScore": 154897.83791645637,
-      "weight": 0.0006489301154798232,
+      "momentum": -0.06376383148396891,
+      "relativeMomentum": 0.948280014209591,
+      "rawWeightScore": 154897.80410160357,
+      "weight": 0.000648929970482986,
       "weightRank": 334
     },
     {
       "ticker": "ESS",
       "marketCap": 17313274782.0,
-      "earlyPrice": 258.4394836425781,
+      "earlyPrice": 258.43951416015625,
       "recentPrice": 269.3900146484375,
-      "momentumGross": 1.04237174154474,
+      "momentumGross": 1.0423716184572889,
       "momentumFallback": null,
-      "momentum": 0.042371741544739994,
-      "relativeMomentum": 1.05578092699673,
-      "rawWeightScore": 154849.94204282132,
-      "weight": 0.0006487294601625698,
+      "momentum": 0.04237161845728887,
+      "relativeMomentum": 1.0557808023258684,
+      "rawWeightScore": 154849.88718691442,
+      "weight": 0.0006487292270172203,
       "weightRank": 335
     },
     {
@@ -4395,7 +4395,7 @@
       "momentum": 0.043813266654808114,
       "relativeMomentum": 1.0572409960453608,
       "rawWeightScore": 154726.50991528414,
-      "weight": 0.0006482123527203096,
+      "weight": 0.0006482123493913451,
       "weightRank": 336
     },
     {
@@ -4408,20 +4408,20 @@
       "momentum": 0.10047241766007464,
       "relativeMomentum": 1.1146290166401425,
       "rawWeightScore": 152304.9845636311,
-      "weight": 0.0006380675970076245,
+      "weight": 0.0006380675937307595,
       "weightRank": 337
     },
     {
       "ticker": "EXC",
       "marketCap": 41703060267.0,
-      "earlyPrice": 45.131797790527344,
+      "earlyPrice": 45.13179397583008,
       "recentPrice": 40.400001525878906,
-      "momentumGross": 0.8951560430495062,
+      "momentumGross": 0.8951561187112296,
       "momentumFallback": null,
-      "momentum": -0.10484395695049376,
-      "relativeMomentum": 0.9066714294623537,
-      "rawWeightScore": 152206.6946789711,
-      "weight": 0.0006376558206583813,
+      "momentum": -0.10484388128877042,
+      "relativeMomentum": 0.9066715060973978,
+      "rawWeightScore": 152206.73327410282,
+      "weight": 0.0006376559790743524,
       "weightRank": 338
     },
     {
@@ -4434,20 +4434,20 @@
       "momentum": -0.12081445598872942,
       "relativeMomentum": 0.8904954841568898,
       "rawWeightScore": 152166.30451615807,
-      "weight": 0.0006374866098199922,
+      "weight": 0.0006374866065461109,
       "weightRank": 339
     },
     {
       "ticker": "O",
       "marketCap": 51379639192.0,
-      "earlyPrice": 62.82627487182617,
+      "earlyPrice": 62.826271057128906,
       "recentPrice": 54.29999923706055,
-      "momentumGross": 0.8642880601760913,
+      "momentumGross": 0.8642881126540952,
       "momentumFallback": null,
-      "momentum": -0.13571193982390872,
-      "relativeMomentum": 0.8754063574408147,
-      "rawWeightScore": 152063.37099052846,
-      "weight": 0.0006370553793678951,
+      "momentum": -0.13571188734590478,
+      "relativeMomentum": 0.8754064105939016,
+      "rawWeightScore": 152063.39868956667,
+      "weight": 0.0006370554921387776,
       "weightRank": 340
     },
     {
@@ -4460,20 +4460,20 @@
       "momentum": 0.05115057884659446,
       "relativeMomentum": 1.0646726962332693,
       "rawWeightScore": 151849.6077491894,
-      "weight": 0.0006361598381082274,
+      "weight": 0.0006361598348411599,
       "weightRank": 341
     },
     {
       "ticker": "RL",
       "marketCap": 21155865602.0,
-      "earlyPrice": 356.7487487792969,
+      "earlyPrice": 356.74871826171875,
       "recentPrice": 355.07000732421875,
-      "momentumGross": 0.9952943312041812,
+      "momentumGross": 0.995294416345265,
       "momentumFallback": null,
-      "momentum": -0.004705668795818796,
-      "relativeMomentum": 1.0080979076390653,
-      "rawWeightScore": 149012.7877824548,
-      "weight": 0.0006242752441502316,
+      "momentum": -0.004705583654734946,
+      "relativeMomentum": 1.0080979938754133,
+      "rawWeightScore": 149012.82602373965,
+      "weight": 0.0006242754011525114,
       "weightRank": 342
     },
     {
@@ -4486,20 +4486,20 @@
       "momentum": -0.11814345991561181,
       "relativeMomentum": 0.8932008402191154,
       "rawWeightScore": 148933.93181430476,
-      "weight": 0.0006239448843904944,
+      "weight": 0.0006239448811861581,
       "weightRank": 343
     },
     {
       "ticker": "IR",
       "marketCap": 29142637112.0,
-      "earlyPrice": 79.81879425048828,
+      "earlyPrice": 79.81878662109375,
       "recentPrice": 75.11000061035156,
-      "momentumGross": 0.9410064548787905,
+      "momentumGross": 0.9410065448239,
       "momentumFallback": null,
-      "momentum": -0.05899354512120947,
-      "relativeMomentum": 0.9531116660640918,
-      "rawWeightScore": 147807.26474888585,
-      "weight": 0.0006192248172888223,
+      "momentum": -0.058993455176099996,
+      "relativeMomentum": 0.9531117571662652,
+      "rawWeightScore": 147807.30713289444,
+      "weight": 0.0006192249916725957,
       "weightRank": 344
     },
     {
@@ -4512,7 +4512,7 @@
       "momentum": -0.026144542104820867,
       "relativeMomentum": 0.9863832422909812,
       "rawWeightScore": 146154.2306755883,
-      "weight": 0.0006122995844611335,
+      "weight": 0.0006122995813166029,
       "weightRank": 345
     },
     {
@@ -4525,7 +4525,7 @@
       "momentum": -0.09990888344211268,
       "relativeMomentum": 0.9116699883025561,
       "rawWeightScore": 146148.57759419826,
-      "weight": 0.0006122759014013271,
+      "weight": 0.0006122758982569181,
       "weightRank": 346
     },
     {
@@ -4538,20 +4538,20 @@
       "momentum": 0.07552441538874288,
       "relativeMomentum": 1.0893600805063701,
       "rawWeightScore": 145858.07015453264,
-      "weight": 0.000611058847445599,
+      "weight": 0.0006110588443074403,
       "weightRank": 347
     },
     {
       "ticker": "HBAN",
       "marketCap": 30831530245.0,
-      "earlyPrice": 16.4472713470459,
+      "earlyPrice": 16.447269439697266,
       "recentPrice": 15.260000228881836,
-      "momentumGross": 0.9278134899636523,
+      "momentumGross": 0.9278135975598584,
       "momentumFallback": null,
-      "momentum": -0.07218651003634768,
-      "relativeMomentum": 0.9397489853880999,
-      "rawWeightScore": 145724.68884241564,
-      "weight": 0.0006105000588179512,
+      "momentum": -0.07218640244014163,
+      "relativeMomentum": 0.9397490943684355,
+      "rawWeightScore": 145724.73954040278,
+      "weight": 0.0006105002680771729,
       "weightRank": 348
     },
     {
@@ -4564,7 +4564,7 @@
       "momentum": -0.10651276853023217,
       "relativeMomentum": 0.904981150105751,
       "rawWeightScore": 144900.75051977395,
-      "weight": 0.0006070482456871024,
+      "weight": 0.0006070482425695406,
       "weightRank": 349
     },
     {
@@ -4577,7 +4577,7 @@
       "momentum": -0.023121362592432693,
       "relativeMomentum": 0.9894453123192194,
       "rawWeightScore": 144813.1014407216,
-      "weight": 0.0006066810480053515,
+      "weight": 0.0006066810448896755,
       "weightRank": 350
     },
     {
@@ -4590,7 +4590,7 @@
       "momentum": -0.060447440586995915,
       "relativeMomentum": 0.9516390675261177,
       "rawWeightScore": 144542.17923804172,
-      "weight": 0.0006055460445822183,
+      "weight": 0.0006055460414723713,
       "weightRank": 351
     },
     {
@@ -4603,7 +4603,7 @@
       "momentum": 0.1257541941726521,
       "relativeMomentum": 1.140236020723942,
       "rawWeightScore": 143410.06904664953,
-      "weight": 0.0006008031740094719,
+      "weight": 0.0006008031709239823,
       "weightRank": 352
     },
     {
@@ -4616,7 +4616,7 @@
       "momentum": -0.06158437628787128,
       "relativeMomentum": 0.9504875061585513,
       "rawWeightScore": 143132.11493123014,
-      "weight": 0.0005996387110405667,
+      "weight": 0.0005996387079610574,
       "weightRank": 353
     },
     {
@@ -4629,7 +4629,7 @@
       "momentum": -0.07816547561370546,
       "relativeMomentum": 0.9336931057358085,
       "rawWeightScore": 142812.09514082066,
-      "weight": 0.0005982980178305152,
+      "weight": 0.0005982980147578911,
       "weightRank": 354
     },
     {
@@ -4642,7 +4642,7 @@
       "momentum": 0.03272475245030759,
       "relativeMomentum": 1.046009837966867,
       "rawWeightScore": 141491.23437982952,
-      "weight": 0.0005927643942648651,
+      "weight": 0.0005927643912206596,
       "weightRank": 355
     },
     {
@@ -4655,7 +4655,7 @@
       "momentum": -0.02865486970955977,
       "relativeMomentum": 0.9838406215540941,
       "rawWeightScore": 141395.27333577137,
-      "weight": 0.0005923623743771775,
+      "weight": 0.0005923623713350366,
       "weightRank": 356
     },
     {
@@ -4668,7 +4668,7 @@
       "momentum": -0.1370227363574802,
       "relativeMomentum": 0.8740786986755577,
       "rawWeightScore": 140119.14346936118,
-      "weight": 0.0005870161467427837,
+      "weight": 0.000587016143728099,
       "weightRank": 357
     },
     {
@@ -4681,7 +4681,7 @@
       "momentum": -0.0608182616528673,
       "relativeMomentum": 0.9512634761770128,
       "rawWeightScore": 139876.55555410215,
-      "weight": 0.0005859998471870213,
+      "weight": 0.0005859998441775558,
       "weightRank": 358
     },
     {
@@ -4694,7 +4694,7 @@
       "momentum": 0.029347027956272864,
       "relativeMomentum": 1.0425886620510973,
       "rawWeightScore": 139828.3484077807,
-      "weight": 0.0005857978878217382,
+      "weight": 0.0005857978848133098,
       "weightRank": 359
     },
     {
@@ -4707,7 +4707,7 @@
       "momentum": -0.03985810225908426,
       "relativeMomentum": 0.9724932693810889,
       "rawWeightScore": 139179.82143416666,
-      "weight": 0.0005830809442572572,
+      "weight": 0.000583080941262782,
       "weightRank": 360
     },
     {
@@ -4720,7 +4720,7 @@
       "momentum": -0.09743794128574645,
       "relativeMomentum": 0.9141727169323034,
       "rawWeightScore": 139087.00660085626,
-      "weight": 0.0005826921051274893,
+      "weight": 0.0005826921021350111,
       "weightRank": 361
     },
     {
@@ -4733,7 +4733,7 @@
       "momentum": -0.020041920316873907,
       "relativeMomentum": 0.9925643688810409,
       "rawWeightScore": 138980.136160583,
-      "weight": 0.000582244381336888,
+      "weight": 0.0005822443783467091,
       "weightRank": 362
     },
     {
@@ -4746,7 +4746,7 @@
       "momentum": 0.053876554958554035,
       "relativeMomentum": 1.0674337396036417,
       "rawWeightScore": 138325.42145333573,
-      "weight": 0.0005795015148366502,
+      "weight": 0.0005795015118605576,
       "weightRank": 363
     },
     {
@@ -4759,7 +4759,7 @@
       "momentum": -0.14852437236576876,
       "relativeMomentum": 0.8624291043486678,
       "rawWeightScore": 138052.53104525496,
-      "weight": 0.0005783582657996642,
+      "weight": 0.000578358262829443,
       "weightRank": 364
     },
     {
@@ -4772,20 +4772,20 @@
       "momentum": -0.1845491453378737,
       "relativeMomentum": 0.8259409047098606,
       "rawWeightScore": 137894.78813127772,
-      "weight": 0.0005776974165020867,
+      "weight": 0.0005776974135352593,
       "weightRank": 365
     },
     {
       "ticker": "STE",
       "marketCap": 20475998101.0,
-      "earlyPrice": 215.5787811279297,
+      "earlyPrice": 215.57879638671875,
       "recentPrice": 210.00999450683594,
-      "momentumGross": 0.9741682062030534,
+      "momentumGross": 0.9741681372508771,
       "momentumFallback": null,
-      "momentum": -0.025831793796946556,
-      "relativeMomentum": 0.9867000138277027,
-      "rawWeightScore": 137460.50755949685,
-      "weight": 0.00057587803835332,
+      "momentum": -0.025831862749122858,
+      "relativeMomentum": 0.9866999439885179,
+      "rawWeightScore": 137460.47837090163,
+      "weight": 0.0005758779131129262,
       "weightRank": 366
     },
     {
@@ -4798,7 +4798,7 @@
       "momentum": 0.03529661656688665,
       "relativeMomentum": 1.0486147868280933,
       "rawWeightScore": 136438.52531115906,
-      "weight": 0.0005715965385767391,
+      "weight": 0.0005715965356412434,
       "weightRank": 367
     },
     {
@@ -4811,7 +4811,7 @@
       "momentum": 0.027065406548888893,
       "relativeMomentum": 1.040277689613401,
       "rawWeightScore": 135810.4212499587,
-      "weight": 0.0005689651549083116,
+      "weight": 0.0005689651519863296,
       "weightRank": 368
     },
     {
@@ -4824,7 +4824,7 @@
       "momentum": -0.16761339244708007,
       "relativeMomentum": 0.8430945210002752,
       "rawWeightScore": 135307.07331583125,
-      "weight": 0.0005668564254553154,
+      "weight": 0.0005668564225441631,
       "weightRank": 369
     },
     {
@@ -4837,7 +4837,7 @@
       "momentum": -0.10646464601778616,
       "relativeMomentum": 0.9050298916715233,
       "rawWeightScore": 134723.66604837004,
-      "weight": 0.0005644122948558325,
+      "weight": 0.0005644122919572322,
       "weightRank": 370
     },
     {
@@ -4850,20 +4850,20 @@
       "momentum": -0.20995454746975128,
       "relativeMomentum": 0.8002086846731117,
       "rawWeightScore": 134423.9319120979,
-      "weight": 0.0005631565865110251,
+      "weight": 0.0005631565836188736,
       "weightRank": 371
     },
     {
       "ticker": "FE",
       "marketCap": 25072468254.0,
-      "earlyPrice": 46.57318115234375,
+      "earlyPrice": 46.573177337646484,
       "recentPrice": 43.33000183105469,
-      "momentumGross": 0.9303638007745182,
+      "momentumGross": 0.930363876978386,
       "momentumFallback": null,
-      "momentum": -0.06963619922548181,
-      "relativeMomentum": 0.9423321036795028,
-      "rawWeightScore": 132498.3610365693,
-      "weight": 0.0005550895860452385,
+      "momentum": -0.06963612302161404,
+      "relativeMomentum": 0.9423321808636657,
+      "rawWeightScore": 132498.39359444097,
+      "weight": 0.000555089719592697,
       "weightRank": 372
     },
     {
@@ -4876,7 +4876,7 @@
       "momentum": -0.04739320585332618,
       "relativeMomentum": 0.9648612333802322,
       "rawWeightScore": 132489.5180564786,
-      "weight": 0.0005550525392008887,
+      "weight": 0.0005550525363503565,
       "weightRank": 373
     },
     {
@@ -4889,7 +4889,7 @@
       "momentum": -0.07091986399620309,
       "relativeMomentum": 0.9410319257030961,
       "rawWeightScore": 129547.34216994683,
-      "weight": 0.0005427265663952594,
+      "weight": 0.0005427265636080285,
       "weightRank": 374
     },
     {
@@ -4902,7 +4902,7 @@
       "momentum": -0.1536908977678576,
       "relativeMomentum": 0.8571961161919802,
       "rawWeightScore": 129434.49207071039,
-      "weight": 0.0005422537913784194,
+      "weight": 0.0005422537885936165,
       "weightRank": 375
     },
     {
@@ -4915,7 +4915,7 @@
       "momentum": -0.224868105504606,
       "relativeMomentum": 0.7851032769770775,
       "rawWeightScore": 129049.3795890324,
-      "weight": 0.0005406403983797205,
+      "weight": 0.0005406403956032033,
       "weightRank": 376
     },
     {
@@ -4928,33 +4928,33 @@
       "momentum": -0.13750111007718413,
       "relativeMomentum": 0.8735941711033774,
       "rawWeightScore": 128600.73740343956,
-      "weight": 0.0005387608535828272,
+      "weight": 0.0005387608508159628,
       "weightRank": 377
     },
     {
       "ticker": "NKE",
       "marketCap": 52515854086.0,
-      "earlyPrice": 43.50508117675781,
+      "earlyPrice": 43.50508499145508,
       "recentPrice": 35.400001525878906,
-      "momentumGross": 0.81369809154134,
+      "momentumGross": 0.8136980201930853,
       "momentumFallback": null,
-      "momentum": -0.18630190845866001,
-      "relativeMomentum": 0.8241655938502942,
-      "rawWeightScore": 128288.7747045204,
-      "weight": 0.0005374539148097748,
+      "momentum": -0.18630197980691465,
+      "relativeMomentum": 0.8241655215842077,
+      "rawWeightScore": 128288.74095792772,
+      "weight": 0.0005374537706714051,
       "weightRank": 378
     },
     {
       "ticker": "KR",
       "marketCap": 34620309594.0,
-      "earlyPrice": 67.25184631347656,
+      "earlyPrice": 67.2518539428711,
       "recentPrice": 58.619998931884766,
-      "momentumGross": 0.8716489159069813,
+      "momentumGross": 0.8716488170226669,
       "momentumFallback": null,
-      "momentum": -0.12835108409301865,
-      "relativeMomentum": 0.8828619040345198,
-      "rawWeightScore": 128039.45154412823,
-      "weight": 0.0005364093985696427,
+      "momentum": -0.12835118297733306,
+      "relativeMomentum": 0.8828618038781467,
+      "rawWeightScore": 128039.40796778102,
+      "weight": 0.0005364092132557932,
       "weightRank": 379
     },
     {
@@ -4967,7 +4967,7 @@
       "momentum": -0.01270072711971959,
       "relativeMomentum": 1.0,
       "rawWeightScore": 127883.90589906143,
-      "weight": 0.0005357577545262312,
+      "weight": 0.0005357577517747894,
       "weightRank": 380
     },
     {
@@ -4980,7 +4980,7 @@
       "momentum": -0.162111725833594,
       "relativeMomentum": 0.8486669616619965,
       "rawWeightScore": 126847.34825381768,
-      "weight": 0.0005314151924770933,
+      "weight": 0.0005314151897479533,
       "weightRank": 381
     },
     {
@@ -4993,7 +4993,7 @@
       "momentum": 0.05637592686888149,
       "relativeMomentum": 1.0699652637108519,
       "rawWeightScore": 126293.34919145133,
-      "weight": 0.0005290942648234033,
+      "weight": 0.0005290942621061825,
       "weightRank": 382
     },
     {
@@ -5006,7 +5006,7 @@
       "momentum": -0.039907037623780894,
       "relativeMomentum": 0.9724437045064447,
       "rawWeightScore": 126070.98784343762,
-      "weight": 0.0005281627025938348,
+      "weight": 0.0005281626998813982,
       "weightRank": 383
     },
     {
@@ -5019,7 +5019,7 @@
       "momentum": -0.2650632028770482,
       "relativeMomentum": 0.7443911054232792,
       "rawWeightScore": 125723.04163199342,
-      "weight": 0.0005267050142347821,
+      "weight": 0.0005267050115298316,
       "weightRank": 384
     },
     {
@@ -5032,7 +5032,7 @@
       "momentum": 0.0342748516185023,
       "relativeMomentum": 1.0475798777823249,
       "rawWeightScore": 125498.7884851784,
-      "weight": 0.0005257655264897183,
+      "weight": 0.0005257655237895927,
       "weightRank": 385
     },
     {
@@ -5045,7 +5045,7 @@
       "momentum": 0.06847528295257277,
       "relativeMomentum": 1.0822202672503494,
       "rawWeightScore": 125199.70607360652,
-      "weight": 0.0005245125484850543,
+      "weight": 0.0005245125457913635,
       "weightRank": 386
     },
     {
@@ -5058,7 +5058,7 @@
       "momentum": -0.037208719548750935,
       "relativeMomentum": 0.9751767340438392,
       "rawWeightScore": 124714.66447621548,
-      "weight": 0.0005224805117307566,
+      "weight": 0.0005224805090475016,
       "weightRank": 387
     },
     {
@@ -5071,7 +5071,7 @@
       "momentum": -0.13066510052467684,
       "relativeMomentum": 0.8805181198393716,
       "rawWeightScore": 123711.62775200413,
-      "weight": 0.0005182783824691201,
+      "weight": 0.0005182783798074455,
       "weightRank": 388
     },
     {
@@ -5084,7 +5084,7 @@
       "momentum": -0.025567337116276567,
       "relativeMomentum": 0.9869678725083826,
       "rawWeightScore": 123122.87656236527,
-      "weight": 0.0005158118640036572,
+      "weight": 0.0005158118613546496,
       "weightRank": 389
     },
     {
@@ -5097,7 +5097,7 @@
       "momentum": -0.1774097675618984,
       "relativeMomentum": 0.8331721242317258,
       "rawWeightScore": 122993.26931390501,
-      "weight": 0.0005152688864654187,
+      "weight": 0.0005152688838191997,
       "weightRank": 390
     },
     {
@@ -5110,7 +5110,7 @@
       "momentum": -0.0715841101305481,
       "relativeMomentum": 0.9403591346329608,
       "rawWeightScore": 121496.502013146,
-      "weight": 0.0005089983187777546,
+      "weight": 0.0005089983161637387,
       "weightRank": 391
     },
     {
@@ -5123,7 +5123,7 @@
       "momentum": -0.2064557401462198,
       "relativeMomentum": 0.8037525010412978,
       "rawWeightScore": 121215.04394487305,
-      "weight": 0.0005078191763235803,
+      "weight": 0.0005078191737156201,
       "weightRank": 392
     },
     {
@@ -5136,7 +5136,7 @@
       "momentum": -0.1050259863507309,
       "relativeMomentum": 0.906487058415765,
       "rawWeightScore": 120812.329955557,
-      "weight": 0.0005061320434422734,
+      "weight": 0.0005061320408429776,
       "weightRank": 393
     },
     {
@@ -5149,7 +5149,7 @@
       "momentum": -0.07449448384301782,
       "relativeMomentum": 0.9374113215509363,
       "rawWeightScore": 120551.50589528719,
-      "weight": 0.0005050393452495324,
+      "weight": 0.0005050393426558483,
       "weightRank": 394
     },
     {
@@ -5162,7 +5162,7 @@
       "momentum": -0.04380816923658959,
       "relativeMomentum": 0.9684923883047951,
       "rawWeightScore": 120312.98233474985,
-      "weight": 0.0005040400729306531,
+      "weight": 0.0005040400703421009,
       "weightRank": 395
     },
     {
@@ -5175,7 +5175,7 @@
       "momentum": -0.11314992933622892,
       "relativeMomentum": 0.898258608128551,
       "rawWeightScore": 120218.31315750306,
-      "weight": 0.0005036434651990703,
+      "weight": 0.0005036434626125548,
       "weightRank": 396
     },
     {
@@ -5188,7 +5188,7 @@
       "momentum": -0.13820142907095867,
       "relativeMomentum": 0.8728848431285564,
       "rawWeightScore": 118353.31870028921,
-      "weight": 0.0004958302440155586,
+      "weight": 0.0004958302414691688,
       "weightRank": 397
     },
     {
@@ -5201,7 +5201,7 @@
       "momentum": 0.018313738655504563,
       "relativeMomentum": 1.0314134392956096,
       "rawWeightScore": 118122.99586650988,
-      "weight": 0.0004948653278803013,
+      "weight": 0.000494865325338867,
       "weightRank": 398
     },
     {
@@ -5214,7 +5214,7 @@
       "momentum": 0.0382453246789729,
       "relativeMomentum": 1.0516014274476937,
       "rawWeightScore": 117854.06903905392,
-      "weight": 0.0004937386838964727,
+      "weight": 0.0004937386813608245,
       "weightRank": 399
     },
     {
@@ -5227,7 +5227,7 @@
       "momentum": -0.08526743464427711,
       "relativeMomentum": 0.9264997863182293,
       "rawWeightScore": 117551.65825031002,
-      "weight": 0.0004924717619645619,
+      "weight": 0.0004924717594354201,
       "weightRank": 400
     },
     {
@@ -5240,20 +5240,20 @@
       "momentum": -0.10192848134948618,
       "relativeMomentum": 0.9096244100641748,
       "rawWeightScore": 116512.82017666366,
-      "weight": 0.0004881196462722838,
+      "weight": 0.0004881196437654927,
       "weightRank": 401
     },
     {
       "ticker": "PPL",
       "marketCap": 24751199820.0,
-      "earlyPrice": 36.835147857666016,
+      "earlyPrice": 36.83515167236328,
       "recentPrice": 32.88999938964844,
-      "momentumGross": 0.8928971730136133,
+      "momentumGross": 0.8928970805439952,
       "momentumFallback": null,
-      "momentum": -0.10710282698638673,
-      "relativeMomentum": 0.9043835010723092,
-      "rawWeightScore": 116374.0156468163,
-      "weight": 0.0004875381375772977,
+      "momentum": -0.10710291945600481,
+      "relativeMomentum": 0.9043834074131518,
+      "rawWeightScore": 116373.97949127683,
+      "weight": 0.0004875379836032168,
       "weightRank": 402
     },
     {
@@ -5266,7 +5266,7 @@
       "momentum": -0.1534090356535438,
       "relativeMomentum": 0.8574816042117288,
       "rawWeightScore": 115018.90291745156,
-      "weight": 0.0004818610185691607,
+      "weight": 0.0004818610160945114,
       "weightRank": 403
     },
     {
@@ -5279,7 +5279,7 @@
       "momentum": -0.24231902337394307,
       "relativeMomentum": 0.7674278685688175,
       "rawWeightScore": 113677.21089390197,
-      "weight": 0.00047624012436242564,
+      "weight": 0.0004762401219166431,
       "weightRank": 404
     },
     {
@@ -5292,7 +5292,7 @@
       "momentum": -0.16061719787993356,
       "relativeMomentum": 0.8501807153886659,
       "rawWeightScore": 112581.76382664623,
-      "weight": 0.0004716508505454489,
+      "weight": 0.00047165084812323505,
       "weightRank": 405
     },
     {
@@ -5305,7 +5305,7 @@
       "momentum": -0.0389559047981326,
       "relativeMomentum": 0.9734070728100327,
       "rawWeightScore": 112577.30780706574,
-      "weight": 0.0004716321824649912,
+      "weight": 0.0004716321800428732,
       "weightRank": 406
     },
     {
@@ -5318,20 +5318,20 @@
       "momentum": -0.06387836905036015,
       "relativeMomentum": 0.9481640032192687,
       "rawWeightScore": 112551.3766852788,
-      "weight": 0.00047152354643699966,
+      "weight": 0.0004715235440154396,
       "weightRank": 407
     },
     {
       "ticker": "CDW",
       "marketCap": 16022233316.0,
-      "earlyPrice": 135.45591735839844,
+      "earlyPrice": 135.45590209960938,
       "recentPrice": 128.16000366210938,
-      "momentumGross": 0.9461380954145765,
+      "momentumGross": 0.9461382019948097,
       "momentumFallback": null,
-      "momentum": -0.0538619045854235,
-      "relativeMomentum": 0.9583093205916955,
-      "rawWeightScore": 111398.32538484447,
-      "weight": 0.0004666929450315199,
+      "momentum": -0.05386179800519031,
+      "relativeMomentum": 0.9583094285429886,
+      "rawWeightScore": 111398.36303112748,
+      "weight": 0.0004666931003503757,
       "weightRank": 408
     },
     {
@@ -5344,7 +5344,7 @@
       "momentum": -0.1496436534618686,
       "relativeMomentum": 0.8612954246966668,
       "rawWeightScore": 110775.90468621404,
-      "weight": 0.00046408537128309144,
+      "weight": 0.0004640853688997309,
       "weightRank": 409
     },
     {
@@ -5357,7 +5357,7 @@
       "momentum": -0.0910684609417437,
       "relativeMomentum": 0.9206241349764197,
       "rawWeightScore": 109390.48702394214,
-      "weight": 0.00045828129257121953,
+      "weight": 0.0004582812902176665,
       "weightRank": 410
     },
     {
@@ -5370,7 +5370,7 @@
       "momentum": -0.17934992990519227,
       "relativeMomentum": 0.8312070034253124,
       "rawWeightScore": 109033.86134975535,
-      "weight": 0.0004567872424085702,
+      "weight": 0.00045678724006269005,
       "weightRank": 411
     },
     {
@@ -5383,7 +5383,7 @@
       "momentum": -0.07344425191613058,
       "relativeMomentum": 0.9384750637775697,
       "rawWeightScore": 108386.72739246277,
-      "weight": 0.0004540761347566785,
+      "weight": 0.0004540761324247215,
       "weightRank": 412
     },
     {
@@ -5396,7 +5396,7 @@
       "momentum": -0.10608801836315451,
       "relativeMomentum": 0.9054113643059889,
       "rawWeightScore": 107665.7669157934,
-      "weight": 0.00045105573775388897,
+      "weight": 0.0004510557354374436,
       "weightRank": 413
     },
     {
@@ -5409,7 +5409,7 @@
       "momentum": 0.006732925557197955,
       "relativeMomentum": 1.0196836493358525,
       "rawWeightScore": 106668.62658803127,
-      "weight": 0.00044687831089791657,
+      "weight": 0.0004468783086029248,
       "weightRank": 414
     },
     {
@@ -5422,7 +5422,7 @@
       "momentum": -0.06503734160600194,
       "relativeMomentum": 0.9469901215123971,
       "rawWeightScore": 105905.13943945934,
-      "weight": 0.00044367975235020226,
+      "weight": 0.000443679750071637,
       "weightRank": 415
     },
     {
@@ -5435,7 +5435,7 @@
       "momentum": -0.08127229741887376,
       "relativeMomentum": 0.9305463174310783,
       "rawWeightScore": 103671.5561227952,
-      "weight": 0.00043432236234971426,
+      "weight": 0.00043432236011920486,
       "weightRank": 416
     },
     {
@@ -5448,7 +5448,7 @@
       "momentum": -0.13630697972097983,
       "relativeMomentum": 0.8748036628846493,
       "rawWeightScore": 102944.55037165953,
-      "weight": 0.0004312766392306258,
+      "weight": 0.00043127663701575804,
       "weightRank": 417
     },
     {
@@ -5461,7 +5461,7 @@
       "momentum": -0.28717811148216166,
       "relativeMomentum": 0.7219917081862116,
       "rawWeightScore": 102157.52675613282,
-      "weight": 0.0004279794768390852,
+      "weight": 0.0004279794746411504,
       "weightRank": 418
     },
     {
@@ -5474,7 +5474,7 @@
       "momentum": -0.05291394296097962,
       "relativeMomentum": 0.9592694768993958,
       "rawWeightScore": 101763.36026778023,
-      "weight": 0.0004263281529197489,
+      "weight": 0.0004263281507302946,
       "weightRank": 419
     },
     {
@@ -5487,7 +5487,7 @@
       "momentum": -0.1472486392475697,
       "relativeMomentum": 0.8637212486388964,
       "rawWeightScore": 100321.78269608729,
-      "weight": 0.0004202887974797048,
+      "weight": 0.00042028879532126625,
       "weightRank": 420
     },
     {
@@ -5500,7 +5500,7 @@
       "momentum": -0.18614776103310038,
       "relativeMomentum": 0.8243217242453972,
       "rawWeightScore": 99726.81947633067,
-      "weight": 0.0004177962542906181,
+      "weight": 0.0004177962521449803,
       "weightRank": 421
     },
     {
@@ -5513,7 +5513,7 @@
       "momentum": -0.07637680615344333,
       "relativeMomentum": 0.9355047848379758,
       "rawWeightScore": 99707.55694024969,
-      "weight": 0.0004177155556835129,
+      "weight": 0.00041771555353828957,
       "weightRank": 422
     },
     {
@@ -5526,7 +5526,7 @@
       "momentum": -0.23596191252572962,
       "relativeMomentum": 0.7738667579945816,
       "rawWeightScore": 99614.97818976828,
-      "weight": 0.00041732770560084565,
+      "weight": 0.00041732770345761415,
       "weightRank": 423
     },
     {
@@ -5539,7 +5539,7 @@
       "momentum": -0.05852661784751867,
       "relativeMomentum": 0.9535845999419105,
       "rawWeightScore": 99483.3173960876,
-      "weight": 0.0004167761249255011,
+      "weight": 0.00041677612278510234,
       "weightRank": 424
     },
     {
@@ -5552,7 +5552,7 @@
       "momentum": -0.09510049448801905,
       "relativeMomentum": 0.9165402329043433,
       "rawWeightScore": 98308.93072009023,
-      "weight": 0.00041185614094429166,
+      "weight": 0.00041185613882915997,
       "weightRank": 425
     },
     {
@@ -5565,7 +5565,7 @@
       "momentum": -0.16689443607204302,
       "relativeMomentum": 0.8438227261096941,
       "rawWeightScore": 97691.37010375815,
-      "weight": 0.0004092689280595753,
+      "weight": 0.0004092689259577305,
       "weightRank": 426
     },
     {
@@ -5578,7 +5578,7 @@
       "momentum": -0.1869244670291077,
       "relativeMomentum": 0.8235350266174921,
       "rawWeightScore": 97343.01118572781,
-      "weight": 0.0004078095107045843,
+      "weight": 0.0004078095086102345,
       "weightRank": 427
     },
     {
@@ -5591,20 +5591,20 @@
       "momentum": -0.06607260238336599,
       "relativeMomentum": 0.9459415430258113,
       "rawWeightScore": 96684.04090143532,
-      "weight": 0.00040504881585928673,
+      "weight": 0.0004050488137791148,
       "weightRank": 428
     },
     {
       "ticker": "FRT",
       "marketCap": 9409224213.0,
-      "earlyPrice": 109.88479614257812,
-      "recentPrice": 108.29000091552734,
-      "momentumGross": 0.9854866616398733,
+      "earlyPrice": 108.70771026611328,
+      "recentPrice": 107.1300048828125,
+      "momentumGross": 0.9854867204962867,
       "momentumFallback": null,
-      "momentum": -0.014513338360126693,
-      "relativeMomentum": 0.9981640711279781,
-      "rawWeightScore": 96467.87432910761,
-      "weight": 0.00040414320606750153,
+      "momentum": -0.014513279503713283,
+      "relativeMomentum": 0.998164130741527,
+      "rawWeightScore": 96467.89161321806,
+      "weight": 0.0004041432764021567,
       "weightRank": 429
     },
     {
@@ -5617,7 +5617,7 @@
       "momentum": -0.07800614777396064,
       "relativeMomentum": 0.9338544831865181,
       "rawWeightScore": 95185.26716961319,
-      "weight": 0.0003987698424149057,
+      "weight": 0.00039876984036698015,
       "weightRank": 430
     },
     {
@@ -5630,7 +5630,7 @@
       "momentum": -0.16407367965986075,
       "relativeMomentum": 0.8466797690445614,
       "rawWeightScore": 94973.95306403017,
-      "weight": 0.00039788456158217734,
+      "weight": 0.00039788455953879826,
       "weightRank": 431
     },
     {
@@ -5643,7 +5643,7 @@
       "momentum": -0.1696231384950535,
       "relativeMomentum": 0.8410589213567037,
       "rawWeightScore": 94430.01061250338,
-      "weight": 0.0003956057651662194,
+      "weight": 0.0003956057631345433,
       "weightRank": 432
     },
     {
@@ -5656,7 +5656,7 @@
       "momentum": -0.13239881028455536,
       "relativeMomentum": 0.8787621074452565,
       "rawWeightScore": 93105.3483784051,
-      "weight": 0.0003900562156818116,
+      "weight": 0.00039005621367863583,
       "weightRank": 433
     },
     {
@@ -5669,7 +5669,7 @@
       "momentum": -0.07072839561876199,
       "relativeMomentum": 0.9412258571509362,
       "rawWeightScore": 92727.77651165695,
-      "weight": 0.0003884744133894971,
+      "weight": 0.0003884744113944448,
       "weightRank": 434
     },
     {
@@ -5682,7 +5682,7 @@
       "momentum": -0.17607972866914878,
       "relativeMomentum": 0.8345192728919993,
       "rawWeightScore": 92387.72363855547,
-      "weight": 0.00038704979343883,
+      "weight": 0.000387049791451094,
       "weightRank": 435
     },
     {
@@ -5695,7 +5695,7 @@
       "momentum": -0.14793818199014175,
       "relativeMomentum": 0.863022835542166,
       "rawWeightScore": 92138.80047708232,
-      "weight": 0.00038600695295704416,
+      "weight": 0.0003860069509746638,
       "weightRank": 436
     },
     {
@@ -5708,7 +5708,7 @@
       "momentum": -0.07906242078494119,
       "relativeMomentum": 0.9327846221626169,
       "rawWeightScore": 90648.24438223026,
-      "weight": 0.00037976240654004903,
+      "weight": 0.0003797624045897382,
       "weightRank": 437
     },
     {
@@ -5721,7 +5721,7 @@
       "momentum": -0.06012659963317768,
       "relativeMomentum": 0.9519640358134762,
       "rawWeightScore": 90374.1035837375,
-      "weight": 0.000378613919108484,
+      "weight": 0.0003786139171640714,
       "weightRank": 438
     },
     {
@@ -5734,7 +5734,7 @@
       "momentum": -0.2547858317998546,
       "relativeMomentum": 0.7548006857395,
       "rawWeightScore": 90297.60867230356,
-      "weight": 0.0003782934507767232,
+      "weight": 0.00037829344883395636,
       "weightRank": 439
     },
     {
@@ -5747,7 +5747,7 @@
       "momentum": -0.18325315373047724,
       "relativeMomentum": 0.8272535680967338,
       "rawWeightScore": 90128.71542910887,
-      "weight": 0.0003775858882097802,
+      "weight": 0.0003775858862706471,
       "weightRank": 440
     },
     {
@@ -5760,7 +5760,7 @@
       "momentum": -0.18485164583495362,
       "relativeMomentum": 0.8256345128129057,
       "rawWeightScore": 89506.1692834531,
-      "weight": 0.00037497778891268217,
+      "weight": 0.00037497778698694325,
       "weightRank": 441
     },
     {
@@ -5773,20 +5773,20 @@
       "momentum": -0.349322306028095,
       "relativeMomentum": 0.6590480838435764,
       "rawWeightScore": 89241.75573972182,
-      "weight": 0.0003738700529121286,
+      "weight": 0.00037387005099207856,
       "weightRank": 442
     },
     {
       "ticker": "UDR",
       "marketCap": 10778414648.0,
-      "earlyPrice": 35.92384719848633,
+      "earlyPrice": 35.923851013183594,
       "recentPrice": 33.54999923706055,
-      "momentumGross": 0.9339199961432358,
+      "momentumGross": 0.9339198969717396,
       "momentumFallback": null,
-      "momentum": -0.06608000385676416,
-      "relativeMomentum": 0.9459340463390402,
-      "rawWeightScore": 87873.92284729122,
-      "weight": 0.0003681396439614186,
+      "momentum": -0.0660801030282604,
+      "relativeMomentum": 0.9459339458917908,
+      "rawWeightScore": 87873.89485371299,
+      "weight": 0.0003681395247943005,
       "weightRank": 443
     },
     {
@@ -5799,7 +5799,7 @@
       "momentum": -0.13139928774983956,
       "relativeMomentum": 0.8797744879484852,
       "rawWeightScore": 87237.73703070411,
-      "weight": 0.00036547440252888703,
+      "weight": 0.0003654744006519538,
       "weightRank": 444
     },
     {
@@ -5812,7 +5812,7 @@
       "momentum": -0.06076732437994825,
       "relativeMomentum": 0.9513150687126484,
       "rawWeightScore": 86278.65079414858,
-      "weight": 0.00036145639975612546,
+      "weight": 0.0003614563978998271,
       "weightRank": 445
     },
     {
@@ -5825,7 +5825,7 @@
       "momentum": -0.2954384334850211,
       "relativeMomentum": 0.7136251244868624,
       "rawWeightScore": 85555.66457490397,
-      "weight": 0.0003584275160928314,
+      "weight": 0.00035842751425208826,
       "weightRank": 446
     },
     {
@@ -5838,7 +5838,7 @@
       "momentum": -0.16493415541515732,
       "relativeMomentum": 0.8458082240339121,
       "rawWeightScore": 85100.82057750876,
-      "weight": 0.00035652198938099846,
+      "weight": 0.0003565219875500413,
       "weightRank": 447
     },
     {
@@ -5851,7 +5851,7 @@
       "momentum": -0.060381687388732175,
       "relativeMomentum": 0.9517056665808015,
       "rawWeightScore": 85007.37313022847,
-      "weight": 0.0003561304999737183,
+      "weight": 0.0003561304981447717,
       "weightRank": 448
     },
     {
@@ -5864,7 +5864,7 @@
       "momentum": -0.08678697325616624,
       "relativeMomentum": 0.9249607001934556,
       "rawWeightScore": 84033.22815819603,
-      "weight": 0.00035204941002631667,
+      "weight": 0.0003520494082183289,
       "weightRank": 449
     },
     {
@@ -5877,7 +5877,7 @@
       "momentum": -0.16684457077261183,
       "relativeMomentum": 0.8438732328818562,
       "rawWeightScore": 83846.09921361525,
-      "weight": 0.00035126545068091947,
+      "weight": 0.0003512654488769578,
       "weightRank": 450
     },
     {
@@ -5890,33 +5890,33 @@
       "momentum": -0.22258379601120137,
       "relativeMomentum": 0.7874169720806306,
       "rawWeightScore": 82882.47963094416,
-      "weight": 0.00034722845587535845,
+      "weight": 0.00034722845409212923,
       "weightRank": 451
     },
     {
       "ticker": "TPR",
       "marketCap": 22979288547.0,
-      "earlyPrice": 144.08079528808594,
+      "earlyPrice": 144.08078002929688,
       "recentPrice": 115.04000091552734,
-      "momentumGross": 0.7984409073083456,
+      "momentumGross": 0.7984409918667537,
       "momentumFallback": null,
-      "momentum": -0.2015590926916544,
-      "relativeMomentum": 0.8087121395106753,
-      "rawWeightScore": 80177.06906280908,
-      "weight": 0.00033589438939634714,
+      "momentum": -0.20155900813324634,
+      "relativeMomentum": 0.808712225156852,
+      "rawWeightScore": 80177.09453612579,
+      "weight": 0.00033589449438942083,
       "weightRank": 452
     },
     {
       "ticker": "CCI",
       "marketCap": 28356605009.0,
-      "earlyPrice": 86.49827575683594,
+      "earlyPrice": 86.4982681274414,
       "recentPrice": 66.6500015258789,
-      "momentumGross": 0.770535608284788,
+      "momentumGross": 0.7705356762482314,
       "momentumFallback": null,
-      "momentum": -0.22946439171521205,
-      "relativeMomentum": 0.7804478636319454,
-      "rawWeightScore": 80049.53348748981,
-      "weight": 0.0003353600909404555,
+      "momentum": -0.22946432375176862,
+      "relativeMomentum": 0.7804479324696781,
+      "rawWeightScore": 80049.55466928479,
+      "weight": 0.0003353601779573412,
       "weightRank": 453
     },
     {
@@ -5929,7 +5929,7 @@
       "momentum": -0.23747639511742957,
       "relativeMomentum": 0.7723327929312005,
       "rawWeightScore": 79697.45438980617,
-      "weight": 0.00033388508823808656,
+      "weight": 0.00033388508652338364,
       "weightRank": 454
     },
     {
@@ -5942,20 +5942,20 @@
       "momentum": -0.10127190130450514,
       "relativeMomentum": 0.9102894364275241,
       "rawWeightScore": 78204.5843185546,
-      "weight": 0.0003276308476317318,
+      "weight": 0.0003276308459491483,
       "weightRank": 455
     },
     {
       "ticker": "PCG",
       "marketCap": 32831353576.0,
-      "earlyPrice": 16.503768920898438,
+      "earlyPrice": 16.50377082824707,
       "recentPrice": 12.25,
-      "momentumGross": 0.7422546970157851,
+      "momentumGross": 0.7422546112330572,
       "momentumFallback": null,
-      "momentum": -0.25774530298421494,
-      "relativeMomentum": 0.7518031435902724,
-      "rawWeightScore": 76993.98642449791,
-      "weight": 0.0003225591601133202,
+      "momentum": -0.25774538876694275,
+      "relativeMomentum": 0.7518030567040261,
+      "rawWeightScore": 76993.95972980627,
+      "weight": 0.0003225590466218504,
       "weightRank": 456
     },
     {
@@ -5968,7 +5968,7 @@
       "momentum": -0.18679918053259015,
       "relativeMomentum": 0.8236619248133674,
       "rawWeightScore": 76418.90243921478,
-      "weight": 0.0003201498991320168,
+      "weight": 0.00032014989748785247,
       "weightRank": 457
     },
     {
@@ -5981,7 +5981,7 @@
       "momentum": -0.1798740924487524,
       "relativeMomentum": 0.8306760979967781,
       "rawWeightScore": 75367.48098323055,
-      "weight": 0.00031574506652733055,
+      "weight": 0.0003157450649057877,
       "weightRank": 458
     },
     {
@@ -5994,7 +5994,7 @@
       "momentum": -0.10633854240341067,
       "relativeMomentum": 0.905157617496751,
       "rawWeightScore": 73832.04937697215,
-      "weight": 0.0003093125183203115,
+      "weight": 0.0003093125167318037,
       "weightRank": 459
     },
     {
@@ -6007,7 +6007,7 @@
       "momentum": -0.24152490981246066,
       "relativeMomentum": 0.7682321976950466,
       "rawWeightScore": 73798.50389810932,
-      "weight": 0.00030917198265005883,
+      "weight": 0.0003091719810622727,
       "weightRank": 460
     },
     {
@@ -6020,7 +6020,7 @@
       "momentum": -0.052203385697957905,
       "relativeMomentum": 0.9599891748496928,
       "rawWeightScore": 73395.63760877983,
-      "weight": 0.00030748421172198094,
+      "weight": 0.00030748421014286254,
       "weightRank": 461
     },
     {
@@ -6033,7 +6033,7 @@
       "momentum": -0.1516636828692326,
       "relativeMomentum": 0.8592494094074314,
       "rawWeightScore": 73208.13014758576,
-      "weight": 0.0003066986666163635,
+      "weight": 0.00030669866504127937,
       "weightRank": 462
     },
     {
@@ -6046,7 +6046,7 @@
       "momentum": -0.1972594868125196,
       "relativeMomentum": 0.8130670559957157,
       "rawWeightScore": 71664.25554453534,
-      "weight": 0.0003002307472579007,
+      "weight": 0.0003002307457160333,
       "weightRank": 463
     },
     {
@@ -6059,20 +6059,20 @@
       "momentum": -0.21761656793505946,
       "relativeMomentum": 0.7924480991285123,
       "rawWeightScore": 71556.04430711205,
-      "weight": 0.00029977740632208225,
+      "weight": 0.00029977740478254303,
       "weightRank": 464
     },
     {
       "ticker": "LDOS",
       "marketCap": 15288715822.0,
-      "earlyPrice": 148.21339416503906,
+      "earlyPrice": 148.21337890625,
       "recentPrice": 121.83000183105469,
-      "momentumGross": 0.8219904990192327,
+      "momentumGross": 0.8219905836443842,
       "momentumFallback": null,
-      "momentum": -0.1780095009807673,
-      "relativeMomentum": 0.8325646757757786,
-      "rawWeightScore": 71357.4703899986,
-      "weight": 0.0002989454993264971,
+      "momentum": -0.17800941635561585,
+      "relativeMomentum": 0.8325647614895575,
+      "rawWeightScore": 71357.49242907585,
+      "weight": 0.00029894559012189835,
       "weightRank": 465
     },
     {
@@ -6085,7 +6085,7 @@
       "momentum": -0.08293421442140425,
       "relativeMomentum": 0.9288630213442878,
       "rawWeightScore": 70145.92792953711,
-      "weight": 0.0002938698546348002,
+      "weight": 0.00029386985312559983,
       "weightRank": 466
     },
     {
@@ -6098,7 +6098,7 @@
       "momentum": -0.21352985721562912,
       "relativeMomentum": 0.7965873817469508,
       "rawWeightScore": 68872.7843730479,
-      "weight": 0.00028853613786865317,
+      "weight": 0.0002885361363868447,
       "weightRank": 467
     },
     {
@@ -6111,7 +6111,7 @@
       "momentum": -0.33314379633846913,
       "relativeMomentum": 0.6754347156724724,
       "rawWeightScore": 68827.43225622397,
-      "weight": 0.00028834613938446716,
+      "weight": 0.00028834613790363446,
       "weightRank": 468
     },
     {
@@ -6124,7 +6124,7 @@
       "momentum": -0.2059860727824243,
       "relativeMomentum": 0.8042282102580436,
       "rawWeightScore": 66049.46162349905,
-      "weight": 0.0002767080892493451,
+      "weight": 0.0002767080878282808,
       "weightRank": 469
     },
     {
@@ -6137,7 +6137,7 @@
       "momentum": -0.27391583477930825,
       "relativeMomentum": 0.7354245922844272,
       "rawWeightScore": 64138.16410459465,
-      "weight": 0.0002687008856863884,
+      "weight": 0.000268700884306446,
       "weightRank": 470
     },
     {
@@ -6150,7 +6150,7 @@
       "momentum": -0.25884726580014794,
       "relativeMomentum": 0.750687005002711,
       "rawWeightScore": 63439.48851740431,
-      "weight": 0.00026577384915975273,
+      "weight": 0.00026577384779484243,
       "weightRank": 471
     },
     {
@@ -6163,7 +6163,7 @@
       "momentum": -0.15018273066189536,
       "relativeMomentum": 0.8607494127478743,
       "rawWeightScore": 63120.19797610485,
-      "weight": 0.00026443621107116413,
+      "weight": 0.00026443620971312344,
       "weightRank": 472
     },
     {
@@ -6176,7 +6176,7 @@
       "momentum": -0.2632991453569403,
       "relativeMomentum": 0.7461778559745701,
       "rawWeightScore": 62282.704166003496,
-      "weight": 0.00026092760848372303,
+      "weight": 0.00026092760714370114,
       "weightRank": 473
     },
     {
@@ -6189,20 +6189,20 @@
       "momentum": -0.27885077087327403,
       "relativeMomentum": 0.7304261726263545,
       "rawWeightScore": 60403.5787332363,
-      "weight": 0.0002530551868896632,
+      "weight": 0.000253055185590071,
       "weightRank": 474
     },
     {
       "ticker": "WY",
       "marketCap": 13730020800.0,
-      "earlyPrice": 24.089941024780273,
+      "earlyPrice": 24.089942932128906,
       "recentPrice": 19.049999237060547,
-      "momentumGross": 0.7907864621779125,
+      "momentumGross": 0.7907863995664948,
       "momentumFallback": null,
-      "momentum": -0.20921353782208751,
-      "relativeMomentum": 0.8009592267508973,
-      "rawWeightScore": 60209.74994497032,
-      "weight": 0.00025224315917097683,
+      "momentum": -0.20921360043350523,
+      "relativeMomentum": 0.8009591633340393,
+      "rawWeightScore": 60209.73564344511,
+      "weight": 0.00025224309796064267,
       "weightRank": 475
     },
     {
@@ -6215,7 +6215,7 @@
       "momentum": -0.20554914482885556,
       "relativeMomentum": 0.8046707589011658,
       "rawWeightScore": 59645.797604779356,
-      "weight": 0.0002498805331836301,
+      "weight": 0.00024988053190034166,
       "weightRank": 476
     },
     {
@@ -6228,7 +6228,7 @@
       "momentum": -0.17419458758138606,
       "relativeMomentum": 0.8364286646433607,
       "rawWeightScore": 59462.78766380482,
-      "weight": 0.0002491138300215458,
+      "weight": 0.0002491138287421949,
       "weightRank": 477
     },
     {
@@ -6241,7 +6241,7 @@
       "momentum": -0.20167423455011624,
       "relativeMomentum": 0.8085955164546024,
       "rawWeightScore": 58421.95932979453,
-      "weight": 0.0002447533763181943,
+      "weight": 0.00024475337506123685,
       "weightRank": 478
     },
     {
@@ -6254,7 +6254,7 @@
       "momentum": -0.12641914518318498,
       "relativeMomentum": 0.8848186956203149,
       "rawWeightScore": 57622.76997340396,
-      "weight": 0.00024140524668443854,
+      "weight": 0.00024140524544467585,
       "weightRank": 479
     },
     {
@@ -6267,7 +6267,7 @@
       "momentum": -0.29916047731103845,
       "relativeMomentum": 0.7098551998771148,
       "rawWeightScore": 55975.7586241949,
-      "weight": 0.0002345052455003338,
+      "weight": 0.0002345052442960068,
       "weightRank": 480
     },
     {
@@ -6280,7 +6280,7 @@
       "momentum": -0.27225157475841,
       "relativeMomentum": 0.7371102615304331,
       "rawWeightScore": 55650.410926288576,
-      "weight": 0.00023314223151632118,
+      "weight": 0.00023314223031899409,
       "weightRank": 481
     },
     {
@@ -6293,7 +6293,7 @@
       "momentum": -0.20832131940687793,
       "relativeMomentum": 0.80186292276255,
       "rawWeightScore": 54326.1721015679,
-      "weight": 0.0002275944558662031,
+      "weight": 0.0002275944546973672,
       "weightRank": 482
     },
     {
@@ -6306,7 +6306,7 @@
       "momentum": -0.2667308608779141,
       "relativeMomentum": 0.7427019944853154,
       "rawWeightScore": 53394.917210192034,
-      "weight": 0.00022369304993097224,
+      "weight": 0.00022369304878217244,
       "weightRank": 483
     },
     {
@@ -6319,7 +6319,7 @@
       "momentum": -0.2765915293682666,
       "relativeMomentum": 0.7327144772641332,
       "rawWeightScore": 51239.31602930886,
-      "weight": 0.00021466235885061373,
+      "weight": 0.000214662357748192,
       "weightRank": 484
     },
     {
@@ -6332,7 +6332,7 @@
       "momentum": -0.30494231637564106,
       "relativeMomentum": 0.7039989825948564,
       "rawWeightScore": 49211.78394418937,
-      "weight": 0.0002061682013605313,
+      "weight": 0.00020616820030173227,
       "weightRank": 485
     },
     {
@@ -6345,7 +6345,7 @@
       "momentum": -0.23542072678122106,
       "relativeMomentum": 0.7744149056124056,
       "rawWeightScore": 47949.89352587797,
-      "weight": 0.00020088162857234714,
+      "weight": 0.00020088162754069788,
       "weightRank": 486
     },
     {
@@ -6358,7 +6358,7 @@
       "momentum": -0.20261940595541472,
       "relativeMomentum": 0.8076381862597355,
       "rawWeightScore": 47180.54950089121,
-      "weight": 0.0001976585331844849,
+      "weight": 0.00019765853216938814,
       "weightRank": 487
     },
     {
@@ -6371,7 +6371,7 @@
       "momentum": -0.19361938386555144,
       "relativeMomentum": 0.816753985629877,
       "rawWeightScore": 44702.92745784176,
-      "weight": 0.00018727876558967442,
+      "weight": 0.00018727876462788413,
       "weightRank": 488
     },
     {
@@ -6384,7 +6384,7 @@
       "momentum": -0.2602751791379402,
       "relativeMomentum": 0.7492407228297013,
       "rawWeightScore": 43146.95247607922,
-      "weight": 0.00018076015281766485,
+      "weight": 0.00018076015188935157,
       "weightRank": 489
     },
     {
@@ -6397,7 +6397,7 @@
       "momentum": -0.2420703980288914,
       "relativeMomentum": 0.7676796922578255,
       "rawWeightScore": 43035.996934031966,
-      "weight": 0.0001802953148723303,
+      "weight": 0.00018029531394640424,
       "weightRank": 490
     },
     {
@@ -6410,7 +6410,7 @@
       "momentum": -0.3883901854376751,
       "relativeMomentum": 0.619477630909274,
       "rawWeightScore": 40382.24570680342,
-      "weight": 0.00016917767040740915,
+      "weight": 0.00016917766953857897,
       "weightRank": 491
     },
     {
@@ -6423,7 +6423,7 @@
       "momentum": -0.2546577229832594,
       "relativeMomentum": 0.7549304425620909,
       "rawWeightScore": 38911.38228462894,
-      "weight": 0.00016301562461486859,
+      "weight": 0.00016301562377768423,
       "weightRank": 492
     },
     {
@@ -6436,7 +6436,7 @@
       "momentum": -0.28609356694271626,
       "relativeMomentum": 0.7230902044266488,
       "rawWeightScore": 35732.316611508366,
-      "weight": 0.00014969722403468266,
+      "weight": 0.0001496972232658964,
       "weightRank": 493
     },
     {
@@ -6449,7 +6449,7 @@
       "momentum": -0.30145239961362125,
       "relativeMomentum": 0.7075337940323637,
       "rawWeightScore": 35696.55281408206,
-      "weight": 0.0001495473949246962,
+      "weight": 0.00014954739415667942,
       "weightRank": 494
     },
     {
@@ -6462,7 +6462,7 @@
       "momentum": -0.32857054698006327,
       "relativeMomentum": 0.6800667958167879,
       "rawWeightScore": 35454.40014195358,
-      "weight": 0.00014853291877963318,
+      "weight": 0.00014853291801682634,
       "weightRank": 495
     },
     {
@@ -6475,7 +6475,7 @@
       "momentum": -0.3811319806571365,
       "relativeMomentum": 0.6268292060394409,
       "rawWeightScore": 34923.46629613764,
-      "weight": 0.0001463086207099383,
+      "weight": 0.00014630861995855457,
       "weightRank": 496
     },
     {
@@ -6488,7 +6488,7 @@
       "momentum": -0.3321622789009735,
       "relativeMomentum": 0.6764288594589174,
       "rawWeightScore": 34283.40132495197,
-      "weight": 0.00014362712791925048,
+      "weight": 0.00014362712718163787,
       "weightRank": 497
     },
     {
@@ -6501,7 +6501,7 @@
       "momentum": -0.27917561055416673,
       "relativeMomentum": 0.7300971541718538,
       "rawWeightScore": 30570.860405967822,
-      "weight": 0.0001280737823097441,
+      "weight": 0.00012807378165200734,
       "weightRank": 498
     },
     {
@@ -6514,7 +6514,7 @@
       "momentum": -0.3405834286862264,
       "relativeMomentum": 0.6678993790707818,
       "rawWeightScore": 27403.002477450627,
-      "weight": 0.0001148023355353541,
+      "weight": 0.00011480233494577431,
       "weightRank": 499
     },
     {
@@ -6527,7 +6527,7 @@
       "momentum": -0.42198051638719514,
       "relativeMomentum": 0.585455190224672,
       "rawWeightScore": 22699.550766420194,
-      "weight": 9.50976611315774e-05,
+      "weight": 9.509766064319309e-05,
       "weightRank": 500
     },
     {
@@ -6540,7 +6540,7 @@
       "momentum": -0.45505096272901824,
       "relativeMomentum": 0.5519593220009006,
       "rawWeightScore": 20243.55920334191,
-      "weight": 8.480851242502504e-05,
+      "weight": 8.480851198948177e-05,
       "weightRank": 501
     },
     {
@@ -6553,7 +6553,7 @@
       "momentum": -0.4590375994884094,
       "relativeMomentum": 0.5479214007049994,
       "rawWeightScore": 18378.36536538368,
-      "weight": 7.699445595438985e-05,
+      "weight": 7.69944555589765e-05,
       "weightRank": 502
     },
     {
@@ -6566,7 +6566,7 @@
       "momentum": -0.48410343376115406,
       "relativeMomentum": 0.5225331167659063,
       "rawWeightScore": 10791.222069967109,
-      "weight": 4.52088233007428e-05,
+      "weight": 4.5208823068568004e-05,
       "weightRank": 503
     }
   ]
