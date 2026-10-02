@@ -1,21 +1,23 @@
 {
   "strategy": "QUU",
-  "universe": "Nasdaq-100 / QQQ regime switch",
-  "generatedAt": "2026-10-02T09:22:09.245684+00:00",
+  "universe": "Nasdaq-100 / QQQ / QQQE regime switch",
+  "generatedAt": "2026-10-02T09:22:26.063057+00:00",
   "sourceGeneratedAt": "2026-10-02T08:38:33.962447+00:00",
   "signal": {
     "recentDate": "2026-09-30",
     "allocationMonth": "2026-10",
-    "rule": "Leadership Rollover: QUQU p=3 unless leadership is weak or extreme dispersion rolls over; otherwise QQQ"
+    "rule": "MR90: leadership percentile <50 => QQQ; >=50 => QUQU; >=90 with falling dispersion => QQQE"
   },
   "decision": {
     "momentumDispersion": 0.3325294305447196,
     "priorMedianDispersion": 0.2253526676008058,
-    "priorTukeyUpperFence": 0.537309448401077,
     "priorDispersion": 0.39583538525248696,
+    "priorObservationCount": 48,
+    "leadershipPercentile": 75.0,
     "leadershipStrong": true,
-    "extremeDispersion": false,
-    "extremeDispersionRollover": false,
+    "falling": true,
+    "meanReversionOverlay": false,
+    "decisionMode": "MR90",
     "selectedSleeve": "QUQU"
   },
   "selectedSleeve": "QUQU",
