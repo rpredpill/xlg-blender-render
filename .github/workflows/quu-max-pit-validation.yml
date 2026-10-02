@@ -1,0 +1,65 @@
+name: QUU maximum PIT validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/quu_max_pit_validation.py'
+      - '.github/workflows/quu-max-pit-validation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Fetch main
+        run: git fetch origin main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check yfinance requests pandas numpy
+
+      - name: Load frozen engines from main
+        run: |
+          git show origin/main:tools/backfill_snpi_ququ.py > /tmp/backfill_snpi_ququ.py
+          git show origin/main:tools/quu_max_pit_validation.py > /tmp/quu_max_pit_validation.py
+
+      - name: Run maximum PIT validation
+        run: python /tmp/quu_max_pit_validation.py
+
+      - name: Validate output
+        shell: python
+        run: |
+          import json
+          j=json.load(open('quu-max-pit-validation.json',encoding='utf-8'))
+          q=j['dataQuality']
+          if q['finalContiguousMonths'] < 48:
+              raise RuntimeError(q)
+          if not j['fixedRule']['parametersFrozen']:
+              raise RuntimeError('parameters not frozen')
+          print('contiguous',q['finalContiguousStart'],q['finalContiguousEnd'],q['finalContiguousMonths'])
+          print('QUU',j['headline']['QUU'])
+          print('triggers',[x['month'] for x in j['headline']['rolloverTriggers']])
+
+      - name: Commit result to Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quu-max-pit-validation.json
+          git commit -m 'Publish maximum PIT QUU validation' || exit 0
+          git pull --rebase origin somx-pages
+          git push origin HEAD:somx-pages
