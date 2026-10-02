@@ -43,9 +43,16 @@ jobs:
           print('validated',len(months),min(months),max(months))
       - name: Commit to Pages
         run: |
+          cp benchmark-history.json /tmp/benchmark-history.json
+          git fetch origin somx-pages
+          git reset --hard origin/somx-pages
+          cp /tmp/benchmark-history.json benchmark-history.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add benchmark-history.json
-          git commit -m 'Update benchmark monthly history' || exit 0
-          git pull --rebase origin somx-pages
+          if git diff --cached --quiet; then
+            echo 'No benchmark changes'
+            exit 0
+          fi
+          git commit -m 'Update benchmark monthly history'
           git push origin HEAD:somx-pages
