@@ -15,6 +15,10 @@ const originalMetrics=metrics;
 const isQuqu=()=>activeStrategy?.mode==="ququ";
 const chunks=(arr,n)=>{const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out};
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const trimMonthMap=(obj,max=12)=>{
+  const keys=Object.keys(obj||{}).filter(k=>/^\d{4}-\d{2}$/.test(k)).sort().slice(-max);
+  return Object.fromEntries(keys.map(k=>[k,obj[k]]));
+};
 
 async function syncQuquSnapshot(force=false){
   if(!isQuqu()||ququSnapshotBusy||!globalThis.SOMXStrategy?.fetchSnapshot)return false;
@@ -42,6 +46,8 @@ async function syncQuquSnapshot(force=false){
     weightsHistory[allocationYm]=clone(targetWeights);
     holdingsHistory[ym]=[...holdings];
     weightsHistory[ym]=clone(targetWeights);
+    holdingsHistory=trimMonthMap(holdingsHistory,12);
+    weightsHistory=trimMonthMap(weightsHistory,12);
     saveState();saveHoldingsHistory();saveWeightsHistory();
     window.dispatchEvent(new Event("somx:historychange"));
     return true;
@@ -72,8 +78,6 @@ ensureInitialized=async function(){
 
 catchUpRebalances=async function(){
   if(isQuqu()){
-    // QUQU is production-snapshot driven. Never send it through the generic
-    // S&P 500 browser ranking/catch-up path.
     await syncQuquSnapshot(false);
     return;
   }
@@ -124,8 +128,6 @@ connectStream=function(){
     if(ququPollTimer){clearInterval(ququPollTimer);ququPollTimer=null}
     return originalConnectStream();
   }
-  // Hundreds of QUQU names are handled by batched IEX polling instead of one
-  // oversized websocket subscription.
   if(socket)try{socket.close()}catch{}socket=null;
   if(ququPollTimer)clearInterval(ququPollTimer);
   const poll=async()=>{
@@ -157,8 +159,6 @@ async function applySnapshotStrategy(c){
     return;
   }
 
-  // Do not make Apply depend on hundreds of Alpaca requests. The production
-  // snapshot is already persisted by seedSnapshotContext before this call.
   const deadline=Date.now()+2500;
   while(starting&&Date.now()<deadline)await wait(50);
   if(starting)throw new Error("QUQU_RELOAD_REQUIRED");
@@ -178,8 +178,6 @@ async function applySnapshotStrategy(c){
     toast(`${activeStrategy.label} 적용됨`);
   }finally{switching=false}
 
-  // Live price/base-price work is deliberately background-only so the Apply
-  // button succeeds immediately even if Alpaca is slow or one symbol is bad.
   setTimeout(()=>hydrateQuquLive(),0);
 }
 
@@ -208,12 +206,6 @@ async function refreshMonthBase(){
   }finally{busy=false}
 }
 
-/*
-  On the first US trading day the official monthly base open may not exist yet
-  when the app is opened before 09:30 ET. In that short pending window, a new
-  month has not moved yet, so show 0.0% rather than '--'. The real first-day
-  open replaces this automatically as soon as Alpaca publishes the daily bar.
-*/
 metrics=function(){
   const out=originalMetrics();
   if(!creds||state?.rebalanceMonth!==currentNYMonth()||!state?.holdings?.length)return out;
