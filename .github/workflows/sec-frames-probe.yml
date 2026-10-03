@@ -1,0 +1,43 @@
+name: Probe SEC DEI frames
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sec-frames-probe.yml'
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install requests
+        run: pip install --disable-pip-version-check requests
+      - name: Probe SEC frames
+        shell: python
+        run: |
+          import requests, json, time
+          base='https://data.sec.gov/api/xbrl/frames'
+          headers={'User-Agent':'QUQU research github.com/rpredpill/xlg-blender-render','Accept-Encoding':'gzip, deflate'}
+          concepts=[('EntityCommonStockSharesOutstanding','shares'),('EntityPublicFloat','USD')]
+          periods=['CY2022Q1I','CY2022Q2I','CY2022Q3I','CY2022Q4I','CY2023Q1I','CY2023Q2I','CY2023Q3I','CY2023Q4I','CY2026Q1I','CY2026Q2I']
+          for tag,unit in concepts:
+              print('\nCONCEPT',tag,unit)
+              for period in periods:
+                  url=f'{base}/dei/{tag}/{unit}/{period}.json'
+                  r=requests.get(url,headers=headers,timeout=60)
+                  print('STATUS',tag,period,r.status_code,'bytes',len(r.content))
+                  if r.status_code==200:
+                      j=r.json()
+                      data=j.get('data') or []
+                      print(' COUNT',len(data),'LABEL',j.get('label'))
+                      print(' SAMPLE',data[:3])
+                  else:
+                      print(' BODY',r.text[:200])
+                  time.sleep(0.2)
