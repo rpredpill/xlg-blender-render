@@ -52,8 +52,10 @@ async function forceApplyQuqu(btn,box){
     btn.disabled=false;btn.textContent="Apply Strategy";
   }
 }
-const applyBtn=document.getElementById("strategy-apply-btn");
-if(applyBtn){
+function bindQuquApply(){
+  const applyBtn=document.getElementById("strategy-apply-btn");
+  if(!applyBtn||applyBtn.dataset.ququFallbackBound==="1")return false;
+  applyBtn.dataset.ququFallbackBound="1";
   const originalApply=applyBtn.onclick;
   applyBtn.onclick=function(ev){
     const selected=document.querySelector('.strategy-tabs button.active')?.dataset?.mode;
@@ -61,7 +63,14 @@ if(applyBtn){
     const box=document.getElementById("strategy-preview");
     return forceApplyQuqu(this,box);
   };
+  return true;
 }
+function bindWhenReady(){
+  if(bindQuquApply())return;
+  let tries=0;
+  const timer=setInterval(()=>{tries++;if(bindQuquApply()||tries>=50)clearInterval(timer)},100);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bindWhenReady,{once:true});else bindWhenReady();
 
-if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=38",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
+if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=39",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
 })();
