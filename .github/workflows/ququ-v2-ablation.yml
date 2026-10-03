@@ -14,6 +14,14 @@ on:
   workflow_run:
     workflows: ['Build Nasdaq Composite PIT universe']
     types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ququ-v2-ablation.yml'
+      - 'tools/ququ_v2_ablation.py'
+      - 'tools/ququ_v2_ablation_safe.py'
+      - 'tools/ququ_v2_bulk_data.py'
+      - 'tools/ququ_v2_bulk_launcher.py'
 
 permissions:
   contents: write
@@ -24,7 +32,7 @@ concurrency:
 
 jobs:
   ablation:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
@@ -40,13 +48,19 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install --disable-pip-version-check numpy pandas yfinance requests
+        run: pip install --disable-pip-version-check numpy pandas yfinance requests duckdb
 
       - name: Load ablation engines from main
         run: |
           git show origin/main:tools/ququ_v2_ablation.py > /tmp/ququ_v2_ablation.py
           git show origin/main:tools/ququ_v2_ablation_safe.py > /tmp/ququ_v2_ablation_safe.py
-          python -m py_compile /tmp/ququ_v2_ablation.py /tmp/ququ_v2_ablation_safe.py
+          git show origin/main:tools/ququ_v2_bulk_data.py > /tmp/ququ_v2_bulk_data.py
+          git show origin/main:tools/ququ_v2_bulk_launcher.py > /tmp/ququ_v2_bulk_launcher.py
+          python -m py_compile \
+            /tmp/ququ_v2_ablation.py \
+            /tmp/ququ_v2_ablation_safe.py \
+            /tmp/ququ_v2_bulk_data.py \
+            /tmp/ququ_v2_bulk_launcher.py
 
       - name: Run QUQU v2 ablation
         shell: bash
@@ -58,7 +72,7 @@ jobs:
           test -s nasdaq-composite-pit.json
           test -s ququ-history.json
           export PYTHONPATH=/tmp
-          python /tmp/ququ_v2_ablation_safe.py \
+          python /tmp/ququ_v2_bulk_launcher.py \
             --pit nasdaq-composite-pit.json \
             --legacy ququ-history.json \
             --start "$START_MONTH" \
