@@ -25,20 +25,16 @@ jobs:
           set -euo pipefail
           python tools/build_nasdaq_composite_pit.py --start 2022-12 --end 2022-12 --output /tmp/probe.json --sleep 0
           python - <<'PY'
-          import io, json, requests, pandas as pd
+          import json
           p=json.load(open('/tmp/probe.json'))
           r=p['months']['2022-12']
+          s=set(r['symbols'])
           print('RAW_COUNT', r['rawCount'])
           print('ELIGIBLE_COUNT', r['count'])
           print('ETF_EXCLUDED', r['excludedETFCount'], r['excludedETFSample'])
           print('SUFFIX_EXCLUDED', r['excludedSuffixCount'], r['excludedSuffixSample'])
           print('ETF_UNKNOWN', r['etfFlagUnknownCount'])
-          print('FIRST50', r['symbols'][:50])
-          url='https://www.nasdaqtrader.com/content/marketstatistics/marketshare/2022/NASDAQ202212.xlsx'
-          b=requests.get(url, timeout=60).content
-          df=pd.read_excel(io.BytesIO(b), sheet_name='NASDAQ', engine='openpyxl')
-          etf=[c for c in df.columns if 'ETF' in str(c).upper()][0]
-          print('ETF_COL_REPR', repr(etf))
-          print('ETF_VALUE_COUNTS', df[etf].value_counts(dropna=False).head(20).to_dict())
-          print('ETF_NONEMPTY_SAMPLE', df.loc[df[etf].notna(), ['Issue',etf]].head(50).to_dict('records'))
+          print('QQQ_PRESENT', 'QQQ' in s)
+          print('TQQQ_PRESENT', 'TQQQ' in s)
+          print('AAPL_PRESENT', 'AAPL' in s)
           PY
