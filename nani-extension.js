@@ -1,6 +1,5 @@
 (()=>{
 "use strict";
-
 const ACTIVE_STORE="somx.strategy.active.v1";
 const SIG="nani-nk100-ndx100-50-50-floatcap-v4";
 const clone=x=>JSON.parse(JSON.stringify(x));
@@ -87,7 +86,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
 if(!document.querySelector('script[data-nani-mtd-ui]')){
   const s=document.createElement("script");
-  s.src="./nani-mtd-ui.js?v=1";
+  s.src="./nani-mtd-ui.js?v=2";
   s.async=true;
   s.dataset.naniMtdUi="1";
   document.head.appendChild(s);
