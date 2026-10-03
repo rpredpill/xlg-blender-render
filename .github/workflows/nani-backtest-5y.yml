@@ -1,0 +1,51 @@
+name: Nani vs QQQ 5Y Backtest
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nani-backtest-5y.yml'
+      - 'tools/nani_backtest_5y.py'
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check numpy pandas yfinance requests lxml
+      - name: Run backtest
+        run: python tools/nani_backtest_5y.py
+      - name: Validate result
+        shell: python
+        run: |
+          import json, math
+          p=json.load(open('research/nani_vs_qqq_5y.json',encoding='utf-8'))
+          assert p['period']['months']==60
+          assert len(p['equityCurve'])==60
+          assert math.isfinite(p['nani']['totalReturn']) and math.isfinite(p['qqq']['totalReturn'])
+          for r in p['monthly']:
+              assert abs(r['jpWeight']-.5)<1e-8 and abs(r['usWeight']-.5)<1e-8
+          print('Nani',p['nani'])
+          print('QQQ',p['qqq'])
+          print('Ending 100',p['endingValue100'])
+          print('Diagnostics',p['diagnostics'])
+      - name: Commit result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add research/nani_vs_qqq_5y.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update Nani vs QQQ 5-year backtest result'
+          git pull --rebase origin main
+          git push origin HEAD:main
