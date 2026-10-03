@@ -7,10 +7,10 @@ Source page:
 Nasdaq publishes one XLSX per calendar month for "Nasdaq-Listed Securities":
   https://www.nasdaqtrader.com/content/marketstatistics/marketshare/YYYY/NASDAQYYYYMM.xlsx
 
-The report is not a formal Nasdaq Composite constituent file. It is used here as
-a survivorship-free monthly Nasdaq-listed security master. Downstream QUQU-v2
-code must additionally apply Nasdaq Composite security-type eligibility and a
-near-month-end price check before treating a symbol as investable.
+The workbook is a historical Nasdaq-listed security master, not an official
+Nasdaq Composite constituent file.  We use the workbook's PIT ETF flag and a
+conservative suffix rule to remove obvious ineligible security types.  The
+QUQU-v2 engine must still require usable equity prices and capitalization data.
 """
 from __future__ import annotations
 
@@ -39,6 +39,23 @@ SYMBOL_COLUMN_HINTS = (
     "ticker",
     "issue",
 )
+# Nasdaq fifth-character issue types that are clearly outside Composite equity
+# eligibility.  We only apply these when the corresponding root symbol exists
+# in the same PIT workbook, avoiding false exclusions of legitimate 5-char roots.
+# L is intentionally NOT included because symbols such as GOOGL exist alongside
+# GOOG and must not be classified from the last character alone.
+ROOT_LINKED_INELIGIBLE_SUFFIXES = {
+    "C",  # exchange-traded managed fund / NextShares
+    "G", "H", "I",  # convertible bonds
+    "M", "N", "O", "P",  # preferred classes
+    "R",  # rights
+    "T",  # with warrants/rights
+    "U",  # units
+    "V",  # when-issued / when-distributed
+    "W",  # warrants
+    "X",  # Nasdaq Fund Network instrument
+    "Z",  # miscellaneous / preferred when-issued
+}
 
 
 def month_add(ym: str, n: int) -> str:
@@ -65,6 +82,17 @@ def clean_symbol(value) -> str | None:
     return s
 
 
+def yn_flag(value) -> bool | None:
+    if value is None or pd.isna(value):
+        return None
+    s = str(value).strip().upper()
+    if s in {"Y", "YES", "1", "TRUE"}:
+        return True
+    if s in {"N", "NO", "0", "FALSE"}:
+        return False
+    return None
+
+
 def candidate_symbol_columns(df: pd.DataFrame) -> list:
     scored = []
     for col in df.columns:
@@ -86,9 +114,17 @@ def candidate_symbol_columns(df: pd.DataFrame) -> list:
     return [c for score, c in scored if score >= 25]
 
 
-def parse_workbook(content: bytes) -> tuple[list[str], dict]:
+def find_etf_column(df: pd.DataFrame):
+    for col in df.columns:
+        name = re.sub(r"\s+", " ", str(col)).strip().lower()
+        if "etf" in name and ("flag" in name or name == "etf"):
+            return col
+    return None
+
+
+def parse_workbook(content: bytes) -> tuple[list[dict], dict]:
     book = pd.read_excel(io.BytesIO(content), sheet_name=None, engine="openpyxl")
-    candidates = []
+    records: dict[str, dict] = {}
     diagnostics = {"sheets": []}
 
     for sheet, raw in book.items():
@@ -112,16 +148,25 @@ def parse_workbook(content: bytes) -> tuple[list[str], dict]:
             cols = candidate_symbol_columns(df)
             if not cols:
                 continue
-            col = cols[0]
-            syms = [clean_symbol(v) for v in df[col]]
-            syms = [s for s in syms if s]
-            quality = len(set(syms))
+            symbol_col = cols[0]
+            etf_col = find_etf_column(df)
+            rows = []
+            for _, row in df.iterrows():
+                sym = clean_symbol(row.get(symbol_col))
+                if not sym:
+                    continue
+                rows.append({
+                    "symbol": sym,
+                    "etf": yn_flag(row.get(etf_col)) if etf_col is not None else None,
+                })
+            quality = len({x["symbol"] for x in rows})
             if best is None or quality > best["quality"]:
                 best = {
                     "sheet": str(sheet),
                     "headerRow": header_row,
-                    "symbolColumn": str(col),
-                    "symbols": syms,
+                    "symbolColumn": str(symbol_col),
+                    "etfColumn": str(etf_col) if etf_col is not None else None,
+                    "records": rows,
                     "quality": quality,
                     "columns": [str(x) for x in df.columns[:30]],
                 }
@@ -133,17 +178,58 @@ def parse_workbook(content: bytes) -> tuple[list[str], dict]:
             "bestUniqueSymbols": int(best["quality"]) if best else 0,
             "bestHeaderRow": int(best["headerRow"]) if best else None,
             "bestSymbolColumn": best["symbolColumn"] if best else None,
+            "bestEtfColumn": best["etfColumn"] if best else None,
         })
         if best:
-            candidates.extend(best["symbols"])
+            for rec in best["records"]:
+                old = records.get(rec["symbol"])
+                if old is None:
+                    records[rec["symbol"]] = rec
+                elif old.get("etf") is None and rec.get("etf") is not None:
+                    records[rec["symbol"]] = rec
 
-    symbols = sorted(set(candidates))
-    if len(symbols) < 500:
+    rows = [records[s] for s in sorted(records)]
+    if len(rows) < 500:
         raise RuntimeError(
-            f"Could not identify a credible symbol column; only {len(symbols)} "
+            f"Could not identify a credible symbol column; only {len(rows)} "
             f"unique symbols. diagnostics={diagnostics}"
         )
-    return symbols, diagnostics
+    return rows, diagnostics
+
+
+def classify_month(rows: list[dict]):
+    raw_symbols = {r["symbol"] for r in rows}
+    eligible = []
+    excluded_etf = []
+    excluded_suffix = []
+    etf_unknown = []
+
+    for r in rows:
+        s = r["symbol"]
+        if r.get("etf") is True:
+            excluded_etf.append(s)
+            continue
+        if r.get("etf") is None:
+            etf_unknown.append(s)
+
+        # A root-linked 5th-character suffix is strong evidence of a subordinate
+        # security.  Example: AACI + AACIU/AACIW.  Do not classify on the suffix
+        # alone because legitimate root symbols can be five characters.
+        if len(s) == 5 and s[:4] in raw_symbols and s[-1] in ROOT_LINKED_INELIGIBLE_SUFFIXES:
+            excluded_suffix.append(s)
+            continue
+        eligible.append(s)
+
+    return {
+        "symbols": sorted(eligible),
+        "rawCount": len(raw_symbols),
+        "count": len(eligible),
+        "excludedETFCount": len(excluded_etf),
+        "excludedSuffixCount": len(excluded_suffix),
+        "etfFlagUnknownCount": len(etf_unknown),
+        "excludedETFSample": sorted(excluded_etf)[:30],
+        "excludedSuffixSample": sorted(excluded_suffix)[:30],
+    }
 
 
 def fetch_month(session: requests.Session, ym: str, retries: int = 4):
@@ -160,14 +246,14 @@ def fetch_month(session: requests.Session, ym: str, retries: int = 4):
                 raise RuntimeError(
                     f"not an XLSX/ZIP payload; content-type={r.headers.get('content-type')}"
                 )
-            symbols, diagnostics = parse_workbook(r.content)
+            rows, diagnostics = parse_workbook(r.content)
+            classified = classify_month(rows)
             return {
                 "month": ym,
                 "url": url,
-                "symbols": symbols,
-                "count": len(symbols),
                 "bytes": len(r.content),
                 "diagnostics": diagnostics,
+                **classified,
             }
         except Exception as exc:
             last_error = exc
@@ -198,11 +284,22 @@ def main():
             months[cur] = {
                 "month": cur,
                 "sourceUrl": rec["url"],
+                "rawCount": rec["rawCount"],
                 "count": rec["count"],
+                "excludedETFCount": rec["excludedETFCount"],
+                "excludedSuffixCount": rec["excludedSuffixCount"],
+                "etfFlagUnknownCount": rec["etfFlagUnknownCount"],
+                "excludedETFSample": rec["excludedETFSample"],
+                "excludedSuffixSample": rec["excludedSuffixSample"],
                 "symbols": rec["symbols"],
                 "parserDiagnostics": rec["diagnostics"],
             }
-            print(f"{cur}: {rec['count']} symbols", flush=True)
+            print(
+                f"{cur}: raw={rec['rawCount']} eligible={rec['count']} "
+                f"etf={rec['excludedETFCount']} suffix={rec['excludedSuffixCount']} "
+                f"etfUnknown={rec['etfFlagUnknownCount']}",
+                flush=True,
+            )
         except Exception as exc:
             failures[cur] = str(exc)
             print(f"WARN {cur}: {exc}", flush=True)
@@ -229,11 +326,17 @@ def main():
             "Securities report for that same month; current membership is never "
             "substituted for a historical month."
         ),
+        "eligibilityPolicy": (
+            "Use the workbook's PIT ETF flag to exclude ETFs. Also exclude obvious "
+            "root-linked subordinate issue suffixes C/G/H/I/M/N/O/P/R/T/U/V/W/X/Z. "
+            "Final QUQU-v2 eligibility additionally requires usable equity prices "
+            "and capitalization data."
+        ),
         "caveat": (
-            "This is a monthly historical Nasdaq-listed security master, not a "
-            "formal Nasdaq Composite constituent file. QUQU-v2 must additionally "
-            "apply Composite security-type eligibility and require a price close "
-            "near the signal month-end."
+            "The public monthly workbook is not the paid Nasdaq Fundamental Data "
+            "security master and therefore does not expose the complete historical "
+            "Issue Type/Class or Public Float fields. Eligibility and free-float "
+            "coverage must be audited downstream."
         ),
         "months": {k: months[k] for k in sorted(months)},
     }
