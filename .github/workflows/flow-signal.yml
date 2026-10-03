@@ -1,0 +1,47 @@
+name: Refresh FLOW stock signals
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/flow-signal.yml']
+  schedule:
+    - cron: '15 12 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flow-public-signal
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install public data dependencies
+        run: pip install --disable-pip-version-check pandas aiohttp lxml
+      - name: Build completed-session FLOW ranking
+        run: python flow-signal.py
+      - name: Verify paper execution guards
+        run: node flow-paper.test.cjs
+      - name: Save public signal only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add flow-latest.json
+          if git diff --cached --quiet; then
+            echo 'Signal unchanged'
+          else
+            git commit -m 'Refresh FLOW 63-session stock turnover ranking'
+            git pull --rebase origin somx-pages
+            git push origin HEAD:somx-pages
+          fi
