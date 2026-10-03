@@ -16,6 +16,7 @@ on:
     paths:
       - '.github/workflows/nasdaq-composite-pit.yml'
       - 'tools/build_nasdaq_composite_pit.py'
+      - 'tools/build_nasdaq_composite_pit_parallel.py'
 
 permissions:
   contents: write
@@ -43,8 +44,10 @@ jobs:
       - name: Install dependencies
         run: pip install --disable-pip-version-check pandas requests openpyxl
 
-      - name: Load builder from main
-        run: git show origin/main:tools/build_nasdaq_composite_pit.py > /tmp/build_nasdaq_composite_pit.py
+      - name: Load builders from main
+        run: |
+          git show origin/main:tools/build_nasdaq_composite_pit.py > /tmp/build_nasdaq_composite_pit.py
+          git show origin/main:tools/build_nasdaq_composite_pit_parallel.py > /tmp/build_nasdaq_composite_pit_parallel.py
 
       - name: Build monthly PIT universe
         shell: bash
@@ -53,15 +56,18 @@ jobs:
           END_MONTH: ${{ github.event.inputs.end_month || '' }}
         run: |
           set -euo pipefail
+          export PYTHONPATH=/tmp
           if [ -n "$END_MONTH" ]; then
-            python /tmp/build_nasdaq_composite_pit.py \
+            python /tmp/build_nasdaq_composite_pit_parallel.py \
               --start "$START_MONTH" \
               --end "$END_MONTH" \
-              --output nasdaq-composite-pit.json
+              --output nasdaq-composite-pit.json \
+              --workers 6
           else
-            python /tmp/build_nasdaq_composite_pit.py \
+            python /tmp/build_nasdaq_composite_pit_parallel.py \
               --start "$START_MONTH" \
-              --output nasdaq-composite-pit.json
+              --output nasdaq-composite-pit.json \
+              --workers 6
           fi
 
       - name: Validate PIT output
@@ -79,6 +85,9 @@ jobs:
           }
           if bad:
               raise RuntimeError(f'implausible monthly universe counts: {bad}')
+          unknown = {m:r.get('etfFlagUnknownCount') for m,r in months.items() if r.get('etfFlagUnknownCount')}
+          if unknown:
+              print('WARN ETF flag unknown values:', unknown)
           print(
               'PIT universe',
               len(months),
