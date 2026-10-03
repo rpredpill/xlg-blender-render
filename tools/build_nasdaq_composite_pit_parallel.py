@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Parallel month wrapper for build_nasdaq_composite_pit.py.
+"""Fast parallel month wrapper for build_nasdaq_composite_pit.py.
 
-The underlying monthly parser/classifier remains exactly the same; this module
-only executes independent calendar months concurrently and assembles the result
-in chronological order.
+Known Nasdaq monthly workbooks use sheet ``NASDAQ`` with row 0 as the header.
+We parse that layout once per month.  If the layout is absent or implausible,
+we fall back to the slower multi-header parser in build_nasdaq_composite_pit.py.
+Eligibility/classification is always delegated to the same base functions.
 """
 from __future__ import annotations
 
 import argparse
+import io
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -19,10 +22,86 @@ import requests
 import build_nasdaq_composite_pit as base
 
 
-def fetch_one(ym: str):
-    # requests.Session is not intentionally shared between worker threads.
-    with requests.Session() as session:
-        return base.fetch_month(session, ym)
+def fast_fetch_one(ym: str, retries: int = 4):
+    period = pd.Period(ym, freq="M")
+    url = base.FILE_TEMPLATE.format(year=period.year, ym_nodash=ym.replace("-", ""))
+    last_error = None
+    for attempt in range(1, retries + 1):
+        try:
+            with requests.Session() as session:
+                r = session.get(url, headers=base.UA, timeout=90)
+                r.raise_for_status()
+            if len(r.content) < 10_000:
+                raise RuntimeError(f"response too small ({len(r.content)} bytes)")
+            if not r.content.startswith(b"PK"):
+                raise RuntimeError(
+                    f"not an XLSX/ZIP payload; content-type={r.headers.get('content-type')}"
+                )
+
+            try:
+                df = pd.read_excel(
+                    io.BytesIO(r.content),
+                    sheet_name="NASDAQ",
+                    header=0,
+                    engine="openpyxl",
+                )
+                symbol_cols = base.candidate_symbol_columns(df)
+                if not symbol_cols:
+                    raise RuntimeError("fast path: symbol column not found")
+                symbol_col = symbol_cols[0]
+                etf_col = base.find_etf_column(df)
+                rows = []
+                for _, row in df.iterrows():
+                    sym = base.clean_symbol(row.get(symbol_col))
+                    if not sym:
+                        continue
+                    rows.append({
+                        "symbol": sym,
+                        "etf": base.yn_flag(row.get(etf_col)) if etf_col is not None else None,
+                    })
+                unique_count = len({x["symbol"] for x in rows})
+                if unique_count < 500:
+                    raise RuntimeError(
+                        f"fast path: only {unique_count} unique symbols"
+                    )
+                classified = base.classify_month(rows)
+                diagnostics = {
+                    "parser": "fast-known-layout",
+                    "fallbackUsed": False,
+                    "sheets": [{
+                        "sheet": "NASDAQ",
+                        "rows": int(len(df)),
+                        "columns": [str(x) for x in df.columns[:30]],
+                        "bestUniqueSymbols": unique_count,
+                        "bestHeaderRow": 0,
+                        "bestSymbolColumn": str(symbol_col),
+                        "bestEtfColumn": str(etf_col) if etf_col is not None else None,
+                    }],
+                }
+                return {
+                    "month": ym,
+                    "url": url,
+                    "bytes": len(r.content),
+                    "diagnostics": diagnostics,
+                    **classified,
+                }
+            except Exception as fast_exc:
+                # The base parser handles alternate sheets/header offsets.  Use a
+                # fresh session so a fast-path parse problem cannot corrupt state.
+                with requests.Session() as fallback_session:
+                    rec = base.fetch_month(fallback_session, ym, retries=1)
+                rec["diagnostics"] = {
+                    **(rec.get("diagnostics") or {}),
+                    "parser": "base-fallback",
+                    "fallbackUsed": True,
+                    "fastPathError": str(fast_exc),
+                }
+                return rec
+        except Exception as exc:
+            last_error = exc
+            if attempt < retries:
+                time.sleep(1.5 * attempt)
+    raise RuntimeError(f"{ym}: {last_error}")
 
 
 def month_range(start: str, end: str) -> list[str]:
@@ -67,7 +146,7 @@ def main():
     months: dict[str, dict] = {}
     failures: dict[str, str] = {}
     with ThreadPoolExecutor(max_workers=workers) as ex:
-        futs = {ex.submit(fetch_one, ym): ym for ym in requested}
+        futs = {ex.submit(fast_fetch_one, ym): ym for ym in requested}
         for fut in as_completed(futs):
             ym = futs[fut]
             try:
@@ -76,7 +155,8 @@ def main():
                 print(
                     f"{ym}: raw={rec['rawCount']} eligible={rec['count']} "
                     f"etf={rec['excludedETFCount']} suffix={rec['excludedSuffixCount']} "
-                    f"etfUnknown={rec['etfFlagUnknownCount']}",
+                    f"etfUnknown={rec['etfFlagUnknownCount']} "
+                    f"parser={rec['diagnostics'].get('parser')}",
                     flush=True,
                 )
             except Exception as exc:
@@ -99,7 +179,7 @@ def main():
         "lastSuccessfulMonth": max(ordered),
         "successfulMonths": len(ordered),
         "failedMonths": {k: failures[k] for k in sorted(failures)},
-        "buildMode": f"parallel-month-fetch-{workers}-workers",
+        "buildMode": f"parallel-fast-path-{workers}-workers-with-base-fallback",
         "survivorshipPolicy": (
             "Each month is read from Nasdaq Trader's historical Nasdaq-Listed "
             "Securities report for that same month; current membership is never "
@@ -121,9 +201,13 @@ def main():
     }
     out = Path(args.output)
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    fallback_count = sum(
+        1 for r in ordered.values()
+        if (r.get("parserDiagnostics") or {}).get("fallbackUsed")
+    )
     print(
         f"wrote {out}: {len(ordered)} months {min(ordered)}..{max(ordered)} "
-        f"failures={len(failures)} workers={workers}",
+        f"failures={len(failures)} workers={workers} fallbacks={fallback_count}",
         flush=True,
     )
 
