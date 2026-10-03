@@ -8,7 +8,12 @@
  const log=t=>{if(!state)return;state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,100);save();$('log').textContent=state.log.join('\n');};
  async function api(path,method='GET',body){
    C.assert(credentials,'Paper API 연결이 필요합니다.');
-   const r=await fetch(C.PAPER+path,{method,headers:{'APCA-API-KEY-ID':credentials.keyId,'APCA-API-SECRET-KEY':credentials.secretKey,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined,cache:'no-store'});
+   const headers={'APCA-API-KEY-ID':credentials.keyId,'APCA-API-SECRET-KEY':credentials.secretKey};
+   // Clock/calendar CORS permit authentication headers only. JSON is for writes;
+   // cache:no-store can also add Cache-Control/Pragma, which Alpaca does not allow.
+   if(body!==undefined)headers['Content-Type']='application/json';
+   let r;try{r=await fetch(C.PAPER+path,{method,headers,body:body!==undefined?JSON.stringify(body):undefined});}
+   catch{const e=Error(`Paper API 통신 실패 (${method} ${path.split('?')[0]}) · 네트워크 또는 브라우저 접근 제한을 확인하세요.`);e.transport=true;e.orderUncertain=method==='POST'&&path==='/orders';throw e;}
    if(!r.ok){let message='';try{message=(await r.json()).message||'';}catch{}throw Error(`Paper API ${r.status}: ${message}`);}
    return r.status===204?null:r.json();
  }
@@ -87,7 +92,7 @@
      await loadSignal();C.assert(signal.signalDate===previous,'직전 거래일 신호가 아직 없습니다. 최신 신호 갱신 후 다시 실행하세요.');
      C.assert(navigator.locks,'중복 실행 방지를 지원하는 최신 브라우저가 필요합니다.');
      await navigator.locks.request('flow-paper-'+account.id,{ifAvailable:true},async lock=>{if(!lock)return;state=JSON.parse(localStorage.getItem(stateKey()));if(state?.armed)await execute(nyDate);});
-   }catch(e){log('실행 중단: '+e.message);stop(e.message+' · 자동 재주문하지 않습니다.');}
+   }catch(e){const intent=state?.runningDate&&state.intents[state.runningDate];const uncertainty=e.orderUncertain||intent&&['submitting','submitted'].includes(intent.status);const suffix=uncertainty?' · 주문 접수/체결 확인 필요. 자동 재주문하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 중단: '+e.message+suffix);stop(e.message+suffix);}
    finally{busy=false;}
  }
  $('connect').onclick=connect;
