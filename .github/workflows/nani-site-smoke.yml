@@ -9,7 +9,7 @@ on:
       - '.github/workflows/nani-signal.yml'
       - 'tools/nani_live.py'
       - 'tools/nani_live_v2.py'
-      - 'tools/nani_live_v3.py'
+      - 'tools/nani_live_v4.py'
       - 'tools/nani_ndx_source.py'
   workflow_run:
     workflows: ['Refresh Nani signal and history']
@@ -34,20 +34,20 @@ jobs:
           node --check nani-history-sync.js
           node --check nani-live-fix.js
 
-      - name: Validate Nani v3 wiring and data
+      - name: Validate Nani v4 wiring and data
         shell: python
         run: |
           import json, math
           from pathlib import Path
 
           index=Path('index.html').read_text(encoding='utf-8')
-          for name in ['nani-extension.js?v=3','nani-history-sync.js?v=3','nani-live-fix.js?v=3']:
+          for name in ['nani-extension.js?v=4','nani-history-sync.js?v=4','nani-live-fix.js?v=4']:
               if name not in index:
                   raise RuntimeError(f'{name} not wired in index.html')
 
           latest=json.loads(Path('nani-latest.json').read_text(encoding='utf-8'))
-          if latest.get('strategy')!='Nani' or latest.get('version')!='3.0' or latest.get('ready') is not True:
-              raise RuntimeError(f'Nani v3 latest not ready: strategy={latest.get("strategy")} version={latest.get("version")} ready={latest.get("ready")}')
+          if latest.get('strategy')!='Nani' or latest.get('version')!='4.0' or latest.get('ready') is not True:
+              raise RuntimeError(f'Nani v4 latest not ready: strategy={latest.get("strategy")} version={latest.get("version")} ready={latest.get("ready")}')
           rows=latest.get('rows') or []
           total=sum(float(r['weight']) for r in rows)
           if not math.isclose(total,1.0,rel_tol=0,abs_tol=1e-8):
@@ -56,10 +56,12 @@ jobs:
           rules=latest.get('rules') or {}
           if rules.get('countryAllocation')!='Japan 50% / US 50%':
               raise RuntimeError(f'country allocation rule mismatch: {rules.get("countryAllocation")}')
+          if rules.get('coreWeighting')!='Float-Adjusted Market Cap only' or rules.get('momentum') is not None:
+              raise RuntimeError(f'Nani v4 is not float-cap-only: {rules}')
           if rules.get('singleNameCap') is not None:
-              raise RuntimeError(f'Nani v3 unexpectedly has cap: {rules.get("singleNameCap")}')
+              raise RuntimeError(f'Nani v4 unexpectedly has cap: {rules.get("singleNameCap")}')
           if rules.get('rebalanceCadence') is not None:
-              raise RuntimeError(f'Nani v3 unexpectedly has cadence: {rules.get("rebalanceCadence")}')
+              raise RuntimeError(f'Nani v4 unexpectedly has cadence: {rules.get("rebalanceCadence")}')
 
           us=[r for r in rows if r.get('country')=='US']
           jp=[r for r in rows if r.get('country')=='JP']
@@ -80,22 +82,24 @@ jobs:
 
           checked=0
           for r in rows:
-              fc=r.get('floatCap'); rm=r.get('relativeMomentum'); raw=r.get('rawWeightScore')
-              if all(isinstance(v,(int,float)) and math.isfinite(float(v)) for v in [fc,rm,raw]):
-                  expected=float(fc)*(float(rm)**3)
-                  if not math.isclose(float(raw),expected,rel_tol=1e-10,abs_tol=max(1e-4,abs(expected)*1e-12)):
+              fc=r.get('floatCap'); raw=r.get('rawWeightScore')
+              if all(isinstance(v,(int,float)) and math.isfinite(float(v)) for v in [fc,raw]):
+                  expected=float(fc)
+                  if not math.isclose(float(raw),expected,rel_tol=1e-12,abs_tol=max(1e-4,abs(expected)*1e-12)):
                       raise RuntimeError(f'raw score mismatch {r.get("ticker")}: {raw} vs {expected}')
+                  if any(k in r for k in ['momentum','grossMomentum','relativeMomentum','earlyPrice']):
+                      raise RuntimeError(f'momentum field survived in v4 row {r.get("ticker")}')
                   checked+=1
           if checked!=len(rows):
               raise RuntimeError(f'formula rows checked {checked}/{len(rows)}')
 
           hist=json.loads(Path('nani-history.json').read_text(encoding='utf-8'))
-          if hist.get('version')!='3.0':
-              raise RuntimeError(f'Nani history is not v3: {hist.get("version")}')
+          if hist.get('version')!='4.0':
+              raise RuntimeError(f'Nani history is not v4: {hist.get("version")}')
           months=hist.get('months') or {}
           for m,rec in months.items():
-              if not isinstance(rec,dict) or rec.get('provenance')!='forward-live-v3':
-                  raise RuntimeError(f'non-v3 forward record remains at {m}')
+              if not isinstance(rec,dict) or rec.get('provenance')!='forward-live-v4':
+                  raise RuntimeError(f'non-v4 forward record remains at {m}')
               rrows=rec.get('rows') or []
               if not rrows:
                   raise RuntimeError(f'{m} rows missing')
@@ -112,10 +116,7 @@ jobs:
 
           completed=[m for m,r in months.items() if isinstance(r.get('portfolioReturn'),(int,float))]
           pending=[m for m,r in months.items() if not isinstance(r.get('portfolioReturn'),(int,float))]
-          if any(m in months for m in ['2026-04','2026-05','2026-06','2026-07','2026-08','2026-09']):
-              raise RuntimeError('retroactive pre-v3 record survived')
-
-          print('Nani v3 smoke OK')
+          print('Nani v4 smoke OK')
           print('holdings',len(rows),'US',len(us),'JP',len(jp),'JPWeight',jp_weight,'USWeight',us_weight,'maxWeight',latest.get('maxWeight'))
-          print('formulaRowsChecked',checked)
+          print('floatOnlyRowsChecked',checked)
           print('history completed',completed,'pending',pending)
