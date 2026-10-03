@@ -69,6 +69,16 @@ jobs:
             --output ququ-rebalance-study.json \
             --workers 8
 
+      - name: Preserve reusable cadence inputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ququ-rebalance-inputs
+          path: |
+            ququ-rebalance-inputs.json
+            ququ-rebalance-study.json
+          if-no-files-found: warn
+
       - name: Validate result
         shell: python
         run: |
