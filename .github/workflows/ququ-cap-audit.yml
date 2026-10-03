@@ -28,13 +28,12 @@ jobs:
           root='https://huggingface.co/datasets/defeatbeta/yahoo-finance-data/resolve/main/data/US/'
           shares=root+'stock_shares_outstanding.parquet'
           splits=root+'stock_split_events.parquet'
-          prices='https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/train-00000-of-00004.parquet'
+          print('SHARES_SCHEMA',con.execute(f"DESCRIBE SELECT * FROM read_parquet('{shares}')").fetchall())
           print('SPLIT_SCHEMA',con.execute(f"DESCRIBE SELECT * FROM read_parquet('{splits}')").fetchall())
           for sym in ['WHLR','TSLA','AAPL','NVDA','BCAB','TGL']:
               print('\nSYM',sym)
-              print('SHARES',con.execute(f"SELECT * FROM read_parquet('{shares}') WHERE symbol=? AND report_date BETWEEN DATE '2021-01-01' AND DATE '2024-12-31' ORDER BY report_date",[sym]).fetchall())
-              print('SPLITS',con.execute(f"SELECT * FROM read_parquet('{splits}') WHERE symbol=? ORDER BY split_date",[sym]).fetchall())
-          # all price shards for exact signal neighborhood
+              print('SHARES',con.execute(f"SELECT symbol,try_cast(report_date AS DATE),shares_outstanding FROM read_parquet('{shares}') WHERE symbol=? AND try_cast(report_date AS DATE) BETWEEN DATE '2021-01-01' AND DATE '2024-12-31' ORDER BY try_cast(report_date AS DATE)",[sym]).fetchall())
+              print('SPLITS',con.execute(f"SELECT symbol,try_cast(report_date AS DATE),split_factor FROM read_parquet('{splits}') WHERE symbol=? ORDER BY try_cast(report_date AS DATE)",[sym]).fetchall())
           src="read_parquet(['https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/train-00000-of-00004.parquet','https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/train-00001-of-00004.parquet','https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/train-00002-of-00004.parquet','https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/train-00003-of-00004.parquet'], union_by_name=true)"
           for sym in ['WHLR','TSLA','AAPL','NVDA','BCAB','TGL']:
               print('PRICE',sym,con.execute(f"SELECT date,open,close,adj_close FROM {src} WHERE symbol=? AND date BETWEEN DATE '2022-09-25' AND DATE '2022-10-05' ORDER BY date",[sym]).fetchall())
