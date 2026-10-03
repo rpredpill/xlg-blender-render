@@ -9,9 +9,10 @@ on:
       - 'tools/nani_live.py'
       - 'tools/nani_live_v2.py'
       - 'tools/nani_live_v4.py'
+      - 'tools/nani_mtd.py'
       - 'tools/nani_ndx_source.py'
   schedule:
-    - cron: '50 2 2 * *'
+    - cron: '30 21 * * 1-5'
 
 permissions:
   contents: write
@@ -39,13 +40,14 @@ jobs:
           git show origin/main:tools/nani_live.py > /tmp/nani_live_legacy.py
           git show origin/main:tools/nani_live_v2.py > /tmp/nani_live_v2.py
           git show origin/main:tools/nani_live_v4.py > /tmp/nani_live_v4.py
+          git show origin/main:tools/nani_mtd.py > /tmp/nani_mtd.py
           git show origin/main:tools/nani_ndx_source.py > /tmp/nani_ndx_source.py
-          python -m py_compile /tmp/nani_live_legacy.py /tmp/nani_live_v2.py /tmp/nani_live_v4.py /tmp/nani_ndx_source.py
+          python -m py_compile /tmp/nani_live_legacy.py /tmp/nani_live_v2.py /tmp/nani_live_v4.py /tmp/nani_mtd.py /tmp/nani_ndx_source.py
 
       - name: Build independent Nasdaq-100 source
         run: python /tmp/nani_ndx_source.py --output /tmp/nani-ndx-source.json
 
-      - name: Build Nani v4 snapshot and forward-only history
+      - name: Build Nani v4 snapshot, MTD and forward-only history
         shell: bash
         run: |
           set -euo pipefail
@@ -83,6 +85,9 @@ jobs:
 
           restore_quu
           trap - EXIT
+
+          # Display-only current-month return. This does not alter official forward history.
+          python /tmp/nani_mtd.py --site . --legacy /tmp/nani_live_legacy.py
 
       - name: Validate Nani v4 outputs
         shell: python
@@ -130,6 +135,16 @@ jobs:
                   checked+=1
           if checked!=len(rows):
               raise RuntimeError(f'formula rows checked {checked}/{len(rows)}')
+
+          mtd=latest.get('currentMonthMTD') or {}
+          if mtd.get('ready'):
+              if float(mtd.get('coverageRatio',0))<0.98:
+                  raise RuntimeError(f'MTD coverage too low {mtd.get("coverageRatio")}')
+              if len(mtd.get('rows') or [])!=len(rows):
+                  raise RuntimeError(f'MTD row count mismatch {len(mtd.get("rows") or [])}/{len(rows)}')
+              if not isinstance(mtd.get('portfolioReturn'),(int,float)):
+                  raise RuntimeError('MTD portfolio return missing')
+
           months=hist.get('months') or {}
           bad=[m for m,r in months.items() if not isinstance(r,dict) or r.get('provenance')!='forward-live-v4']
           if bad:
@@ -145,6 +160,7 @@ jobs:
           print('Nani v4', latest.get('allocationMonth'))
           print('holdings',len(rows),'JP',len(jp),'US',len(us),'JPWeight',jp_weight,'USWeight',us_weight,'maxWeight',latest.get('maxWeight'))
           print('floatOnlyRowsChecked',checked)
+          print('MTD',mtd.get('month'),'ready',mtd.get('ready'),'asOf',mtd.get('asOfDate'),'return',mtd.get('portfolioReturn'),'coverage',mtd.get('coverageRatio'))
           print('history completed',completed,'pending',pending)
 
       - name: Commit Nani outputs to Pages branch
@@ -158,7 +174,7 @@ jobs:
             echo 'No Nani output changes'
             exit 0
           fi
-          git commit -m 'Refresh Nani v4 float-cap-only signal and history'
+          git commit -m 'Refresh Nani v4 signal, MTD and history'
           git fetch origin somx-pages
           git rebase origin/somx-pages
           git push origin HEAD:somx-pages
