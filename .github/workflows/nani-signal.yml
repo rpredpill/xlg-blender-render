@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/nani-signal.yml'
       - 'tools/nani_live.py'
+      - 'tools/nani_ndx_source.py'
   schedule:
     - cron: '50 2 2 * *'
 
@@ -34,10 +35,67 @@ jobs:
       - name: Load Nani engine from main
         run: |
           git show origin/main:tools/nani_live.py > /tmp/nani_live.py
-          python -m py_compile /tmp/nani_live.py
+          git show origin/main:tools/nani_ndx_source.py > /tmp/nani_ndx_source.py
+          python -m py_compile /tmp/nani_live.py /tmp/nani_ndx_source.py
+
+      - name: Build independent Nasdaq-100 source
+        run: python /tmp/nani_ndx_source.py --output /tmp/nani-ndx-source.json
 
       - name: Build Nani snapshot and history
-        run: python /tmp/nani_live.py --site .
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp quu-latest.json /tmp/quu-latest.original.json
+          restore_quu() { cp /tmp/quu-latest.original.json quu-latest.json; }
+          trap restore_quu EXIT
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          ndx=json.load(open('/tmp/nani-ndx-source.json',encoding='utf-8'))
+          rows=[{'ticker':s} for s in ndx['symbols']]
+          Path('quu-latest.json').write_text(json.dumps({'strategy':'Nani NDX source adapter','holdings':len(rows),'rows':rows},indent=2),encoding='utf-8')
+
+          # One-time correction: the first Nani build used QUU's selected sleeve
+          # as the US universe. Rebuild those completed records once when that
+          # old source marker is detected; later runs keep archived month-end
+          # records stable.
+          rebuild=False
+          try:
+              old=json.load(open('nani-latest.json',encoding='utf-8'))
+              src=((old.get('sources') or {}).get('nasdaq100') or '')
+              rebuild='quu-latest.json' in src
+          except Exception:
+              rebuild=True
+          if rebuild:
+              Path('nani-history.json').write_text('{}\n',encoding='utf-8')
+              print('Rebuilding Nani history with independent NDX universe')
+          else:
+              print('Keeping archived Nani month-end history')
+          PY
+
+          python /tmp/nani_live.py --site .
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          ndx=json.load(open('/tmp/nani-ndx-source.json',encoding='utf-8'))
+          p=Path('nani-latest.json')
+          latest=json.loads(p.read_text(encoding='utf-8'))
+          latest.setdefault('sources',{})['nasdaq100']=ndx['source']
+          latest['sources']['nasdaq100Method']=ndx['method']
+          latest.setdefault('diagnostics',{})['ndxSourceCount']=ndx['count']
+          latest['diagnostics']['ndxSourceAsOf']=ndx['asOf']
+          p.write_text(json.dumps(latest,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
+
+          hp=Path('nani-history.json')
+          hist=json.loads(hp.read_text(encoding='utf-8'))
+          hist['nasdaq100Source']={'source':ndx['source'],'method':ndx['method'],'asOf':ndx['asOf'],'count':ndx['count']}
+          hp.write_text(json.dumps(hist,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
+          PY
+
+          restore_quu
+          trap - EXIT
 
       - name: Validate Nani outputs
         shell: python
@@ -59,8 +117,14 @@ jobs:
           d=latest.get('diagnostics') or {}
           if int(d.get('unionCount') or 0)<315:
               raise RuntimeError(f"union too small {d.get('unionCount')}")
+          if int(d.get('ndxSourceCount') or 0)<95:
+              raise RuntimeError(f"NDX source too small {d.get('ndxSourceCount')}")
           if int(d.get('jpAnchorCount') or 0)<3:
               raise RuntimeError(f"JP float anchors too few {d.get('jpAnchorCount')}")
+          us={str(x.get('ticker')) for x in rows if x.get('country')=='US'}
+          for required in ['AAPL','MSFT','NVDA','SPCX','HONA']:
+              if required not in us:
+                  raise RuntimeError(f'missing required current NDX constituent {required}')
           months=hist.get('months') or {}
           completed=[m for m,r in months.items() if isinstance(r,dict) and isinstance(r.get('portfolioReturn'),(int,float))]
           if len(completed)<1:
@@ -68,6 +132,7 @@ jobs:
           print('Nani', latest.get('allocationMonth'), 'rebalance', latest.get('rebalanceMonth'))
           print('holdings', len(rows), 'weightSum', total, 'maxWeight', mx, 'top10', latest.get('top10Weight'))
           print('universe', d.get('nasdaqCount'), '+', d.get('nikkeiCount'), '=', d.get('unionCount'))
+          print('NDX source', d.get('ndxSourceCount'), latest.get('sources',{}).get('nasdaq100Method'))
           print('JP anchors', d.get('jpAnchorCount'), 'TOPIX date', d.get('topixWeightDate'))
           print('completed history', completed[0], '..', completed[-1], 'count', len(completed))
 
