@@ -49,6 +49,14 @@ jobs:
           git show origin/main:tools/build_nasdaq_composite_pit.py > /tmp/build_nasdaq_composite_pit.py
           git show origin/main:tools/build_nasdaq_composite_pit_parallel.py > /tmp/build_nasdaq_composite_pit_parallel.py
 
+      - name: Preserve existing PIT universe
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f nasdaq-composite-pit.json ]; then
+            cp nasdaq-composite-pit.json /tmp/nasdaq-composite-pit-existing.json
+          fi
+
       - name: Build monthly PIT universe
         shell: bash
         env:
@@ -70,10 +78,58 @@ jobs:
               --workers 6
           fi
 
+      - name: Merge successful refresh with existing PIT
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          new_path = Path('nasdaq-composite-pit.json')
+          old_path = Path('/tmp/nasdaq-composite-pit-existing.json')
+          new = json.loads(new_path.read_text(encoding='utf-8'))
+          refreshed = new.get('months') or {}
+          old = {}
+          if old_path.exists():
+              old_payload = json.loads(old_path.read_text(encoding='utf-8'))
+              old = old_payload.get('months') or {}
+
+          merged = dict(old)
+          merged.update(refreshed)
+          failed = new.get('failedMonths') or {}
+          retained_failed = sorted(m for m in failed if m in old and m not in refreshed)
+          uncovered_failed = sorted(m for m in failed if m not in old and m not in refreshed)
+
+          new['months'] = {k: merged[k] for k in sorted(merged)}
+          new['firstSuccessfulMonth'] = min(merged) if merged else None
+          new['lastSuccessfulMonth'] = max(merged) if merged else None
+          new['successfulMonths'] = len(merged)
+          new['refreshedMonths'] = len(refreshed)
+          new['preservedExistingMonths'] = len(set(old) - set(refreshed))
+          new['retainedFailedMonths'] = retained_failed
+          new['uncoveredFailedMonths'] = uncovered_failed
+          new['mergePolicy'] = (
+              'Preserve existing PIT months; replace only successfully refreshed '
+              'months; retain a prior month when a refresh fails.'
+          )
+          new_path.write_text(
+              json.dumps(new, ensure_ascii=False, indent=2),
+              encoding='utf-8',
+          )
+          print(
+              'merged PIT',
+              'old=', len(old),
+              'refreshed=', len(refreshed),
+              'final=', len(merged),
+              'retained_failed=', retained_failed,
+              'uncovered_failed=', uncovered_failed,
+          )
+
       - name: Validate PIT output
         shell: python
         run: |
           import json
+          import pandas as pd
+
           p = json.load(open('nasdaq-composite-pit.json', encoding='utf-8'))
           months = p.get('months') or {}
           if len(months) < 12:
@@ -85,9 +141,31 @@ jobs:
           }
           if bad:
               raise RuntimeError(f'implausible monthly universe counts: {bad}')
-          unknown = {m:r.get('etfFlagUnknownCount') for m,r in months.items() if r.get('etfFlagUnknownCount')}
+
+          start = pd.Period(p['requestedStart'], freq='M')
+          end = pd.Period(p['requestedEnd'], freq='M')
+          requested = [str(x) for x in pd.period_range(start, end, freq='M')]
+          missing_requested = [m for m in requested if m not in months]
+          if missing_requested:
+              raise RuntimeError(
+                  f'missing requested PIT months after merge: {missing_requested}'
+              )
+          uncovered = p.get('uncoveredFailedMonths') or []
+          if uncovered:
+              raise RuntimeError(
+                  f'refresh failed with no prior month to retain: {uncovered}'
+              )
+
+          unknown = {
+              m: r.get('etfFlagUnknownCount')
+              for m, r in months.items()
+              if r.get('etfFlagUnknownCount')
+          }
           if unknown:
               print('WARN ETF flag unknown values:', unknown)
+          retained = p.get('retainedFailedMonths') or []
+          if retained:
+              print('WARN retained prior records for failed refresh months:', retained)
           print(
               'PIT universe',
               len(months),
@@ -96,7 +174,7 @@ jobs:
               'count range',
               min(r['count'] for r in months.values()),
               max(r['count'] for r in months.values()),
-              'failures',
+              'refresh failures',
               len(p.get('failedMonths') or {}),
           )
 
