@@ -1,8 +1,8 @@
 (()=>{
 "use strict";
-const SIG="nani-ndx100-nk225-v2";
+const SIG="nani-nk100-ndx100-50-50-v3";
 const HISTORY_URL="./nani-history.json";
-const key=kind=>`somx.${kind}.v2.${SIG}`;
+const key=kind=>`somx.${kind}.v3.${SIG}`;
 let syncing=false;
 function read(kind){try{return JSON.parse(localStorage.getItem(key(kind))||"{}")||{}}catch{return{}}}
 function write(kind,value){try{localStorage.setItem(key(kind),JSON.stringify(value))}catch{}}
@@ -14,12 +14,14 @@ async function syncNaniHistory(){
   try{
     const r=await fetch(`${HISTORY_URL}?v=${Date.now()}`,{cache:"no-store"});
     if(!r.ok)throw new Error(`Nani history HTTP ${r.status}`);
-    const j=await r.json(),months=j?.months||{};
+    const j=await r.json();if(j?.version!=="3.0")throw new Error(`Nani history v${j?.version||"?"} != v3`);
+    const months=j?.months||{};
     const hh=read("holdings"),wh=read("weights"),mh={};let changed=false,returnsChanged=false;
     for(const [month,record] of Object.entries(months)){
-      if(record?.provenance!=="forward-live-v2")continue;
+      if(record?.provenance!=="forward-live-v3")continue;
       const rows=record?.rows;if(!validRows(rows))continue;
-      const sum=rows.reduce((a,x)=>a+Number(x.weight),0);if(Math.abs(sum-1)>1e-6)continue;
+      const sum=rows.reduce((a,x)=>a+Number(x.weight),0),jp=rows.filter(x=>x.country==="JP").reduce((a,x)=>a+Number(x.weight),0),us=rows.filter(x=>x.country==="US").reduce((a,x)=>a+Number(x.weight),0);
+      if(Math.abs(sum-1)>1e-6||Math.abs(jp-.5)>1e-6||Math.abs(us-.5)>1e-6)continue;
       const holdings=rows.map(x=>String(x.ticker).trim().toUpperCase());
       const weights=Object.fromEntries(rows.map(x=>[String(x.ticker).trim().toUpperCase(),Number(x.weight)]));
       hh[month]=holdings;wh[month]=weights;changed=true;
@@ -28,7 +30,7 @@ async function syncNaniHistory(){
           month,port:Number(record.portfolioReturn)*100,lastDate:record.lastDate||null,holdings,weights,
           rows:rows.map(x=>({ticker:String(x.ticker).trim().toUpperCase(),ret:Number.isFinite(Number(x.monthlyReturn))?Number(x.monthlyReturn)*100:0,weight:Number(x.weight),country:x.country||null})),
           forwardLive:true,universeCount:Number(record.universeCount||rows.length),coverageRatio:Number(record.coverageRatio||1),
-          signalMonth:record.signalMonth||null,allocationMonth:record.allocationMonth||null
+          signalMonth:record.signalMonth||null,allocationMonth:record.allocationMonth||null,countryWeightJP:jp,countryWeightUS:us
         };
         returnsChanged=true;
       }
