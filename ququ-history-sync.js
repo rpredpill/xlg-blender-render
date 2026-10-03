@@ -1,6 +1,8 @@
 (()=>{
 "use strict";
 
+// Legacy Nasdaq-100 QUQU history is intentionally kept isolated from QUQU v2.
+// The v2 preset uses a different signature and must never ingest these months.
 const SIG="ququ-ndx100-v1";
 const HISTORY_URL="./ququ-history.json";
 const key=kind=>`somx.${kind}.v2.${SIG}`;
@@ -9,10 +11,13 @@ let syncing=false;
 function read(kind){try{return JSON.parse(localStorage.getItem(key(kind))||"{}")||{}}catch{return{}}}
 function write(kind,value){try{localStorage.setItem(key(kind),JSON.stringify(value))}catch{}}
 function validRows(rows,record){const u=Number(record?.universeCount)||rows?.length||0,cov=u>0?(rows?.length||0)/u:0;return Array.isArray(rows)&&cov>=0.90&&rows.length<=100&&rows.every(r=>r&&r.ticker&&Number.isFinite(Number(r.weight))&&Number(r.weight)>0)}
+function legacyQuquActive(){
+  const api=globalThis.SOMXStrategy,c=api?.getConfig?.();
+  return api?.getMode?.()==="ququ"&&api?.signature?.(c)===SIG;
+}
 
 async function syncQuquHistory({reload=true}={}){
-  if(syncing)return;
-  if(globalThis.SOMXStrategy?.getMode?.()!=="ququ")return;
+  if(syncing||!legacyQuquActive())return;
   syncing=true;
   try{
     const r=await fetch(`${HISTORY_URL}?v=${Date.now()}`,{cache:"no-store"});
@@ -51,7 +56,7 @@ async function syncQuquHistory({reload=true}={}){
     if(returnsChanged)write("history",mh);
     window.dispatchEvent(new CustomEvent("somx:ququ-history-synced",{detail:{months:Object.keys(months).sort()}}));
     if(returnsChanged)window.dispatchEvent(new Event("somx:historychange"));
-    if(reload&&globalThis.SOMXLive?.applyStrategy&&globalThis.SOMXStrategy?.getMode?.()==="ququ")await globalThis.SOMXLive.applyStrategy(globalThis.SOMXStrategy.getConfig());
+    if(reload&&legacyQuquActive()&&globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(globalThis.SOMXStrategy.getConfig());
   }catch(e){console.warn("QUQU history sync",e)}finally{syncing=false}
 }
 
