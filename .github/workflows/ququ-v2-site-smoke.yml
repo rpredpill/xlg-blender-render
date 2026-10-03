@@ -65,15 +65,18 @@ jobs:
           page = Path('ququ.html').read_text(encoding='utf-8')
           index = Path('index.html').read_text(encoding='utf-8')
 
-          required = 'ququ-nasdaq-composite-v2'
-          assert required in strategy
-          assert required in preload
-          assert required in history
-          assert 'ququ-ndx100-v1' not in strategy
-          assert 'ququ-ndx100-v1' not in preload
+          v2sig = 'ququ-nasdaq-composite-v2'
+          legacy = 'ququ-ndx100-v1'
+          assert v2sig in strategy
+          assert v2sig in preload
+          assert legacy not in strategy
+          assert legacy not in preload
+          assert legacy in history
+          assert v2sig not in history
+          assert 'legacyQuquActive' in history
           assert 'QUQU v2' in page
           assert 'Nasdaq Composite PIT' in page
           assert 'strategy-core-custom.js?v=32' in index
           assert 'snapshot-preload.js?v=5' in index
           assert 'ququ-history-sync.js?v=4' in index
-          print('QUQU v2 page wiring OK')
+          print('QUQU v2 page wiring OK; legacy history isolated')
