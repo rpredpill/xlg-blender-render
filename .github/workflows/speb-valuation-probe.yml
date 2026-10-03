@@ -19,59 +19,41 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install --disable-pip-version-check duckdb requests
-      - name: Locate and query valuation snapshot parquet
+      - name: Measure valuation snapshot coverage
         shell: python
         run: |
-          import requests, duckdb, time
-          base='https://huggingface.co/datasets/speb/financial-data/resolve/main/'
-          candidates=[
-              'raw/stock_valuation_snapshot.parquet',
-              'data/raw/stock_valuation_snapshot.parquet',
-              'stock_valuation_snapshot.parquet',
-              'marts/stock_valuation_snapshot.parquet',
-              'data/stock_valuation_snapshot.parquet',
-          ]
-          found=[]
-          for path in candidates:
-              url=base+path
-              try:
-                  r=requests.head(url,allow_redirects=True,timeout=30,headers={'User-Agent':'Mozilla/5.0'})
-                  print('HEAD',path,r.status_code,'len',r.headers.get('content-length'),'type',r.headers.get('content-type'),'final',r.url[:160])
-                  if r.status_code==200:
-                      found.append(url)
-              except Exception as e:
-                  print('HEADERR',path,e)
-          if not found:
-              # Hugging Face tree API is public; print likely paths containing valuation.
-              api='https://huggingface.co/api/datasets/speb/financial-data/tree/main?recursive=true&expand=false'
-              r=requests.get(api,timeout=60,headers={'User-Agent':'Mozilla/5.0'})
-              print('TREE_STATUS',r.status_code,'bytes',len(r.content))
-              if r.status_code==200:
-                  rows=r.json()
-                  hits=[x.get('path') for x in rows if 'valuation' in str(x.get('path','')).lower() or 'snapshot' in str(x.get('path','')).lower()]
-                  print('TREE_HITS',hits[:100])
-                  for path in hits:
-                      if str(path).endswith('.parquet'):
-                          found.append(base+path)
-          if not found:
-              raise RuntimeError('valuation parquet not found')
+          import requests, duckdb, json
+          url='https://huggingface.co/datasets/speb/financial-data/resolve/main/raw/stock_valuation_snapshot.parquet'
+          pit_url='https://raw.githubusercontent.com/rpredpill/xlg-blender-render/somx-pages/nasdaq-composite-pit.json'
           con=duckdb.connect()
           con.execute('INSTALL httpfs; LOAD httpfs; SET threads=4;')
-          for url in found[:5]:
-              print('\nURL',url)
-              try:
-                  print('SCHEMA',con.execute(f"DESCRIBE SELECT * FROM read_parquet('{url}')").fetchall())
-                  for sym in ['AAPL','NVDA','META','ASML','PDD','ARM']:
-                      q=f"""SELECT symbol,report_date,market_cap,float_shares,current_price
-                              FROM read_parquet('{url}')
-                              WHERE upper(symbol)=? AND report_date BETWEEN DATE '2022-12-01' AND DATE '2023-01-31'
-                              ORDER BY report_date DESC LIMIT 5"""
-                      print('2022',sym,con.execute(q,[sym]).fetchall())
-                  q=f"""SELECT symbol,report_date,market_cap,float_shares,current_price
-                          FROM read_parquet('{url}')
-                          WHERE upper(symbol)='AAPL'
-                          ORDER BY report_date DESC LIMIT 5"""
-                  print('AAPL_LATEST',con.execute(q).fetchall())
-              except Exception as e:
-                  print('QUERY_ERROR',repr(e))
+          print('SCHEMA',con.execute(f"DESCRIBE SELECT * FROM read_parquet('{url}')").fetchall())
+          print('DATES',con.execute(f"SELECT min(report_date),max(report_date),count(*),count(distinct symbol) FROM read_parquet('{url}')").fetchall())
+          r=requests.get(pit_url,timeout=60); r.raise_for_status(); pit=r.json()
+          union=sorted({s for rec in pit['months'].values() for s in rec.get('symbols',[])})
+          m2022=pit['months']['2022-12']['symbols']
+          con.execute('CREATE TEMP TABLE pit_union(symbol VARCHAR)')
+          con.executemany('INSERT INTO pit_union VALUES (?)',[(s,) for s in union])
+          con.execute('CREATE TEMP TABLE pit_202212(symbol VARCHAR)')
+          con.executemany('INSERT INTO pit_202212 VALUES (?)',[(s,) for s in m2022])
+          latest=f"""SELECT * EXCLUDE(rn) FROM (
+                        SELECT *,row_number() over(partition by upper(symbol) order by report_date desc) rn
+                        FROM read_parquet('{url}')
+                      ) WHERE rn=1"""
+          for table,label in [('pit_union','UNION'),('pit_202212','2022_12')]:
+              q=f"""SELECT
+                      count(*) pit_n,
+                      count(v.symbol) any_snapshot,
+                      count(*) filter(where v.market_cap>0 and v.current_price>0) cap_price,
+                      count(*) filter(where v.float_shares>0) float_shares,
+                      count(*) filter(where v.market_cap>0 and v.current_price>0 and v.float_shares>0) full_proxy
+                    FROM {table} p LEFT JOIN ({latest}) v ON upper(v.symbol)=p.symbol"""
+              print(label,con.execute(q).fetchall())
+          q=f"""SELECT symbol,report_date,market_cap,float_shares,current_price,
+                       cast(market_cap as double)/nullif(cast(current_price as double),0) implied_shares,
+                       cast(float_shares as double)/(cast(market_cap as double)/nullif(cast(current_price as double),0)) float_ratio
+                 FROM ({latest})
+                 WHERE upper(symbol) in ('AAPL','NVDA','META','ASML','PDD','ARM')
+                 ORDER BY symbol"""
+          print('SAMPLES',con.execute(q).fetchall())
           con.close()
