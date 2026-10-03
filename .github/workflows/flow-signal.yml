@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths: ['.github/workflows/flow-signal.yml']
   schedule:
-    - cron: '15 12 * * 1-5'
+    - cron: '15 12,21 * * 1-5'
 
 permissions:
   contents: write
@@ -32,12 +32,14 @@ jobs:
       - name: Build completed-session FLOW ranking
         run: python flow-signal.py
       - name: Verify paper execution guards
-        run: node flow-paper.test.cjs
+        run: |
+          node flow-paper.test.cjs
+          node joy-live.test.cjs
       - name: Save public signal only
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add flow-latest.json
+          git add flow-latest.json joy-latest.json joy-forward-state.json
           if git diff --cached --quiet; then
             echo 'Signal unchanged'
           else
