@@ -62,21 +62,36 @@ try{
   const allocationYm=mode==="ququ"&&/^\d{4}-\d{2}$/.test(String(j.allocationMonth||""))?String(j.allocationMonth):ym;
   const holdings=rows.map(r=>r.ticker),targetWeights=Object.fromEntries(rows.map(r=>[r.ticker,r.weight]));
   const key=kind=>`somx.${kind}.v2.${sig}`;
-  let hh={},wh={};try{hh=JSON.parse(localStorage.getItem(key("holdings"))||"{}")||{}}catch{}try{wh=JSON.parse(localStorage.getItem(key("weights"))||"{}")||{}}catch{}
+  let hh={},wh={};
+  if(mode==="ququ"){
+    hh=allocationYm===ym?{[ym]:[...holdings]}:{[allocationYm]:[...holdings],[ym]:[...holdings]};
+    wh=allocationYm===ym?{[ym]:{...targetWeights}}:{[allocationYm]:{...targetWeights},[ym]:{...targetWeights}};
+    for(const kind of ["state","holdings","weights","history","components"]){try{localStorage.removeItem(`somx.${kind}.v2.ququ-ndx100-v1`)}catch{}}
+    try{localStorage.removeItem(key("holdings"));localStorage.removeItem(key("weights"))}catch{}
+  }else{
+    try{hh=JSON.parse(localStorage.getItem(key("holdings"))||"{}")||{}}catch{}
+    try{wh=JSON.parse(localStorage.getItem(key("weights"))||"{}")||{}}catch{}
+    hh[allocationYm]=[...holdings];wh[allocationYm]={...targetWeights};
+    hh[ym]=[...holdings];wh[ym]={...targetWeights};
+  }
 
-  // Keep the production allocation month for provenance/history, but the live
-  // dashboard state must always be anchored to the current month. Otherwise
-  // app.js tries to catch QUQU up with the generic S&P 500 momentum engine.
-  hh[allocationYm]=[...holdings];wh[allocationYm]={...targetWeights};
-  hh[ym]=[...holdings];wh[ym]={...targetWeights};
   const st={
     rebalanceMonth:ym,strategyAnchor:ym,initialized:true,holdings,
     statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,
     basePrices:{},updatedAt:new Date().toISOString(),snapshotAt:j.generatedAt||null,
     snapshotAllocationMonth:allocationYm
   };
-  localStorage.setItem(key("state"),JSON.stringify(st));
-  localStorage.setItem(key("holdings"),JSON.stringify(hh));
-  localStorage.setItem(key("weights"),JSON.stringify(wh));
+  const write=()=>{
+    localStorage.setItem(key("holdings"),JSON.stringify(hh));
+    localStorage.setItem(key("weights"),JSON.stringify(wh));
+    localStorage.setItem(key("state"),JSON.stringify(st));
+  };
+  try{write()}
+  catch(e){
+    const quota=e?.name==="QuotaExceededError"||String(e?.message||e).toLowerCase().includes("quota");
+    if(!quota||mode!=="ququ")throw e;
+    try{localStorage.removeItem(key("history"));localStorage.removeItem(key("holdings"));localStorage.removeItem(key("weights"));localStorage.removeItem(key("state"))}catch{}
+    write();
+  }
 }catch(e){console.warn("snapshot preload",e)}
 })();
