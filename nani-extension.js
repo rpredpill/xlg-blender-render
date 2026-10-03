@@ -86,7 +86,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
 if(!document.querySelector('script[data-nani-mtd-ui]')){
   const s=document.createElement("script");
-  s.src="./nani-mtd-ui.js?v=2";
+  s.src="./nani-mtd-ui.js?v=3";
   s.async=true;
   s.dataset.naniMtdUi="1";
   document.head.appendChild(s);
