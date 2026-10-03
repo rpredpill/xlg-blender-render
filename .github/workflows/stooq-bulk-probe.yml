@@ -17,6 +17,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install dependency
+        run: pip install --disable-pip-version-check requests
       - name: Probe Stooq bulk ZIP
         shell: python
         run: |
@@ -42,7 +44,6 @@ jobs:
               print('AAPL_LINES', len(lines))
               print('AAPL_HEAD', lines[:5])
               print('AAPL_TAIL', lines[-5:])
-          # Also inspect a few exact symbol basename patterns.
           basenames={os.path.basename(n).lower():n for n in names}
           for sym in ['msft.us.txt','meta.us.txt','fb.us.txt','qqq.us.txt','bbby.us.txt','abmd.us.txt']:
               n=basenames.get(sym)
