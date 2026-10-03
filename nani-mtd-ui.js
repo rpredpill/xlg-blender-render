@@ -2,7 +2,7 @@
 "use strict";
 
 const ACTIVE_STORE="somx.strategy.active.v1";
-let timer=null,loading=false,lastData=null,renderObserver=null;
+let timer=null,loading=false,lastData=null,lastNames={},renderObserver=null;
 
 function isNani(){
   try{
@@ -15,12 +15,17 @@ function setMetric(id,v){
   const n=Number(v);el.textContent=fmt(n);el.classList.toggle("neg",Number.isFinite(n)&&n<0);
 }
 function normalizeTicker(s){return String(s||"").trim().toUpperCase().replace(/-/g,".")}
+function visibleTicker(t){const s=normalizeTicker(t);return s.endsWith(".T")?s.slice(0,-2):s}
+function displayLabel(t,names=lastNames){
+  const s=normalizeTicker(t),code=visibleTicker(s),name=String(names?.[s]||"").trim();
+  return name?`${name} · ${code}`:code;
+}
 
-function apply(j){
+function apply(j,names=lastNames){
   if(!isNani())return;
   const mtd=j?.currentMonthMTD;
   if(!mtd?.ready||!Number.isFinite(Number(mtd.portfolioReturn))||!Array.isArray(mtd.rows))return;
-  lastData=j;
+  lastData=j;lastNames=names||{};
 
   const values=mtd.rows.map(r=>({
     ticker:normalizeTicker(r.ticker),
@@ -38,6 +43,9 @@ function apply(j){
       cell.textContent=fmt(ret);
       cell.classList.toggle("neg",ret<0);
     }
+    const stock=tr.querySelector(".stock");
+    const label=stock?.children?.[1];
+    if(label&&ticker)label.textContent=displayLabel(ticker,names);
   });
 
   setMetric("portfolio-return",Number(mtd.portfolioReturn)*100);
@@ -46,8 +54,8 @@ function apply(j){
 
   const best=values.length?[...values].sort((a,b)=>b.ret-a.ret)[0]:null;
   const worst=values.length?[...values].sort((a,b)=>a.ret-b.ret)[0]:null;
-  const bt=document.getElementById("best-ticker");if(bt)bt.textContent=best?.ticker||"--";
-  const wt=document.getElementById("worst-ticker");if(wt)wt.textContent=worst?.ticker||"--";
+  const bt=document.getElementById("best-ticker");if(bt)bt.textContent=best?displayLabel(best.ticker,names):"--";
+  const wt=document.getElementById("worst-ticker");if(wt)wt.textContent=worst?displayLabel(worst.ticker,names):"--";
   setMetric("best-return",best?.ret);
   setMetric("worst-return",worst?.ret);
 
@@ -55,15 +63,26 @@ function apply(j){
   if(title)title.textContent=`월간 수익률 · ${mtd.month||j.allocationMonth||""}`.trim();
 }
 
+async function fetchNames(){
+  try{
+    const r=await fetch(`./nani-company-names.json?v=${Date.now()}`,{cache:"no-store"});
+    if(!r.ok)return{};
+    const j=await r.json();
+    return j?.names&&typeof j.names==="object"?j.names:{};
+  }catch{return{}}
+}
 async function refresh(){
   if(!isNani()||loading)return;
   loading=true;
   try{
-    const r=await fetch(`./nani-latest.json?v=${Date.now()}`,{cache:"no-store"});
+    const [r,names]=await Promise.all([
+      fetch(`./nani-latest.json?v=${Date.now()}`,{cache:"no-store"}),
+      fetchNames()
+    ]);
     if(!r.ok)throw new Error(`Nani latest HTTP ${r.status}`);
     const j=await r.json();
     if(j?.version!=="4.0")return;
-    apply(j);
+    apply(j,names);
   }catch(e){console.warn("Nani MTD UI",e)}finally{loading=false}
 }
 function schedule(delay=120){clearTimeout(timer);timer=setTimeout(refresh,delay)}
@@ -73,7 +92,7 @@ function observeDashboardRenders(){
   if(!tbody)return;
   renderObserver=new MutationObserver(()=>{
     if(!isNani())return;
-    if(lastData)requestAnimationFrame(()=>apply(lastData));
+    if(lastData)requestAnimationFrame(()=>apply(lastData,lastNames));
     else schedule(50);
   });
   renderObserver.observe(tbody,{childList:true});
@@ -84,10 +103,10 @@ window.addEventListener("load",boot,{once:true});
 window.addEventListener("somx:strategy-active",()=>{observeDashboardRenders();schedule(100)});
 window.addEventListener("somx:nani-history-synced",()=>schedule(100));
 window.addEventListener("somx:historychange",()=>schedule(100));
-document.addEventListener("visibilitychange",()=>{if(!document.hidden){observeDashboardRenders();if(lastData)apply(lastData);else schedule(50)}});
-new MutationObserver(()=>{if(isNani()){observeDashboardRenders();if(lastData)apply(lastData);else schedule(50)}}).observe(document.body,{attributes:true,attributeFilter:["data-strategy"]});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){observeDashboardRenders();if(lastData)apply(lastData,lastNames);else schedule(50)}});
+new MutationObserver(()=>{if(isNani()){observeDashboardRenders();if(lastData)apply(lastData,lastNames);else schedule(50)}}).observe(document.body,{attributes:true,attributeFilter:["data-strategy"]});
 if(document.readyState!=="loading")boot();
 setInterval(()=>{if(isNani())refresh()},300000);
 
-globalThis.NaniMTDUI={refresh,apply,getLast:()=>lastData};
+globalThis.NaniMTDUI={refresh,apply,getLast:()=>lastData,getNames:()=>({...lastNames})};
 })();
