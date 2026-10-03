@@ -206,7 +206,17 @@ function initUI(){
       const j=await seedSnapshotContext(c);
       c.holdings=j.rows.length;c.entryRank=j.rows.length;c.exitRank=j.rows.length;
       activeMode=editMode;saveMode(activeMode);
-      if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(c);
+      try{
+        if(c.mode==="ququ"&&globalThis.SOMXLive?.applySnapshotStrategy)await globalThis.SOMXLive.applySnapshotStrategy(c);
+        else if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(c);
+      }catch(e){
+        if(c.mode==="ququ"&&String(e?.message||e)==="QUQU_RELOAD_REQUIRED"){
+          box.textContent="QUQU 적용 중 · 화면을 새로 불러옵니다…";
+          location.reload();
+          return;
+        }
+        throw e;
+      }
       const sleeve=c.mode==="quu"&&j.selectedSleeve?` · ${j.selectedSleeve}`:"";
       const allocation=c.mode==="ququ"&&j.allocationMonth?` · allocation ${j.allocationMonth}`:"";
       box.textContent=`${c.label} 적용${sleeve}${allocation} · ${j.rows.length}종목`;
