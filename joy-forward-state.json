@@ -1,0 +1,51 @@
+{
+  "allocations": [
+    {
+      "quarter": "2026-10-01",
+      "signalDate": "2026-09-30",
+      "executionDate": "2026-10-01",
+      "rows": [
+        {
+          "ticker": "MU",
+          "weight": 0.19827800692040987
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.16445987643711865
+        },
+        {
+          "ticker": "SNDK",
+          "weight": 0.1242521712336909
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.08586250228052285
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.07998008707133852
+        },
+        {
+          "ticker": "AMD",
+          "weight": 0.07736028635671856
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.07445840539253559
+        },
+        {
+          "ticker": "META",
+          "weight": 0.07103219245306004
+        },
+        {
+          "ticker": "INTC",
+          "weight": 0.06806570786668234
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.056250763987922704
+        }
+      ]
+    }
+  ]
+}

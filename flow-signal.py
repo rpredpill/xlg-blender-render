@@ -11,33 +11,49 @@ async def build():
     html = urllib.request.urlopen(urllib.request.Request(url, headers=HEADERS), timeout=40).read().decode()
     universe = pd.read_html(io.StringIO(html))[0]
     symbols = sorted(universe['Symbol'].astype(str).tolist())
+    prior_file=ROOT/'joy-forward-state.json'
+    start_epoch=None
+    if prior_file.exists():
+        initial=json.loads(prior_file.read_text())['allocations'][0]['executionDate']
+        start_epoch=int(dt.datetime.combine(dt.date.fromisoformat(initial)-dt.timedelta(days=160),dt.time(),dt.UTC).timestamp())
+    query=('period1='+str(start_epoch)+'&period2='+str(int(dt.datetime.now(dt.UTC).timestamp()))+'&interval=1d') if start_epoch else 'range=6mo&interval=1d'
     sem = asyncio.Semaphore(10)
     async with aiohttp.ClientSession(headers=HEADERS, trust_env=True, timeout=aiohttp.ClientTimeout(total=50)) as session:
         async def get(symbol):
             async with sem:
                 for attempt in range(3):
                     try:
-                        async with session.get('https://query1.finance.yahoo.com/v8/finance/chart/'+symbol.replace('.', '-')+'?range=6mo&interval=1d') as response:
+                        async with session.get('https://query2.finance.yahoo.com/v8/finance/chart/'+symbol.replace('.', '-')+'?'+query) as response:
                             response.raise_for_status()
                             r = (await response.json(content_type=None))['chart']['result'][0]
                         dates = pd.to_datetime(r['timestamp'],unit='s',utc=True).tz_convert('America/New_York').strftime('%Y-%m-%d')
                         q = r['indicators']['quote'][0]
                         values = pd.Series(q['close'],index=dates,dtype=float)*pd.Series(q['volume'],index=dates,dtype=float)
-                        return symbol,values.where(values>0)
+                        adj=r['indicators'].get('adjclose',[{'adjclose':q['close']}])[0]['adjclose']
+                        points={str(d):{'close':float(c),'adj':float(a)} for d,c,a in zip(dates,q['close'],adj) if c is not None and a is not None and c>0 and a>0}
+                        return symbol,{'dollars':values.where(values>0),'prices':points}
                     except Exception:
                         if attempt==2: return symbol,None
                         await asyncio.sleep(attempt+1)
-        spy = (await get('SPY'))[1]
+        spy_data = (await get('SPY'))[1]
+        spy = spy_data['dollars'] if spy_data else None
         if spy is None: raise RuntimeError('Trading calendar unavailable')
         ny_now = dt.datetime.now(dt.UTC).astimezone(__import__('zoneinfo').ZoneInfo('America/New_York'))
         today = ny_now.strftime('%Y-%m-%d')
         completed = (spy.dropna().index <= today) if (ny_now.hour,ny_now.minute)>=(16,15) else (spy.dropna().index < today)
-        dates = spy.dropna().index[completed][-63:]
+        all_dates = list(spy.dropna().index[completed])
+        dates = all_dates[-63:]
         if len(dates)!=63: raise RuntimeError('Need 63 completed sessions')
         asof = dates[-1]
-        results = await asyncio.gather(*(get(s) for s in symbols))
+        prior_path=ROOT/'joy-forward-state.json'
+        prior_symbols=[]
+        if prior_path.exists():
+            prior_symbols=[r['ticker'] for a in json.loads(prior_path.read_text())['allocations'] for r in a['rows']]
+        results = await asyncio.gather(*(get(s) for s in sorted(set(symbols+prior_symbols+['QQQ']))))
     rows=[]; excluded=[]
-    for s,v in results:
+    for s,record in results:
+        if s not in symbols:continue
+        v=record['dollars'] if record else None
         window = v.reindex(dates) if v is not None else None
         if window is None or window.isna().any(): excluded.append(s);continue
         rows.append({'ticker':s,'score':float(window.median())})
@@ -55,6 +71,23 @@ async def build():
           'rule':'63-session median traded value; Top10 / retain Top20; score-proportional; quarterly; no leverage or ETF holdings',
           'rows':top,'ranking':rows,'initialSignal':True,'coverageGuard':.98}
     (ROOT/'flow-latest.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
-    print(json.dumps({k:v for k,v in data.items() if k not in ['ranking']},ensure_ascii=False))
+    if not ready:raise RuntimeError('Latest FLOW signal is not ready; preserve prior simulation snapshot')
+    def rank_at(day):
+        window_dates=[d for d in all_dates if d<=day][-63:]
+        ranked=[]
+        for symbol,record in results:
+            if symbol not in symbols or record is None:continue
+            win=record['dollars'].reindex(window_dates)
+            if len(window_dates)==63 and win.notna().all():ranked.append({'ticker':symbol,'score':float(win.median())})
+        ranked.sort(key=lambda x:(-x['score'],x['ticker']))
+        for i,x in enumerate(ranked):x['rank']=i+1
+        if len(ranked)/len(symbols)<.98:raise RuntimeError('Forward signal coverage below 98%')
+        return ranked
+    from importlib.util import spec_from_file_location,module_from_spec
+    spec=spec_from_file_location('joy_forward',ROOT/'joy-forward.py');module=module_from_spec(spec);spec.loader.exec_module(module)
+    price_series={s:r['prices'] for s,r in results if r is not None}
+    price_series['SPY']=spy_data['prices']
+    forward=module.build_forward(price_series,all_dates,rank_at,ROOT)
+    print(json.dumps({'signalDate':asof,'eligibleCount':len(rows),'forwardStart':forward['start'],'forwardAsOf':forward['asOf']},ensure_ascii=False))
 
 if __name__=='__main__': asyncio.run(build())

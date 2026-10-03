@@ -38,7 +38,6 @@ async function seedNani(){
   localStorage.setItem(key("state"),JSON.stringify(st));
   localStorage.setItem(key("holdings"),JSON.stringify({[allocationYm]:holdings,[ym]:holdings}));
   localStorage.setItem(key("weights"),JSON.stringify({[allocationYm]:targetWeights,[ym]:targetWeights}));
-  localStorage.setItem(ACTIVE_STORE,"nani");
   return j;
 }
 
@@ -65,7 +64,7 @@ function renderHistory(){
   modal.classList.add("show");
 }
 
-async function activateNani(){const j=await seedNani();window.dispatchEvent(new Event("somx:strategy-active"));window.dispatchEvent(new Event("somx:historychange"));return j}
+async function activateNani(){localStorage.setItem(ACTIVE_STORE,"nani");const j=await seedNani();if(activeStored()!=="nani")return j;window.dispatchEvent(new Event("somx:strategy-active"));window.dispatchEvent(new Event("somx:historychange"));return j}
 
 function initUI(){
   const root=document.getElementById("strategy-settings-root");if(!root)return;

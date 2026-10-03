@@ -1,0 +1,6 @@
+const assert=require('node:assert/strict'),C=require('./joy-live-core.js');
+const base={month:'2026-10',lastDate:'2026-10-02',port:10,rows:[{ticker:'A',weight:.6,ret:20,price:100,priceDate:'2026-10-02'},{ticker:'B',weight:.4,ret:0,price:50,priceDate:'2026-10-02'}],benchmarks:{SPY:5},benchmarkPrices:{SPY:{price:100,priceDate:'2026-10-02'}}};
+const marks={A:{price:110,date:'2026-10-05',time:'2026-10-05T14:00:00Z'},B:{price:45,date:'2026-10-05'},SPY:{price:105,date:'2026-10-05'}};
+const live=C.mark(base,marks);assert(Math.abs(live.port-12.2)<1e-10);assert(Math.abs(live.rows[0].ret-32)<1e-10);assert(Math.abs(live.rows[0].weight-.66/1.02)<1e-10);assert(Math.abs(live.rows.reduce((s,r)=>s+r.weight,0)-1)<1e-10);assert(Math.abs(live.benchmarks.SPY-10.25)<1e-10);assert.deepEqual(C.mark(base,marks),live);assert.equal(base.port,10);assert.equal(base.rows[0].price,100);
+assert.deepEqual(C.mark(base,{A:{price:500,date:'2026-10-01'}}),C.mark(base));assert.deepEqual(C.mark(base,{A:{price:0,date:'2026-10-05'}}),C.mark(base));
+console.log('PASS: immutable quote marks, weighted portfolio NAV, drifting weights, dividends carried, stale/invalid quote rejection, no double compounding, matching benchmark marks');

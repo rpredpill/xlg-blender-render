@@ -111,6 +111,7 @@ async function syncNaniSnapshot(force=false){
     weightsHistory[ym]=JSON.parse(JSON.stringify(targetWeights));
     saveState();saveHoldingsHistory();saveWeightsHistory();
     if(globalThis.NaniHistory?.sync)await globalThis.NaniHistory.sync();
+    if(!isNani())return j;
     loadContext();
     renderNani();
     window.dispatchEvent(new Event("somx:historychange"));
