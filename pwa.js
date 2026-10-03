@@ -25,6 +25,18 @@ window.addEventListener("resize",fitClassic);window.addEventListener("orientatio
 function currentNYMonth(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date());return`${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`}
 function isQuotaError(e){return e?.name==="QuotaExceededError"||e?.name==="NS_ERROR_DOM_QUOTA_REACHED"||String(e?.message||e).toLowerCase().includes("quota")}
 function clearLegacyQuqu(){for(const kind of ["state","holdings","weights","history","components"]){try{localStorage.removeItem(`somx.${kind}.v2.ququ-ndx100-v1`)}catch{}}}
+function freeInactiveDerivedCaches(exceptSig){
+  const remove=[];
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i)||"";
+      if(!k.startsWith("somx."))continue;
+      if(k.endsWith(`.${exceptSig}`))continue;
+      if(/^somx\.(history|holdings|weights|components)\.v2\./.test(k))remove.push(k);
+    }
+    for(const k of remove)localStorage.removeItem(k);
+  }catch{}
+}
 async function forceApplyQuqu(btn,box){
   btn.disabled=true;btn.textContent="Applying…";
   try{
@@ -53,6 +65,7 @@ async function forceApplyQuqu(btn,box){
     catch(e){
       if(!isQuotaError(e))throw e;
       try{localStorage.removeItem(key("history"));localStorage.removeItem(key("holdings"));localStorage.removeItem(key("weights"));localStorage.removeItem(key("state"))}catch{}
+      freeInactiveDerivedCaches(sig);
       write();
     }
     try{globalThis.SOMXStrategy?.setMode?.("ququ")}catch{}
@@ -83,5 +96,5 @@ function bindWhenReady(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bindWhenReady,{once:true});else bindWhenReady();
 
-if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=40",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
+if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=41",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
 })();
