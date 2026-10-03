@@ -1,2 +1,1 @@
-// The main portfolio is Nani. FLOW research and Paper each have their own page.
-try{localStorage.setItem('somx.strategy.active.v1','nani')}catch{}
+try{const q=new URLSearchParams(location.search).get('strategy');if(q==='joy'||q==='nani')localStorage.setItem('somx.strategy.active.v1',q);else if(!['nani','joy'].includes(localStorage.getItem('somx.strategy.active.v1')))localStorage.setItem('somx.strategy.active.v1','nani')}catch{}

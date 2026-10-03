@@ -1,4 +1,4 @@
-const CACHE="somx-pwa-v45";
+const CACHE="somx-pwa-v46";
 const BASE=self.registration.scope;
 const SHELL=["./","./index.html","./style.css?v=26","./benchmark.css?v=27","./strategy.css?v=26","./settings.css?v=26","./strategy-core-custom.js?v=37","./snapshot-preload.js?v=7","./app.js?v=26","./nani-extension.js?v=2","./snpi-history-sync.js?v=3","./snpy-history-sync.js?v=1","./ququ-history-sync.js?v=4","./ququ-v2-history-sync.js?v=2","./quu-history-sync.js?v=3","./nani-history-sync.js?v=2","./nani-live-fix.js?v=2","./nani-latest.json","./nani-history.json","./core-backfill.js?v=26","./benchmark.js?v=29","./month-live-fix.js?v=30","./pwa.js?v=40","./manifest.webmanifest?v=28","./icon-192.png?v=26","./icon-512.png?v=26"].map(p=>new URL(p,BASE).href);
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)))});

@@ -82,6 +82,7 @@ async function syncNaniSnapshot(force=false){
   try{
     activateClosureContext();
     const j=await globalThis.NaniStrategy.fetchSnapshot();
+    if(!isNani())return lastSnapshot;
     lastSnapshot=j;
     const ym=currentNYMonth();
     const allocationYm=/^\d{4}-\d{2}$/.test(String(j.allocationMonth||""))?String(j.allocationMonth):ym;
