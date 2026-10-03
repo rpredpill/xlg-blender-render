@@ -1,7 +1,7 @@
 {
   "strategy": "환희",
   "ready": true,
-  "generatedAt": "2026-10-03T23:40:55.642706+00:00",
+  "generatedAt": "2026-10-03T23:48:43.633781+00:00",
   "start": "2026-10-01",
   "asOf": "2026-10-02",
   "signalDate": "2026-09-30",
@@ -89,8 +89,6 @@
         "SPY": 0.73954168068735,
         "QQQ": 1.0174773924072733
       },
-      "provenance": "public-forward-simulation",
-      "complete": false,
       "benchmarkPrices": {
         "SPY": {
           "price": 769.6400146484375,
@@ -100,7 +98,9 @@
           "price": 749.5800170898438,
           "priceDate": "2026-10-02"
         }
-      }
+      },
+      "provenance": "public-forward-simulation",
+      "complete": false
     }
   },
   "daily": [
