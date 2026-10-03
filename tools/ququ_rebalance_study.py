@@ -33,6 +33,30 @@ import ququ_v2_bulk_data as bulk
 core.download_prices = bulk.load_prices_hf
 core.load_shares = bulk.load_shares_hf_plus_proxy
 core.load_float_info = bulk.load_float_info_bulk
+_original_month_return = core.month_return
+_return_cache = {}
+def cached_month_return(d, month):
+    key = (id(d), month)
+    if key not in _return_cache:
+        _return_cache[key] = _original_month_return(d, month)
+    return _return_cache[key]
+core.month_return = cached_month_return
+
+_value_cache = {}
+def fast_last_value(d, col, when):
+    if d is None or col not in d.columns:
+        return None, None
+    key = (id(d), col)
+    if key not in _value_cache:
+        v = pd.to_numeric(d[col], errors="coerce").dropna()
+        _value_cache[key] = v
+    v = _value_cache[key]
+    i = v.index.searchsorted(when, side="right")-1
+    if i<0:
+        return None, None
+    x = float(v.iloc[i])
+    return (x, v.index[i]) if math.isfinite(x) and x>0 else (None, None)
+core.last_value = fast_last_value
 
 
 def normalize(weights: dict[str, float]) -> dict[str, float]:
@@ -42,7 +66,7 @@ def normalize(weights: dict[str, float]) -> dict[str, float]:
     return {k: float(v) / total for k, v in weights.items() if float(v) > 0}
 
 
-def month_stock_returns(weights: dict[str, float], month: str, prices: dict):
+def month_stock_returns(weights: dict[str, float], month: str, prices: dict, enforce_limit=True):
     returns = {}
     missing_weight = 0.0
     for t, w in weights.items():
@@ -52,15 +76,15 @@ def month_stock_returns(weights: dict[str, float], month: str, prices: dict):
             returns[t] = None
         else:
             returns[t] = float(r)
-    if missing_weight > core.MISSING_RETURN_LIMIT + 1e-12:
+    if enforce_limit and missing_weight > core.MISSING_RETURN_LIMIT + 1e-12:
         raise RuntimeError(f"{month}: missing return weight {missing_weight:.2%}")
     return returns, missing_weight
 
 
-def apply_month(weights: dict[str, float], month: str, prices: dict):
+def apply_month(weights: dict[str, float], month: str, prices: dict, enforce_limit=True):
     """Return portfolio return, end-of-month drifted weights, stock returns, missing weight."""
     weights = normalize(weights)
-    stock_r, missing = month_stock_returns(weights, month, prices)
+    stock_r, missing = month_stock_returns(weights, month, prices, enforce_limit)
     gross = {}
     portfolio_rel = 0.0
     for t, w in weights.items():
@@ -171,11 +195,15 @@ def simulate_three_sleeves(months, targets, prices):
         missing_total = 0.0
         for s in sleeves:
             capital_share = s["nav"] / total_start
-            r, ew, _, missing = apply_month(s["weights"], month, prices)
+            r, ew, _, missing = apply_month(s["weights"], month, prices, enforce_limit=False)
             s["weights"] = ew
             s["nav"] *= 1.0 + r
             total_end += s["nav"]
             missing_total += capital_share * missing
+        # Missing-data limits apply to the whole investment portfolio, not to
+        # one third of its capital in isolation.
+        if missing_total > core.MISSING_RETURN_LIMIT + 1e-12:
+            raise RuntimeError(f"{month}: portfolio missing return weight {missing_total:.2%}")
         ret = total_end / total_start - 1.0
         returns.append(ret)
         turns.append(trn)
@@ -269,6 +297,38 @@ def main():
         monthly_reference[m] = ret
         target_meta[m] = meta
         print(f"target {m}: holdings={len(w)} reference={ret*100:+.2f}%", flush=True)
+
+    # Save reusable inputs before simulation so one candidate cannot destroy
+    # the completed targets or force another full public-data download.
+    input_symbols = sorted({t for w in targets.values() for t in w})
+    stock_months = {}
+    for m in months:
+        start = pd.Period(m, freq="M").start_time.normalize()
+        end = core.next_month_start(m)
+        row = {}
+        for t in input_symbols:
+            d = prices.get(t)
+            if d is None:
+                continue
+            g = d.loc[(d.index >= start) & (d.index < end)].dropna(subset=["Close", "Adj Close"])
+            if g.empty:
+                continue
+            f, l = g.iloc[0], g.iloc[-1]
+            vals = [f.get("Open"), f.get("Close"), f.get("Adj Close"), l.get("Adj Close")]
+            if any(pd.isna(x) or not math.isfinite(float(x)) or float(x)<=0 for x in vals):
+                continue
+            adj_open = float(vals[0])*float(vals[2])/float(vals[1])
+            prior = d.loc[d.index < start, "Adj Close"].dropna()
+            prev = float(prior.iloc[-1]) if len(prior) else None
+            row[t] = {"openClose":float(vals[3])/adj_open-1,
+                      "closeClose":float(vals[3])/prev-1 if prev and prev>0 else None,
+                      "gap":adj_open/prev-1 if prev and prev>0 else None,
+                      "lastDate":str(g.index[-1].date())}
+        stock_months[m] = row
+    input_out = {"months":months,"targets":targets,"stockReturns":stock_months,
+                 "lastPriceDate":str(max(d.index.max() for d in prices.values()).date()),
+                 "reference":monthly_reference}
+    Path("ququ-rebalance-inputs.json").write_text(json.dumps(input_out,allow_nan=False),encoding="utf-8")
 
     variants = {
         "QUQU-1M": simulate_cadence(months, targets, prices, 1),
