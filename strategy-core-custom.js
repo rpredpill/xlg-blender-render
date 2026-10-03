@@ -20,11 +20,11 @@ const snpy={
   cap:0.20,filters:{}
 };
 const ququ={
-  mode:"ququ",label:"QUQU",universe:"nasdaq100",
-  holdings:100,entryRank:100,exitRank:100,rebalanceMonths:1,
-  factor:"ququScore",weighting:"sqrtCapMomentumCubeCap20",
+  mode:"ququ",label:"QUQU v2",universe:"nasdaqCompositePIT",
+  holdings:328,entryRank:328,exitRank:328,rebalanceMonths:1,
+  factor:"ququV2",weighting:"sqrtFloatCapWinsorMomentumCubeCap20",
   factors:{momentum:{enabled:true,weight:100,lookback:6,skip:1},marketCap:{enabled:true,weight:100}},
-  cap:0.20,filters:{}
+  cap:0.20,filters:{floatCapTopPct:10,liquidityBottomPct:10,volLookback:63,volExponent:0.25,winsorZ:3}
 };
 const quu={
   mode:"quu",label:"QUU",universe:"nasdaq100",
@@ -86,7 +86,7 @@ function config(mode=activeMode){
 function signature(c=config()){
   if(c.mode==="snpi")return"snpi-sp500-v1";
   if(c.mode==="snpy")return"snpy-sp500-top100-v1";
-  if(c.mode==="ququ")return"ququ-ndx100-v1";
+  if(c.mode==="ququ")return"ququ-nasdaq-composite-v2";
   if(c.mode==="quu")return"quu-ndx100-rollover-v1";
   const raw=JSON.stringify(c);let h=2166136261;
   for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
@@ -160,6 +160,7 @@ async function fetchSnapshot(c){
   const r=await fetch(`./${file}?v=${Date.now()}`,{cache:"no-store"});
   if(!r.ok)throw new Error(`${name} snapshot HTTP ${r.status}`);
   const j=await r.json();
+  if(mode==="ququ"&&j.strategy!=="QUQU v2")throw new Error(`QUQU v2 snapshot expected, got ${j.strategy||"unknown"}`);
   let rows;
   if(mode==="snpy")rows=deriveSnpyRows(j.rows);
   else{
@@ -234,7 +235,7 @@ function initUI(){
     qa("[data-factor-choice]").forEach(el=>el.classList.toggle("active",el.dataset.factorChoice===c.factor));
     q("#momentum-options").hidden=c.factor!=="momentum";
     const notes={equal:"모든 종목을 같은 비중으로 시작",marketCap:"선택 종목의 시가총액에 비례"};
-    q("#weighting-note").textContent=notes[c.weighting]||"√시총 × 상대모멘텀³ · 20% cap";
+    q("#weighting-note").textContent=notes[c.weighting]||"고정 전략 전용 비중 규칙";
     q("#marketcap-note").hidden=!(c.factor==="marketCap"||c.weighting==="marketCap");
   }
   function fill(c){
@@ -253,7 +254,9 @@ function initUI(){
         ?"S&P 500 · SNPI raw score 상위 100 · 월간 6-1 · Top100 안에서 √시총 × 상대모멘텀³ 재계산 · 단일종목 최대 20%"
         :c.mode==="quu"
         ?"Nasdaq-100 · 리더십 분산 강함=QUQU p=3 · 리더십 약함=QQQ · 극단적 분산이 고점 후 꺾이면 QQQ · 월간 전환"
-        :"Nasdaq-100 전체 구성종목 · 월간 6-1 · √시총 × 상대모멘텀³ · 단일종목 최대 20% · 초과분 비례 재분배";
+        :c.mode==="ququ"
+        ?"Nasdaq Composite PIT · FloatCap 상위 10% · 6-1 · 63D 변동성 조정 · 유동성 하위 10% 제외 · ±3σ winsor · √FloatCap × 상대신호³ · 20% cap"
+        :"고정 전략";
     }
     qa(".strategy-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.mode===editMode));
     q("#strategy-preview").textContent=snap?`Preview를 누르면 최신 ${c.label} 목표비중을 불러옵니다.`:"Preview를 누르면 현재 신호 기준 랭킹을 계산합니다.";
