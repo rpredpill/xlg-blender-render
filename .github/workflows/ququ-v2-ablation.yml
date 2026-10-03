@@ -42,8 +42,11 @@ jobs:
       - name: Install dependencies
         run: pip install --disable-pip-version-check numpy pandas yfinance requests
 
-      - name: Load ablation engine from main
-        run: git show origin/main:tools/ququ_v2_ablation.py > /tmp/ququ_v2_ablation.py
+      - name: Load ablation engines from main
+        run: |
+          git show origin/main:tools/ququ_v2_ablation.py > /tmp/ququ_v2_ablation.py
+          git show origin/main:tools/ququ_v2_ablation_safe.py > /tmp/ququ_v2_ablation_safe.py
+          python -m py_compile /tmp/ququ_v2_ablation.py /tmp/ququ_v2_ablation_safe.py
 
       - name: Run QUQU v2 ablation
         shell: bash
@@ -54,7 +57,8 @@ jobs:
           set -euo pipefail
           test -s nasdaq-composite-pit.json
           test -s ququ-history.json
-          python /tmp/ququ_v2_ablation.py \
+          export PYTHONPATH=/tmp
+          python /tmp/ququ_v2_ablation_safe.py \
             --pit nasdaq-composite-pit.json \
             --legacy ququ-history.json \
             --start "$START_MONTH" \
@@ -68,6 +72,8 @@ jobs:
           import json
           p=json.load(open('ququ-v2-ablation.json', encoding='utf-8'))
           names=['Composite TotalCap base','+ FloatCap','+ Vol','+ Liquidity','+ Winsorization']
+          if p.get('engine') != 'transactional-safe-driver-v1':
+              raise RuntimeError(f"unexpected engine {p.get('engine')}")
           m=p.get('metrics') or {}
           missing=[x for x in names if x not in m]
           if missing:
@@ -75,6 +81,13 @@ jobs:
           n=p.get('period',{}).get('successfulMonths',0)
           if n < 12:
               raise RuntimeError(f'only {n} successful months')
+          rows=p.get('months') or []
+          if len(rows) != n:
+              raise RuntimeError(f'month record mismatch {len(rows)} != {n}')
+          for r in rows:
+              missing_month=[x for x in names if x not in (r.get('variants') or {})]
+              if missing_month:
+                  raise RuntimeError(f"{r.get('month')}: partial variants {missing_month}")
           print('period', p['period'])
           for name in names:
               x=m[name]
