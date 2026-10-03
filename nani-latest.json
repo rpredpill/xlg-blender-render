@@ -1,0 +1,27 @@
+{
+  "strategy": "Nani",
+  "version": "1.0",
+  "ready": false,
+  "generatedAt": null,
+  "universe": "Nasdaq-100 union Nikkei 225",
+  "holdings": 325,
+  "allocationMonth": null,
+  "signalMonth": null,
+  "rules": {
+    "universe": "Nasdaq-100 ∪ Nikkei 225",
+    "momentum": "6-1 gross momentum relative to the cross-sectional median",
+    "weighting": "Float-Adjusted Market Cap × Relative Momentum^3",
+    "baseCurrency": "USD",
+    "singleNameCap": 0.2,
+    "capRedistribution": "proportional",
+    "rebalance": "semiannual (6 months)"
+  },
+  "dataStatus": {
+    "message": "Nani 구조는 추가됐지만 일본 종목 유동주식수 시총 입력을 검증 중입니다. 보통 시가총액으로 대체하지 않습니다.",
+    "nasdaq100": "available",
+    "nikkei225Constituents": "available",
+    "nikkei225FreeFloat": "JPX public FFW source identified; snapshot not yet materialized",
+    "policy": "Do not activate Nani until both markets use comparable float-adjusted market capitalization in one currency."
+  },
+  "rows": []
+}
