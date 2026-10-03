@@ -6,6 +6,7 @@ const QUQU_BATCH=60;
 const originalEnsureInitialized=ensureInitialized;
 const originalBootstrapStrategy=bootstrapStrategy;
 const originalCatchUpRebalances=catchUpRebalances;
+const originalMonthBars=monthBars;
 const originalGetMonthBasePrices=getMonthBasePrices;
 const originalGetLatestFallback=getLatestFallback;
 const originalConnectStream=connectStream;
@@ -78,18 +79,27 @@ catchUpRebalances=async function(){
   return originalCatchUpRebalances();
 };
 
+monthBars=async function(month,holdings){
+  if(!isQuqu())return originalMonthBars(month,holdings);
+  if(!holdings?.length)return{};
+  const merged={};
+  for(const part of chunks(holdings,QUQU_BATCH)){
+    const q=new URLSearchParams({symbols:part.join(","),timeframe:"1Day",start:`${month}-01`,end:`${addMonths(month,1)}-03`,adjustment:"all",feed:"iex",limit:"5000",sort:"asc"});
+    const data=await alpaca(`/stocks/bars?${q}`);
+    for(const[s,bars]of Object.entries(data.bars||{}))merged[normalizeTicker(s)]=bars;
+  }
+  return merged;
+};
+
 getMonthBasePrices=async function(){
   if(!isQuqu())return originalGetMonthBasePrices();
   const m=state.rebalanceMonth;
   if(state.basePrices&&state.holdings.every(s=>Number(state.basePrices[s])>0))return state.basePrices;
   const base={...(state.basePrices||{})};
-  for(const part of chunks(state.holdings,QUQU_BATCH)){
-    const q=new URLSearchParams({symbols:part.join(","),timeframe:"1Day",start:`${m}-01`,end:`${addMonths(m,1)}-01`,adjustment:"all",feed:"iex",limit:"5000",sort:"asc"});
-    const data=await alpaca(`/stocks/bars?${q}`);
-    for(const s of part){
-      const bars=(data.bars?.[s]||[]).filter(b=>String(b.t).slice(0,7)===m);
-      if(bars.length&&Number(bars[0]?.o)>0)base[s]=Number(bars[0].o);
-    }
+  const all=await monthBars(m,state.holdings);
+  for(const s of state.holdings){
+    const bars=(all[s]||[]).filter(b=>String(b.t).slice(0,7)===m);
+    if(bars.length&&Number(bars[0]?.o)>0)base[s]=Number(bars[0].o);
   }
   state.basePrices=base;saveState();return base;
 };
@@ -109,8 +119,8 @@ connectStream=function(){
     if(ququPollTimer){clearInterval(ququPollTimer);ququPollTimer=null}
     return originalConnectStream();
   }
-  // Alpaca Basic websocket subscriptions are not a good fit for hundreds of
-  // QUQU names. Poll latest IEX bars in batches instead.
+  // Hundreds of QUQU names are handled by batched IEX polling instead of one
+  // oversized websocket subscription.
   if(socket)try{socket.close()}catch{}socket=null;
   if(ququPollTimer)clearInterval(ququPollTimer);
   const poll=async()=>{
