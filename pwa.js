@@ -21,5 +21,47 @@ settingsBtn?.addEventListener("click",()=>{setSettingsTab(stored(SETTINGS_TAB_KE
 document.getElementById("saveBtn")?.addEventListener("click",()=>setTimeout(updateApiStatus,0));document.getElementById("clearBtn")?.addEventListener("click",()=>setTimeout(updateApiStatus,0));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&settingsModal?.classList.contains("show"))settingsModal.classList.remove("show")});
 window.addEventListener("resize",fitClassic);window.addEventListener("orientationchange",()=>setTimeout(fitClassic,120));
-if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=34",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
+
+function currentNYMonth(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date());return`${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`}
+function readObj(key){try{return JSON.parse(localStorage.getItem(key)||"{}")||{}}catch{return{}}}
+async function forceApplyQuqu(btn,box){
+  btn.disabled=true;btn.textContent="Applying…";
+  try{
+    const r=await fetch(`./ququ-latest.json?v=${Date.now()}`,{cache:"no-store"});
+    if(!r.ok)throw new Error(`QUQU snapshot HTTP ${r.status}`);
+    const j=await r.json();
+    if(j.strategy!=="QUQU v2")throw new Error(`QUQU v2 snapshot expected, got ${j.strategy||"unknown"}`);
+    const rows=(j.rows||[]).map(x=>({ticker:String(x.ticker||"").trim().toUpperCase(),weight:Number(x.weight)}));
+    if(rows.length<100||rows.some(x=>!x.ticker||!Number.isFinite(x.weight)||x.weight<=0))throw new Error("QUQU 목표비중 데이터 오류");
+    const sum=rows.reduce((a,x)=>a+x.weight,0);if(Math.abs(sum-1)>1e-6)throw new Error(`QUQU 비중합 오류 ${sum}`);
+    const ym=currentNYMonth(),allocation=/^\d{4}-\d{2}$/.test(String(j.allocationMonth||""))?String(j.allocationMonth):ym;
+    const holdings=rows.map(x=>x.ticker),targetWeights=Object.fromEntries(rows.map(x=>[x.ticker,x.weight]));
+    const sig="ququ-nasdaq-composite-v2",key=kind=>`somx.${kind}.v2.${sig}`;
+    const hh=readObj(key("holdings")),wh=readObj(key("weights"));
+    hh[allocation]=[...holdings];wh[allocation]={...targetWeights};hh[ym]=[...holdings];wh[ym]={...targetWeights};
+    const st={rebalanceMonth:ym,strategyAnchor:ym,initialized:true,holdings,statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,basePrices:{},updatedAt:new Date().toISOString(),snapshotAt:j.generatedAt||null,snapshotAllocationMonth:allocation};
+    localStorage.setItem("somx.strategy.active.v1","ququ");
+    localStorage.setItem(key("state"),JSON.stringify(st));
+    localStorage.setItem(key("holdings"),JSON.stringify(hh));
+    localStorage.setItem(key("weights"),JSON.stringify(wh));
+    try{globalThis.SOMXStrategy?.setMode?.("ququ")}catch{}
+    if(box)box.textContent=`QUQU v2 적용 완료 · ${rows.length}종목 · 다시 불러오는 중…`;
+    setTimeout(()=>location.reload(),80);
+  }catch(e){
+    if(box)box.textContent=e?.message||String(e);
+    btn.disabled=false;btn.textContent="Apply Strategy";
+  }
+}
+const applyBtn=document.getElementById("strategy-apply-btn");
+if(applyBtn){
+  const originalApply=applyBtn.onclick;
+  applyBtn.onclick=function(ev){
+    const selected=document.querySelector('.strategy-tabs button.active')?.dataset?.mode;
+    if(selected!=="ququ")return originalApply?.call(this,ev);
+    const box=document.getElementById("strategy-preview");
+    return forceApplyQuqu(this,box);
+  };
+}
+
+if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=38",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
 })();
