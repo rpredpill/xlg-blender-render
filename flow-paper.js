@@ -30,7 +30,7 @@
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
      await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
      // Validation must succeed on the fixed PAPER host before keys are retained.
-     localStorage.setItem(KEY,JSON.stringify(credentials));
+     if($('remember').checked)localStorage.setItem(KEY,JSON.stringify(credentials));
      state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:false,started:false,owned:[],log:[],nav:[],intents:{}};
      $('log').textContent=state.log.join('\n')||'아직 주문이 없습니다.';$('budget').value=state.budget||100000;
      await loadSignal();await refresh();$('start').disabled=false;
@@ -96,5 +96,5 @@
  $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
  loadSignal().catch(e=>status(e.message));
  const saved=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('somx.alpaca.credentials.v1')||'null');
- if(saved){$('paper-key').value=saved.keyId||'';$('paper-secret').value=saved.secretKey||'';connect();}
+ if(saved){$('remember').checked=!!localStorage.getItem(KEY);$('paper-key').value=saved.keyId||'';$('paper-secret').value=saved.secretKey||'';connect();}
 })();
