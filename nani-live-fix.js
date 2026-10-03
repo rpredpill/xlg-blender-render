@@ -18,7 +18,7 @@ const previous={
   render
 };
 
-function historyKey(){return `somx.history.v2.${globalThis.NaniStrategy?.signature||"nani-ndx100-nk225-v1"}`}
+function historyKey(){return `somx.history.v3.${globalThis.NaniStrategy?.signature||"nani-nk100-ndx100-50-50-v3"}`}
 function readHistory(){try{return JSON.parse(localStorage.getItem(historyKey())||"{}")||{}}catch{return{}}}
 function fmt2(v){const n=Number(v);return Number.isFinite(n)?`${n>=0?"+":""}${n.toFixed(2)}%`:"--"}
 function setMetric2(id,v){const el=document.getElementById(id);if(!el)return;const n=Number(v);el.textContent=fmt2(n);el.classList.toggle("neg",Number.isFinite(n)&&n<0)}
