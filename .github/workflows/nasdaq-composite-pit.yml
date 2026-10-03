@@ -1,0 +1,104 @@
+name: Build Nasdaq Composite PIT universe
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_month:
+        description: 'First month (YYYY-MM)'
+        required: false
+        default: '2022-01'
+      end_month:
+        description: 'Last month (YYYY-MM); blank = last completed month'
+        required: false
+        default: ''
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nasdaq-composite-pit.yml'
+      - 'tools/build_nasdaq_composite_pit.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nasdaq-composite-pit
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check pandas requests openpyxl
+
+      - name: Load builder from main
+        run: git show origin/main:tools/build_nasdaq_composite_pit.py > /tmp/build_nasdaq_composite_pit.py
+
+      - name: Build monthly PIT universe
+        shell: bash
+        env:
+          START_MONTH: ${{ github.event.inputs.start_month || '2022-01' }}
+          END_MONTH: ${{ github.event.inputs.end_month || '' }}
+        run: |
+          set -euo pipefail
+          if [ -n "$END_MONTH" ]; then
+            python /tmp/build_nasdaq_composite_pit.py \
+              --start "$START_MONTH" \
+              --end "$END_MONTH" \
+              --output nasdaq-composite-pit.json
+          else
+            python /tmp/build_nasdaq_composite_pit.py \
+              --start "$START_MONTH" \
+              --output nasdaq-composite-pit.json
+          fi
+
+      - name: Validate PIT output
+        shell: python
+        run: |
+          import json
+          p = json.load(open('nasdaq-composite-pit.json', encoding='utf-8'))
+          months = p.get('months') or {}
+          if len(months) < 12:
+              raise RuntimeError(f'only {len(months)} successful months')
+          bad = {
+              m: r.get('count')
+              for m, r in months.items()
+              if not isinstance(r.get('count'), int) or r['count'] < 500
+          }
+          if bad:
+              raise RuntimeError(f'implausible monthly universe counts: {bad}')
+          print(
+              'PIT universe',
+              len(months),
+              min(months),
+              max(months),
+              'count range',
+              min(r['count'] for r in months.values()),
+              max(r['count'] for r in months.values()),
+              'failures',
+              len(p.get('failedMonths') or {}),
+          )
+
+      - name: Commit PIT universe to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add nasdaq-composite-pit.json
+          if git diff --cached --quiet; then
+            echo 'No PIT universe changes'
+          else
+            git commit -m 'Build Nasdaq Composite PIT universe'
+            git push origin HEAD:somx-pages
+          fi
