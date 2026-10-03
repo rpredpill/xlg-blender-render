@@ -8,7 +8,7 @@ on:
       - '.github/workflows/nani-signal.yml'
       - 'tools/nani_live.py'
       - 'tools/nani_live_v2.py'
-      - 'tools/nani_live_v3.py'
+      - 'tools/nani_live_v4.py'
       - 'tools/nani_ndx_source.py'
   schedule:
     - cron: '50 2 2 * *'
@@ -38,14 +38,14 @@ jobs:
         run: |
           git show origin/main:tools/nani_live.py > /tmp/nani_live_legacy.py
           git show origin/main:tools/nani_live_v2.py > /tmp/nani_live_v2.py
-          git show origin/main:tools/nani_live_v3.py > /tmp/nani_live_v3.py
+          git show origin/main:tools/nani_live_v4.py > /tmp/nani_live_v4.py
           git show origin/main:tools/nani_ndx_source.py > /tmp/nani_ndx_source.py
-          python -m py_compile /tmp/nani_live_legacy.py /tmp/nani_live_v2.py /tmp/nani_live_v3.py /tmp/nani_ndx_source.py
+          python -m py_compile /tmp/nani_live_legacy.py /tmp/nani_live_v2.py /tmp/nani_live_v4.py /tmp/nani_ndx_source.py
 
       - name: Build independent Nasdaq-100 source
         run: python /tmp/nani_ndx_source.py --output /tmp/nani-ndx-source.json
 
-      - name: Build Nani v3 snapshot and forward-only history
+      - name: Build Nani v4 snapshot and forward-only history
         shell: bash
         run: |
           set -euo pipefail
@@ -61,7 +61,7 @@ jobs:
           Path('quu-latest.json').write_text(json.dumps({'strategy':'Nani NDX source adapter','holdings':len(rows),'rows':rows},indent=2),encoding='utf-8')
           PY
 
-          python /tmp/nani_live_v3.py --site . --legacy /tmp/nani_live_legacy.py --v2 /tmp/nani_live_v2.py
+          python /tmp/nani_live_v4.py --site . --legacy /tmp/nani_live_legacy.py --v2 /tmp/nani_live_v2.py
 
           python - <<'PY'
           import json
@@ -84,13 +84,13 @@ jobs:
           restore_quu
           trap - EXIT
 
-      - name: Validate Nani v3 outputs
+      - name: Validate Nani v4 outputs
         shell: python
         run: |
           import json, math
           latest=json.load(open('nani-latest.json',encoding='utf-8'))
           hist=json.load(open('nani-history.json',encoding='utf-8'))
-          if latest.get('strategy')!='Nani' or latest.get('version')!='3.0' or latest.get('ready') is not True:
+          if latest.get('strategy')!='Nani' or latest.get('version')!='4.0' or latest.get('ready') is not True:
               raise RuntimeError(f"unexpected latest header {latest.get('strategy')} v={latest.get('version')} ready={latest.get('ready')}")
           rows=latest.get('rows') or []
           us=[r for r in rows if r.get('country')=='US']
@@ -114,22 +114,26 @@ jobs:
           rules=latest.get('rules') or {}
           if rules.get('countryAllocation')!='Japan 50% / US 50%':
               raise RuntimeError(f'country allocation rule missing: {rules}')
+          if rules.get('coreWeighting')!='Float-Adjusted Market Cap only' or rules.get('momentum') is not None:
+              raise RuntimeError(f'float-only rule mismatch: {rules}')
           if rules.get('singleNameCap') is not None or rules.get('rebalanceCadence') is not None:
               raise RuntimeError(f'Nani core must not inherit cap/cadence: {rules}')
           checked=0
           for r in rows:
-              fc=r.get('floatCap'); rm=r.get('relativeMomentum'); raw=r.get('rawWeightScore')
-              if all(isinstance(v,(int,float)) and math.isfinite(float(v)) for v in [fc,rm,raw]):
-                  expected=float(fc)*(float(rm)**3)
-                  if not math.isclose(float(raw),expected,rel_tol=1e-10,abs_tol=max(1e-4,abs(expected)*1e-12)):
+              fc=r.get('floatCap'); raw=r.get('rawWeightScore')
+              if all(isinstance(v,(int,float)) and math.isfinite(float(v)) for v in [fc,raw]):
+                  expected=float(fc)
+                  if not math.isclose(float(raw),expected,rel_tol=1e-12,abs_tol=max(1e-4,abs(expected)*1e-12)):
                       raise RuntimeError(f'raw score mismatch {r.get("ticker")}: {raw} vs {expected}')
+                  if any(k in r for k in ['momentum','grossMomentum','relativeMomentum','earlyPrice']):
+                      raise RuntimeError(f'momentum field survived in v4 row {r.get("ticker")}')
                   checked+=1
           if checked!=len(rows):
               raise RuntimeError(f'formula rows checked {checked}/{len(rows)}')
           months=hist.get('months') or {}
-          bad=[m for m,r in months.items() if not isinstance(r,dict) or r.get('provenance')!='forward-live-v3']
+          bad=[m for m,r in months.items() if not isinstance(r,dict) or r.get('provenance')!='forward-live-v4']
           if bad:
-              raise RuntimeError(f'non-v3 forward Nani history remains: {bad}')
+              raise RuntimeError(f'non-v4 forward Nani history remains: {bad}')
           for m,r in months.items():
               rrows=r.get('rows') or []
               rjp=sum(float(x.get('weight',0)) for x in rrows if x.get('country')=='JP')
@@ -138,9 +142,9 @@ jobs:
                   raise RuntimeError(f'{m} country bucket mismatch JP={rjp} US={rus}')
           completed=[m for m,r in months.items() if isinstance(r.get('portfolioReturn'),(int,float))]
           pending=[m for m,r in months.items() if not isinstance(r.get('portfolioReturn'),(int,float))]
-          print('Nani v3', latest.get('allocationMonth'))
+          print('Nani v4', latest.get('allocationMonth'))
           print('holdings',len(rows),'JP',len(jp),'US',len(us),'JPWeight',jp_weight,'USWeight',us_weight,'maxWeight',latest.get('maxWeight'))
-          print('formulaRowsChecked',checked)
+          print('floatOnlyRowsChecked',checked)
           print('history completed',completed,'pending',pending)
 
       - name: Commit Nani outputs to Pages branch
@@ -154,7 +158,7 @@ jobs:
             echo 'No Nani output changes'
             exit 0
           fi
-          git commit -m 'Refresh Nani v3 signal and forward-only history'
+          git commit -m 'Refresh Nani v4 float-cap-only signal and history'
           git fetch origin somx-pages
           git rebase origin/somx-pages
           git push origin HEAD:somx-pages
