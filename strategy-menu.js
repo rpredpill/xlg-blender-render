@@ -14,7 +14,7 @@
   }
   const nav=document.createElement('nav');nav.setAttribute('aria-label','전략 선택');nav.style.cssText='display:flex;justify-content:center;gap:10px;margin:10px 0 20px;flex-wrap:wrap';
   for(const [label,mode] of [['Nani','nani'],['환희','joy'],['공포 · Paper','fear']]){const b=document.createElement('button');b.type='button';b.textContent=label;b.style.cssText='font:inherit;background:transparent;padding:10px 15px;border:1px solid #b6ccc5;border-radius:12px;color:#287b69;font-weight:700';b.onclick=()=>mode==='fear'?location.assign('./flow.html'):(mode==='nani'?tabs?.querySelector('[data-mode="nani"]')?.click():select(mode));nav.append(b);}
-  document.querySelector('.board')?.before(nav);document.title='Nani · 환희 · 공포';
+  document.querySelector('.board')?.before(nav);document.title='Nani · 환희 · 공포';if(globalThis.SOMXStrategy.getMode()==='joy')select('joy');
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
