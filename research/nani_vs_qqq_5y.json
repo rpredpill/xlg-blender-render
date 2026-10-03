@@ -1,0 +1,5029 @@
+{
+  "strategy": "Nani v3 research backtest",
+  "benchmark": "QQQ",
+  "generatedAt": "2026-10-03T12:22:17.848269+00:00",
+  "period": {
+    "startMonth": "2021-10",
+    "endMonth": "2026-09",
+    "months": 60,
+    "startSignalDate": "2021-09-30",
+    "endDate": "2026-09-30"
+  },
+  "rules": {
+    "universe": "Point-in-time Nasdaq-100 + reconstructed point-in-time Nikkei 225; Japan sleeve selects float-cap top 100",
+    "signal": "6-1 gross momentum relative to selected-union cross-sectional median",
+    "rawWeight": "Float-cap proxy × Relative Momentum^3",
+    "countryBuckets": "Japan 50% / US 50%",
+    "rebalance": "monthly at prior month-end close for research backtest",
+    "singleNameCap": null,
+    "baseCurrency": "USD; Japan monthly returns translated with USDJPY"
+  },
+  "caveat": "Constituent history is point-in-time/reconstructed, but historical free-float shares are not fully PIT. Current/available float-share or shares-outstanding proxies are held constant through history. Treat this as a research proxy backtest, not an official index-quality backtest.",
+  "nani": {
+    "totalReturn": 1.5799816205048018,
+    "cagr": 0.20871335999362062,
+    "mddMonthEnd": -0.27811493697057976,
+    "annualizedVol": 0.2880368830559153,
+    "sharpeRf0": 0.8065519257301148,
+    "positiveMonthRate": 0.6166666666666667,
+    "bestMonth": 0.26873532494353614,
+    "worstMonth": -0.2781149369705798
+  },
+  "qqq": {
+    "totalReturn": 1.1293275161705956,
+    "cagr": 0.16318419705313225,
+    "mddMonthEnd": -0.3257699269249328,
+    "annualizedVol": 0.20867375687170017,
+    "sharpeRf0": 0.8312061731098874,
+    "positiveMonthRate": 0.6166666666666667,
+    "bestMonth": 0.15690085407388898,
+    "worstMonth": -0.13595725128814184
+  },
+  "endingValue100": {
+    "nani": 257.99816205048,
+    "qqq": 212.93275161705958
+  },
+  "equityCurve": [
+    {
+      "month": "2021-10",
+      "nani": 104.18128220154665,
+      "qqq": 107.8639741031552
+    },
+    {
+      "month": "2021-11",
+      "nani": 105.22437313695916,
+      "qqq": 110.0178808535727
+    },
+    {
+      "month": "2021-12",
+      "nani": 103.33428118123753,
+      "qqq": 111.28562423644469
+    },
+    {
+      "month": "2022-01",
+      "nani": 104.40454614598426,
+      "qqq": 101.55146885467317
+    },
+    {
+      "month": "2022-02",
+      "nani": 103.67762101871422,
+      "qqq": 97.00603746722224
+    },
+    {
+      "month": "2022-03",
+      "nani": 106.00405153699396,
+      "qqq": 101.53417302018475
+    },
+    {
+      "month": "2022-04",
+      "nani": 94.23172127522943,
+      "qqq": 87.72986594454582
+    },
+    {
+      "month": "2022-05",
+      "nani": 95.2412273831786,
+      "qqq": 86.33795094342673
+    },
+    {
+      "month": "2022-06",
+      "nani": 85.88676900554552,
+      "qqq": 78.6470581621406
+    },
+    {
+      "month": "2022-07",
+      "nani": 93.64453736507899,
+      "qqq": 88.51864032429383
+    },
+    {
+      "month": "2022-08",
+      "nani": 88.72778635783907,
+      "qqq": 83.97567726060686
+    },
+    {
+      "month": "2022-09",
+      "nani": 79.33521832837667,
+      "qqq": 75.12838797200763
+    },
+    {
+      "month": "2022-10",
+      "nani": 83.1402779327111,
+      "qqq": 78.13342721747706
+    },
+    {
+      "month": "2022-11",
+      "nani": 91.53574766826226,
+      "qqq": 82.46526515067667
+    },
+    {
+      "month": "2022-12",
+      "nani": 86.76295943235537,
+      "qqq": 75.03211456114258
+    },
+    {
+      "month": "2023-01",
+      "nani": 95.78333279835961,
+      "qqq": 83.0177129021479
+    },
+    {
+      "month": "2023-02",
+      "nani": 91.86473654137272,
+      "qqq": 82.71904572670789
+    },
+    {
+      "month": "2023-03",
+      "nani": 98.53267749540962,
+      "qqq": 90.57131944817766
+    },
+    {
+      "month": "2023-04",
+      "nani": 97.91072772087674,
+      "qqq": 91.03133242751998
+    },
+    {
+      "month": "2023-05",
+      "nani": 104.32937015871534,
+      "qqq": 98.20807600399286
+    },
+    {
+      "month": "2023-06",
+      "nani": 109.41286815923118,
+      "qqq": 104.39895701462473
+    },
+    {
+      "month": "2023-07",
+      "nani": 113.41262396700006,
+      "qqq": 108.42886009821991
+    },
+    {
+      "month": "2023-08",
+      "nani": 109.68138878951103,
+      "qqq": 106.82086575094486
+    },
+    {
+      "month": "2023-09",
+      "nani": 105.0492461003632,
+      "qqq": 101.3945063018677
+    },
+    {
+      "month": "2023-10",
+      "nani": 102.20996307918502,
+      "qqq": 99.30020825273945
+    },
+    {
+      "month": "2023-11",
+      "nani": 111.84741131236741,
+      "qqq": 110.04333708940176
+    },
+    {
+      "month": "2023-12",
+      "nani": 117.38160497006363,
+      "qqq": 116.19143089343477
+    },
+    {
+      "month": "2024-01",
+      "nani": 124.82778037428157,
+      "qqq": 118.30515930614271
+    },
+    {
+      "month": "2024-02",
+      "nani": 133.2354189013779,
+      "qqq": 124.55564901806385
+    },
+    {
+      "month": "2024-03",
+      "nani": 137.85485305296126,
+      "qqq": 126.14372109382049
+    },
+    {
+      "month": "2024-04",
+      "nani": 128.25858830826525,
+      "qqq": 120.62646408492293
+    },
+    {
+      "month": "2024-05",
+      "nani": 135.9956184462099,
+      "qqq": 128.04717643086352
+    },
+    {
+      "month": "2024-06",
+      "nani": 141.5319690552666,
+      "qqq": 136.33199534373995
+    },
+    {
+      "month": "2024-07",
+      "nani": 139.9569006719262,
+      "qqq": 134.04419300921515
+    },
+    {
+      "month": "2024-08",
+      "nani": 140.9742014327277,
+      "qqq": 135.52386965704528
+    },
+    {
+      "month": "2024-09",
+      "nani": 139.87186504749002,
+      "qqq": 139.0767625852011
+    },
+    {
+      "month": "2024-10",
+      "nani": 134.28311253084607,
+      "qqq": 137.87425849270272
+    },
+    {
+      "month": "2024-11",
+      "nani": 138.2725390761694,
+      "qqq": 145.25165658782436
+    },
+    {
+      "month": "2024-12",
+      "nani": 140.195900279399,
+      "qqq": 145.91115580446098
+    },
+    {
+      "month": "2025-01",
+      "nani": 144.33604781531827,
+      "qqq": 149.0677993198319
+    },
+    {
+      "month": "2025-02",
+      "nani": 137.01913014807252,
+      "qqq": 145.03779961146302
+    },
+    {
+      "month": "2025-03",
+      "nani": 130.95822703320314,
+      "qqq": 134.0349521672234
+    },
+    {
+      "month": "2025-04",
+      "nani": 135.91819713691788,
+      "qqq": 135.90718013422762
+    },
+    {
+      "month": "2025-05",
+      "nani": 145.2098972752737,
+      "qqq": 148.38111340551026
+    },
+    {
+      "month": "2025-06",
+      "nani": 152.3705114098338,
+      "qqq": 157.85654277965227
+    },
+    {
+      "month": "2025-07",
+      "nani": 150.49140892910057,
+      "qqq": 161.68247975008265
+    },
+    {
+      "month": "2025-08",
+      "nani": 156.15736040010734,
+      "qqq": 163.2248746601004
+    },
+    {
+      "month": "2025-09",
+      "nani": 170.23616100440265,
+      "qqq": 172.00021362859053
+    },
+    {
+      "month": "2025-10",
+      "nani": 193.6657235226852,
+      "qqq": 180.22247239254534
+    },
+    {
+      "month": "2025-11",
+      "nani": 176.67352694140828,
+      "qqq": 177.40914548212425
+    },
+    {
+      "month": "2025-12",
+      "nani": 176.5839128121089,
+      "qqq": 176.22062562959826
+    },
+    {
+      "month": "2026-01",
+      "nani": 202.96084815397063,
+      "qqq": 178.38928961817757
+    },
+    {
+      "month": "2026-02",
+      "nani": 213.0487314281974,
+      "qqq": 174.20687750543647
+    },
+    {
+      "month": "2026-03",
+      "nani": 187.89203707678993,
+      "qqq": 165.7782984974672
+    },
+    {
+      "month": "2026-04",
+      "nani": 209.06392759194955,
+      "qqq": 191.78905511863593
+    },
+    {
+      "month": "2026-05",
+      "nani": 265.246790107344,
+      "qqq": 212.05824471084776
+    },
+    {
+      "month": "2026-06",
+      "nani": 323.4004984082679,
+      "qqq": 211.74210601951262
+    },
+    {
+      "month": "2026-07",
+      "nani": 233.45798917719839,
+      "qqq": 197.82244653224234
+    },
+    {
+      "month": "2026-08",
+      "nani": 245.18850711080802,
+      "qqq": 206.09487990594727
+    },
+    {
+      "month": "2026-09",
+      "nani": 257.99816205048,
+      "qqq": 212.93275161705958
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2021-10",
+      "naniReturn": 0.0418128220154666,
+      "qqqReturn": 0.07863974103155202,
+      "jpSelected": 100,
+      "usSelected": 93,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0658800678427798,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "CERN",
+          "country": "US"
+        },
+        {
+          "ticker": "CTRP",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "XLNX",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9062",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "8303.T",
+          "weight": 0.49999997501866145
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.254496265373789
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03107799229903589
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.02771785856317304
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02312097180680987
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.021267116086847105
+        },
+        {
+          "ticker": "MRNA",
+          "weight": 0.015634213164243946
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.015002686012733345
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.013750576241060367
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.0104206680578697
+        }
+      ]
+    },
+    {
+      "month": "2021-11",
+      "naniReturn": 0.010012268167275577,
+      "qqqReturn": 0.019968731620787716,
+      "jpSelected": 100,
+      "usSelected": 93,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0569725261366398,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "CERN",
+          "country": "US"
+        },
+        {
+          "ticker": "CTRP",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "XLNX",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9062",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "8303.T",
+          "weight": 0.49999997351016656
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.22077495352388785
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.045342325779458084
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.042578376349507445
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.028444216050109748
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.024222959074120858
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.022749927661815113
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.0175993905122358
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.014510748979049214
+        },
+        {
+          "ticker": "MRNA",
+          "weight": 0.00639090940753423
+        }
+      ]
+    },
+    {
+      "month": "2021-12",
+      "naniReturn": -0.017962491952900547,
+      "qqqReturn": 0.011523066732754828,
+      "jpSelected": 100,
+      "usSelected": 93,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 0.994826858835028,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "CERN",
+          "country": "US"
+        },
+        {
+          "ticker": "CTRP",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "XLNX",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9062",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "8303.T",
+          "weight": 0.49999998627748865
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.21330979531663133
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.04478510222984845
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03774424383727833
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.03635927029833595
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.0286040687064087
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02092071150966774
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.019651048302511052
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.01588309451031733
+        },
+        {
+          "ticker": "AMD",
+          "weight": 0.010738845299608515
+        }
+      ]
+    },
+    {
+      "month": "2022-01",
+      "naniReturn": 0.010357307879943394,
+      "qqqReturn": -0.08747001644246244,
+      "jpSelected": 100,
+      "usSelected": 94,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0604273234574757,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "XLNX",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "8303.T",
+          "weight": 0.49999998196949885
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.18920345341421618
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.04748681198397212
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04117223948036808
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.03728331043849706
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.02402025143177844
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.020028546240279423
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.019716266662259292
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.016987961102938615
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.008009676536950713
+        }
+      ]
+    },
+    {
+      "month": "2022-02",
+      "naniReturn": -0.006962581172026854,
+      "qqqReturn": -0.044759878303244904,
+      "jpSelected": 100,
+      "usSelected": 94,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 0.9915021716646171,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "XLNX",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9147",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "8303.T",
+          "weight": 0.49999999286842944
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.14524792459788996
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.07398960728681654
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.047312522704092204
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.035273698413939236
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.023146604570623928
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.023051803622835588
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.018241849467648893
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.01433738264331988
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.008423566985008454
+        }
+      ]
+    },
+    {
+      "month": "2022-03",
+      "naniReturn": 0.02243908082979455,
+      "qqqReturn": 0.04667890443924727,
+      "jpSelected": 100,
+      "usSelected": 95,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.964386390507459,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "CEG",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8303",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9147",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.16959624724839517
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0651672387038802
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.049828652739407314
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04444625611294312
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02606416276435455
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.025950997273593384
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.02309467179800802
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.021284874477658096
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.020203445139783158
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.01999790843787513
+        }
+      ]
+    },
+    {
+      "month": "2022-04",
+      "naniReturn": -0.11105547468302322,
+      "qqqReturn": -0.13595725128814184,
+      "jpSelected": 100,
+      "usSelected": 95,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9678068018239401,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "CEG",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8303",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9147",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1518756343069346
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.079183327036993
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.044989923448743245
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03569193166677948
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.028789521631498904
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.025064049503368043
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02476005152713727
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.021657222368248078
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.021235447248394306
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.019955303316791358
+        }
+      ]
+    },
+    {
+      "month": "2022-05",
+      "naniReturn": 0.010713017806398916,
+      "qqqReturn": -0.01586591961737316,
+      "jpSelected": 100,
+      "usSelected": 95,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9450492581430603,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "CEG",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9147",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1496390659123978
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.07041727133096116
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.043750967128410215
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04248130998191038
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02344589775738941
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.023021353869950297
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.021497593802067543
+        },
+        {
+          "ticker": "9433.T",
+          "weight": 0.018984925655327813
+        },
+        {
+          "ticker": "9432.T",
+          "weight": 0.018368878612278063
+        },
+        {
+          "ticker": "7974.T",
+          "weight": 0.01616342578038416
+        }
+      ]
+    },
+    {
+      "month": "2022-06",
+      "naniReturn": -0.09821858279920957,
+      "qqqReturn": -0.08907893570841896,
+      "jpSelected": 100,
+      "usSelected": 95,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9186173939425851,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "CEG",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9147",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1805615447031129
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.04967831547105703
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.041043400893921465
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.03341722724741382
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.023708544891464595
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02339421790842668
+        },
+        {
+          "ticker": "9433.T",
+          "weight": 0.02254517598010096
+        },
+        {
+          "ticker": "9432.T",
+          "weight": 0.020978719039053795
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.018376604254473
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.017414846446130533
+        }
+      ]
+    },
+    {
+      "month": "2022-07",
+      "naniReturn": 0.09032553499634582,
+      "qqqReturn": 0.12551750049953236,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9499772739159842,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.15973300726636402
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04841368852615404
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.043428714207780744
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.028467283256768543
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.028288415433136184
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.02788956294835533
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.02321402840681814
+        },
+        {
+          "ticker": "9432.T",
+          "weight": 0.019563478476226786
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.01720790931059061
+        },
+        {
+          "ticker": "9433.T",
+          "weight": 0.015617075541012162
+        }
+      ]
+    },
+    {
+      "month": "2022-08",
+      "naniReturn": -0.05250440811161974,
+      "qqqReturn": -0.05132210624839617,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.010915339414849,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.19064256808451102
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.054889787809349486
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04150651899599596
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.030330980614943052
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.02224470684027169
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.022210982346285192
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.020090231543460815
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.01979663472417532
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.018694433030605008
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.01737767832201144
+        }
+      ]
+    },
+    {
+      "month": "2022-09",
+      "naniReturn": -0.10585824818825276,
+      "qqqReturn": -0.10535537880978196,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9575850884754236,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "8355",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1547902334128188
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0625389117979394
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04384799948822485
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.04221260138555483
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.026309376165806683
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.022120955473932634
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.021235645790836706
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.020778918192672035
+        },
+        {
+          "ticker": "9983.T",
+          "weight": 0.017079857532991044
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.01327018885357151
+        }
+      ]
+    },
+    {
+      "month": "2022-10",
+      "naniReturn": 0.047961796595616404,
+      "qqqReturn": 0.03999871854816184,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 0.9266283445044605,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.14343593683101685
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.054729270603873746
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.040828420684171154
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.03398738570900965
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.02490860311613699
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.024762091650597756
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02472377125982796
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.02327764174338299
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.021057262068875343
+        },
+        {
+          "ticker": "9983.T",
+          "weight": 0.018335337468891856
+        }
+      ]
+    },
+    {
+      "month": "2022-11",
+      "naniReturn": 0.10097957264884241,
+      "qqqReturn": 0.05544154515508892,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9910664415841226,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "5831",
+          "country": "JP"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1642361887687781
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0732006290369767
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.03231206376831823
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.031744842262556604
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.027590774702341298
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.019668299743617116
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.018922585799046383
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.017767529373447874
+        },
+        {
+          "ticker": "9983.T",
+          "weight": 0.017760251926174375
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.01775138242965961
+        }
+      ]
+    },
+    {
+      "month": "2022-12",
+      "naniReturn": -0.05214124926585089,
+      "qqqReturn": -0.09013674516116077,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.079545171763614,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "5831",
+          "country": "JP"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.3050173514379963
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.03107357582467602
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.02444793744670417
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.022053586371536125
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.021877061664074483
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.020914854783852344
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.016869086783647482
+        },
+        {
+          "ticker": "8031.T",
+          "weight": 0.013925605390666571
+        },
+        {
+          "ticker": "4523.T",
+          "weight": 0.013062270221117878
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.011948806408136116
+        }
+      ]
+    },
+    {
+      "month": "2023-01",
+      "naniReturn": 0.10396571791718286,
+      "qqqReturn": 0.10642907224076681,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9572857335881759,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "5831",
+          "country": "JP"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.2624936873970585
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.02903067672866649
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.02621704683246309
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.025505648748120807
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.02199547585524182
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.020952750347718055
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.018209587929041617
+        },
+        {
+          "ticker": "8031.T",
+          "weight": 0.0172275100198726
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.014619870898846008
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.011990598773740277
+        }
+      ]
+    },
+    {
+      "month": "2023-02",
+      "naniReturn": -0.040911045194430645,
+      "qqqReturn": -0.003597631939006307,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0120928970104026,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "5831",
+          "country": "JP"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.3511709410538039
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.03312943083464951
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.02324179219590292
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.021884156515919184
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.021368126692434042
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.019909282644046906
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.016669498212927007
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.01590545450988424
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.015643025908857543
+        },
+        {
+          "ticker": "8411.T",
+          "weight": 0.013687254149884493
+        }
+      ]
+    },
+    {
+      "month": "2023-03",
+      "naniReturn": 0.07258433654826726,
+      "qqqReturn": 0.09492703466880625,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.107969071067108,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "5831",
+          "country": "JP"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.3359417827516417
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.034124877954570455
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.029463542374810376
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.026788544333725565
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.023358283675203585
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.021969026796252136
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.02035717948103282
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.019398262736727956
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.017655585421540047
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.017341313157723245
+        }
+      ]
+    },
+    {
+      "month": "2023-04",
+      "naniReturn": -0.00631211685647992,
+      "qqqReturn": 0.005079013777706143,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0716521001952461,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.2873277716549683
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.03751553866077477
+        },
+        {
+          "ticker": "META",
+          "weight": 0.0365242537878825
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.029321751320186825
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.027167657452855678
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.0247201602008592
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.02176327503064952
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.019918310710247123
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.019704142400299645
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.018253011533673986
+        }
+      ]
+    },
+    {
+      "month": "2023-05",
+      "naniReturn": 0.06555606915859946,
+      "qqqReturn": 0.0788381690687332,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0430071996057295,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.18609011609865608
+        },
+        {
+          "ticker": "META",
+          "weight": 0.053919614990904724
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.047622031015047465
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.04493335263344658
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.034460721940762815
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.027610513827569023
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.019162617129029075
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.017285543180502322
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.01727013092148394
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.016959057491248854
+        }
+      ]
+    },
+    {
+      "month": "2023-06",
+      "naniReturn": 0.04872547387933389,
+      "qqqReturn": 0.06303841051096626,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1281476475658407,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1902967090002766
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.08165382308121677
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.035131871319497666
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.033327581663900575
+        },
+        {
+          "ticker": "META",
+          "weight": 0.03313148936909472
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.027371577155468344
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.02436017991594263
+        },
+        {
+          "ticker": "6861.T",
+          "weight": 0.02280855558961339
+        },
+        {
+          "ticker": "6723.T",
+          "weight": 0.021818662321218842
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.021510641667072998
+        }
+      ]
+    },
+    {
+      "month": "2023-07",
+      "naniReturn": 0.0365565392358413,
+      "qqqReturn": 0.03860098988374627,
+      "jpSelected": 100,
+      "usSelected": 96,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1473471714443304,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "ATVI",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1494323966829601
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.07348638641603447
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0505961004613503
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.0480418709762906
+        },
+        {
+          "ticker": "META",
+          "weight": 0.03317702440869307
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.02901643540977283
+        },
+        {
+          "ticker": "6723.T",
+          "weight": 0.024991071057250184
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.022355476645117087
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.020904364174935963
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.019151989907839548
+        }
+      ]
+    },
+    {
+      "month": "2023-08",
+      "naniReturn": -0.03289964597393248,
+      "qqqReturn": -0.014829947910717345,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.1770204774494932,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.15416910913047183
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.057931141163464435
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.04414870320312289
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03933553759712454
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.03571673791796711
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.030267061009379544
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.030152351672734938
+        },
+        {
+          "ticker": "META",
+          "weight": 0.027646106797574
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.024664971191600077
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.022672338149363827
+        }
+      ]
+    },
+    {
+      "month": "2023-09",
+      "naniReturn": -0.04223271368342487,
+      "qqqReturn": -0.05079868442303059,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1636264011445967,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.12932144062993703
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.06476623784937566
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.04309975501971059
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.040829598381594744
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03584031197260949
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.03457625825037261
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.03366332715253415
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.03275085717726213
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.02199394376938021
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.020110236485209286
+        }
+      ]
+    },
+    {
+      "month": "2023-10",
+      "naniReturn": -0.027028114209078268,
+      "qqqReturn": -0.020654945968109795,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.131200581376935,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1285112487799946
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.06058514990489429
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.050585531814044286
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.03361939654871349
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.03342839436484739
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.033347289815940574
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03289770232272858
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.03281664977476213
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.03259157653955961
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.028582456159156958
+        }
+      ]
+    },
+    {
+      "month": "2023-11",
+      "naniReturn": 0.09429069283310476,
+      "qqqReturn": 0.10818838173348877,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0360343132410859,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1379370513459577
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.06512223122053229
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.052063453085335165
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.04265083759591723
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.033973828851262156
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.03226589607334732
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02737614296899684
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.026646936579702764
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.022803324707114925
+        },
+        {
+          "ticker": "META",
+          "weight": 0.018740788766698945
+        }
+      ]
+    },
+    {
+      "month": "2023-12",
+      "naniReturn": 0.04947985467665713,
+      "qqqReturn": 0.05586975065140165,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0528452153932677,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SGEN",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.16551952859934263
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.05230215053322785
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.05226047931673052
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0352550343871206
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.02747758541660131
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.026673909099540226
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.026405446183284255
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.022571563060948506
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.01986321572147407
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.016191664563857847
+        }
+      ]
+    },
+    {
+      "month": "2024-01",
+      "naniReturn": 0.06343562439887386,
+      "qqqReturn": 0.018191775387003783,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.0463256809603168,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.21262553626631
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04363784057325212
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.03673857638667894
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.02959423868025665
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.024633173845868297
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.02352251395561693
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02028713725961344
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.019754800493753916
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.0188205761546473
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.017109361503738457
+        }
+      ]
+    },
+    {
+      "month": "2024-02",
+      "naniReturn": 0.06735390553198177,
+      "qqqReturn": 0.05283361899497985,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.1245562142280556,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.29101485365874613
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.03922990732031322
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03612310600511453
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.02260346390819102
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.01929685282542403
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.019171710535526756
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.018515885637766755
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.017561348720626955
+        },
+        {
+          "ticker": "7974.T",
+          "weight": 0.016514959703768158
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.016100403423891345
+        }
+      ]
+    },
+    {
+      "month": "2024-03",
+      "naniReturn": 0.03467121723092805,
+      "qqqReturn": 0.012749900050910812,
+      "jpSelected": 100,
+      "usSelected": 97,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1626582707531465,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SPLK",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.3125507946060533
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.04893486920677845
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.04785476138145831
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.04031383015726528
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.02512247970294949
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.019674218328974813
+        },
+        {
+          "ticker": "META",
+          "weight": 0.017151095258976866
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.01711742229455999
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.015541782280257986
+        },
+        {
+          "ticker": "7735.T",
+          "weight": 0.015269859666035609
+        }
+      ]
+    },
+    {
+      "month": "2024-04",
+      "naniReturn": -0.06961136682659479,
+      "qqqReturn": -0.04373786472331864,
+      "jpSelected": 100,
+      "usSelected": 98,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.235280290129885,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.2859308858591269
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.07415478902294396
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.05183329430973333
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.04930996502941804
+        },
+        {
+          "ticker": "6146.T",
+          "weight": 0.020247095486848003
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.019500679618748528
+        },
+        {
+          "ticker": "7735.T",
+          "weight": 0.0166033391214787
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.016538084249801584
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.015268010430725036
+        },
+        {
+          "ticker": "4063.T",
+          "weight": 0.015220520833970746
+        }
+      ]
+    },
+    {
+      "month": "2024-05",
+      "naniReturn": 0.06032368077644033,
+      "qqqReturn": 0.061518112150881654,
+      "jpSelected": 100,
+      "usSelected": 98,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1315108504922509,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.2434611006658688
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.07970932673294419
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.04607066154533251
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.027368450899409567
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.024928352826320194
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.020905929614857224
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.020611389964791914
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.020196338305249053
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.019585555828346417
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.0187131633795391
+        }
+      ]
+    },
+    {
+      "month": "2024-06",
+      "naniReturn": 0.04070977191994203,
+      "qqqReturn": 0.06470130106578065,
+      "jpSelected": 100,
+      "usSelected": 98,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.0989015217525866,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.20973953062663553
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.13853055814926651
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.0397258029068881
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.02793806217385569
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.022652473843141688
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.02076880170612648
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.020477629449973885
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.018027081513965506
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.017800225210156066
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.017671743073598704
+        }
+      ]
+    },
+    {
+      "month": "2024-07",
+      "naniReturn": -0.011128711017405032,
+      "qqqReturn": -0.016781110910586094,
+      "jpSelected": 100,
+      "usSelected": 98,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.0657039055504915,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "WBA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.18507973835005093
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.12129487865955264
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.03420608439634412
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.02682323394767475
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.02458274101133387
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.023992297373565973
+        },
+        {
+          "ticker": "9984.T",
+          "weight": 0.02333540222195338
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.022777440208403332
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.022587230583834286
+        },
+        {
+          "ticker": "6098.T",
+          "weight": 0.021245646200898267
+        }
+      ]
+    },
+    {
+      "month": "2024-08",
+      "naniReturn": 0.007268671683336013,
+      "qqqReturn": 0.011038722488548203,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0409791446794463,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.16421802577239228
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.0756958816919843
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.051694922347645056
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.03086102293017978
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.030587341675497655
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.027460127653170786
+        },
+        {
+          "ticker": "6098.T",
+          "weight": 0.026610514661271293
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.02415917305529483
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.02257559637107306
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.02118023005791782
+        }
+      ]
+    },
+    {
+      "month": "2024-09",
+      "naniReturn": -0.007819419255683552,
+      "qqqReturn": 0.026215993810881466,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 0.9956184525473348,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.14913791211443592
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0763792346794455
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.06109802570688176
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.030960338150387203
+        },
+        {
+          "ticker": "6098.T",
+          "weight": 0.029271016436384117
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.028860684119993145
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.021928585238444046
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02158447797295236
+        },
+        {
+          "ticker": "4568.T",
+          "weight": 0.021334071957509856
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.020661479399554407
+        }
+      ]
+    },
+    {
+      "month": "2024-10",
+      "naniReturn": -0.03995623075982024,
+      "qqqReturn": -0.008646333651616933,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0348464125548587,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.12887395414938288
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0730694094781471
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.06550182880299503
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03607466665303526
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.03585914734502244
+        },
+        {
+          "ticker": "META",
+          "weight": 0.0249791971462441
+        },
+        {
+          "ticker": "6098.T",
+          "weight": 0.023849389592286264
+        },
+        {
+          "ticker": "7011.T",
+          "weight": 0.023543377599952616
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.019474430008316185
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.01857032470304572
+        }
+      ]
+    },
+    {
+      "month": "2024-11",
+      "naniReturn": 0.029709071156709694,
+      "qqqReturn": 0.05350816153627469,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0120991478299095,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "NVDA",
+          "weight": 0.06950111663855887
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.06787833568432917
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.06282339425595761
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03572234953480366
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.031020973371995286
+        },
+        {
+          "ticker": "META",
+          "weight": 0.028666871625177677
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.02822647761519394
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.02753999572700974
+        },
+        {
+          "ticker": "7011.T",
+          "weight": 0.02753470480467931
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.02484671764117077
+        }
+      ]
+    },
+    {
+      "month": "2024-12",
+      "naniReturn": 0.013909929014683717,
+      "qqqReturn": 0.004540390327582022,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.018727140984059,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "APP",
+          "weight": 0.06381033116512365
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.055647564911397385
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.053282364416384835
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.04817817396590357
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.04766973697713702
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.028708528201112526
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.027360269038704633
+        },
+        {
+          "ticker": "6098.T",
+          "weight": 0.025606106615412915
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.024277621575269925
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.02282359121002823
+        }
+      ]
+    },
+    {
+      "month": "2025-01",
+      "naniReturn": 0.029531159810438586,
+      "qqqReturn": 0.021634010764750577,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.49999999999999994,
+      "momentumMedianGross": 1.0151426961885854,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "APP",
+          "weight": 0.05331112430304045
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.05022492302083031
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.04977072895356501
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.04377118124687633
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.03921893354400676
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.033959203646737234
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.031607532765748056
+        },
+        {
+          "ticker": "PLTR",
+          "weight": 0.02972259398904557
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.029106857445852303
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.02758618290159065
+        }
+      ]
+    },
+    {
+      "month": "2025-02",
+      "naniReturn": -0.05069362628390616,
+      "qqqReturn": -0.02703467634698431,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0226803116202874,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.06336231291940501
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 0.05692880597146668
+        },
+        {
+          "ticker": "APP",
+          "weight": 0.04572645578923121
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.04071642798005336
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.03740531393778426
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.03201759409119555
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.03199212494510504
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.03122519431018144
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.028056037149370598
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.027725244185106777
+        }
+      ]
+    },
+    {
+      "month": "2025-03",
+      "naniReturn": -0.04423399205876965,
+      "qqqReturn": -0.07586193029482502,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0126171476504209,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.10481302109360156
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.04427269614981288
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.044051694530016054
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.03758666506302961
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.03524367507940791
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.03458996415957457
+        },
+        {
+          "ticker": "7974.T",
+          "weight": 0.03251055441491424
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.027163604041774456
+        },
+        {
+          "ticker": "META",
+          "weight": 0.026196335763102725
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.02597129999447653
+        }
+      ]
+    },
+    {
+      "month": "2025-04",
+      "naniReturn": 0.03787444451624392,
+      "qqqReturn": 0.01396820707384161,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9973876650937368,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1815178493853083
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.05314268430064793
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.041570265301012106
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.03922371509427958
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.029647541685377192
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.026809168285789088
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.024360170101432776
+        },
+        {
+          "ticker": "7974.T",
+          "weight": 0.020374851087685057
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.020234783589119353
+        },
+        {
+          "ticker": "PLTR",
+          "weight": 0.020143900190526316
+        }
+      ]
+    },
+    {
+      "month": "2025-05",
+      "naniReturn": 0.06836244398530238,
+      "qqqReturn": 0.09178273921188618,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.5,
+      "momentumMedianGross": 0.9552001862033797,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1901191094728182
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.04050619517230191
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.03417481282475422
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.03409648023458058
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.03188361774315294
+        },
+        {
+          "ticker": "7974.T",
+          "weight": 0.0307683440150756
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.021990650416770677
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.021209671326396225
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.020685848307800164
+        },
+        {
+          "ticker": "PLTR",
+          "weight": 0.01979142243462367
+        }
+      ]
+    },
+    {
+      "month": "2025-06",
+      "naniReturn": 0.049312163075122484,
+      "qqqReturn": 0.06385872943443038,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.030921134062874,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.19506083818831826
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04572452254498096
+        },
+        {
+          "ticker": "7011.T",
+          "weight": 0.03322991131083837
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.032618662332136894
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.02795131448922515
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.02631097919275567
+        },
+        {
+          "ticker": "7974.T",
+          "weight": 0.02468765641013524
+        },
+        {
+          "ticker": "META",
+          "weight": 0.01974736467566482
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.017997165466231896
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.016845856376681255
+        }
+      ]
+    },
+    {
+      "month": "2025-07",
+      "naniReturn": -0.012332455035731804,
+      "qqqReturn": 0.024236796923716275,
+      "jpSelected": 100,
+      "usSelected": 99,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0283239783158948,
+      "missingCandidates": [
+        {
+          "ticker": "ANSS",
+          "country": "US"
+        },
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        },
+        {
+          "ticker": "9613",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.181748696655408
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.06891416185728884
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.05273028668353908
+        },
+        {
+          "ticker": "7011.T",
+          "weight": 0.036557487330178245
+        },
+        {
+          "ticker": "7974.T",
+          "weight": 0.03125111091458854
+        },
+        {
+          "ticker": "6758.T",
+          "weight": 0.021731872300545862
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.020987909100632047
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.017689590802758542
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.0175315983509355
+        },
+        {
+          "ticker": "META",
+          "weight": 0.01657059136246562
+        }
+      ]
+    },
+    {
+      "month": "2025-08",
+      "naniReturn": 0.03764966725559802,
+      "qqqReturn": 0.009539653971177842,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.069718729686128,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.10323917328300085
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.08691605909687614
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.07008349364459764
+        },
+        {
+          "ticker": "7011.T",
+          "weight": 0.044605122923302924
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.03266188481813612
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.024598347763906462
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.02258763500411226
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02198816073398014
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.021680358226349176
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.01973098138955856
+        }
+      ]
+    },
+    {
+      "month": "2025-09",
+      "naniReturn": 0.09015777782246401,
+      "qqqReturn": 0.053762265014838606,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1182237214094815,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.11613743270144082
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.08602279644999784
+        },
+        {
+          "ticker": "9984.T",
+          "weight": 0.07083049844120878
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.04773025275403014
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.04042674759114773
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.03116746415555975
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.0305780726194377
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.023185141295811097
+        },
+        {
+          "ticker": "5803.T",
+          "weight": 0.021556538709581283
+        },
+        {
+          "ticker": "AMZN",
+          "weight": 0.02019390021014537
+        }
+      ]
+    },
+    {
+      "month": "2025-10",
+      "naniReturn": 0.13762976314812816,
+      "qqqReturn": 0.047803770649434085,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.135619845147942,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.19690258079148054
+        },
+        {
+          "ticker": "9984.T",
+          "weight": 0.10243196619006861
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.0677777864148158
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.056130315912826814
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.029813175839469238
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02887812034697031
+        },
+        {
+          "ticker": "5803.T",
+          "weight": 0.028511581454667437
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.027111872357399897
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.024644124952320632
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.02154993700955702
+        }
+      ]
+    },
+    {
+      "month": "2025-11",
+      "naniReturn": -0.08773982443664849,
+      "qqqReturn": -0.015610300275391564,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1337678699951916,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "SOLS",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.2059031687110276
+        },
+        {
+          "ticker": "9984.T",
+          "weight": 0.19288131767911795
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.09036066113975028
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.04784686525538486
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.04099679511745305
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.040572114264053015
+        },
+        {
+          "ticker": "5803.T",
+          "weight": 0.032093145977689315
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.029219443885219767
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.018967544095839315
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.016565349483961316
+        }
+      ]
+    },
+    {
+      "month": "2025-12",
+      "naniReturn": -0.0005072300918580652,
+      "qqqReturn": -0.006699315580919407,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1273095410089027,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.1857303673013367
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.07355614446747841
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.07206763207519926
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.03895445664584438
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.03603887577591994
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.024908945205396625
+        },
+        {
+          "ticker": "5803.T",
+          "weight": 0.024161928690110548
+        },
+        {
+          "ticker": "9984.T",
+          "weight": 0.022802035695652367
+        },
+        {
+          "ticker": "AVGO",
+          "weight": 0.02085305437692025
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.02022560967290015
+        }
+      ]
+    },
+    {
+      "month": "2026-01",
+      "naniReturn": 0.14937337678052054,
+      "qqqReturn": 0.01230652757491435,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1243178013984356,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.26059303000525685
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.046296205252152466
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.04607549801096419
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.03868928838420739
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.028444435343576394
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.0279056767364093
+        },
+        {
+          "ticker": "9984.T",
+          "weight": 0.0211500966230055
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.018582870410274968
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.01800636265408644
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.017233655169121034
+        }
+      ]
+    },
+    {
+      "month": "2026-02",
+      "naniReturn": 0.049703592421795055,
+      "qqqReturn": -0.023445421648872977,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.13061289511298,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.3473398511522699
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.061611231714931006
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.04556480074982839
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.03225596049270191
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02397953565512818
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02392026828085993
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.0224388902587384
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.019484705303400462
+        },
+        {
+          "ticker": "6501.T",
+          "weight": 0.017587048826597916
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.016591587218211492
+        }
+      ]
+    },
+    {
+      "month": "2026-03",
+      "naniReturn": -0.11807953130143803,
+      "qqqReturn": -0.04838258470998791,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1882279804801326,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "7205",
+          "country": "JP"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.33393907495250247
+        },
+        {
+          "ticker": "6857.T",
+          "weight": 0.028656921435240852
+        },
+        {
+          "ticker": "5802.T",
+          "weight": 0.02831428850260439
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.023481521102772285
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.022817643875165085
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02259509493443661
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.022229095691599105
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.020659105918837583
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.0155222743577177
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.0152721127022772
+        }
+      ]
+    },
+    {
+      "month": "2026-04",
+      "naniReturn": 0.11268114841134466,
+      "qqqReturn": 0.15690085407388898,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0563075524516337,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.32452720598703755
+        },
+        {
+          "ticker": "8031.T",
+          "weight": 0.028826238136766245
+        },
+        {
+          "ticker": "8058.T",
+          "weight": 0.02854523121532111
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.020869581112558645
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.019922912789003273
+        },
+        {
+          "ticker": "285A.T",
+          "weight": 0.019712922494205365
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.019597318717633313
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.018228995642353498
+        },
+        {
+          "ticker": "7203.T",
+          "weight": 0.017837353013052667
+        },
+        {
+          "ticker": "8316.T",
+          "weight": 0.016552513467744986
+        }
+      ]
+    },
+    {
+      "month": "2026-05",
+      "naniReturn": 0.26873532494353614,
+      "qqqReturn": 0.10568480865435115,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1091929489234071,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.23471317729076682
+        },
+        {
+          "ticker": "285A.T",
+          "weight": 0.1796495864565881
+        },
+        {
+          "ticker": "SNDK",
+          "weight": 0.05683279210994121
+        },
+        {
+          "ticker": "5801.T",
+          "weight": 0.04266026142854255
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.02206965665625254
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.021432559568872796
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.02000040216044919
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.018489241387080812
+        },
+        {
+          "ticker": "INTC",
+          "weight": 0.016705576442910722
+        },
+        {
+          "ticker": "5803.T",
+          "weight": 0.015535185368846875
+        }
+      ]
+    },
+    {
+      "month": "2026-06",
+      "naniReturn": 0.21924377775651646,
+      "qqqReturn": -0.0014908106580162617,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.1174752101079601,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "285A.T",
+          "weight": 0.34429673925138865
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.1658929308464039
+        },
+        {
+          "ticker": "SNDK",
+          "weight": 0.12437404686960313
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.060124531829382453
+        },
+        {
+          "ticker": "5801.T",
+          "weight": 0.02627469458694305
+        },
+        {
+          "ticker": "6981.T",
+          "weight": 0.025297539617462922
+        },
+        {
+          "ticker": "INTC",
+          "weight": 0.02218059342246632
+        },
+        {
+          "ticker": "AMD",
+          "weight": 0.016356380878663365
+        },
+        {
+          "ticker": "4062.T",
+          "weight": 0.01300836148001873
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.010364461679338364
+        }
+      ]
+    },
+    {
+      "month": "2026-07",
+      "naniReturn": -0.2781149369705798,
+      "qqqReturn": -0.06573874109851141,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.49999999999999994,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.0808207897933326,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "HONA",
+          "country": "US"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "285A.T",
+          "weight": 0.21142584557375282
+        },
+        {
+          "ticker": "ASML",
+          "weight": 0.2081441642379091
+        },
+        {
+          "ticker": "6981.T",
+          "weight": 0.08438055374314486
+        },
+        {
+          "ticker": "6976.T",
+          "weight": 0.05377740687796003
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.049842584869443124
+        },
+        {
+          "ticker": "SNDK",
+          "weight": 0.03589653509896055
+        },
+        {
+          "ticker": "INTC",
+          "weight": 0.031118915192004062
+        },
+        {
+          "ticker": "MRVL",
+          "weight": 0.02492785705674817
+        },
+        {
+          "ticker": "AMD",
+          "weight": 0.024783824973644165
+        },
+        {
+          "ticker": "8035.T",
+          "weight": 0.01818893149536494
+        }
+      ]
+    },
+    {
+      "month": "2026-08",
+      "naniReturn": 0.05024680446770222,
+      "qqqReturn": 0.04181746570582745,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.043898407662452,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "HONA",
+          "country": "US"
+        },
+        {
+          "ticker": "SPCX",
+          "country": "US"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.18084860715218073
+        },
+        {
+          "ticker": "285A.T",
+          "weight": 0.07317248405362857
+        },
+        {
+          "ticker": "6098.T",
+          "weight": 0.04086837735833531
+        },
+        {
+          "ticker": "AMD",
+          "weight": 0.03781509204149641
+        },
+        {
+          "ticker": "6981.T",
+          "weight": 0.03157034933583938
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.028423216865618068
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.02684302077591163
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.026216398087666445
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.024621766014366137
+        },
+        {
+          "ticker": "GOOG",
+          "weight": 0.02126185009671393
+        }
+      ]
+    },
+    {
+      "month": "2026-09",
+      "naniReturn": 0.05224410838262866,
+      "qqqReturn": 0.033178270679178556,
+      "jpSelected": 100,
+      "usSelected": 100,
+      "jpWeight": 0.5,
+      "usWeight": 0.5,
+      "momentumMedianGross": 1.180952392982424,
+      "missingCandidates": [
+        {
+          "ticker": "EA",
+          "country": "US"
+        },
+        {
+          "ticker": "HONA",
+          "country": "US"
+        },
+        {
+          "ticker": "SPCX",
+          "country": "US"
+        }
+      ],
+      "top10": [
+        {
+          "ticker": "ASML",
+          "weight": 0.195377117059112
+        },
+        {
+          "ticker": "6098.T",
+          "weight": 0.1054747636305826
+        },
+        {
+          "ticker": "285A.T",
+          "weight": 0.06743810496526031
+        },
+        {
+          "ticker": "MU",
+          "weight": 0.06231567992257702
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 0.0262184168845169
+        },
+        {
+          "ticker": "MSFT",
+          "weight": 0.02473579606718173
+        },
+        {
+          "ticker": "AMD",
+          "weight": 0.023900981226797416
+        },
+        {
+          "ticker": "6981.T",
+          "weight": 0.023849768221049516
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 0.022797986826767577
+        },
+        {
+          "ticker": "8306.T",
+          "weight": 0.022638050880395087
+        }
+      ]
+    }
+  ],
+  "diagnostics": {
+    "uniqueNikkeiTickers": 249,
+    "uniqueNasdaqTickers": 153,
+    "priceSymbols": 403,
+    "floatProxyCoverage": 399,
+    "floatProxyMethods": {
+      "floatShares": 377,
+      "sharesOutstanding": 12,
+      "get_shares_full": 10
+    },
+    "candidateMissingOccurrences": 355
+  },
+  "sources": {
+    "ndxHistory": "https://raw.githubusercontent.com/thuningxu/sp500nq100/main/nasdaq100_components_history.csv",
+    "nikkeiCurrent": "https://indexes.nikkei.co.jp/en/nkave/index/component?idx=nk225",
+    "nikkeiChanges": "Nikkei official component-change history through 2026-04 plus 2026-10 official-announcement changes",
+    "prices": "Yahoo Finance via yfinance, auto-adjusted",
+    "fx": "Yahoo Finance JPY=X"
+  }
+}
