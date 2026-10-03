@@ -28,7 +28,11 @@ jobs:
           import json
           p=json.load(open('/tmp/probe.json'))
           r=p['months']['2022-12']
-          print('COUNT', r['count'])
+          print('RAW_COUNT', r['rawCount'])
+          print('ELIGIBLE_COUNT', r['count'])
+          print('ETF_EXCLUDED', r['excludedETFCount'], r['excludedETFSample'])
+          print('SUFFIX_EXCLUDED', r['excludedSuffixCount'], r['excludedSuffixSample'])
+          print('ETF_UNKNOWN', r['etfFlagUnknownCount'])
           print('FIRST50', r['symbols'][:50])
           print('DIAGNOSTICS', json.dumps(r['parserDiagnostics'], indent=2))
           PY
