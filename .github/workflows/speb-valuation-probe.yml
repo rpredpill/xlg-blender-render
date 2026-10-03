@@ -1,0 +1,77 @@
+name: Probe historical valuation snapshots
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/speb-valuation-probe.yml'
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check duckdb requests
+      - name: Locate and query valuation snapshot parquet
+        shell: python
+        run: |
+          import requests, duckdb, time
+          base='https://huggingface.co/datasets/speb/financial-data/resolve/main/'
+          candidates=[
+              'raw/stock_valuation_snapshot.parquet',
+              'data/raw/stock_valuation_snapshot.parquet',
+              'stock_valuation_snapshot.parquet',
+              'marts/stock_valuation_snapshot.parquet',
+              'data/stock_valuation_snapshot.parquet',
+          ]
+          found=[]
+          for path in candidates:
+              url=base+path
+              try:
+                  r=requests.head(url,allow_redirects=True,timeout=30,headers={'User-Agent':'Mozilla/5.0'})
+                  print('HEAD',path,r.status_code,'len',r.headers.get('content-length'),'type',r.headers.get('content-type'),'final',r.url[:160])
+                  if r.status_code==200:
+                      found.append(url)
+              except Exception as e:
+                  print('HEADERR',path,e)
+          if not found:
+              # Hugging Face tree API is public; print likely paths containing valuation.
+              api='https://huggingface.co/api/datasets/speb/financial-data/tree/main?recursive=true&expand=false'
+              r=requests.get(api,timeout=60,headers={'User-Agent':'Mozilla/5.0'})
+              print('TREE_STATUS',r.status_code,'bytes',len(r.content))
+              if r.status_code==200:
+                  rows=r.json()
+                  hits=[x.get('path') for x in rows if 'valuation' in str(x.get('path','')).lower() or 'snapshot' in str(x.get('path','')).lower()]
+                  print('TREE_HITS',hits[:100])
+                  for path in hits:
+                      if str(path).endswith('.parquet'):
+                          found.append(base+path)
+          if not found:
+              raise RuntimeError('valuation parquet not found')
+          con=duckdb.connect()
+          con.execute('INSTALL httpfs; LOAD httpfs; SET threads=4;')
+          for url in found[:5]:
+              print('\nURL',url)
+              try:
+                  print('SCHEMA',con.execute(f"DESCRIBE SELECT * FROM read_parquet('{url}')").fetchall())
+                  for sym in ['AAPL','NVDA','META','ASML','PDD','ARM']:
+                      q=f"""SELECT symbol,report_date,market_cap,float_shares,current_price
+                              FROM read_parquet('{url}')
+                              WHERE upper(symbol)=? AND report_date BETWEEN DATE '2022-12-01' AND DATE '2023-01-31'
+                              ORDER BY report_date DESC LIMIT 5"""
+                      print('2022',sym,con.execute(q,[sym]).fetchall())
+                  q=f"""SELECT symbol,report_date,market_cap,float_shares,current_price
+                          FROM read_parquet('{url}')
+                          WHERE upper(symbol)='AAPL'
+                          ORDER BY report_date DESC LIMIT 5"""
+                  print('AAPL_LATEST',con.execute(q).fetchall())
+              except Exception as e:
+                  print('QUERY_ERROR',repr(e))
+          con.close()
