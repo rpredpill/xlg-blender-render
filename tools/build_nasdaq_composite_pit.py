@@ -85,10 +85,20 @@ def clean_symbol(value) -> str | None:
 def yn_flag(value) -> bool | None:
     if value is None or pd.isna(value):
         return None
+    # Nasdaq monthly XLSX files use numeric 0.0/1.0 for ETF FLAG in at
+    # least the 2022-12 sample. Handle numeric values before string parsing.
+    try:
+        x = float(value)
+        if x == 1.0:
+            return True
+        if x == 0.0:
+            return False
+    except (TypeError, ValueError):
+        pass
     s = str(value).strip().upper()
-    if s in {"Y", "YES", "1", "TRUE"}:
+    if s in {"Y", "YES", "1", "1.0", "TRUE"}:
         return True
-    if s in {"N", "NO", "0", "FALSE"}:
+    if s in {"N", "NO", "0", "0.0", "FALSE"}:
         return False
     return None
 
