@@ -9,6 +9,7 @@ on:
       - '.github/workflows/nani-signal.yml'
       - 'tools/nani_live.py'
       - 'tools/nani_live_v2.py'
+      - 'tools/nani_live_v3.py'
       - 'tools/nani_ndx_source.py'
   workflow_run:
     workflows: ['Refresh Nani signal and history']
@@ -33,44 +34,49 @@ jobs:
           node --check nani-history-sync.js
           node --check nani-live-fix.js
 
-      - name: Validate Nani v2 wiring and data
+      - name: Validate Nani v3 wiring and data
         shell: python
         run: |
           import json, math
           from pathlib import Path
 
           index=Path('index.html').read_text(encoding='utf-8')
-          for name in ['nani-extension.js?v=2','nani-history-sync.js?v=2','nani-live-fix.js?v=2']:
+          for name in ['nani-extension.js?v=3','nani-history-sync.js?v=3','nani-live-fix.js?v=3']:
               if name not in index:
                   raise RuntimeError(f'{name} not wired in index.html')
 
           latest=json.loads(Path('nani-latest.json').read_text(encoding='utf-8'))
-          if latest.get('strategy')!='Nani' or latest.get('version')!='2.0' or latest.get('ready') is not True:
-              raise RuntimeError(f'Nani v2 latest not ready: strategy={latest.get("strategy")} version={latest.get("version")} ready={latest.get("ready")}')
+          if latest.get('strategy')!='Nani' or latest.get('version')!='3.0' or latest.get('ready') is not True:
+              raise RuntimeError(f'Nani v3 latest not ready: strategy={latest.get("strategy")} version={latest.get("version")} ready={latest.get("ready")}')
           rows=latest.get('rows') or []
-          if len(rows)<315:
-              raise RuntimeError(f'Nani holdings too small: {len(rows)}')
           total=sum(float(r['weight']) for r in rows)
-          if not math.isfinite(total) or abs(total-1.0)>1e-8:
+          if not math.isclose(total,1.0,rel_tol=0,abs_tol=1e-8):
               raise RuntimeError(f'Nani weight sum {total}')
 
           rules=latest.get('rules') or {}
+          if rules.get('countryAllocation')!='Japan 50% / US 50%':
+              raise RuntimeError(f'country allocation rule mismatch: {rules.get("countryAllocation")}')
           if rules.get('singleNameCap') is not None:
-              raise RuntimeError(f'Nani v2 unexpectedly has cap: {rules.get("singleNameCap")}')
+              raise RuntimeError(f'Nani v3 unexpectedly has cap: {rules.get("singleNameCap")}')
           if rules.get('rebalanceCadence') is not None:
-              raise RuntimeError(f'Nani v2 unexpectedly has cadence: {rules.get("rebalanceCadence")}')
+              raise RuntimeError(f'Nani v3 unexpectedly has cadence: {rules.get("rebalanceCadence")}')
 
           us=[r for r in rows if r.get('country')=='US']
           jp=[r for r in rows if r.get('country')=='JP']
           d=latest.get('diagnostics') or {}
-          if len(us)!=int(d.get('nasdaqCount') or -1):
-              raise RuntimeError(f'US count mismatch rows={len(us)} diag={d.get("nasdaqCount")}')
-          if len(jp)!=225 or int(d.get('nikkeiCount') or -1)!=225:
-              raise RuntimeError(f'JP count mismatch rows={len(jp)} diag={d.get("nikkeiCount")}')
-          if len(rows)!=int(d.get('unionCount') or -1):
+          if len(jp)!=100 or int(d.get('nikkei100Count') or -1)!=100:
+              raise RuntimeError(f'JP100 mismatch rows={len(jp)} diag={d.get("nikkei100Count")}')
+          if int(d.get('nikkeiSourceCount') or -1)!=225:
+              raise RuntimeError(f'Nikkei top100 source count mismatch {d.get("nikkeiSourceCount")}')
+          if len(us)!=int(d.get('nasdaqCount') or -1) or len(us)!=int(d.get('ndxSourceCount') or -1):
+              raise RuntimeError(f'US count mismatch rows={len(us)} diag={d.get("nasdaqCount")} source={d.get("ndxSourceCount")}')
+          if len(rows)!=len(jp)+len(us) or len(rows)!=int(d.get('unionCount') or -1):
               raise RuntimeError(f'union count mismatch rows={len(rows)} diag={d.get("unionCount")}')
-          if int(d.get('ndxSourceCount') or -1)!=len(us):
-              raise RuntimeError(f'NDX source count mismatch source={d.get("ndxSourceCount")} rows={len(us)}')
+
+          jp_weight=sum(float(r['weight']) for r in jp)
+          us_weight=sum(float(r['weight']) for r in us)
+          if not math.isclose(jp_weight,0.5,rel_tol=0,abs_tol=1e-8) or not math.isclose(us_weight,0.5,rel_tol=0,abs_tol=1e-8):
+              raise RuntimeError(f'country bucket mismatch JP={jp_weight} US={us_weight}')
 
           checked=0
           for r in rows:
@@ -80,31 +86,36 @@ jobs:
                   if not math.isclose(float(raw),expected,rel_tol=1e-10,abs_tol=max(1e-4,abs(expected)*1e-12)):
                       raise RuntimeError(f'raw score mismatch {r.get("ticker")}: {raw} vs {expected}')
                   checked+=1
-          if checked<300:
-              raise RuntimeError(f'only {checked} rows have verifiable raw score')
+          if checked!=len(rows):
+              raise RuntimeError(f'formula rows checked {checked}/{len(rows)}')
 
           hist=json.loads(Path('nani-history.json').read_text(encoding='utf-8'))
-          if hist.get('version')!='2.0':
-              raise RuntimeError(f'Nani history is not v2: {hist.get("version")}')
+          if hist.get('version')!='3.0':
+              raise RuntimeError(f'Nani history is not v3: {hist.get("version")}')
           months=hist.get('months') or {}
           for m,rec in months.items():
-              if not isinstance(rec,dict) or rec.get('provenance')!='forward-live-v2':
-                  raise RuntimeError(f'non-forward record remains at {m}')
+              if not isinstance(rec,dict) or rec.get('provenance')!='forward-live-v3':
+                  raise RuntimeError(f'non-v3 forward record remains at {m}')
               rrows=rec.get('rows') or []
               if not rrows:
                   raise RuntimeError(f'{m} rows missing')
-              wsum=sum(float(x.get('weight',0)) for x in rrows)
-              if not math.isclose(wsum,1.0,rel_tol=0,abs_tol=2e-8):
-                  raise RuntimeError(f'{m} history weight sum {wsum}')
+              rjp=[x for x in rrows if x.get('country')=='JP']
+              rus=[x for x in rrows if x.get('country')=='US']
+              if len(rjp)!=100:
+                  raise RuntimeError(f'{m} JP count {len(rjp)}')
+              jpw=sum(float(x.get('weight',0)) for x in rjp)
+              usw=sum(float(x.get('weight',0)) for x in rus)
+              if not math.isclose(jpw,0.5,rel_tol=0,abs_tol=2e-8) or not math.isclose(usw,0.5,rel_tol=0,abs_tol=2e-8):
+                  raise RuntimeError(f'{m} country bucket mismatch JP={jpw} US={usw}')
               if isinstance(rec.get('portfolioReturn'),(int,float)) and float(rec.get('coverageRatio',0))<0.98:
                   raise RuntimeError(f'{m} completed coverage too low: {rec.get("coverageRatio")}')
 
           completed=[m for m,r in months.items() if isinstance(r.get('portfolioReturn'),(int,float))]
           pending=[m for m,r in months.items() if not isinstance(r.get('portfolioReturn'),(int,float))]
           if any(m in months for m in ['2026-04','2026-05','2026-06','2026-07','2026-08','2026-09']):
-              raise RuntimeError('retroactive v1 2026-04..09 record survived into v2')
+              raise RuntimeError('retroactive pre-v3 record survived')
 
-          print('Nani v2 smoke OK')
-          print('holdings',len(rows),'US',len(us),'JP',len(jp),'weightSum',total,'maxWeight',latest.get('maxWeight'))
+          print('Nani v3 smoke OK')
+          print('holdings',len(rows),'US',len(us),'JP',len(jp),'JPWeight',jp_weight,'USWeight',us_weight,'maxWeight',latest.get('maxWeight'))
           print('formulaRowsChecked',checked)
           print('history completed',completed,'pending',pending)
