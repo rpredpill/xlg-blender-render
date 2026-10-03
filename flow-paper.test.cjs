@@ -43,3 +43,4 @@ async function integration({closed=false,timeout=false,clockFailure=false}={}){
  else{assert.equal(posts.length,10);assert(posts.every(p=>p.side==='buy'&&p.type==='market'&&p.time_in_force==='day'));assert(posts.reduce((s,p)=>s+Number(p.notional),0)<=99500);assert.equal(new Set(posts.map(p=>p.client_order_id)).size,10);await interval();assert.equal(posts.length,10);}
 }
 (async()=>{await integration();await integration({closed:true});await integration({timeout:true});await integration({clockFailure:true});console.log('PASS: Alpaca CORS-compatible GET, JSON POST, read-failure reporting, cash-only sizing, ownership, Top20 buffer, closed-market guard, paper-only routing, filled execution, lost-response stop, duplicate prevention');})().catch(e=>{console.error(e);process.exit(1)});
+require('./flow-visit.test.cjs');
