@@ -1,8 +1,8 @@
 (()=>{
 "use strict";
-const SIG="nani-nk100-ndx100-50-50-v3";
+const SIG="nani-nk100-ndx100-50-50-floatcap-v4";
 const HISTORY_URL="./nani-history.json";
-const key=kind=>`somx.${kind}.v3.${SIG}`;
+const key=kind=>`somx.${kind}.v4.${SIG}`;
 let syncing=false;
 function read(kind){try{return JSON.parse(localStorage.getItem(key(kind))||"{}")||{}}catch{return{}}}
 function write(kind,value){try{localStorage.setItem(key(kind),JSON.stringify(value))}catch{}}
@@ -14,11 +14,11 @@ async function syncNaniHistory(){
   try{
     const r=await fetch(`${HISTORY_URL}?v=${Date.now()}`,{cache:"no-store"});
     if(!r.ok)throw new Error(`Nani history HTTP ${r.status}`);
-    const j=await r.json();if(j?.version!=="3.0")throw new Error(`Nani history v${j?.version||"?"} != v3`);
+    const j=await r.json();if(j?.version!=="4.0")throw new Error(`Nani history v${j?.version||"?"} != v4`);
     const months=j?.months||{};
     const hh=read("holdings"),wh=read("weights"),mh={};let changed=false,returnsChanged=false;
     for(const [month,record] of Object.entries(months)){
-      if(record?.provenance!=="forward-live-v3")continue;
+      if(record?.provenance!=="forward-live-v4")continue;
       const rows=record?.rows;if(!validRows(rows))continue;
       const sum=rows.reduce((a,x)=>a+Number(x.weight),0),jp=rows.filter(x=>x.country==="JP").reduce((a,x)=>a+Number(x.weight),0),us=rows.filter(x=>x.country==="US").reduce((a,x)=>a+Number(x.weight),0);
       if(Math.abs(sum-1)>1e-6||Math.abs(jp-.5)>1e-6||Math.abs(us-.5)>1e-6)continue;
