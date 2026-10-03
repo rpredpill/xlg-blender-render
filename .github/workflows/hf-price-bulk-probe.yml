@@ -1,0 +1,37 @@
+name: Probe HuggingFace bulk stock prices
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hf-price-bulk-probe.yml'
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install DuckDB
+        run: pip install --disable-pip-version-check duckdb
+      - name: Probe public Parquet shards
+        shell: python
+        run: |
+          import duckdb, json
+          base='https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/'
+          urls=[base+f'train-{i:05d}-of-00004.parquet' for i in range(4)]
+          con=duckdb.connect()
+          con.execute('INSTALL httpfs; LOAD httpfs;')
+          src='read_parquet([' + ','.join(repr(u) for u in urls) + '], union_by_name=true)'
+          print('URLS', urls)
+          print('SCHEMA', con.execute(f'DESCRIBE SELECT * FROM {src}').fetchall())
+          print('STATS', con.execute(f"SELECT count(*) n, count(distinct symbol) symbols, min(date) min_date, max(date) max_date FROM {src}").fetchall())
+          print('AAPL', con.execute(f"SELECT symbol,date,open,close,adj_close,volume FROM {src} WHERE symbol='AAPL' ORDER BY date DESC LIMIT 5").fetchall())
+          for sym in ['ABMD','BBBY','META','FB','NVDA']:
+              print(sym, con.execute(f"SELECT count(*) n,min(date),max(date) FROM {src} WHERE symbol=?", [sym]).fetchall())
+          print('2022_12', con.execute(f"SELECT count(distinct symbol) FROM {src} WHERE date >= '2022-12-01' AND date <= '2022-12-31'").fetchall())
