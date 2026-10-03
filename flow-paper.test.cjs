@@ -1,5 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const C=require('./flow-paper-core.js'),signal=JSON.parse(fs.readFileSync(__dirname+'/flow-latest.json'));
+const execution=new Date(signal.signalDate+'T12:00:00Z');do{execution.setUTCDate(execution.getUTCDate()+1)}while([0,6].includes(execution.getUTCDay()));const testDate=execution.toISOString().slice(0,10);
 const account={id:'mock-paper',status:'ACTIVE',cash:'100000',equity:'100000',long_market_value:'0',short_market_value:'0'};
 assert.equal(C.PAPER,'https://paper-api.alpaca.markets/v2');
 assert.throws(()=>C.accountGuard(account,[{symbol:'QQQ',side:'long',qty:1}],[],[]));
@@ -23,8 +24,8 @@ async function integration({closed=false,timeout=false}={}){
   else {assert(url.startsWith(C.PAPER+'/'));const path=url.slice(C.PAPER.length);
    if(path==='/account')data=account;
    else if(path==='/positions'||path.startsWith('/orders?'))data=[];
-   else if(path==='/clock')data={is_open:!closed,timestamp:'2026-10-05T19:58:45Z',next_close:'2026-10-05T20:00:00Z'};
-   else if(path.startsWith('/calendar'))data=[{date:'2026-10-02'},{date:'2026-10-05'}];
+   else if(path==='/clock')data={is_open:!closed,timestamp:testDate+'T19:58:45Z',next_close:testDate+'T20:00:00Z'};
+   else if(path.startsWith('/calendar'))data=[{date:signal.signalDate},{date:testDate}];
    else if(path.startsWith('/assets/'))data={tradable:true,fractionable:true,class:'us_equity'};
    else if(path==='/orders'&&options.method==='POST'){posts.push(JSON.parse(options.body));if(timeout)throw Error('Mock response lost after submission');data={id:'mock-'+posts.length,status:'filled'};}
    else if(path.startsWith('/orders/'))data={id:path.split('/').at(-1),status:'filled'};
