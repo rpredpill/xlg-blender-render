@@ -1,0 +1,84 @@
+name: Refresh Nani signal and history
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nani-signal.yml'
+      - 'tools/nani_live.py'
+  schedule:
+    - cron: '50 2 2 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check numpy pandas yfinance requests lxml
+
+      - name: Load Nani engine from main
+        run: |
+          git show origin/main:tools/nani_live.py > /tmp/nani_live.py
+          python -m py_compile /tmp/nani_live.py
+
+      - name: Build Nani snapshot and history
+        run: python /tmp/nani_live.py --site .
+
+      - name: Validate Nani outputs
+        shell: python
+        run: |
+          import json, math
+          latest=json.load(open('nani-latest.json',encoding='utf-8'))
+          hist=json.load(open('nani-history.json',encoding='utf-8'))
+          if latest.get('strategy')!='Nani' or latest.get('ready') is not True:
+              raise RuntimeError(f"unexpected latest header {latest.get('strategy')} ready={latest.get('ready')}")
+          rows=latest.get('rows') or []
+          if len(rows)<315:
+              raise RuntimeError(f'only {len(rows)} holdings')
+          total=sum(float(x['weight']) for x in rows)
+          mx=max(float(x['weight']) for x in rows)
+          if not math.isfinite(total) or abs(total-1.0)>1e-8:
+              raise RuntimeError(f'weight sum {total}')
+          if mx>0.20000001:
+              raise RuntimeError(f'20% cap violation {mx}')
+          d=latest.get('diagnostics') or {}
+          if int(d.get('unionCount') or 0)<315:
+              raise RuntimeError(f"union too small {d.get('unionCount')}")
+          if int(d.get('jpAnchorCount') or 0)<3:
+              raise RuntimeError(f"JP float anchors too few {d.get('jpAnchorCount')}")
+          months=hist.get('months') or {}
+          completed=[m for m,r in months.items() if isinstance(r,dict) and isinstance(r.get('portfolioReturn'),(int,float))]
+          if len(completed)<1:
+              raise RuntimeError('no completed Nani month-end return records')
+          print('Nani', latest.get('allocationMonth'), 'rebalance', latest.get('rebalanceMonth'))
+          print('holdings', len(rows), 'weightSum', total, 'maxWeight', mx, 'top10', latest.get('top10Weight'))
+          print('universe', d.get('nasdaqCount'), '+', d.get('nikkeiCount'), '=', d.get('unionCount'))
+          print('JP anchors', d.get('jpAnchorCount'), 'TOPIX date', d.get('topixWeightDate'))
+          print('completed history', completed[0], '..', completed[-1], 'count', len(completed))
+
+      - name: Commit Nani outputs to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add nani-latest.json nani-history.json
+          if git diff --cached --quiet; then
+            echo 'No Nani output changes'
+          else
+            git commit -m 'Refresh Nani signal and month-end history'
+            git push origin HEAD:somx-pages
+          fi
