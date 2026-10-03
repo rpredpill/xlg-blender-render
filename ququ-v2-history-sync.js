@@ -12,6 +12,9 @@ function active(){
 function read(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY)||"{}")||{}}catch{return{}}}
 function write(v){localStorage.setItem(HISTORY_KEY,JSON.stringify(v))}
 function quota(e){return e?.name==="QuotaExceededError"||String(e?.message||e).toLowerCase().includes("quota")}
+function isObservedRecord(h){
+  return !!h&&Number.isFinite(Number(h.port))&&(h.liveObserved===true||h.backtest!==true);
+}
 
 async function sync(){
   if(syncing||!active())return;
@@ -28,7 +31,10 @@ async function sync(){
       const v=m?.variants?.["+ Winsorization"];
       const port=Number(v?.returnPct);
       if(!/^\d{4}-\d{2}$/.test(month)||!Number.isFinite(port))continue;
-      if(history[month]?.liveObserved===true)continue;
+      // Any month-end record produced by the live Alpaca path has no
+      // backtest:true marker. Never replace such an observed record with
+      // historical backfill, even if the backfill dataset is later extended.
+      if(isObservedRecord(history[month]))continue;
       history[month]={
         month,port,rows:[],lastDate:"백테스트",holdings:[],weights:{},
         backtest:true,liveObserved:false,source:"ququ-v2-ablation",
