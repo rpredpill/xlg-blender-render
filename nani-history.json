@@ -1,0 +1,12 @@
+{
+  "strategy": "Nani",
+  "version": "1.0",
+  "rules": {
+    "universe": "Nasdaq-100 ∪ Nikkei 225",
+    "weighting": "Float-Adjusted Market Cap × Relative Momentum^3",
+    "rebalance": "6 months",
+    "singleNameCap": 0.2
+  },
+  "months": {},
+  "note": "Month-end records are admitted only after the corresponding Nani allocation uses validated comparable float-adjusted market-cap inputs for both the U.S. and Japan universes."
+}
