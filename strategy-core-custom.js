@@ -206,20 +206,20 @@ function initUI(){
       const j=await seedSnapshotContext(c);
       c.holdings=j.rows.length;c.entryRank=j.rows.length;c.exitRank=j.rows.length;
       activeMode=editMode;saveMode(activeMode);
-      try{
-        if(c.mode==="ququ"&&globalThis.SOMXLive?.applySnapshotStrategy)await globalThis.SOMXLive.applySnapshotStrategy(c);
-        else if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(c);
-      }catch(e){
-        if(c.mode==="ququ"&&String(e?.message||e)==="QUQU_RELOAD_REQUIRED"){
-          box.textContent="QUQU 적용 중 · 화면을 새로 불러옵니다…";
-          location.reload();
-          return;
-        }
-        throw e;
+
+      // QUQU is a production-snapshot strategy. Applying it means activating
+      // the validated snapshot we just persisted, not asking the generic live
+      // engine to rebuild/re-rank it. Reload so app.js boots directly in QUQU.
+      if(c.mode==="ququ"){
+        box.textContent=`QUQU v2 적용 완료 · ${j.rows.length}종목 · 다시 불러오는 중…`;
+        updateCurrent();
+        setTimeout(()=>location.reload(),80);
+        return;
       }
+
+      if(globalThis.SOMXLive?.applyStrategy)await globalThis.SOMXLive.applyStrategy(c);
       const sleeve=c.mode==="quu"&&j.selectedSleeve?` · ${j.selectedSleeve}`:"";
-      const allocation=c.mode==="ququ"&&j.allocationMonth?` · allocation ${j.allocationMonth}`:"";
-      box.textContent=`${c.label} 적용${sleeve}${allocation} · ${j.rows.length}종목`;
+      box.textContent=`${c.label} 적용${sleeve} · ${j.rows.length}종목`;
       updateCurrent();
     }catch(e){box.textContent=e.message||"전략 적용 실패"}
     finally{btn.textContent="Apply Strategy";btn.disabled=false}
