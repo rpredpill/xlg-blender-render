@@ -2,7 +2,7 @@
 "use strict";
 
 const ACTIVE_STORE="somx.strategy.active.v1";
-let timer=null,loading=false,lastData=null;
+let timer=null,loading=false,lastData=null,renderObserver=null;
 
 function isNani(){
   try{
@@ -67,13 +67,26 @@ async function refresh(){
   }catch(e){console.warn("Nani MTD UI",e)}finally{loading=false}
 }
 function schedule(delay=120){clearTimeout(timer);timer=setTimeout(refresh,delay)}
+function observeDashboardRenders(){
+  if(renderObserver)return;
+  const tbody=document.getElementById("holdings-body");
+  if(!tbody)return;
+  renderObserver=new MutationObserver(()=>{
+    if(!isNani())return;
+    if(lastData)requestAnimationFrame(()=>apply(lastData));
+    else schedule(50);
+  });
+  renderObserver.observe(tbody,{childList:true});
+}
+function boot(){observeDashboardRenders();schedule(250)}
 
-window.addEventListener("load",()=>schedule(500));
-window.addEventListener("somx:strategy-active",()=>schedule(250));
-window.addEventListener("somx:nani-history-synced",()=>schedule(250));
-window.addEventListener("somx:historychange",()=>schedule(250));
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)schedule(100)});
-new MutationObserver(()=>{if(isNani())schedule(100)}).observe(document.body,{attributes:true,attributeFilter:["data-strategy"]});
+window.addEventListener("load",boot,{once:true});
+window.addEventListener("somx:strategy-active",()=>{observeDashboardRenders();schedule(100)});
+window.addEventListener("somx:nani-history-synced",()=>schedule(100));
+window.addEventListener("somx:historychange",()=>schedule(100));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){observeDashboardRenders();if(lastData)apply(lastData);else schedule(50)}});
+new MutationObserver(()=>{if(isNani()){observeDashboardRenders();if(lastData)apply(lastData);else schedule(50)}}).observe(document.body,{attributes:true,attributeFilter:["data-strategy"]});
+if(document.readyState!=="loading")boot();
 setInterval(()=>{if(isNani())refresh()},300000);
 
 globalThis.NaniMTDUI={refresh,apply,getLast:()=>lastData};
