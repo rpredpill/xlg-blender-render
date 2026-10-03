@@ -23,7 +23,8 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&settingsModal?.clas
 window.addEventListener("resize",fitClassic);window.addEventListener("orientationchange",()=>setTimeout(fitClassic,120));
 
 function currentNYMonth(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date());return`${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`}
-function readObj(key){try{return JSON.parse(localStorage.getItem(key)||"{}")||{}}catch{return{}}}
+function isQuotaError(e){return e?.name==="QuotaExceededError"||e?.name==="NS_ERROR_DOM_QUOTA_REACHED"||String(e?.message||e).toLowerCase().includes("quota")}
+function clearLegacyQuqu(){for(const kind of ["state","holdings","weights","history","components"]){try{localStorage.removeItem(`somx.${kind}.v2.ququ-ndx100-v1`)}catch{}}}
 async function forceApplyQuqu(btn,box){
   btn.disabled=true;btn.textContent="Applying…";
   try{
@@ -37,13 +38,23 @@ async function forceApplyQuqu(btn,box){
     const ym=currentNYMonth(),allocation=/^\d{4}-\d{2}$/.test(String(j.allocationMonth||""))?String(j.allocationMonth):ym;
     const holdings=rows.map(x=>x.ticker),targetWeights=Object.fromEntries(rows.map(x=>[x.ticker,x.weight]));
     const sig="ququ-nasdaq-composite-v2",key=kind=>`somx.${kind}.v2.${sig}`;
-    const hh=readObj(key("holdings")),wh=readObj(key("weights"));
-    hh[allocation]=[...holdings];wh[allocation]={...targetWeights};hh[ym]=[...holdings];wh[ym]={...targetWeights};
+    const hh=allocation===ym?{[ym]:[...holdings]}:{[allocation]:[...holdings],[ym]:[...holdings]};
+    const wh=allocation===ym?{[ym]:{...targetWeights}}:{[allocation]:{...targetWeights},[ym]:{...targetWeights}};
     const st={rebalanceMonth:ym,strategyAnchor:ym,initialized:true,holdings,statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,basePrices:{},updatedAt:new Date().toISOString(),snapshotAt:j.generatedAt||null,snapshotAllocationMonth:allocation};
-    localStorage.setItem("somx.strategy.active.v1","ququ");
-    localStorage.setItem(key("state"),JSON.stringify(st));
-    localStorage.setItem(key("holdings"),JSON.stringify(hh));
-    localStorage.setItem(key("weights"),JSON.stringify(wh));
+    clearLegacyQuqu();
+    try{localStorage.removeItem(key("holdings"));localStorage.removeItem(key("weights"))}catch{}
+    const write=()=>{
+      localStorage.setItem(key("holdings"),JSON.stringify(hh));
+      localStorage.setItem(key("weights"),JSON.stringify(wh));
+      localStorage.setItem(key("state"),JSON.stringify(st));
+      localStorage.setItem("somx.strategy.active.v1","ququ");
+    };
+    try{write()}
+    catch(e){
+      if(!isQuotaError(e))throw e;
+      try{localStorage.removeItem(key("history"));localStorage.removeItem(key("holdings"));localStorage.removeItem(key("weights"));localStorage.removeItem(key("state"))}catch{}
+      write();
+    }
     try{globalThis.SOMXStrategy?.setMode?.("ququ")}catch{}
     if(box)box.textContent=`QUQU v2 적용 완료 · ${rows.length}종목 · 다시 불러오는 중…`;
     setTimeout(()=>location.reload(),80);
@@ -72,5 +83,5 @@ function bindWhenReady(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bindWhenReady,{once:true});else bindWhenReady();
 
-if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=39",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
+if("serviceWorker"in navigator)window.addEventListener("load",async()=>{try{fitClassic();const reg=await navigator.serviceWorker.register("./sw.js?v=40",{updateViaCache:"none"});await reg.update()}catch(e){console.error(e)}});
 })();
