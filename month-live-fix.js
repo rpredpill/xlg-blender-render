@@ -14,6 +14,7 @@ const originalMetrics=metrics;
 
 const isQuqu=()=>activeStrategy?.mode==="ququ";
 const chunks=(arr,n)=>{const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out};
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 async function syncQuquSnapshot(force=false){
   if(!isQuqu()||ququSnapshotBusy||!globalThis.SOMXStrategy?.fetchSnapshot)return false;
@@ -84,9 +85,11 @@ monthBars=async function(month,holdings){
   if(!holdings?.length)return{};
   const merged={};
   for(const part of chunks(holdings,QUQU_BATCH)){
-    const q=new URLSearchParams({symbols:part.join(","),timeframe:"1Day",start:`${month}-01`,end:`${addMonths(month,1)}-03`,adjustment:"all",feed:"iex",limit:"5000",sort:"asc"});
-    const data=await alpaca(`/stocks/bars?${q}`);
-    for(const[s,bars]of Object.entries(data.bars||{}))merged[normalizeTicker(s)]=bars;
+    try{
+      const q=new URLSearchParams({symbols:part.join(","),timeframe:"1Day",start:`${month}-01`,end:`${addMonths(month,1)}-03`,adjustment:"all",feed:"iex",limit:"5000",sort:"asc"});
+      const data=await alpaca(`/stocks/bars?${q}`);
+      for(const[s,bars]of Object.entries(data.bars||{}))merged[normalizeTicker(s)]=bars;
+    }catch(e){console.debug("QUQU month batch skipped",part[0],part.at(-1),e)}
   }
   return merged;
 };
@@ -108,9 +111,11 @@ getLatestFallback=async function(){
   if(!isQuqu())return originalGetLatestFallback();
   if(!state.holdings.length)return;
   for(const part of chunks(state.holdings,QUQU_BATCH)){
-    const q=new URLSearchParams({symbols:part.join(","),feed:"iex"});
-    const data=await alpaca(`/stocks/bars/latest?${q}`);
-    for(const[s,obj]of Object.entries(data.bars||{}))if(obj?.c)latestPrices[normalizeTicker(s)]=Number(obj.c);
+    try{
+      const q=new URLSearchParams({symbols:part.join(","),feed:"iex"});
+      const data=await alpaca(`/stocks/bars/latest?${q}`);
+      for(const[s,obj]of Object.entries(data.bars||{}))if(obj?.c)latestPrices[normalizeTicker(s)]=Number(obj.c);
+    }catch(e){console.debug("QUQU latest batch skipped",part[0],part.at(-1),e)}
   }
 };
 
@@ -129,6 +134,59 @@ connectStream=function(){
   };
   ququPollTimer=setInterval(poll,60000);
 };
+
+async function hydrateQuquLive(){
+  if(!isQuqu()||!creds)return;
+  try{
+    await ensureInitialized();
+    await getMonthBasePrices();
+    await getLatestFallback();
+    render();
+    connectStream();
+    refreshStrategyHistory().catch(console.error);
+  }catch(e){
+    console.warn("QUQU live hydration",e);
+    toast("QUQU 적용됨 · 실시간 가격 일부는 다시 불러오는 중");
+  }
+}
+
+async function applySnapshotStrategy(c){
+  if(c?.mode!=="ququ"){
+    if(globalThis.SOMXLive?._originalApplyStrategy)return globalThis.SOMXLive._originalApplyStrategy(c);
+    if(globalThis.SOMXLive?.applyStrategy&&globalThis.SOMXLive.applyStrategy!==applySnapshotStrategy)return globalThis.SOMXLive.applyStrategy(c);
+    return;
+  }
+
+  // Do not make Apply depend on hundreds of Alpaca requests. The production
+  // snapshot is already persisted by seedSnapshotContext before this call.
+  const deadline=Date.now()+2500;
+  while(starting&&Date.now()<deadline)await wait(50);
+  if(starting)throw new Error("QUQU_RELOAD_REQUIRED");
+  if(switching)return;
+
+  switching=true;
+  try{
+    if(socket)try{socket.close()}catch{}socket=null;
+    if(ququPollTimer){clearInterval(ququPollTimer);ququPollTimer=null}
+    activeStrategy=clone(c);
+    strategySig=globalThis.SOMXStrategy?.signature?.(activeStrategy)||activeStrategy.mode;
+    latestPrices={};
+    loadContext();
+    render();
+    window.dispatchEvent(new Event("somx:strategy-active"));
+    window.dispatchEvent(new Event("somx:historychange"));
+    toast(`${activeStrategy.label} 적용됨`);
+  }finally{switching=false}
+
+  // Live price/base-price work is deliberately background-only so the Apply
+  // button succeeds immediately even if Alpaca is slow or one symbol is bad.
+  setTimeout(()=>hydrateQuquLive(),0);
+}
+
+if(globalThis.SOMXLive?.applyStrategy){
+  globalThis.SOMXLive._originalApplyStrategy=globalThis.SOMXLive.applyStrategy.bind(globalThis.SOMXLive);
+  globalThis.SOMXLive.applySnapshotStrategy=applySnapshotStrategy;
+}
 
 function hasCurrentMonthBase(){
   if(!state?.holdings?.length)return false;
