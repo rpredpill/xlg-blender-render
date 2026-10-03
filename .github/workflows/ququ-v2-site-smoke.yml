@@ -1,0 +1,78 @@
+name: QUQU v2 site smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ququ-v2-site-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 1
+
+      - name: JavaScript syntax checks
+        run: |
+          node --check strategy-core-custom.js
+          node --check snapshot-preload.js
+          node --check ququ-history-sync.js
+
+      - name: QUQU v2 snapshot invariants
+        shell: python
+        run: |
+          import json, math
+          from pathlib import Path
+
+          j = json.loads(Path('ququ-latest.json').read_text(encoding='utf-8'))
+          rows = j.get('rows') or []
+          assert j.get('strategy') == 'QUQU v2', j.get('strategy')
+          assert j.get('version') == '2.0', j.get('version')
+          assert len(rows) >= 100, len(rows)
+          assert int(j.get('holdings')) == len(rows), (j.get('holdings'), len(rows))
+          s = sum(float(r['weight']) for r in rows)
+          mx = max(float(r['weight']) for r in rows)
+          assert math.isclose(s, 1.0, rel_tol=0, abs_tol=1e-7), s
+          assert mx <= 0.20 + 1e-8, mx
+          assert j.get('signalMonth') and j.get('allocationMonth')
+          d = j.get('diagnostics') or {}
+          for key in ['pitEligibleCount','pricedCapCount','targetTop10Count','floatKnownPctInBuffer','liquidityRemovedCount','winsorClippedCount']:
+              assert key in d, key
+          assert d.get('floatSelectionProven') is True
+          for r in rows:
+              assert r.get('ticker')
+              assert float(r['weight']) > 0
+              assert float(r['floatCap']) > 0
+              assert 'winsorZ' in r
+          print({'strategy': j['strategy'], 'allocationMonth': j['allocationMonth'], 'signalMonth': j['signalMonth'], 'holdings': len(rows), 'weightSum': s, 'maxWeight': mx})
+
+      - name: QUQU v2 page wiring
+        shell: python
+        run: |
+          from pathlib import Path
+          strategy = Path('strategy-core-custom.js').read_text(encoding='utf-8')
+          preload = Path('snapshot-preload.js').read_text(encoding='utf-8')
+          history = Path('ququ-history-sync.js').read_text(encoding='utf-8')
+          page = Path('ququ.html').read_text(encoding='utf-8')
+          index = Path('index.html').read_text(encoding='utf-8')
+
+          required = 'ququ-nasdaq-composite-v2'
+          assert required in strategy
+          assert required in preload
+          assert required in history
+          assert 'ququ-ndx100-v1' not in strategy
+          assert 'ququ-ndx100-v1' not in preload
+          assert 'QUQU v2' in page
+          assert 'Nasdaq Composite PIT' in page
+          assert 'strategy-core-custom.js?v=32' in index
+          assert 'snapshot-preload.js?v=5' in index
+          assert 'ququ-history-sync.js?v=4' in index
+          print('QUQU v2 page wiring OK')
