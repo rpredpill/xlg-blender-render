@@ -26,6 +26,8 @@ jobs:
           node --check strategy-core-custom.js
           node --check snapshot-preload.js
           node --check ququ-history-sync.js
+          node --check month-live-fix.js
+          node --check pwa.js
 
       - name: QUQU v2 snapshot invariants
         shell: python
@@ -55,13 +57,15 @@ jobs:
               assert 'winsorZ' in r
           print({'strategy': j['strategy'], 'allocationMonth': j['allocationMonth'], 'signalMonth': j['signalMonth'], 'holdings': len(rows), 'weightSum': s, 'maxWeight': mx})
 
-      - name: QUQU v2 page wiring
+      - name: QUQU v2 Apply Strategy wiring
         shell: python
         run: |
           from pathlib import Path
           strategy = Path('strategy-core-custom.js').read_text(encoding='utf-8')
           preload = Path('snapshot-preload.js').read_text(encoding='utf-8')
           history = Path('ququ-history-sync.js').read_text(encoding='utf-8')
+          livefix = Path('month-live-fix.js').read_text(encoding='utf-8')
+          pwa = Path('pwa.js').read_text(encoding='utf-8')
           page = Path('ququ.html').read_text(encoding='utf-8')
           index = Path('index.html').read_text(encoding='utf-8')
 
@@ -73,10 +77,21 @@ jobs:
           assert legacy not in preload
           assert legacy in history
           assert v2sig not in history
-          assert 'legacyQuquActive' in history
           assert 'QUQU v2' in page
           assert 'Nasdaq Composite PIT' in page
-          assert 'strategy-core-custom.js?v=32' in index
-          assert 'snapshot-preload.js?v=5' in index
+
+          # Apply must have an engine-independent fallback: persist the exact
+          # production snapshot, mark QUQU active, then reload the page.
+          assert 'forceApplyQuqu' in pwa
+          assert 'ququ-latest.json' in pwa
+          assert 'somx.strategy.active.v1' in pwa
+          assert 'location.reload()' in pwa
+          assert 'strategy-apply-btn' in pwa
+          assert 'applySnapshotStrategy' in livefix
+
+          assert 'strategy-core-custom.js?v=35' in index
+          assert 'snapshot-preload.js?v=6' in index
           assert 'ququ-history-sync.js?v=4' in index
-          print('QUQU v2 page wiring OK; legacy history isolated')
+          assert 'month-live-fix.js?v=29' in index
+          assert 'pwa.js?v=35' in index
+          print('QUQU v2 Apply Strategy wiring OK')
