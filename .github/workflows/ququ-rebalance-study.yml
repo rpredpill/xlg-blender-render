@@ -1,0 +1,103 @@
+name: QUQU rebalance cadence study
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_month:
+        description: 'First allocation month YYYY-MM'
+        required: false
+        default: '2022-10'
+      end_month:
+        description: 'Last allocation month YYYY-MM'
+        required: false
+        default: '2026-09'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ququ-rebalance-study.yml'
+      - 'tools/ququ_rebalance_study.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ququ-rebalance-study
+  cancel-in-progress: true
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check numpy pandas yfinance requests duckdb
+
+      - name: Load study engines from main
+        run: |
+          git show origin/main:tools/ququ_v2_ablation.py > /tmp/ququ_v2_ablation.py
+          git show origin/main:tools/ququ_v2_bulk_data.py > /tmp/ququ_v2_bulk_data.py
+          git show origin/main:tools/ququ_rebalance_study.py > /tmp/ququ_rebalance_study.py
+          python -m py_compile /tmp/ququ_v2_ablation.py /tmp/ququ_v2_bulk_data.py /tmp/ququ_rebalance_study.py
+
+      - name: Run cadence study
+        shell: bash
+        env:
+          START_MONTH: ${{ github.event.inputs.start_month || '2022-10' }}
+          END_MONTH: ${{ github.event.inputs.end_month || '2026-09' }}
+        run: |
+          set -euo pipefail
+          test -s nasdaq-composite-pit.json
+          test -s benchmark-history.json
+          export PYTHONPATH=/tmp
+          python /tmp/ququ_rebalance_study.py \
+            --pit nasdaq-composite-pit.json \
+            --benchmark benchmark-history.json \
+            --start "$START_MONTH" \
+            --end "$END_MONTH" \
+            --output ququ-rebalance-study.json \
+            --workers 8
+
+      - name: Validate result
+        shell: python
+        run: |
+          import json, math
+          p=json.load(open('ququ-rebalance-study.json', encoding='utf-8'))
+          names=['QUQU-1M','QUQU-2M','QUQU-3M','QUQU-6M','QUQU-3S']
+          if p.get('period',{}).get('months',0) < 12:
+              raise RuntimeError('too few months')
+          for n in names:
+              m=(p.get('summary') or {}).get(n)
+              if not m or m.get('CAGRpct') is None or m.get('MDDpct') is None:
+                  raise RuntimeError(f'missing metrics for {n}')
+          if float(p.get('consistency',{}).get('oneMonthMaxAbsReturnDiff',1)) > 1e-10:
+              raise RuntimeError('1M consistency failed')
+          print('period',p['period'])
+          for n in names:
+              m=p['summary'][n]
+              print(n,'CAGR',m['CAGRpct'],'MDD',m['MDDpct'],'Sharpe',m['Sharpe0rf'],'turnover',m['annualizedTurnoverPct'],'newHigh',m['newHighMonthPct'],'underwater',m['longestUnderwaterMonths'])
+          for n,m in (p.get('benchmarks') or {}).items():
+              x=m['metrics']
+              print(n,'CAGR',x['CAGRpct'],'MDD',x['MDDpct'],'Sharpe',x['Sharpe0rf'],'newHigh',x['newHighMonthPct'],'underwater',x['longestUnderwaterMonths'])
+
+      - name: Commit result to Pages branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ququ-rebalance-study.json
+          if git diff --cached --quiet; then
+            echo 'No cadence-study changes'
+          else
+            git commit -m 'Update QUQU rebalance cadence study'
+            git push origin HEAD:somx-pages
+          fi
