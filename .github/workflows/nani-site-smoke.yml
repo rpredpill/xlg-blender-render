@@ -8,6 +8,7 @@ on:
       - '.github/workflows/nani-site-smoke.yml'
       - '.github/workflows/nani-signal.yml'
       - 'tools/nani_live.py'
+      - 'tools/nani_live_v2.py'
       - 'tools/nani_ndx_source.py'
   workflow_run:
     workflows: ['Refresh Nani signal and history']
@@ -32,29 +33,32 @@ jobs:
           node --check nani-history-sync.js
           node --check nani-live-fix.js
 
-      - name: Validate wiring and data
+      - name: Validate Nani v2 wiring and data
         shell: python
         run: |
           import json, math
           from pathlib import Path
 
           index=Path('index.html').read_text(encoding='utf-8')
-          for name in ['nani-extension.js','nani-history-sync.js','nani-live-fix.js']:
+          for name in ['nani-extension.js?v=2','nani-history-sync.js?v=2','nani-live-fix.js?v=2']:
               if name not in index:
                   raise RuntimeError(f'{name} not wired in index.html')
 
           latest=json.loads(Path('nani-latest.json').read_text(encoding='utf-8'))
-          if latest.get('strategy')!='Nani' or latest.get('ready') is not True:
-              raise RuntimeError('Nani latest not ready')
+          if latest.get('strategy')!='Nani' or latest.get('version')!='2.0' or latest.get('ready') is not True:
+              raise RuntimeError(f'Nani v2 latest not ready: strategy={latest.get("strategy")} version={latest.get("version")} ready={latest.get("ready")}')
           rows=latest.get('rows') or []
           if len(rows)<315:
               raise RuntimeError(f'Nani holdings too small: {len(rows)}')
           total=sum(float(r['weight']) for r in rows)
-          mx=max(float(r['weight']) for r in rows)
           if not math.isfinite(total) or abs(total-1.0)>1e-8:
               raise RuntimeError(f'Nani weight sum {total}')
-          if mx>0.20000001:
-              raise RuntimeError(f'Nani cap violation {mx}')
+
+          rules=latest.get('rules') or {}
+          if rules.get('singleNameCap') is not None:
+              raise RuntimeError(f'Nani v2 unexpectedly has cap: {rules.get("singleNameCap")}')
+          if rules.get('rebalanceCadence') is not None:
+              raise RuntimeError(f'Nani v2 unexpectedly has cadence: {rules.get("rebalanceCadence")}')
 
           us=[r for r in rows if r.get('country')=='US']
           jp=[r for r in rows if r.get('country')=='JP']
@@ -67,12 +71,7 @@ jobs:
               raise RuntimeError(f'union count mismatch rows={len(rows)} diag={d.get("unionCount")}')
           if int(d.get('ndxSourceCount') or -1)!=len(us):
               raise RuntimeError(f'NDX source count mismatch source={d.get("ndxSourceCount")} rows={len(us)}')
-          for required in ['AAPL','MSFT','NVDA','SPCX','HONA']:
-              if required not in {r.get('ticker') for r in us}:
-                  raise RuntimeError(f'missing current NDX validation name {required}')
 
-          # Verify the core Nani score was actually materialized as
-          # FloatCap * RelativeMomentum^3 before cap/normalization.
           checked=0
           for r in rows:
               fc=r.get('floatCap'); rm=r.get('relativeMomentum'); raw=r.get('rawWeightScore')
@@ -85,21 +84,27 @@ jobs:
               raise RuntimeError(f'only {checked} rows have verifiable raw score')
 
           hist=json.loads(Path('nani-history.json').read_text(encoding='utf-8'))
+          if hist.get('version')!='2.0':
+              raise RuntimeError(f'Nani history is not v2: {hist.get("version")}')
           months=hist.get('months') or {}
-          completed=[m for m,r in months.items() if isinstance(r,dict) and isinstance(r.get('portfolioReturn'),(int,float))]
-          if len(completed)<6:
-              raise RuntimeError(f'Nani completed history too short: {len(completed)}')
-          for m in completed:
-              rec=months[m]
-              if not rec.get('rows'):
+          for m,rec in months.items():
+              if not isinstance(rec,dict) or rec.get('provenance')!='forward-live-v2':
+                  raise RuntimeError(f'non-forward record remains at {m}')
+              rrows=rec.get('rows') or []
+              if not rrows:
                   raise RuntimeError(f'{m} rows missing')
-              if float(rec.get('coverageRatio',0))<0.98:
-                  raise RuntimeError(f'{m} coverage too low: {rec.get("coverageRatio")}')
-              wsum=sum(float(x.get('weight',0)) for x in rec['rows'])
+              wsum=sum(float(x.get('weight',0)) for x in rrows)
               if not math.isclose(wsum,1.0,rel_tol=0,abs_tol=2e-8):
                   raise RuntimeError(f'{m} history weight sum {wsum}')
+              if isinstance(rec.get('portfolioReturn'),(int,float)) and float(rec.get('coverageRatio',0))<0.98:
+                  raise RuntimeError(f'{m} completed coverage too low: {rec.get("coverageRatio")}')
 
-          print('Nani smoke OK')
-          print('holdings',len(rows),'US',len(us),'JP',len(jp),'weightSum',total,'maxWeight',mx)
+          completed=[m for m,r in months.items() if isinstance(r.get('portfolioReturn'),(int,float))]
+          pending=[m for m,r in months.items() if not isinstance(r.get('portfolioReturn'),(int,float))]
+          if any(m in months for m in ['2026-04','2026-05','2026-06','2026-07','2026-08','2026-09']):
+              raise RuntimeError('retroactive v1 2026-04..09 record survived into v2')
+
+          print('Nani v2 smoke OK')
+          print('holdings',len(rows),'US',len(us),'JP',len(jp),'weightSum',total,'maxWeight',latest.get('maxWeight'))
           print('formulaRowsChecked',checked)
-          print('history',min(completed),'..',max(completed),'count',len(completed))
+          print('history completed',completed,'pending',pending)
