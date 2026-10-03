@@ -19,19 +19,39 @@ jobs:
           python-version: '3.12'
       - name: Install DuckDB
         run: pip install --disable-pip-version-check duckdb
-      - name: Probe public Parquet shards
+      - name: Probe public price and shares Parquet
         shell: python
         run: |
-          import duckdb, json
-          base='https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/'
-          urls=[base+f'train-{i:05d}-of-00004.parquet' for i in range(4)]
+          import duckdb, json, urllib.request
+          price_base='https://huggingface.co/datasets/paperswithbacktest/Stocks-Daily-Price/resolve/main/data/'
+          price_urls=[price_base+f'train-{i:05d}-of-00004.parquet' for i in range(4)]
+          shares_url='https://huggingface.co/datasets/defeatbeta/yahoo-finance-data/resolve/main/data/US/stock_shares_outstanding.parquet'
+          pit_url='https://raw.githubusercontent.com/rpredpill/xlg-blender-render/somx-pages/nasdaq-composite-pit.json'
           con=duckdb.connect()
           con.execute('INSTALL httpfs; LOAD httpfs;')
-          src='read_parquet([' + ','.join(repr(u) for u in urls) + '], union_by_name=true)'
-          print('URLS', urls)
-          print('SCHEMA', con.execute(f'DESCRIBE SELECT * FROM {src}').fetchall())
-          print('STATS', con.execute(f"SELECT count(*) n, count(distinct symbol) symbols, min(date) min_date, max(date) max_date FROM {src}").fetchall())
+          src='read_parquet([' + ','.join(repr(u) for u in price_urls) + '], union_by_name=true)'
+          print('PRICE_SCHEMA', con.execute(f'DESCRIBE SELECT * FROM {src}').fetchall())
+          print('PRICE_STATS', con.execute(f"SELECT count(*) n, count(distinct symbol) symbols, min(date), max(date) FROM {src}").fetchall())
           print('AAPL', con.execute(f"SELECT symbol,date,open,close,adj_close,volume FROM {src} WHERE symbol='AAPL' ORDER BY date DESC LIMIT 5").fetchall())
           for sym in ['ABMD','BBBY','META','FB','NVDA']:
-              print(sym, con.execute(f"SELECT count(*) n,min(date),max(date) FROM {src} WHERE symbol=?", [sym]).fetchall())
-          print('2022_12', con.execute(f"SELECT count(distinct symbol) FROM {src} WHERE date >= '2022-12-01' AND date <= '2022-12-31'").fetchall())
+              print('PRICE', sym, con.execute(f"SELECT count(*) n,min(date),max(date) FROM {src} WHERE symbol=?", [sym]).fetchall())
+          print('2022_12_PRICE_SYMBOLS', con.execute(f"SELECT count(distinct symbol) FROM {src} WHERE date >= '2022-12-01' AND date <= '2022-12-31'").fetchall())
+
+          print('SHARES_SCHEMA', con.execute(f"DESCRIBE SELECT * FROM read_parquet('{shares_url}')").fetchall())
+          print('SHARES_STATS', con.execute(f"SELECT count(*) n,count(distinct symbol),min(report_date),max(report_date) FROM read_parquet('{shares_url}')").fetchall())
+          for sym in ['AAPL','NVDA','ASML','PDD','ARM','ABMD','BBBY']:
+              print('SHARES', sym, con.execute(f"SELECT * FROM read_parquet('{shares_url}') WHERE symbol=? ORDER BY report_date DESC LIMIT 5", [sym]).fetchall())
+
+          with urllib.request.urlopen(pit_url, timeout=60) as r:
+              pit=json.load(r)
+          union=sorted({s for rec in pit['months'].values() for s in rec.get('symbols',[])})
+          m2022=pit['months']['2022-12']['symbols']
+          con.execute('CREATE TEMP TABLE pit_union(symbol VARCHAR)')
+          con.executemany('INSERT INTO pit_union VALUES (?)', [(x,) for x in union])
+          con.execute('CREATE TEMP TABLE pit_202212(symbol VARCHAR)')
+          con.executemany('INSERT INTO pit_202212 VALUES (?)', [(x,) for x in m2022])
+          print('PIT_UNION', len(union))
+          print('PIT_UNION_SHARE_COVERAGE', con.execute(f"SELECT count(distinct s.symbol) FROM read_parquet('{shares_url}') s JOIN pit_union p USING(symbol)").fetchall())
+          print('PIT_202212', len(m2022))
+          print('PIT_202212_SHARE_ANY', con.execute(f"SELECT count(distinct s.symbol) FROM read_parquet('{shares_url}') s JOIN pit_202212 p USING(symbol)").fetchall())
+          print('PIT_202212_SHARE_PIT', con.execute(f"SELECT count(*) FROM (SELECT p.symbol,max(try_cast(s.report_date AS DATE)) d FROM pit_202212 p LEFT JOIN read_parquet('{shares_url}') s ON p.symbol=s.symbol AND try_cast(s.report_date AS DATE) <= DATE '2022-12-31' GROUP BY p.symbol HAVING d IS NOT NULL)").fetchall())
