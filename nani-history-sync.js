@@ -1,6 +1,6 @@
 (()=>{
 "use strict";
-const SIG="nani-ndx100-nk225-v1";
+const SIG="nani-ndx100-nk225-v2";
 const HISTORY_URL="./nani-history.json";
 const key=kind=>`somx.${kind}.v2.${SIG}`;
 let syncing=false;
@@ -15,8 +15,9 @@ async function syncNaniHistory(){
     const r=await fetch(`${HISTORY_URL}?v=${Date.now()}`,{cache:"no-store"});
     if(!r.ok)throw new Error(`Nani history HTTP ${r.status}`);
     const j=await r.json(),months=j?.months||{};
-    const hh=read("holdings"),wh=read("weights"),mh=read("history");let changed=false,returnsChanged=false;
+    const hh=read("holdings"),wh=read("weights"),mh={};let changed=false,returnsChanged=false;
     for(const [month,record] of Object.entries(months)){
+      if(record?.provenance!=="forward-live-v2")continue;
       const rows=record?.rows;if(!validRows(rows))continue;
       const sum=rows.reduce((a,x)=>a+Number(x.weight),0);if(Math.abs(sum-1)>1e-6)continue;
       const holdings=rows.map(x=>String(x.ticker).trim().toUpperCase());
@@ -24,17 +25,16 @@ async function syncNaniHistory(){
       hh[month]=holdings;wh[month]=weights;changed=true;
       if(Number.isFinite(Number(record.portfolioReturn))){
         mh[month]={
-          month,port:Number(record.portfolioReturn),lastDate:record.lastDate||null,holdings,weights,
+          month,port:Number(record.portfolioReturn)*100,lastDate:record.lastDate||null,holdings,weights,
           rows:rows.map(x=>({ticker:String(x.ticker).trim().toUpperCase(),ret:Number.isFinite(Number(x.monthlyReturn))?Number(x.monthlyReturn)*100:0,weight:Number(x.weight),country:x.country||null})),
-          serverBackfill:true,validatedFreeFloat:record.validatedFreeFloat!==false,
-          universeCount:Number(record.universeCount||rows.length),coverageRatio:Number(record.coverageRatio||1),
+          forwardLive:true,universeCount:Number(record.universeCount||rows.length),coverageRatio:Number(record.coverageRatio||1),
           signalMonth:record.signalMonth||null,allocationMonth:record.allocationMonth||null
         };
         returnsChanged=true;
       }
     }
     if(changed){write("holdings",hh);write("weights",wh)}
-    if(returnsChanged)write("history",mh);
+    write("history",mh);
     window.dispatchEvent(new CustomEvent("somx:nani-history-synced",{detail:{months:Object.keys(months).sort()}}));
     if(returnsChanged)window.dispatchEvent(new Event("somx:historychange"));
   }catch(e){console.warn("Nani history sync",e)}finally{syncing=false}
