@@ -8,12 +8,17 @@ on:
       - '.github/workflows/nani-site-smoke.yml'
       - '.github/workflows/nani-signal.yml'
       - 'tools/nani_live.py'
+      - 'tools/nani_ndx_source.py'
+  workflow_run:
+    workflows: ['Refresh Nani signal and history']
+    types: [completed]
 
 permissions:
   contents: read
 
 jobs:
   smoke:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Pages branch
@@ -50,22 +55,51 @@ jobs:
               raise RuntimeError(f'Nani weight sum {total}')
           if mx>0.20000001:
               raise RuntimeError(f'Nani cap violation {mx}')
-          countries={r.get('country') for r in rows}
-          if not {'US','JP'}.issubset(countries):
-              raise RuntimeError(f'Nani country coverage {countries}')
+
+          us=[r for r in rows if r.get('country')=='US']
+          jp=[r for r in rows if r.get('country')=='JP']
+          d=latest.get('diagnostics') or {}
+          if len(us)!=int(d.get('nasdaqCount') or -1):
+              raise RuntimeError(f'US count mismatch rows={len(us)} diag={d.get("nasdaqCount")}')
+          if len(jp)!=225 or int(d.get('nikkeiCount') or -1)!=225:
+              raise RuntimeError(f'JP count mismatch rows={len(jp)} diag={d.get("nikkeiCount")}')
+          if len(rows)!=int(d.get('unionCount') or -1):
+              raise RuntimeError(f'union count mismatch rows={len(rows)} diag={d.get("unionCount")}')
+          if int(d.get('ndxSourceCount') or -1)!=len(us):
+              raise RuntimeError(f'NDX source count mismatch source={d.get("ndxSourceCount")} rows={len(us)}')
+          for required in ['AAPL','MSFT','NVDA','SPCX','HONA']:
+              if required not in {r.get('ticker') for r in us}:
+                  raise RuntimeError(f'missing current NDX validation name {required}')
+
+          # Verify the core Nani score was actually materialized as
+          # FloatCap * RelativeMomentum^3 before cap/normalization.
+          checked=0
+          for r in rows:
+              fc=r.get('floatCap'); rm=r.get('relativeMomentum'); raw=r.get('rawWeightScore')
+              if all(isinstance(v,(int,float)) and math.isfinite(float(v)) for v in [fc,rm,raw]):
+                  expected=float(fc)*(float(rm)**3)
+                  if not math.isclose(float(raw),expected,rel_tol=1e-10,abs_tol=max(1e-4,abs(expected)*1e-12)):
+                      raise RuntimeError(f'raw score mismatch {r.get("ticker")}: {raw} vs {expected}')
+                  checked+=1
+          if checked<300:
+              raise RuntimeError(f'only {checked} rows have verifiable raw score')
 
           hist=json.loads(Path('nani-history.json').read_text(encoding='utf-8'))
           months=hist.get('months') or {}
           completed=[m for m,r in months.items() if isinstance(r,dict) and isinstance(r.get('portfolioReturn'),(int,float))]
-          if len(completed)<1:
-              raise RuntimeError('Nani completed history missing')
+          if len(completed)<6:
+              raise RuntimeError(f'Nani completed history too short: {len(completed)}')
           for m in completed:
               rec=months[m]
               if not rec.get('rows'):
                   raise RuntimeError(f'{m} rows missing')
               if float(rec.get('coverageRatio',0))<0.98:
                   raise RuntimeError(f'{m} coverage too low: {rec.get("coverageRatio")}')
+              wsum=sum(float(x.get('weight',0)) for x in rec['rows'])
+              if not math.isclose(wsum,1.0,rel_tol=0,abs_tol=2e-8):
+                  raise RuntimeError(f'{m} history weight sum {wsum}')
 
           print('Nani smoke OK')
-          print('holdings',len(rows),'weightSum',total,'maxWeight',mx)
+          print('holdings',len(rows),'US',len(us),'JP',len(jp),'weightSum',total,'maxWeight',mx)
+          print('formulaRowsChecked',checked)
           print('history',min(completed),'..',max(completed),'count',len(completed))
