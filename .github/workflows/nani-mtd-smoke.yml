@@ -1,0 +1,63 @@
+name: Nani MTD dashboard smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nani-mtd-smoke.yml'
+      - '.github/workflows/nani-signal.yml'
+      - 'tools/nani_mtd.py'
+  workflow_run:
+    workflows: ['Refresh Nani signal and history']
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: somx-pages
+
+      - name: Validate MTD JavaScript
+        run: |
+          node --check nani-extension.js
+          node --check nani-mtd-ui.js
+          grep -q 'nani-mtd-ui.js?v=2' nani-extension.js
+
+      - name: Validate MTD payload
+        shell: python
+        run: |
+          import json, math
+          from pathlib import Path
+
+          latest=json.loads(Path('nani-latest.json').read_text(encoding='utf-8'))
+          rows=latest.get('rows') or []
+          mtd=latest.get('currentMonthMTD') or {}
+          if latest.get('version')!='4.0' or latest.get('ready') is not True:
+              raise RuntimeError('Nani v4 latest is not ready')
+          if mtd.get('month') not in (None, latest.get('allocationMonth')):
+              raise RuntimeError(f'MTD month mismatch {mtd.get("month")} vs {latest.get("allocationMonth")}')
+          if mtd.get('ready'):
+              mrows=mtd.get('rows') or []
+              if len(mrows)!=len(rows):
+                  raise RuntimeError(f'MTD row count mismatch {len(mrows)}/{len(rows)}')
+              if not isinstance(mtd.get('portfolioReturn'),(int,float)) or not math.isfinite(float(mtd['portfolioReturn'])):
+                  raise RuntimeError('MTD portfolioReturn missing/non-finite')
+              coverage=float(mtd.get('coverageRatio',0))
+              if coverage<0.98:
+                  raise RuntimeError(f'MTD coverage too low: {coverage}')
+              missing=float(mtd.get('missingReturnWeight',1))
+              if missing>0.02:
+                  raise RuntimeError(f'MTD missing weight too high: {missing}')
+              if any(not isinstance(r.get('monthlyReturn'),(int,float)) for r in mrows):
+                  raise RuntimeError('MTD row return missing')
+              print('Nani MTD OK',mtd.get('month'),mtd.get('asOfDate'),mtd.get('portfolioReturn'),coverage,len(mrows))
+          else:
+              print('Nani MTD not ready yet; structure valid',mtd)
