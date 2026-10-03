@@ -85,5 +85,13 @@ function initUI(){
 document.getElementById("historyBtn")?.addEventListener("click",e=>{if(activeStored()!=="nani")return;e.preventDefault();e.stopImmediatePropagation();renderHistory()},true);
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initUI);else initUI();
 
+if(!document.querySelector('script[data-nani-mtd-ui]')){
+  const s=document.createElement("script");
+  s.src="./nani-mtd-ui.js?v=1";
+  s.async=true;
+  s.dataset.naniMtdUi="1";
+  document.head.appendChild(s);
+}
+
 globalThis.NaniStrategy={config:clone(nani),signature:SIG,fetchSnapshot:fetchNaniSnapshot,seed:seedNani,activate:activateNani,renderHistory};
 })();
