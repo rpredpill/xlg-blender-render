@@ -24,8 +24,19 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install --disable-pip-version-check numpy pandas yfinance requests lxml
-      - name: Handle official Nikkei transition gap
-        run: sed -i 's/if len(members) != 225:/if not 224 <= len(members) <= 225:/' tools/nani_backtest_5y.py
+      - name: Apply research-backtest compatibility fixes
+        run: |
+          sed -i 's/if len(members) != 225:/if not 224 <= len(members) <= 225:/' tools/nani_backtest_5y.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('tools/nani_backtest_5y.py')
+          s=p.read_text()
+          old='"floatProxyMethods": dict(pd.Series(list(proxy_methods.values())).value_counts()),'
+          new='"floatProxyMethods": {str(k): int(v) for k, v in pd.Series(list(proxy_methods.values())).value_counts().items()},'
+          if old not in s:
+              raise SystemExit('serialization patch target not found')
+          p.write_text(s.replace(old,new))
+          PY
       - name: Run backtest
         run: python tools/nani_backtest_5y.py
       - name: Validate result
