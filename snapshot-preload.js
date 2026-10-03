@@ -3,7 +3,7 @@
 try{
   const ACTIVE="somx.strategy.active.v1",CAP=0.20;
   let mode=localStorage.getItem(ACTIVE);
-  if(mode==="core"){mode="snpi";localStorage.setItem(ACTIVE,"snpi")}
+  if(mode==="core"||mode==="custom"){mode="snpi";localStorage.setItem(ACTIVE,"snpi")}
   if(!["snpi","snpy","ququ","quu"].includes(mode))return;
   const file=mode==="quu"?"quu-latest.json":mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
   const sig=mode==="snpi"?"snpi-sp500-v1":mode==="snpy"?"snpy-sp500-top100-v1":mode==="quu"?"quu-ndx100-rollover-v1":"ququ-nasdaq-composite-v2";
@@ -59,12 +59,22 @@ try{
 
   const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit"}).formatToParts(new Date());
   const ym=`${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`;
-  const snapshotYm=mode==="ququ"&&/^\d{4}-\d{2}$/.test(String(j.allocationMonth||""))?j.allocationMonth:ym;
+  const allocationYm=mode==="ququ"&&/^\d{4}-\d{2}$/.test(String(j.allocationMonth||""))?String(j.allocationMonth):ym;
   const holdings=rows.map(r=>r.ticker),targetWeights=Object.fromEntries(rows.map(r=>[r.ticker,r.weight]));
   const key=kind=>`somx.${kind}.v2.${sig}`;
   let hh={},wh={};try{hh=JSON.parse(localStorage.getItem(key("holdings"))||"{}")||{}}catch{}try{wh=JSON.parse(localStorage.getItem(key("weights"))||"{}")||{}}catch{}
-  hh[snapshotYm]=holdings;wh[snapshotYm]=targetWeights;
-  const st={rebalanceMonth:snapshotYm,strategyAnchor:snapshotYm,initialized:true,holdings,statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,basePrices:{},updatedAt:new Date().toISOString(),snapshotAt:j.generatedAt||null};
+
+  // Keep the production allocation month for provenance/history, but the live
+  // dashboard state must always be anchored to the current month. Otherwise
+  // app.js tries to catch QUQU up with the generic S&P 500 momentum engine.
+  hh[allocationYm]=[...holdings];wh[allocationYm]={...targetWeights};
+  hh[ym]=[...holdings];wh[ym]={...targetWeights};
+  const st={
+    rebalanceMonth:ym,strategyAnchor:ym,initialized:true,holdings,
+    statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,
+    basePrices:{},updatedAt:new Date().toISOString(),snapshotAt:j.generatedAt||null,
+    snapshotAllocationMonth:allocationYm
+  };
   localStorage.setItem(key("state"),JSON.stringify(st));
   localStorage.setItem(key("holdings"),JSON.stringify(hh));
   localStorage.setItem(key("weights"),JSON.stringify(wh));
