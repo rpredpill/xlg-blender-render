@@ -15,9 +15,7 @@
    for(const [mode,label] of [['joy','환희'],['fear','공포']]){const b=document.createElement('button');b.type='button';b.dataset.mode=mode;b.textContent=label;b.onclick=()=>select(mode);tabs.append(b);}
    document.getElementById('strategy-settings-root').addEventListener('click',e=>{if(globalThis.SOMXStrategy.getMode()!=='joy'||!['strategy-preview-btn','strategy-apply-btn'].includes(e.target.id))return;e.preventDefault();e.stopImmediatePropagation();if(e.target.id==='strategy-apply-btn')select('joy');document.getElementById('strategy-preview').textContent='환희 · 메인 화면에 최신 종목·비중·월간 수익률을 표시합니다. 기간 선택으로 과거 백테스트도 확인할 수 있습니다.';},true);
   }
-  const nav=document.createElement('nav');nav.className='strategy-nav';nav.setAttribute('aria-label','전략 선택');
-  for(const [label,mode] of [['Nani','nani'],['환희','joy'],['공포 · Paper','fear']]){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.mode=mode;b.onclick=()=>mode==='nani'?tabs.querySelector('[data-mode="nani"]').click():select(mode);nav.append(b);}
-  document.querySelector('.board').before(nav);paint(globalThis.SOMXStrategy.getMode());document.title='Nani · 환희 · 공포';
+  paint(globalThis.SOMXStrategy.getMode());document.title='Nani · 환희 · 공포';
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

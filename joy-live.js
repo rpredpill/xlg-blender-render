@@ -1,5 +1,6 @@
 (()=>{
  'use strict';
+ const spinOrigin=performance.now();
  const isJoy=()=>localStorage.getItem('somx.strategy.active.v1')==='joy';
  let data=null,forward=null,selected='live',promise=null,ws=null,quotes={},paintTimer=null,lastChartPaint=0,loading=false,epoch=0,status='최신 종가를 불러오는 중…',lastSnapshotFetch=0;
  const originalRender=render,originalStart=start;
@@ -25,7 +26,7 @@
   $('benchmark-panel').style.display='';document.querySelectorAll('[data-benchmark]').forEach(b=>b.hidden=!['SPY','QQQ'].includes(b.dataset.benchmark));
   const th=$('holdings-body').closest('table').querySelectorAll('th');th[1].textContent=isLive?'현재 비중':'월말 비중';th[2].textContent='월간 수익률';
   if(!h){$('holdings-body').innerHTML='<tr><td colspan="3">최신 환희 데이터를 준비하는 중…</td></tr>';drawDonut([]);setMetrics('portfolio-return',null);$('up-count').textContent='--';$('best-ticker').textContent='--';$('worst-ticker').textContent='--';setMetrics('best-return',null);setMetrics('worst-return',null);return;}
-  const rows=[...h.rows].sort((a,b)=>b.weight-a.weight);drawDonut(rows);$('donut').setAttribute('aria-label',isLive?'환희 최신 포트폴리오':'환희 백테스트 포트폴리오');
+  const rows=[...h.rows].sort((a,b)=>b.weight-a.weight);drawDonut(rows);const spinPhase=((performance.now()-spinOrigin)/1000)%80;document.querySelectorAll('#wheel,.upright-label').forEach(e=>e.style.animationDelay=`-${spinPhase}s`);$('donut').setAttribute('aria-label',isLive?'환희 최신 포트폴리오':'환희 백테스트 포트폴리오');
   $('holdings-body').innerHTML=rows.map((r,i)=>`<tr><td><div class="stock"><div class="logo" style="color:${colorFor(i)}">${r.ticker}</div><div>${r.ticker}${isLive?`<small class="holding-price">$${Number(r.price).toFixed(2)}</small>`:''}</div></div></td><td class="weight-cell">${(r.weight*100).toFixed(2)}%</td><td class="ret ${r.ret<0?'neg':''}">${fmt(r.ret)}</td></tr>`).join('');
   setMetrics('portfolio-return',h.port);const valid=rows.filter(r=>Number.isFinite(r.ret)),best=[...valid].sort((a,b)=>b.ret-a.ret)[0],worst=[...valid].sort((a,b)=>a.ret-b.ret)[0];
   $('up-count').textContent=`${valid.filter(r=>r.ret>0).length} / ${valid.length}`;$('best-ticker').textContent=best?.ticker||'--';setMetrics('best-return',best?.ret);$('worst-ticker').textContent=worst?.ticker||'--';setMetrics('worst-return',worst?.ret);
