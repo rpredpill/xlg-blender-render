@@ -1,5 +1,6 @@
 name: QUQU rebalance cadence study
 
+# Cadence-only experiment: strategy signal/weighting remains unchanged.
 on:
   workflow_dispatch:
     inputs:
@@ -71,7 +72,7 @@ jobs:
       - name: Validate result
         shell: python
         run: |
-          import json, math
+          import json
           p=json.load(open('ququ-rebalance-study.json', encoding='utf-8'))
           names=['QUQU-1M','QUQU-2M','QUQU-3M','QUQU-6M','QUQU-3S']
           if p.get('period',{}).get('months',0) < 12:
