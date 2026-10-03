@@ -1,0 +1,2712 @@
+{
+  "generatedAt": "2026-10-03T09:47:46.525163+00:00",
+  "strategy": "QUQU v2 rebalance cadence study",
+  "period": {
+    "start": "2022-10",
+    "end": "2026-09",
+    "months": 48
+  },
+  "method": {
+    "target": "Unchanged production QUQU v2 target every month",
+    "cadenceAnchor": "2022-10",
+    "QUQU-1M": "Full target reset monthly",
+    "QUQU-2M": "Full target reset every 2 months",
+    "QUQU-3M": "Full target reset every 3 months",
+    "QUQU-6M": "Full target reset every 6 months",
+    "QUQU-3S": "Three independent sleeves; one sleeve refreshed monthly, each sleeve every 3 months",
+    "betweenRebalances": "Hold and let weights drift with realized stock returns",
+    "missingReturnPolicy": "Use 0 only when aggregate missing weight <= 2%; otherwise reject month"
+  },
+  "dataCaveat": "Same free-data QUQU v2 inputs as the existing ablation: historical total-cap data plus a latest free-float-ratio proxy. This is not a fully point-in-time historical public-float backtest.",
+  "consistency": {
+    "oneMonthMaxAbsReturnDiff": 1.304512053934559e-15
+  },
+  "summary": {
+    "QUQU-1M": {
+      "months": 48,
+      "totalReturnPct": 187.1745774700404,
+      "CAGRpct": 30.177671103399128,
+      "MDDpct": -16.96976537267034,
+      "Sharpe0rf": 1.3168450825091371,
+      "avgMonthlyTurnoverPct": 16.524648580166236,
+      "annualizedTurnoverPct": 198.2957829619948,
+      "endingIndex": 287.1745774700404,
+      "positiveMonthRatePct": 68.75,
+      "bestMonthPct": 16.677337545806225,
+      "worstMonthPct": -16.969765372670352,
+      "newHighMonthPct": 47.91666666666667,
+      "longestUnderwaterMonths": 6,
+      "positive3MonthWindowPct": 78.26086956521739,
+      "monthlyReturnStdPct": 6.365206255994867
+    },
+    "QUQU-2M": {
+      "months": 48,
+      "totalReturnPct": 181.02007696165163,
+      "CAGRpct": 29.474528186450087,
+      "MDDpct": -16.18804198777535,
+      "Sharpe0rf": 1.31024259048545,
+      "avgMonthlyTurnoverPct": 11.819345711511541,
+      "annualizedTurnoverPct": 141.8321485381385,
+      "endingIndex": 281.0200769616516,
+      "positiveMonthRatePct": 68.75,
+      "bestMonthPct": 16.677337545806225,
+      "worstMonthPct": -16.18804198777535,
+      "newHighMonthPct": 52.083333333333336,
+      "longestUnderwaterMonths": 4,
+      "positive3MonthWindowPct": 76.08695652173914,
+      "monthlyReturnStdPct": 6.259410874476461
+    },
+    "QUQU-3M": {
+      "months": 48,
+      "totalReturnPct": 167.85124710977448,
+      "CAGRpct": 27.930299963108784,
+      "MDDpct": -16.969765372670366,
+      "Sharpe0rf": 1.2751790197559614,
+      "avgMonthlyTurnoverPct": 8.76232394369964,
+      "annualizedTurnoverPct": 105.14788732439567,
+      "endingIndex": 267.8512471097745,
+      "positiveMonthRatePct": 68.75,
+      "bestMonthPct": 16.677337545806225,
+      "worstMonthPct": -16.969765372670352,
+      "newHighMonthPct": 45.83333333333333,
+      "longestUnderwaterMonths": 5,
+      "positive3MonthWindowPct": 73.91304347826086,
+      "monthlyReturnStdPct": 6.137712965035287
+    },
+    "QUQU-6M": {
+      "months": 48,
+      "totalReturnPct": 198.62911686725218,
+      "CAGRpct": 31.456794329489558,
+      "MDDpct": -13.204236569911131,
+      "Sharpe0rf": 1.4823739258172604,
+      "avgMonthlyTurnoverPct": 4.974980948498023,
+      "annualizedTurnoverPct": 59.69977138197628,
+      "endingIndex": 298.62911686725215,
+      "positiveMonthRatePct": 66.66666666666666,
+      "bestMonthPct": 16.677337545806225,
+      "worstMonthPct": -11.224100352618505,
+      "newHighMonthPct": 45.83333333333333,
+      "longestUnderwaterMonths": 5,
+      "positive3MonthWindowPct": 78.26086956521739,
+      "monthlyReturnStdPct": 5.761746278830326
+    },
+    "QUQU-3S": {
+      "months": 48,
+      "totalReturnPct": 194.36362461691567,
+      "CAGRpct": 30.984840466419563,
+      "MDDpct": -15.73241650480236,
+      "Sharpe0rf": 1.3466216660381733,
+      "avgMonthlyTurnoverPct": 9.184898409648866,
+      "annualizedTurnoverPct": 110.21878091578638,
+      "endingIndex": 294.3636246169157,
+      "positiveMonthRatePct": 68.75,
+      "bestMonthPct": 20.027256260541826,
+      "worstMonthPct": -15.73241650480236,
+      "newHighMonthPct": 50.0,
+      "longestUnderwaterMonths": 4,
+      "positive3MonthWindowPct": 76.08695652173914,
+      "monthlyReturnStdPct": 6.353497244904857
+    }
+  },
+  "benchmarks": {
+    "QQQ": {
+      "metrics": {
+        "months": 48,
+        "totalReturnPct": 190.45973358080423,
+        "CAGRpct": 30.54837901415408,
+        "MDDpct": -9.13903520571333,
+        "Sharpe0rf": 1.6334851551298941,
+        "avgMonthlyTurnoverPct": null,
+        "annualizedTurnoverPct": null,
+        "endingIndex": 290.4597335808042,
+        "positiveMonthRatePct": 70.83333333333334,
+        "bestMonthPct": 14.834559999754205,
+        "worstMonthPct": -9.115883639340339,
+        "newHighMonthPct": 56.25,
+        "longestUnderwaterMonths": 5,
+        "positive3MonthWindowPct": 78.26086956521739,
+        "monthlyReturnStdPct": 5.020413618239514
+      },
+      "months": [
+        "2022-10",
+        "2022-11",
+        "2022-12",
+        "2023-01",
+        "2023-02",
+        "2023-03",
+        "2023-04",
+        "2023-05",
+        "2023-06",
+        "2023-07",
+        "2023-08",
+        "2023-09",
+        "2023-10",
+        "2023-11",
+        "2023-12",
+        "2024-01",
+        "2024-02",
+        "2024-03",
+        "2024-04",
+        "2024-05",
+        "2024-06",
+        "2024-07",
+        "2024-08",
+        "2024-09",
+        "2024-10",
+        "2024-11",
+        "2024-12",
+        "2025-01",
+        "2025-02",
+        "2025-03",
+        "2025-04",
+        "2025-05",
+        "2025-06",
+        "2025-07",
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    },
+    "SPMO": {
+      "metrics": {
+        "months": 48,
+        "totalReturnPct": 219.7334092445432,
+        "CAGRpct": 33.72019604109286,
+        "MDDpct": -10.015193780136855,
+        "Sharpe0rf": 1.6512613659797346,
+        "avgMonthlyTurnoverPct": null,
+        "annualizedTurnoverPct": null,
+        "endingIndex": 319.73340924454317,
+        "positiveMonthRatePct": 68.75,
+        "bestMonthPct": 18.18903788328219,
+        "worstMonthPct": -8.653268879891318,
+        "newHighMonthPct": 50.0,
+        "longestUnderwaterMonths": 11,
+        "positive3MonthWindowPct": 71.73913043478261,
+        "monthlyReturnStdPct": 5.435473001509243
+      },
+      "months": [
+        "2022-10",
+        "2022-11",
+        "2022-12",
+        "2023-01",
+        "2023-02",
+        "2023-03",
+        "2023-04",
+        "2023-05",
+        "2023-06",
+        "2023-07",
+        "2023-08",
+        "2023-09",
+        "2023-10",
+        "2023-11",
+        "2023-12",
+        "2024-01",
+        "2024-02",
+        "2024-03",
+        "2024-04",
+        "2024-05",
+        "2024-06",
+        "2024-07",
+        "2024-08",
+        "2024-09",
+        "2024-10",
+        "2024-11",
+        "2024-12",
+        "2025-01",
+        "2025-02",
+        "2025-03",
+        "2025-04",
+        "2025-05",
+        "2025-06",
+        "2025-07",
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    }
+  },
+  "variants": {
+    "QUQU-1M": {
+      "metrics": {
+        "months": 48,
+        "totalReturnPct": 187.1745774700404,
+        "CAGRpct": 30.177671103399128,
+        "MDDpct": -16.96976537267034,
+        "Sharpe0rf": 1.3168450825091371,
+        "avgMonthlyTurnoverPct": 16.524648580166236,
+        "annualizedTurnoverPct": 198.2957829619948,
+        "endingIndex": 287.1745774700404,
+        "positiveMonthRatePct": 68.75,
+        "bestMonthPct": 16.677337545806225,
+        "worstMonthPct": -16.969765372670352,
+        "newHighMonthPct": 47.91666666666667,
+        "longestUnderwaterMonths": 6,
+        "positive3MonthWindowPct": 78.26086956521739,
+        "monthlyReturnStdPct": 6.365206255994867
+      },
+      "months": [
+        {
+          "month": "2022-10",
+          "returnPct": 4.423595978996153,
+          "turnoverPct": null,
+          "rebalanced": true,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-11",
+          "returnPct": 4.042421876804214,
+          "turnoverPct": 15.801939241021495,
+          "rebalanced": true,
+          "holdings": 361,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-12",
+          "returnPct": -7.107684284524951,
+          "turnoverPct": 16.96870833883302,
+          "rebalanced": true,
+          "holdings": 360,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-01",
+          "returnPct": 7.101129975523102,
+          "turnoverPct": 18.025815138918187,
+          "rebalanced": true,
+          "holdings": 360,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-02",
+          "returnPct": -2.2982870645813502,
+          "turnoverPct": 16.19280199487864,
+          "rebalanced": true,
+          "holdings": 351,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-03",
+          "returnPct": 3.918643981234382,
+          "turnoverPct": 14.648929924216683,
+          "rebalanced": true,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-04",
+          "returnPct": -1.4851612797346814,
+          "turnoverPct": 18.949755454601814,
+          "rebalanced": true,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-05",
+          "returnPct": 4.724182969122981,
+          "turnoverPct": 18.276399006409786,
+          "rebalanced": true,
+          "holdings": 344,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-06",
+          "returnPct": 6.862974382122933,
+          "turnoverPct": 17.012250029666063,
+          "rebalanced": true,
+          "holdings": 342,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-07",
+          "returnPct": 4.49806735325291,
+          "turnoverPct": 12.629076178014726,
+          "rebalanced": true,
+          "holdings": 341,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-08",
+          "returnPct": -1.7599905118436565,
+          "turnoverPct": 14.166129024581947,
+          "rebalanced": true,
+          "holdings": 338,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-09",
+          "returnPct": -6.010497413108428,
+          "turnoverPct": 12.938543437091537,
+          "rebalanced": true,
+          "holdings": 337,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-10",
+          "returnPct": -4.913067132662952,
+          "turnoverPct": 12.916134921373965,
+          "rebalanced": true,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-11",
+          "returnPct": 10.46325663926524,
+          "turnoverPct": 17.8690324090517,
+          "rebalanced": true,
+          "holdings": 334,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-12",
+          "returnPct": 7.001502036591134,
+          "turnoverPct": 12.378507826802606,
+          "rebalanced": true,
+          "holdings": 333,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-01",
+          "returnPct": 0.8796944119724426,
+          "turnoverPct": 12.456085124246858,
+          "rebalanced": true,
+          "holdings": 331,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-02",
+          "returnPct": 6.460498919260971,
+          "turnoverPct": 12.82251176732188,
+          "rebalanced": true,
+          "holdings": 328,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-03",
+          "returnPct": 3.022963970029102,
+          "turnoverPct": 14.082045162859613,
+          "rebalanced": true,
+          "holdings": 327,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-04",
+          "returnPct": -6.798106541613979,
+          "turnoverPct": 13.631583681379677,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-05",
+          "returnPct": 6.611767650849409,
+          "turnoverPct": 13.705289128621729,
+          "rebalanced": true,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-06",
+          "returnPct": 2.651369245597701,
+          "turnoverPct": 12.318150214488899,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-07",
+          "returnPct": -1.4642440318633043,
+          "turnoverPct": 11.485051319223553,
+          "rebalanced": true,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-08",
+          "returnPct": 1.42214312773008,
+          "turnoverPct": 19.025628666119946,
+          "rebalanced": true,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-09",
+          "returnPct": 2.526136404440482,
+          "turnoverPct": 12.957383001149708,
+          "rebalanced": true,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-10",
+          "returnPct": -0.48420246494144115,
+          "turnoverPct": 12.326624941716696,
+          "rebalanced": true,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-11",
+          "returnPct": 8.76018360355486,
+          "turnoverPct": 14.026156083761299,
+          "rebalanced": true,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-12",
+          "returnPct": -3.9145867340802165,
+          "turnoverPct": 18.513988721576528,
+          "rebalanced": true,
+          "holdings": 319,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-01",
+          "returnPct": 3.917737766719198,
+          "turnoverPct": 16.882361132022883,
+          "rebalanced": true,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-02",
+          "returnPct": -3.914698900442992,
+          "turnoverPct": 14.70807389408436,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-03",
+          "returnPct": -8.4815241728056,
+          "turnoverPct": 17.079144733455486,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-04",
+          "returnPct": 1.5934064348773536,
+          "turnoverPct": 14.919275695625448,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-05",
+          "returnPct": 6.02456369212363,
+          "turnoverPct": 14.248709853983184,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-06",
+          "returnPct": 6.2148089933519834,
+          "turnoverPct": 13.657437228994246,
+          "rebalanced": true,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-07",
+          "returnPct": 2.3842007956958122,
+          "turnoverPct": 13.464582565199246,
+          "rebalanced": true,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-08",
+          "returnPct": 3.1199127873318133,
+          "turnoverPct": 18.090361423832473,
+          "rebalanced": true,
+          "holdings": 321,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-09",
+          "returnPct": 11.33167020045278,
+          "turnoverPct": 14.935177068633458,
+          "rebalanced": true,
+          "holdings": 321,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-10",
+          "returnPct": 9.985065298470431,
+          "turnoverPct": 18.92874076088134,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-11",
+          "returnPct": -3.389060496894025,
+          "turnoverPct": 25.11535055658204,
+          "rebalanced": true,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-12",
+          "returnPct": 1.146683949671945,
+          "turnoverPct": 20.311158364161834,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-01",
+          "returnPct": 8.370564076801124,
+          "turnoverPct": 21.874697930006462,
+          "rebalanced": true,
+          "holdings": 323,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-02",
+          "returnPct": 2.128464045070455,
+          "turnoverPct": 18.598077035011226,
+          "rebalanced": true,
+          "holdings": 323,
+          "missingReturnWeightPct": 0.14442076846105273
+        },
+        {
+          "month": "2026-03",
+          "returnPct": -4.166421483848737,
+          "turnoverPct": 22.212666861260065,
+          "rebalanced": true,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-04",
+          "returnPct": 16.677337545806225,
+          "turnoverPct": 18.629368984663785,
+          "rebalanced": true,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-05",
+          "returnPct": 16.271793087283037,
+          "turnoverPct": 23.119536130912493,
+          "rebalanced": true,
+          "holdings": 325,
+          "missingReturnWeightPct": 0.15493002649510354
+        },
+        {
+          "month": "2026-06",
+          "returnPct": 9.244455049698196,
+          "turnoverPct": 19.91963684325062,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-07",
+          "returnPct": -16.969765372670352,
+          "turnoverPct": 19.80361895614353,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-08",
+          "returnPct": 3.9181128035550516,
+          "turnoverPct": 28.704200092891142,
+          "rebalanced": true,
+          "holdings": 328,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-09",
+          "returnPct": 1.6022569436851208,
+          "turnoverPct": 15.331786418289173,
+          "rebalanced": true,
+          "holdings": 328,
+          "missingReturnWeightPct": 0.0
+        }
+      ]
+    },
+    "QUQU-2M": {
+      "metrics": {
+        "months": 48,
+        "totalReturnPct": 181.02007696165163,
+        "CAGRpct": 29.474528186450087,
+        "MDDpct": -16.18804198777535,
+        "Sharpe0rf": 1.31024259048545,
+        "avgMonthlyTurnoverPct": 11.819345711511541,
+        "annualizedTurnoverPct": 141.8321485381385,
+        "endingIndex": 281.0200769616516,
+        "positiveMonthRatePct": 68.75,
+        "bestMonthPct": 16.677337545806225,
+        "worstMonthPct": -16.18804198777535,
+        "newHighMonthPct": 52.083333333333336,
+        "longestUnderwaterMonths": 4,
+        "positive3MonthWindowPct": 76.08695652173914,
+        "monthlyReturnStdPct": 6.259410874476461
+      },
+      "months": [
+        {
+          "month": "2022-10",
+          "returnPct": 4.423595978996153,
+          "turnoverPct": null,
+          "rebalanced": true,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-11",
+          "returnPct": 4.676510757652941,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-12",
+          "returnPct": -7.107684284524951,
+          "turnoverPct": 21.669279756172276,
+          "rebalanced": true,
+          "holdings": 360,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-01",
+          "returnPct": 7.893338057479116,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 360,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-02",
+          "returnPct": -2.2982870645813502,
+          "turnoverPct": 19.932131207209128,
+          "rebalanced": true,
+          "holdings": 351,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-03",
+          "returnPct": 2.993763967210872,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 351,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-04",
+          "returnPct": -1.4851612797346814,
+          "turnoverPct": 25.4828525386806,
+          "rebalanced": true,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-05",
+          "returnPct": 5.712665566786779,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-06",
+          "returnPct": 6.862974382122933,
+          "turnoverPct": 23.56567407472636,
+          "rebalanced": true,
+          "holdings": 342,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-07",
+          "returnPct": 5.21011080196081,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 342,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-08",
+          "returnPct": -1.7599905118436565,
+          "turnoverPct": 15.726676674226269,
+          "rebalanced": true,
+          "holdings": 338,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-09",
+          "returnPct": -6.087876806619419,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 338,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-10",
+          "returnPct": -4.913067132662952,
+          "turnoverPct": 19.68079799498321,
+          "rebalanced": true,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-11",
+          "returnPct": 11.176719446954353,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-12",
+          "returnPct": 7.001502036591134,
+          "turnoverPct": 20.181319232183668,
+          "rebalanced": true,
+          "holdings": 333,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-01",
+          "returnPct": 0.8865900216826317,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 333,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-02",
+          "returnPct": 6.460498919260971,
+          "turnoverPct": 16.735010261832453,
+          "rebalanced": true,
+          "holdings": 328,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-03",
+          "returnPct": 2.2993896522234047,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 328,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-04",
+          "returnPct": -6.798106541613979,
+          "turnoverPct": 20.492976987621503,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-05",
+          "returnPct": 6.962401542839491,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-06",
+          "returnPct": 2.651369245597701,
+          "turnoverPct": 19.41496662340103,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-07",
+          "returnPct": -1.8793934057210526,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-08",
+          "returnPct": 1.42214312773008,
+          "turnoverPct": 22.569914013305674,
+          "rebalanced": true,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-09",
+          "returnPct": 2.9165496816952796,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-10",
+          "returnPct": -0.48420246494144115,
+          "turnoverPct": 17.56785145519164,
+          "rebalanced": true,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-11",
+          "returnPct": 7.598670253183193,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-12",
+          "returnPct": -3.9145867340802165,
+          "turnoverPct": 26.669444455182077,
+          "rebalanced": true,
+          "holdings": 319,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-01",
+          "returnPct": 4.713688018702555,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 319,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-02",
+          "returnPct": -3.914698900442992,
+          "turnoverPct": 21.212030554612145,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-03",
+          "returnPct": -9.05901683093261,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-04",
+          "returnPct": 1.5934064348773536,
+          "turnoverPct": 25.115725897685298,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-05",
+          "returnPct": 6.2542558376149415,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-06",
+          "returnPct": 6.2148089933519834,
+          "turnoverPct": 17.628417332051797,
+          "rebalanced": true,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-07",
+          "returnPct": 1.4736604587132218,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-08",
+          "returnPct": 3.1199127873318133,
+          "turnoverPct": 23.89119361335174,
+          "rebalanced": true,
+          "holdings": 321,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-09",
+          "returnPct": 8.797334590717053,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 321,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-10",
+          "returnPct": 9.985065298470431,
+          "turnoverPct": 28.126948727912737,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-11",
+          "returnPct": -4.448860052600045,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-12",
+          "returnPct": 1.146683949671945,
+          "turnoverPct": 32.37125093854443,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-01",
+          "returnPct": 12.022996215125502,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-02",
+          "returnPct": 2.128464045070455,
+          "turnoverPct": 32.01631142844226,
+          "rebalanced": true,
+          "holdings": 323,
+          "missingReturnWeightPct": 0.14442076846105273
+        },
+        {
+          "month": "2026-03",
+          "returnPct": -4.163440082013614,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 323,
+          "missingReturnWeightPct": 0.14141088854260864
+        },
+        {
+          "month": "2026-04",
+          "returnPct": 16.677337545806225,
+          "turnoverPct": 32.34253188657159,
+          "rebalanced": true,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-05",
+          "returnPct": 11.673104055252148,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.14373881593414803
+        },
+        {
+          "month": "2026-06",
+          "returnPct": 9.244455049698196,
+          "turnoverPct": 37.00256863786083,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-07",
+          "returnPct": -16.18804198777535,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.15214117505317268
+        },
+        {
+          "month": "2026-08",
+          "returnPct": 3.9181128035550516,
+          "turnoverPct": 36.11337414929374,
+          "rebalanced": true,
+          "holdings": 328,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-09",
+          "returnPct": 2.03152821973529,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 328,
+          "missingReturnWeightPct": 0.4888863270781226
+        }
+      ]
+    },
+    "QUQU-3M": {
+      "metrics": {
+        "months": 48,
+        "totalReturnPct": 167.85124710977448,
+        "CAGRpct": 27.930299963108784,
+        "MDDpct": -16.969765372670366,
+        "Sharpe0rf": 1.2751790197559614,
+        "avgMonthlyTurnoverPct": 8.76232394369964,
+        "annualizedTurnoverPct": 105.14788732439567,
+        "endingIndex": 267.8512471097745,
+        "positiveMonthRatePct": 68.75,
+        "bestMonthPct": 16.677337545806225,
+        "worstMonthPct": -16.969765372670352,
+        "newHighMonthPct": 45.83333333333333,
+        "longestUnderwaterMonths": 5,
+        "positive3MonthWindowPct": 73.91304347826086,
+        "monthlyReturnStdPct": 6.137712965035287
+      },
+      "months": [
+        {
+          "month": "2022-10",
+          "returnPct": 4.423595978996153,
+          "turnoverPct": null,
+          "rebalanced": true,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-11",
+          "returnPct": 4.676510757652941,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-12",
+          "returnPct": -7.218198412063781,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-01",
+          "returnPct": 7.101129975523102,
+          "turnoverPct": 23.21081272978518,
+          "rebalanced": true,
+          "holdings": 360,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-02",
+          "returnPct": -2.982790700684612,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 360,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-03",
+          "returnPct": 2.306671815096739,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 360,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-04",
+          "returnPct": -1.4851612797346814,
+          "turnoverPct": 33.91823960759375,
+          "rebalanced": true,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-05",
+          "returnPct": 5.712665566786779,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-06",
+          "returnPct": 6.5218898560361005,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-07",
+          "returnPct": 4.49806735325291,
+          "turnoverPct": 23.826643320139446,
+          "rebalanced": true,
+          "holdings": 341,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-08",
+          "returnPct": -1.8516299771688005,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 341,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-09",
+          "returnPct": -6.09040896700378,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 341,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-10",
+          "returnPct": -4.913067132662952,
+          "turnoverPct": 22.77180989800348,
+          "rebalanced": true,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-11",
+          "returnPct": 11.176719446954353,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-12",
+          "returnPct": 7.531748041472608,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-01",
+          "returnPct": 0.8796944119724426,
+          "turnoverPct": 22.902091730116506,
+          "rebalanced": true,
+          "holdings": 331,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-02",
+          "returnPct": 5.813899550823964,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 331,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-03",
+          "returnPct": 2.011997952738298,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 331,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-04",
+          "returnPct": -6.798106541613979,
+          "turnoverPct": 23.848965117761683,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-05",
+          "returnPct": 6.962401542839491,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-06",
+          "returnPct": 2.805484867738528,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-07",
+          "returnPct": -1.4642440318633043,
+          "turnoverPct": 19.246212390310387,
+          "rebalanced": true,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-08",
+          "returnPct": 1.264908170292145,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-09",
+          "returnPct": 3.7480706049267676,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 320,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-10",
+          "returnPct": -0.48420246494144115,
+          "turnoverPct": 25.36120261437808,
+          "rebalanced": true,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-11",
+          "returnPct": 7.598670253183193,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-12",
+          "returnPct": -3.0836496022612736,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-01",
+          "returnPct": 3.917737766719198,
+          "turnoverPct": 28.508942740739794,
+          "rebalanced": true,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-02",
+          "returnPct": -3.399170392512074,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-03",
+          "returnPct": -9.595319455398489,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-04",
+          "returnPct": 1.5934064348773536,
+          "turnoverPct": 26.689712209747285,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-05",
+          "returnPct": 6.2542558376149415,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-06",
+          "returnPct": 5.670746574627605,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-07",
+          "returnPct": 2.3842007956958122,
+          "turnoverPct": 23.273270976853087,
+          "rebalanced": true,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-08",
+          "returnPct": 2.97273015831252,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-09",
+          "returnPct": 8.14039670664284,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 317,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-10",
+          "returnPct": 9.985065298470431,
+          "turnoverPct": 32.717472591731806,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-11",
+          "returnPct": -4.448860052600045,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-12",
+          "returnPct": 1.4269360873137904,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-01",
+          "returnPct": 8.370564076801124,
+          "turnoverPct": 33.442787968878115,
+          "rebalanced": true,
+          "holdings": 323,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-02",
+          "returnPct": 1.0615977081042116,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 323,
+          "missingReturnWeightPct": 1.1768959540263624
+        },
+        {
+          "month": "2026-03",
+          "returnPct": -3.3504566635906285,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 323,
+          "missingReturnWeightPct": 1.1645332952538376
+        },
+        {
+          "month": "2026-04",
+          "returnPct": 16.677337545806225,
+          "turnoverPct": 33.6319017617376,
+          "rebalanced": true,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-05",
+          "returnPct": 11.673104055252148,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.14373881593414803
+        },
+        {
+          "month": "2026-06",
+          "returnPct": 7.773881893402668,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.9702680853684117
+        },
+        {
+          "month": "2026-07",
+          "returnPct": -16.969765372670352,
+          "turnoverPct": 38.47915969610684,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-08",
+          "returnPct": 4.540174343208014,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.04457407817839158
+        },
+        {
+          "month": "2026-09",
+          "returnPct": 5.108467764068614,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.1504883939576483
+        }
+      ]
+    },
+    "QUQU-6M": {
+      "metrics": {
+        "months": 48,
+        "totalReturnPct": 198.62911686725218,
+        "CAGRpct": 31.456794329489558,
+        "MDDpct": -13.204236569911131,
+        "Sharpe0rf": 1.4823739258172604,
+        "avgMonthlyTurnoverPct": 4.974980948498023,
+        "annualizedTurnoverPct": 59.69977138197628,
+        "endingIndex": 298.62911686725215,
+        "positiveMonthRatePct": 66.66666666666666,
+        "bestMonthPct": 16.677337545806225,
+        "worstMonthPct": -11.224100352618505,
+        "newHighMonthPct": 45.83333333333333,
+        "longestUnderwaterMonths": 5,
+        "positive3MonthWindowPct": 78.26086956521739,
+        "monthlyReturnStdPct": 5.761746278830326
+      },
+      "months": [
+        {
+          "month": "2022-10",
+          "returnPct": 4.423595978996153,
+          "turnoverPct": null,
+          "rebalanced": true,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-11",
+          "returnPct": 4.676510757652941,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2022-12",
+          "returnPct": -7.218198412063781,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-01",
+          "returnPct": 7.449932821394056,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-02",
+          "returnPct": -2.847438642862654,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-03",
+          "returnPct": 2.2998784185955357,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 362,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-04",
+          "returnPct": -1.4851612797346814,
+          "turnoverPct": 37.04127978116258,
+          "rebalanced": true,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-05",
+          "returnPct": 5.712665566786779,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-06",
+          "returnPct": 6.5218898560361005,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-07",
+          "returnPct": 5.403728166589938,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-08",
+          "returnPct": -2.2051284341206623,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-09",
+          "returnPct": -6.661330099543472,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 350,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-10",
+          "returnPct": -4.913067132662952,
+          "turnoverPct": 31.153411455152668,
+          "rebalanced": true,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-11",
+          "returnPct": 11.176719446954353,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2023-12",
+          "returnPct": 7.531748041472608,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-01",
+          "returnPct": 1.791298708044553,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-02",
+          "returnPct": 7.284189631366411,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-03",
+          "returnPct": 2.273068820520896,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 336,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-04",
+          "returnPct": -6.798106541613979,
+          "turnoverPct": 25.228990632873604,
+          "rebalanced": true,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-05",
+          "returnPct": 6.962401542839491,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-06",
+          "returnPct": 2.805484867738528,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-07",
+          "returnPct": -1.8985347708964206,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-08",
+          "returnPct": 0.7570764478275871,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-09",
+          "returnPct": 3.5901345614873126,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 326,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-10",
+          "returnPct": -0.48420246494144115,
+          "turnoverPct": 31.077549536237953,
+          "rebalanced": true,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-11",
+          "returnPct": 7.598670253183193,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2024-12",
+          "returnPct": -3.0836496022612736,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-01",
+          "returnPct": 3.493030292281607,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-02",
+          "returnPct": -1.109766321738903,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-03",
+          "returnPct": -7.5580581177489226,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 318,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-04",
+          "returnPct": 1.5934064348773536,
+          "turnoverPct": 26.264171034537338,
+          "rebalanced": true,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-05",
+          "returnPct": 6.2542558376149415,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-06",
+          "returnPct": 5.670746574627605,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-07",
+          "returnPct": 2.109065758465345,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-08",
+          "returnPct": 3.7352469433257207,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-09",
+          "returnPct": 7.712402923573336,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 316,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-10",
+          "returnPct": 9.985065298470431,
+          "turnoverPct": 40.08912315286744,
+          "rebalanced": true,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-11",
+          "returnPct": -4.448860052600045,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2025-12",
+          "returnPct": 1.4269360873137904,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-01",
+          "returnPct": 8.888425172813497,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-02",
+          "returnPct": -0.41863359667586586,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.19214767789342874
+        },
+        {
+          "month": "2026-03",
+          "returnPct": -3.569630923134992,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 322,
+          "missingReturnWeightPct": 0.1929554542515444
+        },
+        {
+          "month": "2026-04",
+          "returnPct": 16.677337545806225,
+          "turnoverPct": 42.96957898657547,
+          "rebalanced": true,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.0
+        },
+        {
+          "month": "2026-05",
+          "returnPct": 11.673104055252148,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.14373881593414803
+        },
+        {
+          "month": "2026-06",
+          "returnPct": 7.773881893402668,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 0.9702680853684117
+        },
+        {
+          "month": "2026-07",
+          "returnPct": -11.224100352618505,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 1.0332523683305233
+        },
+        {
+          "month": "2026-08",
+          "returnPct": 5.586587997283088,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 1.5061117640281227
+        },
+        {
+          "month": "2026-09",
+          "returnPct": 3.433812967420846,
+          "turnoverPct": 0.0,
+          "rebalanced": false,
+          "holdings": 324,
+          "missingReturnWeightPct": 1.6265215721599784
+        }
+      ]
+    },
+    "QUQU-3S": {
+      "metrics": {
+        "months": 48,
+        "totalReturnPct": 194.36362461691567,
+        "CAGRpct": 30.984840466419563,
+        "MDDpct": -15.73241650480236,
+        "Sharpe0rf": 1.3466216660381733,
+        "avgMonthlyTurnoverPct": 9.184898409648866,
+        "annualizedTurnoverPct": 110.21878091578638,
+        "endingIndex": 294.3636246169157,
+        "positiveMonthRatePct": 68.75,
+        "bestMonthPct": 20.027256260541826,
+        "worstMonthPct": -15.73241650480236,
+        "newHighMonthPct": 50.0,
+        "longestUnderwaterMonths": 4,
+        "positive3MonthWindowPct": 76.08695652173914,
+        "monthlyReturnStdPct": 6.353497244904857
+      },
+      "months": [
+        {
+          "month": "2022-10",
+          "returnPct": 4.423595978996153,
+          "turnoverPct": null,
+          "refreshedSleeve": null,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ]
+        },
+        {
+          "month": "2022-11",
+          "returnPct": 4.465147797369995,
+          "turnoverPct": 5.267313080340498,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33400776228480494,
+            0.3319844754303903,
+            0.33400776228480494
+          ]
+        },
+        {
+          "month": "2022-12",
+          "returnPct": -7.196896268808528,
+          "turnoverPct": 7.237707641682524,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3339310937153875,
+            0.331740061039847,
+            0.3343288452447655
+          ]
+        },
+        {
+          "month": "2023-01",
+          "returnPct": 7.255431337701457,
+          "turnoverPct": 7.750812080880204,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.333450688928503,
+            0.3302320293034039,
+            0.3363172817680931
+          ]
+        },
+        {
+          "month": "2023-02",
+          "returnPct": -2.4312725315261186,
+          "turnoverPct": 8.63362480968955,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3315658215305766,
+            0.33068213316102796,
+            0.33775204530839537
+          ]
+        },
+        {
+          "month": "2023-03",
+          "returnPct": 3.078327809729231,
+          "turnoverPct": 8.41317438562765,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32908368237256086,
+            0.33041084672840476,
+            0.3405054708990344
+          ]
+        },
+        {
+          "month": "2023-04",
+          "returnPct": -1.427934722837354,
+          "turnoverPct": 11.161939189661794,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3288926310232732,
+            0.3310633118270313,
+            0.3400440571496955
+          ]
+        },
+        {
+          "month": "2023-05",
+          "returnPct": 4.670664125202806,
+          "turnoverPct": 8.750471808155286,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33216677281378165,
+            0.3312325868178938,
+            0.33660064036832443
+          ]
+        },
+        {
+          "month": "2023-06",
+          "returnPct": 6.693396365889681,
+          "turnoverPct": 9.698196282330148,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3316328244548855,
+            0.33123154359529844,
+            0.3371356319498161
+          ]
+        },
+        {
+          "month": "2023-07",
+          "returnPct": 4.855993263793157,
+          "turnoverPct": 7.901697021536974,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3305007958796621,
+            0.33122500453791826,
+            0.3382741995824197
+          ]
+        },
+        {
+          "month": "2023-08",
+          "returnPct": -1.7529991241505782,
+          "turnoverPct": 6.070744458769918,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33016900381343905,
+            0.3312014341245751,
+            0.33862956206198586
+          ]
+        },
+        {
+          "month": "2023-09",
+          "returnPct": -6.062509897353774,
+          "turnoverPct": 7.1306965203790815,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33007094490188416,
+            0.3311119963855115,
+            0.33881705871260437
+          ]
+        },
+        {
+          "month": "2023-10",
+          "returnPct": -4.454171232761938,
+          "turnoverPct": 7.516312810160086,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3284856511716793,
+            0.33241455038782153,
+            0.3390997984404991
+          ]
+        },
+        {
+          "month": "2023-11",
+          "returnPct": 10.859464605887847,
+          "turnoverPct": 8.605863614971161,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32942570318641323,
+            0.3312265120588151,
+            0.3393477847547717
+          ]
+        },
+        {
+          "month": "2023-12",
+          "returnPct": 7.063429609390814,
+          "turnoverPct": 7.256283186468125,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33086668195354746,
+            0.3299818186593501,
+            0.3391514993871024
+          ]
+        },
+        {
+          "month": "2024-01",
+          "returnPct": 0.9046487238095535,
+          "turnoverPct": 7.577539100539428,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3307848566812493,
+            0.3301243411936754,
+            0.3390908021250753
+          ]
+        },
+        {
+          "month": "2024-02",
+          "returnPct": 6.0523798643207005,
+          "turnoverPct": 6.56568184708492,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.330041019754419,
+            0.33139475147879216,
+            0.33856422876678877
+          ]
+        },
+        {
+          "month": "2024-03",
+          "returnPct": 2.4495149835197294,
+          "turnoverPct": 7.853973828013043,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32863155903591534,
+            0.3309091391568244,
+            0.3404593018072602
+          ]
+        },
+        {
+          "month": "2024-04",
+          "returnPct": -6.730082011847172,
+          "turnoverPct": 7.837522588043185,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3283918782497396,
+            0.3324986990088355,
+            0.3391094227414249
+          ]
+        },
+        {
+          "month": "2024-05",
+          "returnPct": 6.634072087503151,
+          "turnoverPct": 7.3458732227774215,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3294030065355856,
+            0.3324291509176456,
+            0.3381678425467688
+          ]
+        },
+        {
+          "month": "2024-06",
+          "returnPct": 2.7604004586414543,
+          "turnoverPct": 7.6075750869334176,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32954752660205255,
+            0.3326434349227928,
+            0.3378090384751546
+          ]
+        },
+        {
+          "month": "2024-07",
+          "returnPct": -1.6272021504806111,
+          "turnoverPct": 6.342541689684566,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3300934340694015,
+            0.33296354415220325,
+            0.3369430217783953
+          ]
+        },
+        {
+          "month": "2024-08",
+          "returnPct": 1.2778468364892825,
+          "turnoverPct": 8.019347904153806,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33005126326018014,
+            0.3334379361939014,
+            0.3365108005459185
+          ]
+        },
+        {
+          "month": "2024-09",
+          "returnPct": 3.0596159283623248,
+          "turnoverPct": 9.06639968689779,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3322560583552387,
+            0.3329750612491623,
+            0.334768880395599
+          ]
+        },
+        {
+          "month": "2024-10",
+          "returnPct": -0.4312840163466891,
+          "turnoverPct": 8.426413215801835,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3320794720151351,
+            0.3340075717904613,
+            0.3339129561944036
+          ]
+        },
+        {
+          "month": "2024-11",
+          "returnPct": 7.605661677656861,
+          "turnoverPct": 7.725950477068774,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3320578959334341,
+            0.3375912035347016,
+            0.3303509005318644
+          ]
+        },
+        {
+          "month": "2024-12",
+          "returnPct": -3.3769892960013204,
+          "turnoverPct": 10.234288516810853,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33306599701398804,
+            0.3384211304404317,
+            0.3285128725455802
+          ]
+        },
+        {
+          "month": "2025-01",
+          "returnPct": 4.119043104076581,
+          "turnoverPct": 9.495359437759197,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33242204216296095,
+            0.33718888183026163,
+            0.33038907600677736
+          ]
+        },
+        {
+          "month": "2025-02",
+          "returnPct": -3.1635715019313504,
+          "turnoverPct": 8.83899006214633,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3316132735460996,
+            0.3345734218061317,
+            0.3338133046477688
+          ]
+        },
+        {
+          "month": "2025-03",
+          "returnPct": -9.044087167223902,
+          "turnoverPct": 7.410234257500778,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3296035532555457,
+            0.3345185043354817,
+            0.3358779424089727
+          ]
+        },
+        {
+          "month": "2025-04",
+          "returnPct": 2.6022265671929334,
+          "turnoverPct": 8.797023979700628,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32636277855374923,
+            0.3383761883144991,
+            0.33526103313175176
+          ]
+        },
+        {
+          "month": "2025-05",
+          "returnPct": 6.4676675113902515,
+          "turnoverPct": 9.946360496608248,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3257085928421889,
+            0.33696791306159196,
+            0.3373234940962192
+          ]
+        },
+        {
+          "month": "2025-06",
+          "returnPct": 5.862446909297003,
+          "turnoverPct": 7.758331533134228,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32511878552074985,
+            0.3364349425439518,
+            0.3384462719352983
+          ]
+        },
+        {
+          "month": "2025-07",
+          "returnPct": 1.738498568256297,
+          "turnoverPct": 7.56657759508979,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3271822121188172,
+            0.33525253416516865,
+            0.3375652537160142
+          ]
+        },
+        {
+          "month": "2025-08",
+          "returnPct": 2.973133006469597,
+          "turnoverPct": 9.074570530881749,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3271809321271598,
+            0.3357304092386131,
+            0.3370886586342272
+          ]
+        },
+        {
+          "month": "2025-09",
+          "returnPct": 9.43669283267079,
+          "turnoverPct": 10.239049698112005,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32330541867871215,
+            0.33376898296863783,
+            0.34292559835264996
+          ]
+        },
+        {
+          "month": "2025-10",
+          "returnPct": 7.625480075933355,
+          "turnoverPct": 10.57773617437914,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.33039357928661117,
+            0.3290914804162389,
+            0.34051494029714985
+          ]
+        },
+        {
+          "month": "2025-11",
+          "returnPct": -3.9316689398708027,
+          "turnoverPct": 13.60066738518378,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.32861488051018617,
+            0.33095023880014185,
+            0.340434880689672
+          ]
+        },
+        {
+          "month": "2025-12",
+          "returnPct": 1.0987439580354197,
+          "turnoverPct": 13.471817844695282,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.3296816476442266,
+            0.32972204092330376,
+            0.3405963114324696
+          ]
+        },
+        {
+          "month": "2026-01",
+          "returnPct": 11.675761308702004,
+          "turnoverPct": 11.025473439396256,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.0,
+          "sleeveNavSharesEnd": [
+            0.31992426738164575,
+            0.33842040061649253,
+            0.34165533200186177
+          ]
+        },
+        {
+          "month": "2026-02",
+          "returnPct": 1.6330482014984105,
+          "turnoverPct": 12.825354836222969,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 1.0191315112868575,
+          "sleeveNavSharesEnd": [
+            0.31812543438707136,
+            0.3400700493402128,
+            0.34180451627271585
+          ]
+        },
+        {
+          "month": "2026-03",
+          "returnPct": -3.905828435490377,
+          "turnoverPct": 13.37433246403679,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.4185572682547629,
+          "sleeveNavSharesEnd": [
+            0.31996402546190383,
+            0.33915838108898116,
+            0.34087759344911506
+          ]
+        },
+        {
+          "month": "2026-04",
+          "returnPct": 20.027256260541826,
+          "turnoverPct": 10.76099867162486,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 1.3592331494830758,
+          "sleeveNavSharesEnd": [
+            0.3110339414932233,
+            0.3490043853898185,
+            0.33996167311695824
+          ]
+        },
+        {
+          "month": "2026-05",
+          "returnPct": 14.773253149048472,
+          "turnoverPct": 11.158182684262933,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.994721681947594,
+          "sleeveNavSharesEnd": [
+            0.3026325799790741,
+            0.3535611701438976,
+            0.34380624987702824
+          ]
+        },
+        {
+          "month": "2026-06",
+          "returnPct": 8.464661113785233,
+          "turnoverPct": 11.039567327225821,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.4505860483021219,
+          "sleeveNavSharesEnd": [
+            0.3007052029374309,
+            0.35301679255108126,
+            0.3462780045114878
+          ]
+        },
+        {
+          "month": "2026-07",
+          "returnPct": -15.73241650480236,
+          "turnoverPct": 11.57088352527962,
+          "refreshedSleeve": 0,
+          "missingReturnWeightPct": 0.22766138556157392,
+          "sleeveNavSharesEnd": [
+            0.2962897773730103,
+            0.35930450490129145,
+            0.34440571772569833
+          ]
+        },
+        {
+          "month": "2026-08",
+          "returnPct": 4.417625106053857,
+          "turnoverPct": 13.607705935298734,
+          "refreshedSleeve": 1,
+          "missingReturnWeightPct": 0.10098454433252035,
+          "sleeveNavSharesEnd": [
+            0.29663751642718583,
+            0.35758566653124463,
+            0.3457768170415695
+          ]
+        },
+        {
+          "month": "2026-09",
+          "returnPct": 2.7958318688829253,
+          "turnoverPct": 13.5530633204954,
+          "refreshedSleeve": 2,
+          "missingReturnWeightPct": 0.21945924656095522,
+          "sleeveNavSharesEnd": [
+            0.303311080480087,
+            0.3549269592194412,
+            0.3417619603004719
+          ]
+        }
+      ]
+    }
+  },
+  "targets": {
+    "2022-10": {
+      "holdings": 362,
+      "maxWeight": 0.023593027970706514,
+      "top10Weight": 0.15816595457180854
+    },
+    "2022-11": {
+      "holdings": 361,
+      "maxWeight": 0.031861664891433245,
+      "top10Weight": 0.15541718824277148
+    },
+    "2022-12": {
+      "holdings": 360,
+      "maxWeight": 0.023211156436743985,
+      "top10Weight": 0.1362010308090555
+    },
+    "2023-01": {
+      "holdings": 360,
+      "maxWeight": 0.021339207724253878,
+      "top10Weight": 0.1437408707619585
+    },
+    "2023-02": {
+      "holdings": 351,
+      "maxWeight": 0.019673036460299834,
+      "top10Weight": 0.1405825522853794
+    },
+    "2023-03": {
+      "holdings": 350,
+      "maxWeight": 0.04441569865155324,
+      "top10Weight": 0.1653432186686745
+    },
+    "2023-04": {
+      "holdings": 350,
+      "maxWeight": 0.06083298947406838,
+      "top10Weight": 0.24900292902157464
+    },
+    "2023-05": {
+      "holdings": 344,
+      "maxWeight": 0.046777068171430305,
+      "top10Weight": 0.25554210865124927
+    },
+    "2023-06": {
+      "holdings": 342,
+      "maxWeight": 0.06419852660452358,
+      "top10Weight": 0.36359914709239216
+    },
+    "2023-07": {
+      "holdings": 341,
+      "maxWeight": 0.06128511221707309,
+      "top10Weight": 0.3384573185733441
+    },
+    "2023-08": {
+      "holdings": 338,
+      "maxWeight": 0.059745532595781144,
+      "top10Weight": 0.33556523002392363
+    },
+    "2023-09": {
+      "holdings": 337,
+      "maxWeight": 0.062192002674414305,
+      "top10Weight": 0.29415668470889705
+    },
+    "2023-10": {
+      "holdings": 336,
+      "maxWeight": 0.04616784291265757,
+      "top10Weight": 0.2520059285175501
+    },
+    "2023-11": {
+      "holdings": 334,
+      "maxWeight": 0.02972000792370582,
+      "top10Weight": 0.2056565344287407
+    },
+    "2023-12": {
+      "holdings": 333,
+      "maxWeight": 0.033748486364721816,
+      "top10Weight": 0.2121075069297609
+    },
+    "2024-01": {
+      "holdings": 331,
+      "maxWeight": 0.03180165614680015,
+      "top10Weight": 0.19606054674116666
+    },
+    "2024-02": {
+      "holdings": 328,
+      "maxWeight": 0.039941996367197106,
+      "top10Weight": 0.22395747989156364
+    },
+    "2024-03": {
+      "holdings": 327,
+      "maxWeight": 0.057036971773790225,
+      "top10Weight": 0.2680010808086909
+    },
+    "2024-04": {
+      "holdings": 326,
+      "maxWeight": 0.08198806753376554,
+      "top10Weight": 0.25778486316034793
+    },
+    "2024-05": {
+      "holdings": 324,
+      "maxWeight": 0.0796426987205088,
+      "top10Weight": 0.2630392474405632
+    },
+    "2024-06": {
+      "holdings": 322,
+      "maxWeight": 0.11360001764219474,
+      "top10Weight": 0.3083221044880045
+    },
+    "2024-07": {
+      "holdings": 320,
+      "maxWeight": 0.10379123228212685,
+      "top10Weight": 0.3166878601698195
+    },
+    "2024-08": {
+      "holdings": 320,
+      "maxWeight": 0.05787166665573894,
+      "top10Weight": 0.2747943293897417
+    },
+    "2024-09": {
+      "holdings": 320,
+      "maxWeight": 0.058500755056411856,
+      "top10Weight": 0.25053953311196553
+    },
+    "2024-10": {
+      "holdings": 318,
+      "maxWeight": 0.05238260806047267,
+      "top10Weight": 0.24032163780655713
+    },
+    "2024-11": {
+      "holdings": 320,
+      "maxWeight": 0.03575104510368855,
+      "top10Weight": 0.2134747389906168
+    },
+    "2024-12": {
+      "holdings": 319,
+      "maxWeight": 0.03845680614057201,
+      "top10Weight": 0.23399337740620324
+    },
+    "2025-01": {
+      "holdings": 317,
+      "maxWeight": 0.0410206870124358,
+      "top10Weight": 0.27329970562340006
+    },
+    "2025-02": {
+      "holdings": 316,
+      "maxWeight": 0.04599438471501317,
+      "top10Weight": 0.28193830947334186
+    },
+    "2025-03": {
+      "holdings": 316,
+      "maxWeight": 0.02713778338699538,
+      "top10Weight": 0.213791631043547
+    },
+    "2025-04": {
+      "holdings": 316,
+      "maxWeight": 0.025980663013458596,
+      "top10Weight": 0.18301040853378922
+    },
+    "2025-05": {
+      "holdings": 316,
+      "maxWeight": 0.027775299291432794,
+      "top10Weight": 0.2188321289742856
+    },
+    "2025-06": {
+      "holdings": 317,
+      "maxWeight": 0.03212332978325198,
+      "top10Weight": 0.20008123282068133
+    },
+    "2025-07": {
+      "holdings": 317,
+      "maxWeight": 0.04986007964261427,
+      "top10Weight": 0.23921348185505864
+    },
+    "2025-08": {
+      "holdings": 321,
+      "maxWeight": 0.058353060104099415,
+      "top10Weight": 0.2998977085990912
+    },
+    "2025-09": {
+      "holdings": 321,
+      "maxWeight": 0.06037778185441178,
+      "top10Weight": 0.29632459525083965
+    },
+    "2025-10": {
+      "holdings": 322,
+      "maxWeight": 0.05256187702448204,
+      "top10Weight": 0.2860871748483237
+    },
+    "2025-11": {
+      "holdings": 324,
+      "maxWeight": 0.056273776016857346,
+      "top10Weight": 0.3562489203154879
+    },
+    "2025-12": {
+      "holdings": 322,
+      "maxWeight": 0.06340284191582204,
+      "top10Weight": 0.36884047283266913
+    },
+    "2026-01": {
+      "holdings": 323,
+      "maxWeight": 0.0567579204679638,
+      "top10Weight": 0.3083814914743714
+    },
+    "2026-02": {
+      "holdings": 323,
+      "maxWeight": 0.10483227948745345,
+      "top10Weight": 0.40183751523569017
+    },
+    "2026-03": {
+      "holdings": 324,
+      "maxWeight": 0.05958767622573536,
+      "top10Weight": 0.29371336456149766
+    },
+    "2026-04": {
+      "holdings": 324,
+      "maxWeight": 0.04271607300133607,
+      "top10Weight": 0.2183455118899562
+    },
+    "2026-05": {
+      "holdings": 325,
+      "maxWeight": 0.04302205822875855,
+      "top10Weight": 0.3050997963935519
+    },
+    "2026-06": {
+      "holdings": 326,
+      "maxWeight": 0.1111194232777276,
+      "top10Weight": 0.41340537073503214
+    },
+    "2026-07": {
+      "holdings": 326,
+      "maxWeight": 0.07109310701390015,
+      "top10Weight": 0.40947676992358817
+    },
+    "2026-08": {
+      "holdings": 328,
+      "maxWeight": 0.05539669496121317,
+      "top10Weight": 0.2895502297049996
+    },
+    "2026-09": {
+      "holdings": 328,
+      "maxWeight": 0.06407412672760088,
+      "top10Weight": 0.3051707990048808
+    }
+  }
+}
