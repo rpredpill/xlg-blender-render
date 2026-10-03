@@ -115,6 +115,35 @@ function currentNYMonth(){
   return`${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}`;
 }
 function storageKey(kind,c){return`somx.${kind}.v2.${signature(c)}`}
+function isQuotaError(e){return e?.name==="QuotaExceededError"||e?.name==="NS_ERROR_DOM_QUOTA_REACHED"||String(e?.message||e).toLowerCase().includes("quota")}
+function clearLegacyQuquCache(){
+  for(const kind of ["state","holdings","weights","history","components"]){
+    try{localStorage.removeItem(`somx.${kind}.v2.ququ-ndx100-v1`)}catch{}
+  }
+}
+function compactQuquContext(c,st,holdings,targetWeights,allocationYm,ym){
+  const hk=storageKey("holdings",c),wk=storageKey("weights",c),sk=storageKey("state",c),histk=storageKey("history",c);
+  const hh=allocationYm===ym?{[ym]:[...holdings]}:{[allocationYm]:[...holdings],[ym]:[...holdings]};
+  const wh=allocationYm===ym?{[ym]:{...targetWeights}}:{[allocationYm]:{...targetWeights},[ym]:{...targetWeights}};
+  clearLegacyQuquCache();
+  // Replace the two large derived maps first. This shrinks an old oversized
+  // QUQU cache before any new bytes are added to localStorage.
+  try{localStorage.removeItem(hk);localStorage.removeItem(wk)}catch{}
+  const write=()=>{
+    localStorage.setItem(hk,JSON.stringify(hh));
+    localStorage.setItem(wk,JSON.stringify(wh));
+    localStorage.setItem(sk,JSON.stringify(st));
+  };
+  try{write()}
+  catch(e){
+    if(!isQuotaError(e))throw e;
+    // Monthly history is a derived browser cache. Drop it only as a last-resort
+    // quota recovery; the production snapshot remains the source of truth.
+    try{localStorage.removeItem(histk)}catch{}
+    try{localStorage.removeItem(hk);localStorage.removeItem(wk);localStorage.removeItem(sk)}catch{}
+    write();
+  }
+}
 async function fetchSnapshot(c){
   const mode=c.mode,name=mode==="snpi"?"SNPI":mode==="snpy"?"SNPY":mode==="quu"?"QUU":"QUQU";
   const file=mode==="quu"?"quu-latest.json":mode==="ququ"?"ququ-latest.json":"snpi-latest.json";
@@ -139,6 +168,10 @@ async function seedSnapshotContext(c){
   c.holdings=holdings.length;c.entryRank=holdings.length;c.exitRank=holdings.length;
   const allocationYm=c.mode==="ququ"&&/^\d{4}-\d{2}$/.test(String(j.allocationMonth||""))?String(j.allocationMonth):ym;
   const st={rebalanceMonth:ym,strategyAnchor:ym,initialized:true,holdings,statuses:Object.fromEntries(holdings.map(s=>[s,"IN"])),targetWeights,basePrices:{},updatedAt:new Date().toISOString(),snapshotAt:j.generatedAt||null,snapshotAllocationMonth:allocationYm};
+  if(c.mode==="ququ"){
+    compactQuquContext(c,st,holdings,targetWeights,allocationYm,ym);
+    return j;
+  }
   let hh={},wh={};
   try{hh=JSON.parse(localStorage.getItem(storageKey("holdings",c))||"{}")||{}}catch{}
   try{wh=JSON.parse(localStorage.getItem(storageKey("weights",c))||"{}")||{}}catch{}
@@ -207,9 +240,6 @@ function initUI(){
       c.holdings=j.rows.length;c.entryRank=j.rows.length;c.exitRank=j.rows.length;
       activeMode=editMode;saveMode(activeMode);
 
-      // QUQU is a production-snapshot strategy. Applying it means activating
-      // the validated snapshot we just persisted, not asking the generic live
-      // engine to rebuild/re-rank it. Reload so app.js boots directly in QUQU.
       if(c.mode==="ququ"){
         box.textContent=`QUQU v2 적용 완료 · ${j.rows.length}종목 · 다시 불러오는 중…`;
         updateCurrent();
