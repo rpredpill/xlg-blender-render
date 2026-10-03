@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/nani-signal.yml'
       - 'tools/nani_live.py'
+      - 'tools/nani_live_v2.py'
       - 'tools/nani_ndx_source.py'
   schedule:
     - cron: '50 2 2 * *'
@@ -32,16 +33,17 @@ jobs:
       - name: Install dependencies
         run: pip install --disable-pip-version-check numpy pandas yfinance requests lxml
 
-      - name: Load Nani engine from main
+      - name: Load Nani engines from main
         run: |
-          git show origin/main:tools/nani_live.py > /tmp/nani_live.py
+          git show origin/main:tools/nani_live.py > /tmp/nani_live_legacy.py
+          git show origin/main:tools/nani_live_v2.py > /tmp/nani_live_v2.py
           git show origin/main:tools/nani_ndx_source.py > /tmp/nani_ndx_source.py
-          python -m py_compile /tmp/nani_live.py /tmp/nani_ndx_source.py
+          python -m py_compile /tmp/nani_live_legacy.py /tmp/nani_live_v2.py /tmp/nani_ndx_source.py
 
       - name: Build independent Nasdaq-100 source
         run: python /tmp/nani_ndx_source.py --output /tmp/nani-ndx-source.json
 
-      - name: Build Nani snapshot and history
+      - name: Build Nani v2 snapshot and forward-only history
         shell: bash
         run: |
           set -euo pipefail
@@ -55,26 +57,9 @@ jobs:
           ndx=json.load(open('/tmp/nani-ndx-source.json',encoding='utf-8'))
           rows=[{'ticker':s} for s in ndx['symbols']]
           Path('quu-latest.json').write_text(json.dumps({'strategy':'Nani NDX source adapter','holdings':len(rows),'rows':rows},indent=2),encoding='utf-8')
-
-          # One-time correction: the first Nani build used QUU's selected sleeve
-          # as the US universe. Rebuild those completed records once when that
-          # old source marker is detected; later runs keep archived month-end
-          # records stable.
-          rebuild=False
-          try:
-              old=json.load(open('nani-latest.json',encoding='utf-8'))
-              src=((old.get('sources') or {}).get('nasdaq100') or '')
-              rebuild='quu-latest.json' in src
-          except Exception:
-              rebuild=True
-          if rebuild:
-              Path('nani-history.json').write_text('{}\n',encoding='utf-8')
-              print('Rebuilding Nani history with independent NDX universe')
-          else:
-              print('Keeping archived Nani month-end history')
           PY
 
-          python /tmp/nani_live.py --site .
+          python /tmp/nani_live_v2.py --site . --legacy /tmp/nani_live_legacy.py
 
           python - <<'PY'
           import json
@@ -97,44 +82,46 @@ jobs:
           restore_quu
           trap - EXIT
 
-      - name: Validate Nani outputs
+      - name: Validate Nani v2 outputs
         shell: python
         run: |
           import json, math
           latest=json.load(open('nani-latest.json',encoding='utf-8'))
           hist=json.load(open('nani-history.json',encoding='utf-8'))
-          if latest.get('strategy')!='Nani' or latest.get('ready') is not True:
-              raise RuntimeError(f"unexpected latest header {latest.get('strategy')} ready={latest.get('ready')}")
+          if latest.get('strategy')!='Nani' or latest.get('version')!='2.0' or latest.get('ready') is not True:
+              raise RuntimeError(f"unexpected latest header {latest.get('strategy')} v={latest.get('version')} ready={latest.get('ready')}")
           rows=latest.get('rows') or []
           if len(rows)<315:
               raise RuntimeError(f'only {len(rows)} holdings')
           total=sum(float(x['weight']) for x in rows)
-          mx=max(float(x['weight']) for x in rows)
           if not math.isfinite(total) or abs(total-1.0)>1e-8:
               raise RuntimeError(f'weight sum {total}')
-          if mx>0.20000001:
-              raise RuntimeError(f'20% cap violation {mx}')
+          rules=latest.get('rules') or {}
+          if rules.get('singleNameCap') is not None or rules.get('rebalanceCadence') is not None:
+              raise RuntimeError(f'Nani core must not inherit cap/cadence: {rules}')
+          checked=0
+          for r in rows:
+              fc=r.get('floatCap'); rm=r.get('relativeMomentum'); raw=r.get('rawWeightScore')
+              if all(isinstance(v,(int,float)) and math.isfinite(float(v)) for v in [fc,rm,raw]):
+                  expected=float(fc)*(float(rm)**3)
+                  if not math.isclose(float(raw),expected,rel_tol=1e-10,abs_tol=max(1e-4,abs(expected)*1e-12)):
+                      raise RuntimeError(f'raw score mismatch {r.get("ticker")}: {raw} vs {expected}')
+                  checked+=1
+          if checked<300:
+              raise RuntimeError(f'only {checked} formula rows')
           d=latest.get('diagnostics') or {}
-          if int(d.get('unionCount') or 0)<315:
-              raise RuntimeError(f"union too small {d.get('unionCount')}")
-          if int(d.get('ndxSourceCount') or 0)<95:
-              raise RuntimeError(f"NDX source too small {d.get('ndxSourceCount')}")
-          if int(d.get('jpAnchorCount') or 0)<3:
-              raise RuntimeError(f"JP float anchors too few {d.get('jpAnchorCount')}")
-          us={str(x.get('ticker')) for x in rows if x.get('country')=='US'}
-          for required in ['AAPL','MSFT','NVDA','SPCX','HONA']:
-              if required not in us:
-                  raise RuntimeError(f'missing required current NDX constituent {required}')
+          if int(d.get('unionCount') or 0)<315 or int(d.get('ndxSourceCount') or 0)<95 or int(d.get('nikkeiCount') or 0)!=225:
+              raise RuntimeError(f'bad universe diagnostics {d}')
           months=hist.get('months') or {}
-          completed=[m for m,r in months.items() if isinstance(r,dict) and isinstance(r.get('portfolioReturn'),(int,float))]
-          if len(completed)<1:
-              raise RuntimeError('no completed Nani month-end return records')
-          print('Nani', latest.get('allocationMonth'), 'rebalance', latest.get('rebalanceMonth'))
-          print('holdings', len(rows), 'weightSum', total, 'maxWeight', mx, 'top10', latest.get('top10Weight'))
-          print('universe', d.get('nasdaqCount'), '+', d.get('nikkeiCount'), '=', d.get('unionCount'))
-          print('NDX source', d.get('ndxSourceCount'), latest.get('sources',{}).get('nasdaq100Method'))
-          print('JP anchors', d.get('jpAnchorCount'), 'TOPIX date', d.get('topixWeightDate'))
-          print('completed history', completed[0], '..', completed[-1], 'count', len(completed))
+          bad=[m for m,r in months.items() if not isinstance(r,dict) or r.get('provenance')!='forward-live-v2']
+          if bad:
+              raise RuntimeError(f'non-forward Nani history remains: {bad}')
+          completed=[m for m,r in months.items() if isinstance(r.get('portfolioReturn'),(int,float))]
+          pending=[m for m,r in months.items() if not isinstance(r.get('portfolioReturn'),(int,float))]
+          print('Nani v2', latest.get('allocationMonth'))
+          print('holdings',len(rows),'weightSum',total,'maxWeight',latest.get('maxWeight'),'top10',latest.get('top10Weight'))
+          print('formulaRowsChecked',checked)
+          print('history completed',completed,'pending',pending)
 
       - name: Commit Nani outputs to Pages branch
         run: |
@@ -144,6 +131,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No Nani output changes'
           else
-            git commit -m 'Refresh Nani signal and month-end history'
+            git commit -m 'Refresh Nani v2 signal and forward-only history'
             git push origin HEAD:somx-pages
           fi
