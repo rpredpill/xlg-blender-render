@@ -6,6 +6,23 @@ import pandas as pd
 ROOT = pathlib.Path(__file__).resolve().parent
 HEADERS = {'User-Agent': 'Mozilla/5.0'}
 
+def rank_flow(results, symbols, dates):
+    if len(dates) != 21:
+        raise ValueError('FLOW requires 21 completed sessions')
+    rows, excluded = [], []
+    for symbol, record in results:
+        if symbol not in symbols:
+            continue
+        window = record['dollars'].reindex(dates) if record else None
+        if window is None or window.isna().any() or (window <= 0).any():
+            excluded.append(symbol)
+            continue
+        rows.append({'ticker': symbol, 'score': float(window.mean())})
+    rows.sort(key=lambda r: (-r['score'], r['ticker']))
+    for i, row in enumerate(rows):
+        row['rank'] = i + 1
+    return rows, excluded
+
 async def build():
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
     html = urllib.request.urlopen(urllib.request.Request(url, headers=HEADERS), timeout=40).read().decode()
@@ -42,8 +59,8 @@ async def build():
         today = ny_now.strftime('%Y-%m-%d')
         completed = (spy.dropna().index <= today) if (ny_now.hour,ny_now.minute)>=(16,15) else (spy.dropna().index < today)
         all_dates = list(spy.dropna().index[completed])
-        dates = all_dates[-63:]
-        if len(dates)!=63: raise RuntimeError('Need 63 completed sessions')
+        dates = all_dates[-21:]
+        if len(dates)!=21: raise RuntimeError('Need 21 completed sessions')
         asof = dates[-1]
         prior_path=ROOT/'joy-forward-state.json'
         prior_symbols=[]
@@ -51,25 +68,16 @@ async def build():
             prior_state=json.loads(prior_path.read_text())
             prior_symbols=[r['ticker'] for a in prior_state['allocations'] for r in a['rows']]+list(prior_state.get('continuationSeed',{}).get('weights',{}))
         results = await asyncio.gather(*(get(s) for s in sorted(set(symbols+prior_symbols+['QQQ']))))
-    rows=[]; excluded=[]
-    for s,record in results:
-        if s not in symbols:continue
-        v=record['dollars'] if record else None
-        window = v.reindex(dates) if v is not None else None
-        if window is None or window.isna().any(): excluded.append(s);continue
-        rows.append({'ticker':s,'score':float(window.median())})
-    rows.sort(key=lambda r:(-r['score'],r['ticker']))
-    for i,r in enumerate(rows): r['rank']=i+1
-    # Publish all eligible scores: each private paper account applies its own Top20 buffer.
-    total=sum(r['score'] for r in rows[:10])
-    top=[dict(r,weight=r['score']/total) for r in rows[:10]]
+    rows, excluded = rank_flow(results, symbols, dates)
+    # FLOW v2: current Top5, no retention buffer, equal weights.
+    top=[dict(r,weight=.2) for r in rows[:5]]
     age=(dt.date.fromisoformat(today)-dt.date.fromisoformat(asof)).days
-    ready=len(rows)/len(symbols)>=.98 and age<=4 and len(top)==10
-    data={'strategy':'FLOW','version':1,'ready':ready,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),
+    ready=len(rows)/len(symbols)>=.98 and age<=4 and len(top)==5
+    data={'strategy':'FLOW','version':2,'ruleId':'FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2','ready':ready,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),
           'signalDate':asof,'membershipRetrievedAt':dt.datetime.now(dt.UTC).isoformat(),'membershipSource':url,
           'priceSource':'Yahoo Finance daily close × volume; consolidated vendor data, not Alpaca IEX',
           'universeCount':len(symbols),'eligibleCount':len(rows),'excluded':excluded,
-          'rule':'63-session median traded value; Top10 / retain Top20; score-proportional; quarterly; no leverage or ETF holdings',
+          'rule':'21-session arithmetic mean traded value; current Top5 without retention buffer; equal 20% weights; semiannual June/December review; no leverage or ETF holdings',
           'rows':top,'ranking':rows,'initialSignal':True,'coverageGuard':.98}
     (ROOT/'flow-latest.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
     if not ready:raise RuntimeError('Latest FLOW signal is not ready; preserve prior simulation snapshot')
@@ -92,3 +100,4 @@ async def build():
     print(json.dumps({'signalDate':asof,'eligibleCount':len(rows),'forwardStart':forward['start'],'forwardAsOf':forward['asOf']},ensure_ascii=False))
 
 if __name__=='__main__': asyncio.run(build())
+
