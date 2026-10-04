@@ -10,12 +10,44 @@
  const log=t=>{if(!state)return;state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,150);save();$('log').textContent=state.log.join('\n');};
  async function api(path,method='GET',body){
    C.assert(credentials,'Paper API 연결이 필요합니다.');
-   const headers={'APCA-API-KEY-ID':credentials.keyId,'APCA-API-SECRET-KEY':credentials.secretKey};
+   const connection=credentials,operation=`${method} ${path.split('?')[0]}`;
+   const headers={'APCA-API-KEY-ID':connection.keyId,'APCA-API-SECRET-KEY':connection.secretKey};
    if(body!==undefined)headers['Content-Type']='application/json';
-   let r;try{r=await fetch(C.PAPER+path,{method,headers,body:body!==undefined?JSON.stringify(body):undefined});}
-   catch{const e=Error(`Paper API 통신 실패 (${method} ${path.split('?')[0]})`);e.orderUncertain=method==='POST'&&path==='/orders';throw e;}
-   if(!r.ok){let message='';try{message=(await r.json()).message||'';}catch{}const e=Error(`Paper API ${r.status}: ${message}`);e.httpStatus=r.status;throw e;}
-   return r.status===204?null:r.json();
+   const attempts=method==='GET'?3:1;
+   for(let attempt=1;attempt<=attempts;attempt++){
+     C.assert(credentials===connection,'계좌 연결이 변경되었습니다. 다시 확인하세요.');
+     const controller=new AbortController(),started=Date.now();let timedOut=false;
+     const timeout=setTimeout(()=>{timedOut=true;controller.abort();},15000);
+     try{
+       const r=await fetch(C.PAPER+path,{method,headers,body:body!==undefined?JSON.stringify(body):undefined,signal:controller.signal});
+       if(!r.ok){
+         let message='';try{message=(await r.json()).message||'';}catch{}
+         const e=Error(`Paper API ${r.status} (${operation}): ${message}`);e.httpStatus=r.status;
+         e.retryable=[429,500,502,503,504].includes(r.status);
+         const retryAfter=r.headers?.get('Retry-After');
+         if(retryAfter){const seconds=Number(retryAfter);e.retryDelay=Number.isFinite(seconds)?Math.max(0,seconds*1000):Math.max(0,Date.parse(retryAfter)-Date.now());if(!Number.isFinite(e.retryDelay)||e.retryDelay>5000)e.retryable=false;}
+         throw e;
+       }
+       const value=r.status===204?null:await r.json();
+       if(attempt>1&&credentials===connection)log(`Paper 조회 복구 (${operation}) · ${attempt}회 시도`);
+       return value;
+     }catch(cause){
+       let e=cause;
+       if(!cause.httpStatus){
+         const offline=navigator.onLine===false;
+         const kind=timedOut?'15초 응답 시간 초과':offline?'브라우저 오프라인':cause.name==='SyntaxError'?'응답 JSON 해석 실패':'네트워크 또는 브라우저 접근 차단 · 원인 미확정';
+         const errorType=['TypeError','AbortError','SyntaxError'].includes(cause.name)?cause.name:'Error';
+         e=Error(`Paper API 통신 실패 (${operation}) · ${kind} · ${errorType} · ${attempt}/${attempts}회 · ${Date.now()-started}ms · 화면 ${document.visibilityState==='hidden'?'숨김':'표시'}`);
+         e.retryable=!offline;
+       }
+       e.orderUncertain=method==='POST'&&path==='/orders';
+       if(attempt===attempts||!e.retryable||credentials!==connection){if(method==='GET'&&credentials===connection)log('조회 실패: '+e.message);throw e;}
+       clearTimeout(timeout);
+       const delay=Math.max(attempt===1?1000:3000,e.retryDelay||0);
+       log(`조회 재시도 대기: ${e.message} · ${delay/1000}초 후 (${attempt+1}/${attempts})`);
+       await new Promise(resolve=>setTimeout(resolve,delay));
+     }finally{clearTimeout(timeout);}
+   }
  }
  function drawTargets(){
    const rows=state?.pending?.rows||C.targets(signal,state?.selected||[]);$('holdings').replaceChildren();
@@ -61,7 +93,7 @@
      state.armed=state.manualPaused!==true;state.budget=Number.isFinite(Number(state.budget))&&Number(state.budget)>=10?Number(state.budget):Number($('budget').value)||100000;save();
      $('log').textContent=state.log.join('\n')||'아직 주문이 없습니다.';$('budget').value=state.budget||100000;
      await loadSignal();await refresh();$('start').disabled=false;
-     status(state.armed?'Paper 연결 완료 · 접속 시 자동 매매을 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
+     status(state.armed?'Paper 연결 완료 · 접속 시 자동 매매를 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
      if(state.armed){installTimer();await tick();}
    }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;}
  }

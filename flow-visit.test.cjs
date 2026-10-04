@@ -2,14 +2,21 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const C=require('./flow-paper-core.js'),fixture=JSON.parse(fs.readFileSync(__dirname+'/flow-latest.json'));
 const next=new Date(fixture.signalDate+'T12:00:00Z');do{next.setUTCDate(next.getUTCDate()+1)}while([0,6].includes(next.getUTCDay()));const date=next.toISOString().slice(0,10),q=date.slice(0,4)+'Q'+Math.ceil(Number(date.slice(5,7))/3);
 const stateKey='flow.paper.state.v1.mock-paper';
-function broker({closed=false,lost=false,unknown=false,stale=false,foreign=false,cash=100000,clockFail=0,accountFail=0}={}){
- const store=new Map(),orders=new Map(),posts=[],positions=new Map();let locked=false,count=0,closedNow=closed;
+function broker({closed=false,lost=false,unknown=false,stale=false,foreign=false,cash=100000,clockFail=0,accountFail=0,failures={}}={}){
+ const store=new Map(),orders=new Map(),posts=[],positions=new Map(),calls=[];let locked=false,count=0,closedNow=closed;
  function apply(o){if(o.status==='filled')return;const r=o.request,p=positions.get(r.symbol)||{symbol:r.symbol,qty:0,current_price:'100',side:'long',market_value:0};if(r.side==='buy'){const value=Number(r.notional);assert(cash+1e-8>=value,'Cash overrun');cash-=value;p.qty+=value/100;}else{const qty=Number(r.qty);assert(p.qty+1e-8>=qty,'Oversell');p.qty-=qty;cash+=qty*100;}p.market_value=p.qty*100;if(p.qty<1e-9)positions.delete(p.symbol);else positions.set(p.symbol,p);o.status='filled';}
- const b={store,orders,posts,positions,closed:()=>closedNow,setClosed:v=>closedNow=v,fillAll:()=>{for(const o of orders.values())apply(o)},
+ const b={store,orders,posts,positions,calls,closed:()=>closedNow,setClosed:v=>closedNow=v,fillAll:()=>{for(const o of orders.values())apply(o)},
    locks:{request:async(n,opts,fn)=>{if(locked)return fn(null);locked=true;try{return await fn({})}finally{locked=false;}}},
    fetch:async(url,opts={})=>{
     if(url.includes('flow-latest.json'))return {ok:true,status:200,json:async()=>fixture};
     assert(url.startsWith(C.PAPER+'/'));const path=url.slice(C.PAPER.length);let data,status=200;
+    calls.push({path,method:opts.method||'GET'});
+    const failure=failures[path];
+    if(failure&&failure.remaining-->0){
+      if(failure.kind==='timeout')return new Promise((resolve,reject)=>opts.signal.addEventListener('abort',()=>{const e=Error('Aborted');e.name='AbortError';reject(e);},{once:true}));
+      if(failure.status)return {ok:false,status:failure.status,headers:{get:()=>failure.retryAfter||null},json:async()=>({message:'mock server failure'})};
+      throw TypeError('Sensitive diagnostic text must not be logged: MOCK_SECRET');
+    }
     if((opts.method||'GET')==='GET'){assert.equal(opts.headers['Content-Type'],undefined);assert.equal(opts.cache,undefined);}
     if(path==='/account'&&accountFail-->0)throw Error('Temporary account connection failure');
     if(path==='/account')data={id:'mock-paper',status:'ACTIVE',cash:String(cash),equity:String(cash+[...positions.values()].reduce((s,p)=>s+p.market_value,0)),long_market_value:String([...positions.values()].reduce((s,p)=>s+p.market_value,0)),short_market_value:'0',buying_power:'400000'};
@@ -29,13 +36,14 @@ function broker({closed=false,lost=false,unknown=false,stale=false,foreign=false
     return {ok:status===200,status,json:async()=>data};
    }};return b;
 }
-async function page(b){
+async function page(b,{offline=false,fastTimeout=false}={}){
  const elements={},events={},element=()=>({value:'',checked:false,disabled:false,textContent:'',style:{},setAttribute(){},append(){},replaceChildren(){}}),$=id=>elements[id]||(elements[id]=element());let interval;
  $('paper-key').value='MOCK';$('paper-secret').value='MOCK';$('budget').value='100000';$('remember').checked=true;
- const context={FLOWPaperCore:C,fetch:b.fetch,document:{getElementById:$,createElement:element,createElementNS:element,visibilityState:'visible',addEventListener:(event,fn)=>events[event]=fn},localStorage:{getItem:k=>b.store.get(k)||null,setItem:(k,v)=>b.store.set(k,v),removeItem:k=>b.store.delete(k)},navigator:{locks:b.locks},Intl,Date,console,setInterval:fn=>(interval=fn,1),clearInterval(){}};
+ const delays=[];
+ const context={FLOWPaperCore:C,fetch:b.fetch,AbortController,setTimeout:(fn,ms)=>{if(ms!==15000)delays.push(ms);return setTimeout(fn,ms===15000?(fastTimeout?0:60000):0)},clearTimeout,document:{getElementById:$,createElement:element,createElementNS:element,visibilityState:'visible',addEventListener:(event,fn)=>events[event]=fn},localStorage:{getItem:k=>b.store.get(k)||null,setItem:(k,v)=>b.store.set(k,v),removeItem:k=>b.store.delete(k)},navigator:{locks:b.locks,onLine:!offline},Intl,Date,console,setInterval:fn=>(interval=fn,1),clearInterval(){}};
  vm.runInNewContext(fs.readFileSync(__dirname+'/flow-paper-visit.js','utf8'),context);
  for(let i=0;i<80;i++)await new Promise(r=>setImmediate(r));
- return {$,stop:()=>$('stop').onclick(),connect:()=>$('connect').onclick(),start:()=>$('start').onclick(),tick:async()=>{if(interval)await interval()},state:()=>JSON.parse(b.store.get(stateKey))};
+ return {$,delays,stop:()=>$('stop').onclick(),connect:()=>$('connect').onclick(),start:()=>$('start').onclick(),tick:async()=>{if(interval)await interval()},state:()=>JSON.parse(b.store.get(stateKey))};
 }
 async function run(){
  // Immediate execution at 10am, not the old closing window; no margin budget.
@@ -54,11 +62,21 @@ async function run(){
  b=broker({stale:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,0);
  b=broker({closed:true});p=await page(b);await p.connect();await p.start();await Promise.all([page(b),page(b),p.tick()]);assert.equal(b.posts.length,10);
  // Passive preference survives transient API errors, reloads, and unknown-order checks.
- b=broker({clockFail:1});p=await page(b);await p.connect();assert(p.state().armed);assert(p.state().pausedReason);assert.equal(b.posts.length,0);p=await page(b);assert(p.state().armed);assert(!p.state().pausedReason);assert.equal(b.posts.length,10);await p.tick();assert.equal(b.posts.length,10);
- b=broker({accountFail:1});p=await page(b);await p.connect();assert.equal(b.posts.length,0);await p.tick();assert(p.state().armed);assert.equal(b.posts.length,10);
+ b=broker({clockFail:3});p=await page(b);await p.connect();assert(p.state().armed);assert(p.state().pausedReason);assert.equal(b.posts.length,0);p=await page(b);assert(p.state().armed);assert(!p.state().pausedReason);assert.equal(b.posts.length,10);await p.tick();assert.equal(b.posts.length,10);
+ b=broker({accountFail:3});p=await page(b);await p.connect();assert.equal(b.posts.length,0);await p.tick();assert(p.state().armed);assert.equal(b.posts.length,10);
  // Only an explicit stop persists a manual pause; restart clears that pause.
  b=broker();p=await page(b);await p.connect();p.stop();assert.equal(p.state().armed,false);assert.equal(p.state().manualPaused,true);p=await page(b);assert.equal(p.state().armed,false);await p.start();assert(p.state().armed);assert.equal(p.state().manualPaused,false);assert.equal(b.posts.length,10);
  b=broker({unknown:true});p=await page(b);await p.connect();await p.tick();await page(b);assert.equal(b.posts.length,1);assert(p.state().armed);assert(p.state().pausedReason);
+ // GET recovery uses bounded backoff, sanitized diagnostics, and preserves trading guards.
+ b=broker({failures:{'/clock':{remaining:2}}});p=await page(b);await p.connect();assert.equal(b.posts.length,10);assert.deepEqual(p.delays,[1000,3000]);assert(p.state().log.some(s=>s.includes('조회 복구')));assert(!JSON.stringify(p.state()).includes('MOCK_SECRET'));
+ b=broker({failures:{'/clock':{remaining:2,status:503}}});p=await page(b);await p.connect();assert.equal(b.posts.length,10);assert.equal(b.calls.filter(c=>c.path==='/clock').length,3);
+ b=broker({failures:{'/clock':{remaining:1,status:429,retryAfter:'2'}}});p=await page(b);await p.connect();assert.equal(b.posts.length,10);assert.deepEqual(p.delays,[2000]);
+ b=broker({failures:{'/clock':{remaining:5,status:429,retryAfter:'60'}}});p=await page(b);await p.connect();assert.equal(b.posts.length,0);assert.equal(b.calls.filter(c=>c.path==='/clock').length,1);assert(p.state().armed);
+ b=broker({failures:{'/account':{remaining:5,status:401}}});p=await page(b);await p.connect();assert.equal(b.calls.length,1);assert.equal(b.posts.length,0);assert.equal(p.delays.length,0);
+ b=broker({failures:{'/clock':{remaining:5}}});p=await page(b,{offline:true});await p.connect();assert.equal(b.calls.filter(c=>c.path==='/clock').length,1);assert(p.state().pausedReason.includes('オ')===false);assert(p.state().pausedReason.includes('오프라인'));assert(p.state().armed);
+ b=broker({failures:{'/clock':{remaining:1,kind:'timeout'}}});p=await page(b,{fastTimeout:true});await p.connect();assert.equal(b.posts.length,10);assert(p.state().log.some(s=>s.includes('15초 응답 시간 초과')));
+ b=broker({failures:{'/orders':{remaining:1,kind:'timeout'}}});p=await page(b,{fastTimeout:true});await p.connect();assert.equal(b.calls.filter(c=>c.method==='POST').length,1);await p.tick();assert.equal(b.calls.filter(c=>c.method==='POST').length,1);assert(p.state().pending.buys[0].local==='uncertain');
+ console.log('PASS: bounded GET retries, backoff and Retry-After, auth/offline handling, sanitized errors, GET timeout recovery, POST timeout never resubmitted');
  console.log('PASS: passive auto-connect, reload persistence, transient clock/account recovery, explicit manual stop, and no duplicate unknown-order submissions');
  console.log('PASS: intraday execution, closed-session queue, reload resume, quarter catch-up, sell-before-buy, cash-only cap, foreign-order/stale-signal guards, lost-response reconciliation, unknown-order stop, concurrent duplicate prevention');
 }
