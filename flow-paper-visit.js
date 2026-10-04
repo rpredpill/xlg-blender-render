@@ -56,25 +56,17 @@
    $('signal-meta').textContent=`신호 ${date} · ${signal.eligibleCount}/${signal.universeCount}개 데이터 유효 · ${state?.pending?'진행 중 주문의 고정 목표':signal.ready?'최신 목표 준비됨':'데이터 검증 필요'}`;
  }
  async function loadSignal(){let r;try{r=await fetch('https://raw.githubusercontent.com/rpredpill/xlg-blender-render/somx-pages/flow-latest.json?t='+Date.now(),{cache:'no-store'});C.assert(r.ok,'신호 조회 실패');}catch{r=await fetch('./flow-latest.json?t='+Date.now(),{cache:'no-store'});}C.assert(r.ok,'최신 신호 조회 실패');signal=await r.json();drawTargets();}
- function drawPaperChart(){
-   const box=$('paper-chart');box.replaceChildren();const rows=state.nav;if(rows.length<2){box.innerHTML='<strong>기록을 모으고 있어요</strong><p>계좌 가치 기록이 두 개 이상 쌓이면 그래프가 표시됩니다.</p>';return;}
-   const ns='http://www.w3.org/2000/svg',make=(name,attrs,text)=>{const e=document.createElementNS(ns,name);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=text;return e;};
-   const values=rows.map(r=>Number(r.equity)),low=Math.min(...values),high=Math.max(...values),margin=Math.max((high-low)*.1,high*.005,1),min=low-margin,max=high+margin;
-   const svg=make('svg',{viewBox:'0 0 760 260',role:'img','aria-label':'GPT Trading Paper 계좌 가치'});svg.style.width='100%';
-   for(let i=0;i<4;i++){const y=20+i*64,value=max-(max-min)*i/3;svg.append(make('line',{x1:72,x2:738,y1:y,y2:y,stroke:'#eef1f5'}),make('text',{x:65,y:y+4,'text-anchor':'end',fill:'#99a5b5','font-size':12},'$'+value.toFixed(0)));}
-   const path=rows.map((r,i)=>(i?'L':'M')+(72+i*666/(rows.length-1)).toFixed(2)+','+(20+192*(max-r.equity)/(max-min)).toFixed(2)).join(' ');
-   svg.append(make('path',{d:path,fill:'none',stroke:'#235ee8','stroke-width':3}),make('text',{x:72,y:245,fill:'#99a5b5','font-size':12},rows[0].time.slice(0,10)),make('text',{x:738,y:245,'text-anchor':'end',fill:'#99a5b5','font-size':12},rows.at(-1).time.slice(0,10)));box.append(svg);
- }
+ const history=globalThis.FlowHistory?.create({api,document,storage:localStorage});
  function updatePulse(){
    if(!globalThis.PulseView)return;PulseView.renderAccount(account,state);
    if(!credentials||Date.now()-lastPulseFetch<15000)return;lastPulseFetch=Date.now();const pulseAccountId=account.id,pulseCredentials=credentials;
    Promise.allSettled([api('/positions'),api('/orders?status=all&limit=20&direction=desc')]).then(results=>{if(credentials!==pulseCredentials||account?.id!==pulseAccountId)return;for(const [i,r] of results.entries()){if(r.status==='fulfilled'){if(i===0)PulseView.renderPositions(r.value);else PulseView.renderOrders(r.value);}else PulseView.unavailable(i===0?'pulse-positions':'pulse-orders',i===0?3:5);}});
  }
  async function refresh(){
-   account=await api('/account');updatePulse();
+   account=await api('/account');updatePulse();void history?.update(account);
    $('account').textContent=`Paper · ${account.status} · 계좌 가치 $${Number(account.equity).toLocaleString('en-US',{maximumFractionDigits:2})} · 현금 $${Number(account.cash).toLocaleString('en-US',{maximumFractionDigits:2})}`;
    if(state?.started){const now=new Date().toISOString();if(!state.nav.length||Date.now()-Date.parse(state.nav.at(-1).time)>60000){state.nav.push({time:now,equity:Number(account.equity),cash:Number(account.cash)});state.nav=state.nav.slice(-500);save();}
-     $('nav').replaceChildren();state.nav.slice(-15).reverse().forEach(r=>{const tr=document.createElement('tr');[r.time.replace('T',' ').slice(0,19)+' UTC',r.equity.toFixed(2),r.cash.toFixed(2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('nav').append(tr);});drawPaperChart();globalThis.PulseView?.renderAccount(account,state);$('performance').textContent='FLOW 전용 Paper 계좌의 실제 equity 기록입니다. 입출금이 있으면 수익률과 다를 수 있습니다.';}
+     $('nav').replaceChildren();state.nav.slice(-15).reverse().forEach(r=>{const tr=document.createElement('tr');[r.time.replace('T',' ').slice(0,19)+' UTC',r.equity.toFixed(2),r.cash.toFixed(2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('nav').append(tr);});globalThis.PulseView?.renderAccount(account,state);}
  }
  function stop(message='접속 시 자동 실행 중지됨'){if(state){state.armed=false;state.manualPaused=true;delete state.pausedReason;save();}clearInterval(timer);timer=null;status(message);}
  function pause(message){if(state){state.pausedReason=message;save();}status(message);}
@@ -86,7 +78,7 @@
    try{
      credentials={keyId:$('paper-key').value.trim(),secretKey:$('paper-secret').value.trim()};
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
-     account=null;state=null;lastPulseFetch=0;globalThis.PulseView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
+     account=null;state=null;lastPulseFetch=0;history?.reset();globalThis.PulseView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
      if($('remember').checked)localStorage.setItem(KEY,JSON.stringify(credentials));
      state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:true,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
      state.owned=state.owned||[];state.selected=state.selected||[];state.nav=state.nav||[];state.log=state.log||[];state.intents=state.intents||{};
@@ -178,7 +170,7 @@
  $('connect').onclick=connect;
  $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();installTimer();log(`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){pause(e.message);}};
  $('stop').onclick=()=>stop('접속 시 자동 실행 중지됨. 이미 접수한 주문은 Alpaca Paper에서 확인하세요.');
- $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
+ $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;history?.reset();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')tick();});
  loadSignal().catch(e=>status(e.message));
  const saved=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('somx.alpaca.credentials.v1')||'null');
