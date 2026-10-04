@@ -26,7 +26,7 @@
   async function fetchBench(rows,symbol){
     const months=rows.map(x=>x.month);
     if(globalThis.SOMXStrategy?.getMode?.()==='joy')return globalThis.JoyLive.getBenchmarks(months,symbol);
-    if(globalThis.SOMXStrategy?.getMode?.()==='joy'){const r=await fetch('./flow-backtest.json');if(!r.ok)throw Error('환희 비교 데이터 오류');const j=await r.json();return new Map(j.monthly.filter(x=>months.includes(x.date)).map(x=>[x.date,x[symbol]*100]));}
+    if(globalThis.SOMXStrategy?.getMode?.()==='joy'){const r=await fetch('./flow-backtest.json');if(!r.ok)throw Error('Echo 비교 데이터 오류');const j=await r.json();return new Map(j.monthly.filter(x=>months.includes(x.date)).map(x=>[x.date,x[symbol]*100]));}
     try{
       const r=await fetch(`./benchmark-history.json?v=${Date.now()}`,{cache:"no-store"});
       if(r.ok){

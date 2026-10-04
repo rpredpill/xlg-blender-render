@@ -53,7 +53,7 @@ def build_forward(series, dates, ranking, root):
         daily.append({'date':date,'nav':nav,'SPY':series['SPY'][date]['adj']/series['SPY'][first]['adj'],'QQQ':series['QQQ'][date]['adj']/series['QQQ'][first]['adj']})
         prev=date
     last=allocations[-1]
-    output={'strategy':'환희','ready':True,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),'start':first,'asOf':asof,'signalDate':last['signalDate'],'allocationDate':last['executionDate'],'currentMonth':asof[:7],'months':month_records,'daily':daily,'cost':.001,'provenance':'public-forward-simulation','note':'Continues historical FLOW holdings and Top20 buffer; live prices overlay the current month; no Paper account data.' if seed else 'Fresh public simulation initialization; no Paper account data.'}
+    output={'strategy':'Echo','ready':True,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),'start':first,'asOf':asof,'signalDate':last['signalDate'],'allocationDate':last['executionDate'],'currentMonth':asof[:7],'months':month_records,'daily':daily,'cost':.001,'provenance':'public-forward-simulation','note':'Continues historical FLOW holdings and Top20 buffer; live prices overlay the current month; no Paper account data.' if seed else 'Fresh public simulation initialization; no Paper account data.'}
     # No mutation until every price and calculation succeeds.
     path.write_text(json.dumps({**old,'allocations':allocations},ensure_ascii=False,indent=2))
     (root/'joy-latest.json').write_text(json.dumps(output,ensure_ascii=False,indent=2))

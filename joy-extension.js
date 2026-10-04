@@ -1,6 +1,6 @@
 (()=>{
  const base=globalThis.SOMXStrategy, key='somx.strategy.active.v1';
- const config={mode:'joy',label:'환희',holdings:10,entryRank:10,exitRank:20,rebalanceMonths:3,factor:'tradedValue',weighting:'score',filters:{},cadence:'liveSimulation'};
+ const config={mode:'joy',label:'Echo',holdings:10,entryRank:10,exitRank:20,rebalanceMonths:3,factor:'tradedValue',weighting:'score',filters:{},cadence:'liveSimulation'};
  const old={getMode:base.getMode.bind(base),getConfig:base.getConfig.bind(base),setMode:base.setMode.bind(base),signature:base.signature.bind(base)};
  base.getMode=()=>localStorage.getItem(key)==='joy'?'joy':old.getMode();
  base.getConfig=()=>base.getMode()==='joy'?{...config}:old.getConfig();
