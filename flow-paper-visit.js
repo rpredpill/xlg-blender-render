@@ -1,7 +1,7 @@
 (function(){
  'use strict';
  const C=FLOWPaperCore,$=id=>document.getElementById(id),KEY='flow.paper.credentials.v1';
- let credentials=null,account=null,signal=null,state=null,busy=false,timer=null,lastPulseFetch=0;
+ let credentials=null,account=null,signal=null,state=null,busy=false,connecting=false,timer=null,lastPulseFetch=0;
  const stateKey=()=>`flow.paper.state.v1.${account.id}`;
  const save=()=>localStorage.setItem(stateKey(),JSON.stringify(state));
  const status=t=>{$('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
@@ -44,22 +44,26 @@
    if(state?.started){const now=new Date().toISOString();if(!state.nav.length||Date.now()-Date.parse(state.nav.at(-1).time)>60000){state.nav.push({time:now,equity:Number(account.equity),cash:Number(account.cash)});state.nav=state.nav.slice(-500);save();}
      $('nav').replaceChildren();state.nav.slice(-15).reverse().forEach(r=>{const tr=document.createElement('tr');[r.time.replace('T',' ').slice(0,19)+' UTC',r.equity.toFixed(2),r.cash.toFixed(2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('nav').append(tr);});drawPaperChart();globalThis.PulseView?.renderAccount(account,state);$('performance').textContent='FLOW 전용 Paper 계좌의 실제 equity 기록입니다. 입출금이 있으면 수익률과 다를 수 있습니다.';}
  }
- function stop(message='접속 시 자동 실행 중지됨'){if(state){state.armed=false;save();}clearInterval(timer);timer=null;status(message);}
+ function stop(message='접속 시 자동 실행 중지됨'){if(state){state.armed=false;state.manualPaused=true;delete state.pausedReason;save();}clearInterval(timer);timer=null;status(message);}
+ function pause(message){if(state){state.pausedReason=message;save();}status(message);}
+ function clearPause(){if(state?.pausedReason){delete state.pausedReason;save();globalThis.PulseView?.renderAccount(account,state);}}
  function installTimer(){clearInterval(timer);timer=setInterval(tick,30000);}
  function guard(positions,open){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned);}
  async function connect(){
+   if(busy||connecting)return;connecting=true;clearInterval(timer);timer=null;
    try{
      credentials={keyId:$('paper-key').value.trim(),secretKey:$('paper-secret').value.trim()};
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
      account=null;state=null;lastPulseFetch=0;globalThis.PulseView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
      if($('remember').checked)localStorage.setItem(KEY,JSON.stringify(credentials));
-     state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:false,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
+     state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:true,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
      state.owned=state.owned||[];state.selected=state.selected||[];state.nav=state.nav||[];state.log=state.log||[];state.intents=state.intents||{};
+     state.armed=state.manualPaused!==true;state.budget=Number.isFinite(Number(state.budget))&&Number(state.budget)>=10?Number(state.budget):Number($('budget').value)||100000;save();
      $('log').textContent=state.log.join('\n')||'아직 주문이 없습니다.';$('budget').value=state.budget||100000;
      await loadSignal();await refresh();$('start').disabled=false;
-     status('Paper 연결 완료 · 접속 시 자동 실행을 켜면 필요한 매매를 확인합니다.');
+     status(state.armed?'Paper 연결 완료 · 접속 시 자동 운용을 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
      if(state.armed){installTimer();await tick();}
-   }catch(e){$('start').disabled=true;credentials=null;stop(e.message);}
+   }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;}
  }
  function request(symbol,side,amount,date){return {symbol,side,type:'market',time_in_force:'day',extended_hours:false,...(side==='buy'?{notional:amount.toFixed(2)}:{qty:amount.toFixed(6)}),client_order_id:`flow2-${date}-${symbol.replace('.','')}-${side}`};}
  const record=request=>({request,local:'new',id:null,status:null});
@@ -123,16 +127,16 @@
      await navigator.locks.request('flow-paper-'+account.id,{ifAvailable:true},async lock=>{
        if(!lock)return;state=JSON.parse(localStorage.getItem(stateKey()));if(!state?.armed)return;
        const clock=await api('/clock');
-       if(state.pending){await advance(clock);return;}
+       if(state.pending){await advance(clock);clearPause();return;}
        const date=clock.is_open?nyDate(clock.timestamp):nyDate(clock.next_open);C.assert(/^\d{4}-\d{2}-\d{2}$/.test(date),'거래일 확인 필요');
-       if(state.started&&state.lastQuarter===quarter(date)){await refresh();status('접속 시 확인 완료 · 이번 분기 추가 주문 없음');return;}
-       await createPlan(clock,date);await advance(clock);
+       if(state.started&&state.lastQuarter===quarter(date)){await refresh();clearPause();status('접속 시 확인 완료 · 이번 분기 추가 주문 없음');return;}
+       await createPlan(clock,date);await advance(clock);clearPause();
      });
-   }catch(e){const p=state?.pending,hasIntent=p&&p.sells.concat(p.buys).some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 중단: '+e.message+suffix);stop(e.message+suffix);}
+   }catch(e){const p=state?.pending,hasIntent=p&&p.sells.concat(p.buys).some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}
    finally{busy=false;}
  }
  $('connect').onclick=connect;
- $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.armed=true;save();installTimer();log(`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){stop(e.message);}};
+ $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();installTimer();log(`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){pause(e.message);}};
  $('stop').onclick=()=>stop('접속 시 자동 실행 중지됨. 이미 접수한 주문은 Alpaca Paper에서 확인하세요.');
  $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')tick();});
