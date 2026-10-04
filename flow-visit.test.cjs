@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const C=require('./flow-paper-core.js'),fixture=JSON.parse(fs.readFileSync(__dirname+'/flow-latest.json'));
-const next=new Date(fixture.signalDate+'T12:00:00Z');do{next.setUTCDate(next.getUTCDate()+1)}while([0,6].includes(next.getUTCDay()));const date=next.toISOString().slice(0,10),q=date.slice(0,4)+'Q'+Math.ceil(Number(date.slice(5,7))/3);
+const C=require('./flow-paper-core.js'),fixture=JSON.parse(fs.readFileSync(__dirname+'/flow-test-fixture.json'));
+const next=new Date(fixture.signalDate+'T12:00:00Z');do{next.setUTCDate(next.getUTCDate()+1)}while([0,6].includes(next.getUTCDay()));const date=next.toISOString().slice(0,10),q=C.halfYear(date);
 const stateKey='flow.paper.state.v1.mock-paper';
 function broker({closed=false,lost=false,unknown=false,stale=false,foreign=false,cash=100000,clockFail=0,accountFail=0,failures={}}={}){
  const store=new Map(),orders=new Map(),posts=[],positions=new Map(),calls=[];let locked=false,count=0,closedNow=closed;
@@ -47,37 +47,46 @@ async function page(b,{offline=false,fastTimeout=false}={}){
 }
 async function run(){
  // Immediate execution at 10am, not the old closing window; no margin budget.
- let b=broker(),p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,10);assert(p.state().started);assert(b.posts.reduce((s,o)=>s+Number(o.notional||0),0)<=99500);await p.tick();await page(b);assert.equal(b.posts.length,10);
+ let b=broker(),p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,5);assert(p.state().started);assert(b.posts.reduce((s,o)=>s+Number(o.notional||0),0)<=99500);await p.tick();await page(b);assert.equal(b.posts.length,5);
  // Broker-accepted closed-session orders survive closing/reopening the page.
- b=broker({closed:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,10);assert.equal(p.state().pending.phase,'buying');assert(p.$('status').textContent.includes('예약됨'));await page(b);assert.equal(b.posts.length,10);b.fillAll();p=await page(b);assert.equal(b.posts.length,10);assert(p.state().started);assert.equal(p.state().lastQuarter,q);
+ b=broker({closed:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,5);assert.equal(p.state().pending.phase,'buying');assert(p.$('status').textContent.includes('예약됨'));await page(b);assert.equal(b.posts.length,5);b.fillAll();p=await page(b);assert.equal(b.posts.length,5);assert(p.state().started);assert.equal(p.state().lastHalfYear,q);
  // A lost response reconciles by client ID, never reposts the same order.
- b=broker({closed:true,lost:true});p=await page(b);await p.connect();assert.equal(b.posts.length,1);assert.equal(p.state().armed,true);assert(p.state().pausedReason);await p.tick();assert.equal(b.posts.length,10);assert.equal(new Set(b.posts.map(o=>o.client_order_id)).size,10);
+ b=broker({closed:true,lost:true});p=await page(b);await p.connect();assert.equal(b.posts.length,1);assert.equal(p.state().armed,true);assert(p.state().pausedReason);await p.tick();assert.equal(b.posts.length,5);assert.equal(new Set(b.posts.map(o=>o.client_order_id)).size,5);
  // A genuinely unknown order must not be retried even on explicit restart.
  b=broker({closed:true,unknown:true});p=await page(b);await p.connect();await p.start();await p.start();assert.equal(b.posts.length,1);assert(p.$('status').textContent.includes('自')===false);assert(p.$('status').textContent.includes('자동 재전송하지 않습니다'));
  // Missed quarters catch up; do not buy against unfilled sale proceeds.
  b=broker({closed:true,cash:1000});const old=fixture.ranking[25].ticker;b.positions.set(old,{symbol:old,qty:990,current_price:'100',side:'long',market_value:99000});
- b.store.set(stateKey,JSON.stringify({armed:false,started:true,owned:[old],selected:[old],lastQuarter:'2025Q1',budget:100000,log:[],nav:[],intents:{}}));p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,1);assert.equal(b.posts[0].side,'sell');await page(b);assert.equal(b.posts.length,1);b.fillAll();p=await page(b);assert.equal(b.posts.length,11);assert(b.posts.slice(1).every(o=>o.side==='buy'));assert(b.posts.slice(1).reduce((s,o)=>s+Number(o.notional),0)<=99500);b.fillAll();p=await page(b);assert.equal(p.state().lastQuarter,q);assert.equal(b.posts.length,11);
+ b.store.set(stateKey,JSON.stringify({armed:false,started:true,owned:[old],selected:[old],lastQuarter:'2025Q1',budget:100000,log:[],nav:[],intents:{}}));p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,1);assert.equal(b.posts[0].side,'sell');await page(b);assert.equal(b.posts.length,1);b.fillAll();p=await page(b);assert.equal(b.posts.length,6);assert(b.posts.slice(1).every(o=>o.side==='buy'));assert(b.posts.slice(1).reduce((s,o)=>s+Number(o.notional),0)<=99500);b.fillAll();p=await page(b);assert.equal(p.state().lastHalfYear,q);assert.equal(b.posts.length,6);
+ // Strategy migration reconciles accepted legacy orders but never submits old unsubmitted targets.
+ b=broker({closed:true});const legacyTicker=fixture.ranking[25].ticker,unusedTicker=fixture.ranking[26].ticker;
+ const legacyRequest={symbol:legacyTicker,side:'buy',notional:'1000.00',type:'market',time_in_force:'day',client_order_id:'flow2-legacy-buy'};
+ b.orders.set('legacy',{id:'legacy',request:legacyRequest,status:'accepted'});
+ b.store.set(stateKey,JSON.stringify({armed:true,started:false,owned:[legacyTicker,unusedTicker],selected:[],budget:100000,log:['old record'],nav:[],intents:{},pending:{date,quarter:'2026Q4',signalDate:fixture.signalDate,rows:[],target:{},sells:[],buys:[{request:legacyRequest,local:'submitted',id:'legacy',status:'accepted'},{request:{...legacyRequest,symbol:unusedTicker,client_order_id:'unsubmitted-legacy'},local:'new'}],phase:'buying'}}));
+ p=await page(b);await p.connect();assert.equal(b.posts.length,0);assert(p.$('status').textContent.includes('이전 FLOW 주문'));
+ b.fillAll();p=await page(b);assert.equal(b.posts.length,1);assert.equal(b.posts[0].side,'sell');assert.equal(p.state().legacyPlans.length,1);assert(p.state().log.includes('old record'));
+ b.fillAll();p=await page(b);assert.equal(b.posts.length,6);assert(!b.posts.some(o=>o.client_order_id==='unsubmitted-legacy'));assert.equal(p.state().ruleId,C.RULE_ID);
  // Guard foreign orders, stale signals, and repeated concurrent visits.
  b=broker({foreign:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,0);
  b=broker({stale:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,0);
- b=broker({closed:true});p=await page(b);await p.connect();await p.start();await Promise.all([page(b),page(b),p.tick()]);assert.equal(b.posts.length,10);
+ b=broker({closed:true});p=await page(b);await p.connect();await p.start();await Promise.all([page(b),page(b),p.tick()]);assert.equal(b.posts.length,5);
  // Passive preference survives transient API errors, reloads, and unknown-order checks.
- b=broker({clockFail:3});p=await page(b);await p.connect();assert(p.state().armed);assert(p.state().pausedReason);assert.equal(b.posts.length,0);p=await page(b);assert(p.state().armed);assert(!p.state().pausedReason);assert.equal(b.posts.length,10);await p.tick();assert.equal(b.posts.length,10);
- b=broker({accountFail:3});p=await page(b);await p.connect();assert.equal(b.posts.length,0);await p.tick();assert(p.state().armed);assert.equal(b.posts.length,10);
+ b=broker({clockFail:3});p=await page(b);await p.connect();assert(p.state().armed);assert(p.state().pausedReason);assert.equal(b.posts.length,0);p=await page(b);assert(p.state().armed);assert(!p.state().pausedReason);assert.equal(b.posts.length,5);await p.tick();assert.equal(b.posts.length,5);
+ b=broker({accountFail:3});p=await page(b);await p.connect();assert.equal(b.posts.length,0);await p.tick();assert(p.state().armed);assert.equal(b.posts.length,5);
  // Only an explicit stop persists a manual pause; restart clears that pause.
- b=broker();p=await page(b);await p.connect();p.stop();assert.equal(p.state().armed,false);assert.equal(p.state().manualPaused,true);p=await page(b);assert.equal(p.state().armed,false);await p.start();assert(p.state().armed);assert.equal(p.state().manualPaused,false);assert.equal(b.posts.length,10);
+ b=broker();p=await page(b);await p.connect();p.stop();assert.equal(p.state().armed,false);assert.equal(p.state().manualPaused,true);p=await page(b);assert.equal(p.state().armed,false);await p.start();assert(p.state().armed);assert.equal(p.state().manualPaused,false);assert.equal(b.posts.length,5);
  b=broker({unknown:true});p=await page(b);await p.connect();await p.tick();await page(b);assert.equal(b.posts.length,1);assert(p.state().armed);assert(p.state().pausedReason);
  // GET recovery uses bounded backoff, sanitized diagnostics, and preserves trading guards.
- b=broker({failures:{'/clock':{remaining:2}}});p=await page(b);await p.connect();assert.equal(b.posts.length,10);assert.deepEqual(p.delays,[1000,3000]);assert(p.state().log.some(s=>s.includes('조회 복구')));assert(!JSON.stringify(p.state()).includes('MOCK_SECRET'));
- b=broker({failures:{'/clock':{remaining:2,status:503}}});p=await page(b);await p.connect();assert.equal(b.posts.length,10);assert.equal(b.calls.filter(c=>c.path==='/clock').length,3);
- b=broker({failures:{'/clock':{remaining:1,status:429,retryAfter:'2'}}});p=await page(b);await p.connect();assert.equal(b.posts.length,10);assert.deepEqual(p.delays,[2000]);
+ b=broker({failures:{'/clock':{remaining:2}}});p=await page(b);await p.connect();assert.equal(b.posts.length,5);assert.deepEqual(p.delays,[1000,3000]);assert(p.state().log.some(s=>s.includes('조회 복구')));assert(!JSON.stringify(p.state()).includes('MOCK_SECRET'));
+ b=broker({failures:{'/clock':{remaining:2,status:503}}});p=await page(b);await p.connect();assert.equal(b.posts.length,5);assert.equal(b.calls.filter(c=>c.path==='/clock').length,3);
+ b=broker({failures:{'/clock':{remaining:1,status:429,retryAfter:'2'}}});p=await page(b);await p.connect();assert.equal(b.posts.length,5);assert.deepEqual(p.delays,[2000]);
  b=broker({failures:{'/clock':{remaining:5,status:429,retryAfter:'60'}}});p=await page(b);await p.connect();assert.equal(b.posts.length,0);assert.equal(b.calls.filter(c=>c.path==='/clock').length,1);assert(p.state().armed);
  b=broker({failures:{'/account':{remaining:5,status:401}}});p=await page(b);await p.connect();assert.equal(b.calls.length,1);assert.equal(b.posts.length,0);assert.equal(p.delays.length,0);
  b=broker({failures:{'/clock':{remaining:5}}});p=await page(b,{offline:true});await p.connect();assert.equal(b.calls.filter(c=>c.path==='/clock').length,1);assert(p.state().pausedReason.includes('オ')===false);assert(p.state().pausedReason.includes('오프라인'));assert(p.state().armed);
- b=broker({failures:{'/clock':{remaining:1,kind:'timeout'}}});p=await page(b,{fastTimeout:true});await p.connect();assert.equal(b.posts.length,10);assert(p.state().log.some(s=>s.includes('15초 응답 시간 초과')));
+ b=broker({failures:{'/clock':{remaining:1,kind:'timeout'}}});p=await page(b,{fastTimeout:true});await p.connect();assert.equal(b.posts.length,5);assert(p.state().log.some(s=>s.includes('15초 응답 시간 초과')));
  b=broker({failures:{'/orders':{remaining:1,kind:'timeout'}}});p=await page(b,{fastTimeout:true});await p.connect();assert.equal(b.calls.filter(c=>c.method==='POST').length,1);await p.tick();assert.equal(b.calls.filter(c=>c.method==='POST').length,1);assert(p.state().pending.buys[0].local==='uncertain');
  console.log('PASS: bounded GET retries, backoff and Retry-After, auth/offline handling, sanitized errors, GET timeout recovery, POST timeout never resubmitted');
  console.log('PASS: passive auto-connect, reload persistence, transient clock/account recovery, explicit manual stop, and no duplicate unknown-order submissions');
- console.log('PASS: intraday execution, closed-session queue, reload resume, quarter catch-up, sell-before-buy, cash-only cap, foreign-order/stale-signal guards, lost-response reconciliation, unknown-order stop, concurrent duplicate prevention');
+ console.log('PASS: intraday execution, closed-session queue, reload resume, half-year catch-up, sell-before-buy, cash-only cap, foreign-order/stale-signal guards, lost-response reconciliation, unknown-order stop, concurrent duplicate prevention');
 }
 run().catch(e=>{console.error(e);process.exit(1)});
+
