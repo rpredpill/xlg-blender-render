@@ -21,11 +21,11 @@
     let start,end;if(rangePref.mode==="all"){start=min;end=max}else{start=rangePref.start&&rangePref.start>=min&&rangePref.start<=max?rangePref.start:min;end=rangePref.end&&rangePref.end>=min&&rangePref.end<=max?rangePref.end:max;if(start>end){start=min;end=max;rangePref={mode:"all",start:null,end:null};saveRange()}}
     startInput.value=start;endInput.value=end;allBtn.classList.toggle("active",rangePref.mode==="all");return rows.filter(r=>r.month>=start&&r.month<=end)
   }
-  function updateNote(rows){const c=BENCHMARKS[selected],period=rows.length?`${rows[0].month} ~ ${rows.at(-1).month} · `:"";if(noteEl)noteEl.textContent=`${period}${globalThis.SOMXStrategy?.getMode?.()==='joy'&&!globalThis.JoyLive?.isHistorical()?'현재 모의 계산 · 초기 거래비용 0.1% · IEX 시세 또는 최신 종가':'월별 수익률 복리 누적'} · ${c.note}`}
+  function updateNote(rows){const c=BENCHMARKS[selected],period=rows.length?`${rows[0].month} ~ ${rows.at(-1).month} · `:"";if(noteEl)noteEl.textContent=`${period}${globalThis.SOMXStrategy?.getMode?.()==='joy'&&!globalThis.JoyLive?.isHistorical()?'백테스트 연장 · 비용 포함 · 이번 달 IEX 시세 또는 최신 종가':'월별 수익률 복리 누적'} · ${c.note}`}
   function scaffold(months=[]){svg.innerHTML="";const W=760,H=300,L=54,R=22,T=24,B=42,y=v=>T+(130-v)*(H-T-B)/60;for(const v of[70,85,100,115,130]){const yy=y(v);svg.appendChild(el("line",{x1:L,x2:W-R,y1:yy,y2:yy,stroke:v===100?"#bac4d0":"#edf1f5","stroke-width":v===100?1.4:1,"stroke-dasharray":v===100?"5 5":"0"}));const t=el("text",{x:L-9,y:yy+4,"text-anchor":"end","font-size":10,fill:"#8994a5"});t.textContent=v;svg.appendChild(t)}const labels=["시작",...months];labels.forEach((m,i)=>{const x=L+i*((W-L-R)/Math.max(1,labels.length-1)),t=el("text",{x,y:H-14,"text-anchor":"middle","font-size":10,fill:"#8994a5"});t.textContent=i===0?"100":monthLabel(m);svg.appendChild(t)});svg.hidden=false}
   async function fetchBench(rows,symbol){
     const months=rows.map(x=>x.month);
-    if(globalThis.SOMXStrategy?.getMode?.()==='joy'&&!globalThis.JoyLive?.isHistorical())return globalThis.JoyLive.getBenchmarks(months,symbol);
+    if(globalThis.SOMXStrategy?.getMode?.()==='joy')return globalThis.JoyLive.getBenchmarks(months,symbol);
     if(globalThis.SOMXStrategy?.getMode?.()==='joy'){const r=await fetch('./flow-backtest.json');if(!r.ok)throw Error('환희 비교 데이터 오류');const j=await r.json();return new Map(j.monthly.filter(x=>months.includes(x.date)).map(x=>[x.date,x[symbol]*100]));}
     try{
       const r=await fetch(`./benchmark-history.json?v=${Date.now()}`,{cache:"no-store"});

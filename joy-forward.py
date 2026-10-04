@@ -22,7 +22,8 @@ def build_forward(series, dates, ranking, root):
         allocations.append({'quarter':qstart,'signalDate':signal,'executionDate':execution,'rows':rows})
     first=allocations[0]['executionDate']
     calendar=[d for d in dates if first<=d<=asof]
-    nav=1.;weights={};daily=[];month_records={};month_nav=1.;month_weights={};month_bench={};prices={};prev=None
+    seed=old.get('continuationSeed',{})
+    nav=1.;weights=dict(seed.get('weights',{}));daily=[];month_records={};month_nav=1.;month_weights={};month_bench={};prices={};prev=seed.get('date')
     allocation_by={a['executionDate']:a for a in allocations}
     for date in calendar:
         month=date[:7]
@@ -52,8 +53,8 @@ def build_forward(series, dates, ranking, root):
         daily.append({'date':date,'nav':nav,'SPY':series['SPY'][date]['adj']/series['SPY'][first]['adj'],'QQQ':series['QQQ'][date]['adj']/series['QQQ'][first]['adj']})
         prev=date
     last=allocations[-1]
-    output={'strategy':'환희','ready':True,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),'start':first,'asOf':asof,'signalDate':last['signalDate'],'allocationDate':last['executionDate'],'currentMonth':asof[:7],'months':month_records,'daily':daily,'cost':.001,'provenance':'public-forward-simulation','note':'First allocation initialized from the preceding quarter-end score; no 2025 bridge or Paper account data.'}
+    output={'strategy':'환희','ready':True,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),'start':first,'asOf':asof,'signalDate':last['signalDate'],'allocationDate':last['executionDate'],'currentMonth':asof[:7],'months':month_records,'daily':daily,'cost':.001,'provenance':'public-forward-simulation','note':'Continues historical FLOW holdings and Top20 buffer; live prices overlay the current month; no Paper account data.' if seed else 'Fresh public simulation initialization; no Paper account data.'}
     # No mutation until every price and calculation succeeds.
-    path.write_text(json.dumps({'allocations':allocations},ensure_ascii=False,indent=2))
+    path.write_text(json.dumps({**old,'allocations':allocations},ensure_ascii=False,indent=2))
     (root/'joy-latest.json').write_text(json.dumps(output,ensure_ascii=False,indent=2))
     return output

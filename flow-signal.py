@@ -48,7 +48,8 @@ async def build():
         prior_path=ROOT/'joy-forward-state.json'
         prior_symbols=[]
         if prior_path.exists():
-            prior_symbols=[r['ticker'] for a in json.loads(prior_path.read_text())['allocations'] for r in a['rows']]
+            prior_state=json.loads(prior_path.read_text())
+            prior_symbols=[r['ticker'] for a in prior_state['allocations'] for r in a['rows']]+list(prior_state.get('continuationSeed',{}).get('weights',{}))
         results = await asyncio.gather(*(get(s) for s in sorted(set(symbols+prior_symbols+['QQQ']))))
     rows=[]; excluded=[]
     for s,record in results:

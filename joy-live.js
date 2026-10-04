@@ -13,8 +13,8 @@
  }
  function record(){return selected==='live'?(liveBase()?JoyLiveCore.mark(liveBase(),quotes):null):data?.months?.[selected]||forward?.months?.[selected];}
  function chartHistory(){
-  if(selected!=='live'&&data?.months?.[selected])return data.months;
-  const months={...(forward?.months||{})},h=record();if(selected==='live'&&h)months[h.month]=h;
+  const months={...(data?.months||{}),...(forward?.months||{})},h=record();
+  if(selected==='live'&&h)months[h.month]=h;
   return months;
  }
  function setMetrics(id,value){const e=$(id);if(!e)return;e.textContent=fmt(value);e.classList.toggle('neg',Number.isFinite(value)&&value<0);}
@@ -30,10 +30,10 @@
   $('holdings-body').innerHTML=rows.map((r,i)=>`<tr><td><div class="stock"><div class="logo" style="color:${colorFor(i)}">${r.ticker}</div><div>${r.ticker}${isLive?`<small class="holding-price">$${Number(r.price).toFixed(2)}</small>`:''}</div></div></td><td class="weight-cell">${(r.weight*100).toFixed(2)}%</td><td class="ret ${r.ret<0?'neg':''}">${fmt(r.ret)}</td></tr>`).join('');
   setMetrics('portfolio-return',h.port);const valid=rows.filter(r=>Number.isFinite(r.ret)),best=[...valid].sort((a,b)=>b.ret-a.ret)[0],worst=[...valid].sort((a,b)=>a.ret-b.ret)[0];
   $('up-count').textContent=`${valid.filter(r=>r.ret>0).length} / ${valid.length}`;$('best-ticker').textContent=best?.ticker||'--';setMetrics('best-return',best?.ret);$('worst-ticker').textContent=worst?.ticker||'--';setMetrics('worst-return',worst?.ret);
-  $('joy-note').hidden=false;$('joy-note').textContent=isLive?`${status} · 신호 ${forward.signalDate} · 모의 계산 시작 ${forward.start}. 가격에 따라 비중이 변하며 분기말 신호로 다음 거래일 종가에 리밸런싱합니다. 실제 주문·체결은 공포에서 확인하세요.`:`백테스트 ${data.start} ~ ${data.end} · ${h.lastDate} 비중 · 종목: ${h.firstDate} 첫 종가 → 월말 종가 · 포트폴리오: 비용 포함 NAV`;
+  $('joy-note').hidden=false;$('joy-note').textContent=isLive?`${status} · 신호 ${forward.signalDate} · 백테스트 ${data.start}부터 이어 계산. 가격에 따라 비중이 변하며 분기말 신호로 다음 거래일 종가에 리밸런싱합니다. 실제 주문·체결은 공포에서 확인하세요. 2025년 이후 순위 자료 확보율 96.8–100%.`:`백테스트 ${data.start} ~ ${forward?.asOf||data.end} · ${h.lastDate} 비중 · 종목: ${h.firstDate} 첫 종가 → 월말 종가 · 포트폴리오: 비용 포함 NAV`;
   monthlyHistory=chartHistory();
  }
- function fillSelector(){const s=$('joy-month');if(!s)return;const live=document.createElement('option');live.value='live';live.textContent='최신 · 실시간';const months=[...new Set([...Object.keys(data?.months||{}),...Object.keys(forward?.months||{})])].sort().reverse();s.replaceChildren(live,...months.map(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;return o}));if(selected!=='live'&&!months.includes(selected))selected='live';s.value=selected;}
+ function fillSelector(){const s=$('joy-month');if(!s)return;const live=document.createElement('option');live.value='live';live.textContent='최신 · 실시간';const months=[...new Set([...Object.keys(data?.months||{}),...Object.keys(forward?.months||{})])].filter(m=>m<currentNYMonth()).sort().reverse();s.replaceChildren(live,...months.map(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;return o}));if(selected!=='live'&&!months.includes(selected))selected='live';s.value=selected;}
  async function refreshSnapshot(){
   if(loading)return;loading=true;
   try{
@@ -45,7 +45,7 @@
   }catch(e){status=e.message;if(isJoy())renderJoy();}finally{loading=false;}
  }
  async function load(){
-  if(!promise)promise=fetch('./joy-history.json?v=1').then(r=>{if(!r.ok)throw Error('과거 기록 조회 실패');return r.json()}).then(j=>{data=j;fillSelector();return j}).catch(e=>{promise=null;throw e});
+  if(!promise)promise=fetch('./joy-history.json?v=2').then(r=>{if(!r.ok)throw Error('과거 기록 조회 실패');return r.json()}).then(j=>{data=j;fillSelector();return j}).catch(e=>{promise=null;throw e});
   await Promise.all([promise,refreshSnapshot()]);
  }
  function savedCredentials(){try{const c=JSON.parse(localStorage.getItem('somx.alpaca.credentials.v1')||localStorage.getItem('flow.paper.credentials.v1')||'null');return c?.keyId&&c?.secretKey?c:null;}catch{return null;}}
