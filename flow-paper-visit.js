@@ -1,10 +1,10 @@
 (function(){
  'use strict';
  const C=FLOWPaperCore,$=id=>document.getElementById(id),KEY='flow.paper.credentials.v1';
- let credentials=null,account=null,signal=null,state=null,busy=false,timer=null,lastGPT TradingFetch=0;
+ let credentials=null,account=null,signal=null,state=null,busy=false,timer=null,lastPulseFetch=0;
  const stateKey=()=>`flow.paper.state.v1.${account.id}`;
  const save=()=>localStorage.setItem(stateKey(),JSON.stringify(state));
- const status=t=>{$('status').textContent=t;globalThis.GPT TradingView?.renderAccount(account,state);};
+ const status=t=>{$('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
  const quarter=d=>d.slice(0,4)+'Q'+Math.ceil(Number(d.slice(5,7))/3);
  const nyDate=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));
  const log=t=>{if(!state)return;state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,150);save();$('log').textContent=state.log.join('\n');};
@@ -33,16 +33,16 @@
    const path=rows.map((r,i)=>(i?'L':'M')+(72+i*666/(rows.length-1)).toFixed(2)+','+(20+192*(max-r.equity)/(max-min)).toFixed(2)).join(' ');
    svg.append(make('path',{d:path,fill:'none',stroke:'#235ee8','stroke-width':3}),make('text',{x:72,y:245,fill:'#99a5b5','font-size':12},rows[0].time.slice(0,10)),make('text',{x:738,y:245,'text-anchor':'end',fill:'#99a5b5','font-size':12},rows.at(-1).time.slice(0,10)));box.append(svg);
  }
- function updateGPT Trading(){
-   if(!globalThis.GPT TradingView)return;GPT TradingView.renderAccount(account,state);
-   if(!credentials||Date.now()-lastGPT TradingFetch<15000)return;lastGPT TradingFetch=Date.now();const pulseAccountId=account.id,pulseCredentials=credentials;
-   Promise.allSettled([api('/positions'),api('/orders?status=all&limit=20&direction=desc')]).then(results=>{if(credentials!==pulseCredentials||account?.id!==pulseAccountId)return;for(const [i,r] of results.entries()){if(r.status==='fulfilled'){if(i===0)GPT TradingView.renderPositions(r.value);else GPT TradingView.renderOrders(r.value);}else GPT TradingView.unavailable(i===0?'pulse-positions':'pulse-orders',i===0?3:5);}});
+ function updatePulse(){
+   if(!globalThis.PulseView)return;PulseView.renderAccount(account,state);
+   if(!credentials||Date.now()-lastPulseFetch<15000)return;lastPulseFetch=Date.now();const pulseAccountId=account.id,pulseCredentials=credentials;
+   Promise.allSettled([api('/positions'),api('/orders?status=all&limit=20&direction=desc')]).then(results=>{if(credentials!==pulseCredentials||account?.id!==pulseAccountId)return;for(const [i,r] of results.entries()){if(r.status==='fulfilled'){if(i===0)PulseView.renderPositions(r.value);else PulseView.renderOrders(r.value);}else PulseView.unavailable(i===0?'pulse-positions':'pulse-orders',i===0?3:5);}});
  }
  async function refresh(){
-   account=await api('/account');updateGPT Trading();
+   account=await api('/account');updatePulse();
    $('account').textContent=`Paper · ${account.status} · 계좌 가치 $${Number(account.equity).toLocaleString('en-US',{maximumFractionDigits:2})} · 현금 $${Number(account.cash).toLocaleString('en-US',{maximumFractionDigits:2})}`;
    if(state?.started){const now=new Date().toISOString();if(!state.nav.length||Date.now()-Date.parse(state.nav.at(-1).time)>60000){state.nav.push({time:now,equity:Number(account.equity),cash:Number(account.cash)});state.nav=state.nav.slice(-500);save();}
-     $('nav').replaceChildren();state.nav.slice(-15).reverse().forEach(r=>{const tr=document.createElement('tr');[r.time.replace('T',' ').slice(0,19)+' UTC',r.equity.toFixed(2),r.cash.toFixed(2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('nav').append(tr);});drawPaperChart();globalThis.GPT TradingView?.renderAccount(account,state);$('performance').textContent='FLOW 전용 Paper 계좌의 실제 equity 기록입니다. 입출금이 있으면 수익률과 다를 수 있습니다.';}
+     $('nav').replaceChildren();state.nav.slice(-15).reverse().forEach(r=>{const tr=document.createElement('tr');[r.time.replace('T',' ').slice(0,19)+' UTC',r.equity.toFixed(2),r.cash.toFixed(2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('nav').append(tr);});drawPaperChart();globalThis.PulseView?.renderAccount(account,state);$('performance').textContent='FLOW 전용 Paper 계좌의 실제 equity 기록입니다. 입출금이 있으면 수익률과 다를 수 있습니다.';}
  }
  function stop(message='접속 시 자동 실행 중지됨'){if(state){state.armed=false;save();}clearInterval(timer);timer=null;status(message);}
  function installTimer(){clearInterval(timer);timer=setInterval(tick,30000);}
@@ -51,7 +51,7 @@
    try{
      credentials={keyId:$('paper-key').value.trim(),secretKey:$('paper-secret').value.trim()};
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
-     account=null;state=null;lastGPT TradingFetch=0;globalThis.GPT TradingView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
+     account=null;state=null;lastPulseFetch=0;globalThis.PulseView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
      if($('remember').checked)localStorage.setItem(KEY,JSON.stringify(credentials));
      state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:false,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
      state.owned=state.owned||[];state.selected=state.selected||[];state.nav=state.nav||[];state.log=state.log||[];state.intents=state.intents||{};
