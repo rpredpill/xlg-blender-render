@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "Pulse",
-  "short_name": "Pulse",
+  "name": "GPT Trading",
+  "short_name": "GPT Trading",
   "description": "개별 주식 모의 운용 · 계좌 가치, 보유 종목, 실제 Paper 주문·체결 기록",
   "start_url": "./",
   "scope": "./",
@@ -11,16 +11,16 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
+      "src": "./gpt-icon.png",
+      "sizes": "716x716",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "./gpt-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }
