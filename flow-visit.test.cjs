@@ -19,7 +19,8 @@ function broker({closed=false,lost=false,unknown=false,stale=false,foreign=false
     }
     if((opts.method||'GET')==='GET'){assert.equal(opts.headers['Content-Type'],undefined);assert.equal(opts.cache,undefined);}
     if(path==='/account'&&accountFail-->0)throw Error('Temporary account connection failure');
-    if(path==='/account')data={id:'mock-paper',status:'ACTIVE',cash:String(cash),equity:String(cash+[...positions.values()].reduce((s,p)=>s+p.market_value,0)),long_market_value:String([...positions.values()].reduce((s,p)=>s+p.market_value,0)),short_market_value:'0',buying_power:'400000'};
+    if(path.startsWith('/account/portfolio/history?'))data={timestamp:[Date.parse(fixture.signalDate+'T15:00:00Z')/1000,Date.parse(fixture.signalDate+'T20:00:00Z')/1000],equity:[100000,100050]};
+    else if(path==='/account')data={id:'mock-paper',status:'ACTIVE',cash:String(cash),equity:String(cash+[...positions.values()].reduce((s,p)=>s+p.market_value,0)),long_market_value:String([...positions.values()].reduce((s,p)=>s+p.market_value,0)),short_market_value:'0',buying_power:'400000'};
     else if(path==='/positions')data=[...positions.values()].map(p=>({...p,qty:String(p.qty),market_value:String(p.market_value)}));
     else if(path.startsWith('/orders?'))data=[...orders.values()].filter(o=>o.status!=='filled').map(o=>({id:o.id,status:o.status,client_order_id:o.request.client_order_id})).concat(foreign?[{client_order_id:'foreign',id:'foreign'}]:[]);
     else if(path==='/clock'&&clockFail-->0)throw Error('Temporary clock connection failure');
@@ -40,7 +41,7 @@ async function page(b,{offline=false,fastTimeout=false}={}){
  const elements={},events={},element=()=>({value:'',checked:false,disabled:false,textContent:'',style:{},setAttribute(){},append(){},replaceChildren(){}}),$=id=>elements[id]||(elements[id]=element());let interval;
  $('paper-key').value='MOCK';$('paper-secret').value='MOCK';$('budget').value='100000';$('remember').checked=true;
  const delays=[];
- const context={FLOWPaperCore:C,fetch:b.fetch,AbortController,setTimeout:(fn,ms)=>{if(ms!==15000)delays.push(ms);return setTimeout(fn,ms===15000?(fastTimeout?0:60000):0)},clearTimeout,document:{getElementById:$,createElement:element,createElementNS:element,visibilityState:'visible',addEventListener:(event,fn)=>events[event]=fn},localStorage:{getItem:k=>b.store.get(k)||null,setItem:(k,v)=>b.store.set(k,v),removeItem:k=>b.store.delete(k)},navigator:{locks:b.locks,onLine:!offline},Intl,Date,console,setInterval:fn=>(interval=fn,1),clearInterval(){}};
+ const context={FlowHistory:require('./flow-history.js'),FLOWPaperCore:C,fetch:b.fetch,AbortController,setTimeout:(fn,ms)=>{if(ms!==15000)delays.push(ms);return setTimeout(fn,ms===15000?(fastTimeout?0:60000):0)},clearTimeout,document:{getElementById:$,createElement:element,createElementNS:element,visibilityState:'visible',addEventListener:(event,fn)=>events[event]=fn},localStorage:{getItem:k=>b.store.get(k)||null,setItem:(k,v)=>b.store.set(k,v),removeItem:k=>b.store.delete(k)},navigator:{locks:b.locks,onLine:!offline},Intl,Date,console,setInterval:fn=>(interval=fn,1),clearInterval(){}};
  vm.runInNewContext(fs.readFileSync(__dirname+'/flow-paper-visit.js','utf8'),context);
  for(let i=0;i<80;i++)await new Promise(r=>setImmediate(r));
  return {$,delays,stop:()=>$('stop').onclick(),connect:()=>$('connect').onclick(),start:()=>$('start').onclick(),tick:async()=>{if(interval)await interval()},state:()=>JSON.parse(b.store.get(stateKey))};
