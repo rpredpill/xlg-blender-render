@@ -3,14 +3,22 @@
  'use strict';
  const PAPER='https://paper-api.alpaca.markets/v2';
  function assert(ok,message){if(!ok)throw Error(message);}
+ const RULE_ID='FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2';
  function targets(signal,previous=[]){
-   assert(signal.ready && signal.ranking.length>=10,'신호 데이터가 준비되지 않았습니다.');
-   const scores=new Map(signal.ranking.map(r=>[r.ticker,r]));
-   const keep=previous.filter(s=>scores.has(s)&&scores.get(s).rank<=20);
-   const chosen=[...keep,...signal.ranking.map(r=>r.ticker).filter(s=>!keep.includes(s))].slice(0,10);
-   const sum=chosen.reduce((s,t)=>s+scores.get(t).score,0);
-   assert(chosen.length===10&&Number.isFinite(sum)&&sum>0,'편입 비중 오류');
-   return chosen.map(s=>({...scores.get(s),weight:scores.get(s).score/sum}));
+   assert(signal?.ready && signal.version===2 && signal.ruleId===RULE_ID,'새 FLOW 신호가 준비되지 않았습니다.');
+   assert(Array.isArray(signal.ranking)&&signal.ranking.length>=5,'Top5 데이터가 부족합니다.');
+   const rows=signal.ranking.slice(0,5);
+   assert(new Set(rows.map(r=>r.ticker)).size===5&&rows.every((r,i)=>r.rank===i+1&&Number.isFinite(r.score)&&r.score>0),'Top5 순위 데이터 오류');
+   return rows.map(r=>({...r,weight:.2}));
+ }
+ function halfYear(d){return d.slice(0,4)+'H'+(Number(d.slice(5,7))<=6?1:2);}
+ function migrateState(state){
+   if(state.ruleId===RULE_ID)return false;
+   state.ruleTransitions=state.ruleTransitions||[];
+   state.ruleTransitions.push({time:new Date().toISOString(),from:state.ruleId||'FLOW_V1_63_MEDIAN_TOP10_EXIT20_QUARTER',to:RULE_ID});
+   for(const i of Object.values(state.intents||{}))if(!i.ruleId)i.ruleId='FLOW_V1_63_MEDIAN_TOP10_EXIT20_QUARTER';
+   state.ruleId=RULE_ID;delete state.lastHalfYear;
+   return true;
  }
  function accountGuard(account,positions,orders,owned=[]){
    assert(account.status==='ACTIVE'&&!account.trading_blocked&&!account.account_blocked,'계좌가 거래 가능한 상태가 아닙니다.');
@@ -26,8 +34,9 @@
  }
  function initialOrders(rows,budget,date){
    assert(budget>=10,'사용 가능한 현금이 부족합니다.');
-   return rows.map(r=>({symbol:r.ticker,notional:(Math.floor(budget*r.weight*100)/100).toFixed(2),side:'buy',type:'market',time_in_force:'day',client_order_id:`flow1-${date}-${r.ticker.replace('.','')}-buy`}));
+   return rows.map(r=>({symbol:r.ticker,notional:(Math.floor(budget*r.weight*100)/100).toFixed(2),side:'buy',type:'market',time_in_force:'day',client_order_id:`flow3-${date}-${r.ticker.replace('.','')}-buy`}));
  }
- const api={PAPER,assert,targets,accountGuard,buyBudget,initialOrders};
+ const api={PAPER,RULE_ID,halfYear,migrateState,assert,targets,accountGuard,buyBudget,initialOrders};
  root.FLOWPaperCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
+
