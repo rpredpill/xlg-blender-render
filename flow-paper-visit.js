@@ -61,7 +61,7 @@
      state.armed=state.manualPaused!==true;state.budget=Number.isFinite(Number(state.budget))&&Number(state.budget)>=10?Number(state.budget):Number($('budget').value)||100000;save();
      $('log').textContent=state.log.join('\n')||'아직 주문이 없습니다.';$('budget').value=state.budget||100000;
      await loadSignal();await refresh();$('start').disabled=false;
-     status(state.armed?'Paper 연결 완료 · 접속 시 자동 운용을 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
+     status(state.armed?'Paper 연결 완료 · 접속 시 자동 매매을 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
      if(state.armed){installTimer();await tick();}
    }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;}
  }

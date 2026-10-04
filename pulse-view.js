@@ -8,7 +8,7 @@
   $('pulse-equity').textContent=money(account.equity);$('pulse-cash').textContent=money(account.cash);
   const base=Number(state?.nav?.[0]?.equity),equity=Number(account.equity),change=base>0?(equity/base-1)*100:null;
   $('pulse-change').textContent=change===null?'—':`${change>=0?'+':''}${change.toFixed(2)}%`;$('pulse-change').className=change===null?'':change>=0?'positive':'negative';
-  $('pulse-mode').textContent=state?.armed?'자동 운용 켜짐':'자동 운용 꺼짐';
+  $('pulse-mode').textContent=state?.armed?'자동 매매 켜짐':'자동 매매 꺼짐';
   $('pulse-updated').textContent=state?.pausedReason?'확인 대기 · 자동 설정 유지':'확인 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Seoul'})+' KST';
  }
  function renderPositions(rows){
