@@ -1,99 +1,13 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nani · Echo · Pulse</title>
-<link rel="manifest" href="./manifest.webmanifest?v=28">
-<meta name="theme-color" content="#0b1730">
-<meta name="application-name" content="Nani">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Nani">
-<link rel="apple-touch-icon" href="./icon-192.png?v=26">
-<link rel="stylesheet" href="./style.css?v=26">
-<link rel="stylesheet" href="./benchmark.css?v=27">
-<link rel="stylesheet" href="./strategy.css?v=26">
-<link rel="stylesheet" href="./settings.css?v=26">
-<link rel="stylesheet" href="./dashboard-fix.css?v=2">
-<script>try{document.documentElement.dataset.layout=localStorage.getItem('somx.layout.v1')||'vertical';document.documentElement.dataset.theme=localStorage.getItem('somx.theme.v1')||'light'}catch(e){document.documentElement.dataset.layout='vertical';document.documentElement.dataset.theme='light'}</script>
-</head>
-<body>
-<script>document.body.dataset.layout=document.documentElement.dataset.layout||'vertical';document.body.dataset.theme=document.documentElement.dataset.theme||'light';</script>
-<button class="gear" id="settingsBtn" aria-label="설정">⚙</button>
-<input id="centerPhotoInput" type="file" accept="image/*" hidden>
-
-<div class="board">
-  <section class="card left">
-    <svg id="donut" viewBox="0 0 900 900" aria-label="SNPI portfolio donut"></svg>
-  </section>
-
-  <section class="right">
-    <div class="card">
-      <div class="summary-title"><span>월간 수익률</span><button id="historyBtn" class="history-btn" type="button">기록</button></div>
-      <div class="summary-grid">
-        <div class="metric"><div class="metric-label">포트폴리오 월간 수익률</div><div class="metric-value" id="portfolio-return">--</div></div>
-        <div class="metric"><div class="metric-label">상승 종목</div><div class="metric-value count" id="up-count">--</div></div>
-        <div class="metric"><div class="metric-label">최고 수익률</div><div class="metric-name" id="best-ticker">--</div><div class="metric-value" id="best-return">--</div></div>
-        <div class="metric"><div class="metric-label">최저 수익률</div><div class="metric-name" id="worst-ticker">--</div><div class="metric-value" id="worst-return">--</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <table>
-        <thead><tr><th style="width:36%">종목</th><th style="width:29%">상태</th><th style="width:35%">1개월 수익률</th></tr></thead>
-        <tbody id="holdings-body"></tbody>
-      </table>
-    </div>
-
-    <div class="card benchmark-main" id="benchmark-panel">
-      <div class="benchmark-main-head">
-        <div class="benchmark-main-left">
-          <div class="benchmark-main-title">SNPI vs S&P 500</div>
-          <div class="benchmark-main-sub">누적 성과 비교 · 시작값 100</div>
-          <div class="benchmark-switch" role="group" aria-label="비교 대상 선택">
-            <button type="button" data-benchmark="SPY">S&P 500</button>
-            <button type="button" data-benchmark="QQQ">QQQ</button>
-            <button type="button" data-benchmark="QLD">QLD</button>
-            <button type="button" data-benchmark="TQQQ">TQQQ</button>
-            <button type="button" data-benchmark="SPMO">SPMO</button>
-          </div>
-        </div>
-        <div class="benchmark-main-right">
-          <div class="benchmark-main-values"><span class="somx" id="benchmark-somx-value">SNPI 100.0</span><span class="spy" id="benchmark-spy-value">S&P 500 100.0</span></div>
-          <div class="benchmark-main-legend"><span class="benchmark-key"><i class="benchmark-dot somx"></i>SNPI</span><span class="benchmark-key"><i class="benchmark-dot spy"></i><span id="benchmark-legend-label">S&P 500</span></span></div>
-        </div>
-      </div>
-      <div class="benchmark-chart-wrap">
-        <div id="benchmark-state" class="benchmark-state">비교 데이터를 준비하는 중…</div>
-        <svg id="benchmark-chart" class="benchmark-chart" viewBox="0 0 760 300" aria-label="SNPI와 S&P 500 누적 성과 비교 그래프"></svg>
-      </div>
-      <div class="benchmark-note" id="benchmark-note">월별 수익률 복리 누적 · S&P 500은 SPY 조정주가 프록시</div>
-    </div>
-  </section>
-</div>
-
-<div class="modal-backdrop" id="modal"><div class="modal settings-modal"><div class="settings-head"><h2>설정</h2><button id="settingsCloseBtn" class="settings-close" type="button" aria-label="닫기">×</button></div><div class="settings-tabs" role="tablist" aria-label="설정 카테고리"><button type="button" data-settings-tab="api">API</button><button type="button" data-settings-tab="design">디자인</button><button type="button" data-settings-tab="strategy">전략</button></div><div class="settings-content">
-<section class="settings-pane" data-settings-pane="api"><div class="settings-section"><div class="settings-section-title">Alpaca API</div><div class="settings-section-sub">Alpaca Basic 무료 IEX 피드를 사용합니다. 키는 이 브라우저의 localStorage에만 저장됩니다.</div><div class="settings-api-status" id="settings-api-status"><i class="settings-api-dot"></i><span>API 연결 설정</span></div><div class="field"><label>API Key ID</label><input id="keyId" autocomplete="off" placeholder="PK..."></div><div class="field"><label>API Secret Key</label><input id="secretKey" type="password" autocomplete="off" placeholder="Secret"></div><div class="row"><button class="btn secondary" id="clearBtn">키 삭제</button><button class="btn primary" id="saveBtn">저장 후 연결</button></div><div class="small">무료 IEX는 미국 전체 거래소 통합 SIP가 아니라 IEX 단일 거래소 데이터입니다. 사이트를 닫아 둔 동안에는 실행되지 않지만, 다음에 열면 최신 전략 스냅샷과 월말 기록을 다시 동기화합니다.</div></div></section>
-<section class="settings-pane" data-settings-pane="design" hidden><div class="settings-section"><div class="settings-section-title">레이아웃</div><div class="settings-section-sub">메인 대시보드 배치를 선택합니다.</div><div class="settings-choice-group" role="group" aria-label="레이아웃 선택"><button class="layout-btn" data-layout-choice="classic" type="button">기존</button><button class="layout-btn" data-layout-choice="vertical" type="button">세로</button></div></div><div class="settings-section"><div class="settings-section-title">테마</div><div class="settings-section-sub">라이트 또는 다크 모드를 선택합니다.</div><div class="settings-choice-group" role="group" aria-label="테마 선택"><button type="button" data-theme-choice="light">라이트</button><button type="button" data-theme-choice="dark">다크</button></div></div></section>
-<section class="settings-pane" data-settings-pane="strategy" hidden><div id="strategy-settings-root"></div></section>
-</div></div></div>
-
-<div class="modal-backdrop history-backdrop" id="history-modal"><div class="modal history-modal"><div class="history-head"><div><h2>월말 수익률 기록</h2><p id="history-status">각 달 첫 거래일 시가 → 마지막 거래일 종가</p></div><button id="historyCloseBtn" class="history-close" type="button" aria-label="닫기">×</button></div><div id="history-list" class="history-list"><div class="history-empty">과거 월말 수익률을 불러오는 중…</div></div></div></div>
-<div class="toast" id="toast"></div>
-<script src="./strategy-default.js?v=2"></script>
-<script src="./strategy-core-custom.js?v=37"></script>
-<script src="./nani-extension.js?v=5"></script>
-<script src="./joy-extension.js?v=3"></script>
-<script src="./app.js?v=28"></script>
-<script src="./nani-history-sync.js?v=4"></script>
-<script src="./month-live-fix.js?v=30"></script>
-<script src="./nani-live-fix.js?v=6"></script>
-<script src="./benchmark.js?v=34"></script>
-<script src="./pwa.js?v=41"></script>
-<script src="./joy-live-core.js?v=1"></script>
-<script src="./joy-live.js?v=5"></script>
-<script src="./strategy-menu.js?v=5"></script>
-</body>
-</html>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#fafbfC"><title>Pulse · 모의 운용</title><link rel="manifest" href="./manifest.webmanifest?v=30"><link rel="stylesheet" href="./pulse.css?v=1"></head><body>
+<main class="pulse-board">
+<nav class="topbar" aria-label="Pulse"><a href="./" class="home-link"><span class="brand-mark">p.</span>Pulse</a><div><span>운용 대시보드</span></div></nav>
+<header class="page-heading"><div><div class="eyebrow">PORTFOLIO / PAPER</div><h1>Pulse<span class="title-dot">.</span></h1><p>운용의 흐름을 기록하다.</p></div><span class="paper-badge"><i></i>모의 운용</span></header>
+<div class="status-bar"><span class="status-light" aria-hidden="true"></span><div id="status" role="status">계좌 연결 대기</div><a href="#connection">연결 설정 <span aria-hidden="true">↗</span></a></div>
+<section class="metric-grid" aria-label="계좌 요약"><div class="metric"><span>계좌 가치</span><strong id="pulse-equity">—</strong><small>Alpaca Paper</small></div><div class="metric"><span>가용 현금</span><strong id="pulse-cash">—</strong><small>현금 범위에서 운용</small></div><div class="metric"><span>기록 이후 가치 변화</span><strong id="pulse-change">—</strong><small>입출금 포함 · 투자 수익률과 다를 수 있음</small></div><div class="metric"><span>자동 운용</span><strong id="pulse-mode" class="mode-value">연결 대기</strong><small id="pulse-updated">접속 시 상태 확인</small></div></section>
+<div class="dashboard-grid"><section class="card performance-card"><div class="card-heading"><div><span class="eyebrow">PERFORMANCE</span><h2>계좌의 흐름</h2></div><span class="quiet-tag">실제 Paper 기록</span></div><div id="paper-chart" class="chart empty-chart"><div class="empty-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div><strong>아직 운용 기록이 없어요</strong><p>계좌를 연결하면 체결 이후의 가치 변화를 표시합니다.</p></div><p id="performance" class="muted">연결된 Paper 계좌의 기록만 표시합니다.</p></section>
+<section class="card holdings-card"><div class="card-heading"><div><span class="eyebrow">HOLDINGS</span><h2>보유 종목</h2></div><span id="pulse-count" class="quiet-tag">—</span></div><div class="table-scroll"><table><thead><tr><th>종목</th><th>평가금액</th><th>손익</th></tr></thead><tbody id="pulse-positions"><tr><td colspan="3" class="empty-cell">계좌 연결 후 보유 종목을 확인하세요.</td></tr></tbody></table></div></section></div>
+<section class="card activity-card"><div class="card-heading"><div><span class="eyebrow">ACTIVITY</span><h2>최근 주문</h2></div><span class="quiet-tag">브로커 접수 내역</span></div><div class="table-scroll"><table><thead><tr><th>종목</th><th>주문</th><th>상태</th><th>체결 수량</th><th>체결 평균가</th></tr></thead><tbody id="pulse-orders"><tr><td colspan="5" class="empty-cell">계좌를 연결하면 최근 주문을 불러옵니다.</td></tr></tbody></table></div></section>
+<section class="card connection-card" id="connection"><details id="connection-details"><summary class="settings-summary"><span><span class="eyebrow">CONTROL</span><strong>연결 및 운용 설정</strong></span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="settings-content"><div class="setup-grid"><div><h3>계좌 연결</h3><p class="muted">Alpaca Paper 키로 연결합니다.</p><label for="paper-key">Paper API Key</label><input id="paper-key" autocomplete="off" placeholder="PK…"><label for="paper-secret">Paper API Secret</label><input id="paper-secret" type="password" autocomplete="off" placeholder="Secret key"><label class="remember"><input id="remember" type="checkbox">이 브라우저에 키 저장</label><div class="buttons"><button id="connect">계좌 연결</button><button id="forget" class="secondary">키 삭제</button></div><p id="account" class="muted">계좌 정보는 이 브라우저에서만 표시됩니다.</p></div><div class="run-settings"><h3>접속 시 자동 운용</h3><p class="muted">첫 투자와 밀린 분기 리밸런싱을 접속할 때 확인합니다.</p><label for="budget">투자 한도 · USD</label><input id="budget" type="number" min="10" step="100" value="100000"><div class="buttons"><button id="start" disabled>자동 운용 켜기</button><button id="stop" class="secondary">운용 중지</button></div><p class="muted">현금 0.5%를 남기며, 현금 범위에서 주문합니다. 다른 보유 종목이나 미체결 주문이 있으면 실행을 중단합니다.</p><details class="help-details"><summary>주문은 언제 실행되나요?</summary><p class="muted">장중에는 시장가로 주문하고, 장이 닫혀 있으면 다음 정규장 주문으로 예약합니다. 접수된 주문은 화면을 닫아도 Alpaca에서 처리됩니다. 매도 체결 후 남은 매수는 다음 접속 때 이어 처리합니다. 같은 분기에 완료한 매매는 반복하지 않습니다.</p><p class="muted">키 저장과 자동 운용을 켜면 같은 브라우저에서 재접속할 때 연결합니다. 주문 접수 전 화면을 닫으면 제출이 끝나지 않을 수 있으므로 다음 접속 때 상태를 확인하세요.</p><p class="muted">분기 첫 접속 시 최신 완료 거래일 신호로 주문하며, 실제 접수·체결 내역을 기록합니다.</p></details></div></div></div></details></section>
+<div class="detail-grid"><section class="card"><details><summary class="compact-summary">다음 운용 목표 <span aria-hidden="true">+</span></summary><p id="signal-meta" class="muted">신호를 불러오는 중…</p><table><thead><tr><th>종목</th><th>순위</th><th>비중</th></tr></thead><tbody id="holdings"></tbody></table><p class="muted">63거래일 거래대금 중앙값 · Top10 / Exit20 · 점수 비례 비중 · 분기 리밸런싱.</p></details></section><section class="card"><details><summary class="compact-summary">운용 기록 <span aria-hidden="true">+</span></summary><pre id="log">아직 주문이 없습니다.</pre></details><details><summary class="compact-summary">계좌 가치 기록 <span aria-hidden="true">+</span></summary><div class="table-scroll"><table><thead><tr><th>기록 시각</th><th>계좌 가치</th><th>현금</th></tr></thead><tbody id="nav"></tbody></table></div></details></section></div>
+<footer><span>Pulse</span><span>개별 주식 · 레버리지 없음 · 모의 운용</span><span>Alpaca Paper</span></footer>
+</main><script src="./flow-paper-core.js?v=1"></script><script src="./pulse-view.js?v=1"></script><script src="./flow-paper-visit.js?v=2"></script><script>if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});</script></body></html>
