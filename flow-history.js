@@ -1,0 +1,59 @@
+(function(root){
+ 'use strict';
+ const LABELS={'1D':'1일','1M':'1개월','1Y':'1년','5Y':'5년',ALL:'전체'};
+ const ny=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));
+ function normalize(data){
+   if(!Array.isArray(data?.timestamp)||!Array.isArray(data.equity)||data.timestamp.length!==data.equity.length)throw Error('계좌 이력 응답 형식 확인 필요');
+   const out=new Map();data.timestamp.forEach((t,i)=>{const e=data.equity[i];if(typeof t==='number'&&Number.isFinite(t)&&typeof e==='number'&&Number.isFinite(e)&&e>=0)out.set(t*1000,{time:t*1000,equity:e});});
+   const rows=[...out.values()].sort((a,b)=>a.time-b.time),first=rows.findIndex(r=>r.equity>0);return first<0?[]:rows.slice(first);
+ }
+ function merge(a,b){const days=new Map();for(const r of a.concat(b)){if(Number.isFinite(r.time)&&Number.isFinite(r.equity)&&r.equity>=0)days.set(ny(r.time),r);}return [...days.values()].sort((a,b)=>a.time-b.time);}
+ function select(rows,range,now=Date.now()){
+   if(range==='1D'){const last=rows.at(-1);return last?rows.filter(r=>ny(r.time)===ny(last.time)):[];}
+   if(range==='ALL')return rows;
+   const d=new Date(now),day=d.getUTCDate();d.setUTCDate(1);
+   if(range==='1M')d.setUTCMonth(d.getUTCMonth()-1);else d.setUTCFullYear(d.getUTCFullYear()-(range==='5Y'?5:1));
+   const month=d.getUTCMonth();d.setUTCDate(day);if(d.getUTCMonth()!==month)d.setUTCDate(0);
+   return rows.filter(r=>r.time>=d.getTime());
+ }
+ function create({api,document,storage,now=()=>Date.now()}){
+   const $=id=>document.getElementById(id);let accountId=null,range='ALL',daily=[],intraday=[],lastDaily=0,lastIntraday=0,busy=false,generation=0,error='',storageError=false,queued=false;
+   function save(){try{storage.setItem('flow.paper.history.v1.'+accountId,JSON.stringify({daily,updated:lastDaily}));storageError=false;}catch{storageError=true;}}
+   function render(){
+     for(const k of Object.keys(LABELS))$('history-'+k)?.setAttribute('aria-pressed',String(range===k));
+     const rows=select(range==='1D'?intraday:daily,range,now()),box=$('paper-chart');box.replaceChildren();
+     $('history-change').textContent=rows.length>1&&rows[0].equity>0?`${LABELS[range]} 가치 변화 ${(rows.at(-1).equity/rows[0].equity-1)*100>=0?'+':''}${((rows.at(-1).equity/rows[0].equity-1)*100).toFixed(2)}%`:'기간 가치 변화 —';
+     const dates=rows.length?`${ny(rows[0].time)} ~ ${ny(rows.at(-1).time)} · ${rows.length.toLocaleString()}개 기록`:'표시할 기록이 없습니다.';
+     $('performance').textContent=(busy?'계좌 이력 조회 중… · ':'')+(error?'이력 갱신 실패 · 저장된 기록만 표시 · ':'')+dates+' · '+(range==='1D'?'최근 거래일 정규장 5분 기록':'거래일별 계좌 가치')+' · 계좌 전체 기록으로 이전 규칙 운용·입출금 포함'+(storageError?' · 브라우저 저장 실패':'');
+     if(rows.length<2){const strong=document.createElement('strong');strong.textContent=rows.length?'기록을 모으고 있어요':accountId?'이 기간의 기록이 아직 없어요':'계좌를 연결하면 이력을 불러옵니다.';box.append(strong);return;}
+     const ns='http://www.w3.org/2000/svg',make=(name,attrs,text)=>{const e=document.createElementNS(ns,name);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=text;return e;};
+     const values=rows.map(r=>r.equity),lo=Math.min(...values),hi=Math.max(...values),pad=Math.max((hi-lo)*.1,hi*.005,1),min=lo-pad,max=hi+pad;
+     const svg=make('svg',{viewBox:'0 0 760 260',role:'img','aria-label':`FLOW Paper 계좌 가치 ${LABELS[range]}`});svg.style.width='100%';
+     for(let i=0;i<4;i++){const y=20+i*64;svg.append(make('line',{x1:72,x2:738,y1:y,y2:y,stroke:'#eef1f5'}),make('text',{x:65,y:y+4,'text-anchor':'end',fill:'#84909f','font-size':12},'$'+(max-(max-min)*i/3).toLocaleString('en-US',{maximumFractionDigits:0})));}
+     const start=rows[0].time,span=rows.at(-1).time-start||1;
+     const path=rows.map((r,i)=>(i?'L':'M')+(72+(r.time-start)*666/span).toFixed(2)+','+(20+192*(max-r.equity)/(max-min)).toFixed(2)).join(' ');
+     svg.append(make('path',{d:path,fill:'none',stroke:'#2563eb','stroke-width':3}));
+     const label=r=>range==='1D'?new Intl.DateTimeFormat('ko-KR',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.time))+' ET':ny(r.time);
+     svg.append(make('text',{x:72,y:245,fill:'#84909f','font-size':12},label(rows[0])),make('text',{x:738,y:245,'text-anchor':'end',fill:'#84909f','font-size':12},label(rows.at(-1))));box.append(svg);
+   }
+   function reset(){generation++;accountId=null;daily=[];intraday=[];lastDaily=lastIntraday=0;busy=false;queued=false;error='';render();}
+   async function update(account){
+     if(!account?.id)return;
+     if(accountId!==account.id){reset();accountId=account.id;try{const cached=JSON.parse(storage.getItem('flow.paper.history.v1.'+accountId)||'null');if(Array.isArray(cached?.daily))daily=merge([],cached.daily);}catch{}render();}
+     if(busy)return;
+     const dailyDue=now()-lastDaily>=300000,dayDue=range==='1D'&&now()-lastIntraday>=60000;if(!dailyDue&&!dayDue)return;
+     busy=true;error='';render();const id=accountId,token=generation;
+     try{
+       const jobs=[];
+       if(dailyDue){const created=Date.parse(account.created_at),start=Number.isFinite(created)?new Date(created).toISOString():'2000-01-01T00:00:00Z';jobs.push(api('/account/portfolio/history?timeframe=1D&start='+encodeURIComponent(start)).then(data=>({kind:'daily',rows:normalize(data)})));}
+       if(dayDue)jobs.push(api('/account/portfolio/history?period=7D&timeframe=5Min&intraday_reporting=market_hours').then(data=>({kind:'intraday',rows:normalize(data)})));
+       const results=await Promise.allSettled(jobs);if(token!==generation||id!==accountId)return;
+       for(const r of results){if(r.status==='rejected'){error='조회 실패';continue;}if(r.value.kind==='daily'){daily=merge(daily,r.value.rows);lastDaily=now();save();}else{intraday=r.value.rows;lastIntraday=now();}}
+     }finally{if(token===generation&&id===accountId){busy=false;render();if(queued){queued=false;if(currentAccount)void update(currentAccount);}}}
+   }
+   for(const k of Object.keys(LABELS))if($('history-'+k))$('history-'+k).onclick=()=>{range=k;if(busy)queued=true;render();if(currentAccount)void update(currentAccount);};
+   let currentAccount=null;render();
+   return {update(account){currentAccount=account;return update(account);},reset(){currentAccount=null;reset();},render};
+ }
+ const exported={normalize,merge,select,create};if(typeof module!=='undefined'&&module.exports)module.exports=exported;else root.FlowHistory=exported;
+})(globalThis);
