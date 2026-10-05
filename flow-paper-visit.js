@@ -21,7 +21,7 @@
      const controller=new AbortController(),started=Date.now();let timedOut=false;
      const timeout=setTimeout(()=>{timedOut=true;controller.abort();},15000);
      try{
-       const r=await fetch(C.PAPER+path,{method,headers,body:body!==undefined?JSON.stringify(body):undefined,signal:controller.signal});
+       const r=await fetch(C.PAPER+path,{method,headers,cache:'no-store',body:body!==undefined?JSON.stringify(body):undefined,signal:controller.signal});
        if(!r.ok){
          let message='';try{message=(await r.json()).message||'';}catch{}
          const e=Error(`Paper API ${r.status} (${operation}): ${message}`);e.httpStatus=r.status;

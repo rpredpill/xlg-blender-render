@@ -13,7 +13,9 @@
  }
  function renderPositions(rows){
   rows=rows.filter(r=>Number.isFinite(Number(r.qty))&&Math.abs(Number(r.qty))>0);
-  $('pulse-count').textContent=rows.length+'종목';if(!rows.length){empty('pulse-positions','아직 보유 종목이 없습니다.',3);return;}
+  const isRemainder=r=>Math.abs(Number(r.qty))<=0.000001000001&&Number.isFinite(Number(r.market_value))&&Math.abs(Number(r.market_value))<0.01;
+  const remainderCount=rows.filter(isRemainder).length;rows=rows.filter(r=>!isRemainder(r));
+  $('pulse-count').textContent=rows.length+'종목'+(remainderCount?' · 미세 잔여 '+remainderCount+'건 제외':'');if(!rows.length){empty('pulse-positions','아직 보유 종목이 없습니다.',3);return;}
   const body=$('pulse-positions');body.replaceChildren();
   for(const r of [...rows].sort((a,b)=>Number(b.market_value)-Number(a.market_value))){const tr=document.createElement('tr'),td=document.createElement('td'),wrap=document.createElement('span'),avatar=document.createElement('span'),name=document.createElement('span');wrap.className='stock-symbol';avatar.className='stock-avatar';avatar.textContent=r.symbol.slice(0,2);name.textContent=r.symbol;wrap.append(avatar,name);td.append(wrap);tr.append(td);cell(tr,money(r.market_value));const change=r.unrealized_plpc==null?NaN:Number(r.unrealized_plpc)*100;cell(tr,Number.isFinite(change)?`${change>=0?'+':''}${change.toFixed(2)}%`:'—',change>=0?'positive':'negative');body.append(tr);}
  }
