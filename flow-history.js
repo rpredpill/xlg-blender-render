@@ -17,14 +17,16 @@
    return rows.filter(r=>r.time>=d.getTime());
  }
  function create({api,document,storage,now=()=>Date.now()}){
-   const $=id=>document.getElementById(id);let accountId=null,range='ALL',daily=[],intraday=[],lastDaily=0,lastIntraday=0,busy=false,generation=0,error='',storageError=false,queued=false;
+   const $=id=>document.getElementById(id);let accountId=null,range='ALL',daily=[],intraday=[],lastDaily=0,lastIntraday=0,busy=false,generation=0,error='',storageError=false,queued=false,live=null;
    function save(){try{storage.setItem('flow.paper.history.v1.'+accountId,JSON.stringify({daily,updated:lastDaily}));storageError=false;}catch{storageError=true;}}
    function render(){
      for(const k of Object.keys(LABELS))$('history-'+k)?.setAttribute('aria-pressed',String(range===k));
-     const rows=select(range==='1D'?intraday:daily,range,now()),box=$('paper-chart');box.replaceChildren();
+     let source=range==='1D'?intraday:daily;
+     if(live&&source.length&&live.time>source.at(-1).time&&(range!=='1D'||ny(live.time)===ny(source.at(-1).time)))source=source.concat(live);
+     const rows=select(source,range,now()),box=$('paper-chart');box.replaceChildren();
      $('history-change').textContent=rows.length>1&&rows[0].equity>0?`${LABELS[range]} 가치 변화 ${(rows.at(-1).equity/rows[0].equity-1)*100>=0?'+':''}${((rows.at(-1).equity/rows[0].equity-1)*100).toFixed(2)}%`:'기간 가치 변화 —';
      const dates=rows.length?`${ny(rows[0].time)} ~ ${ny(rows.at(-1).time)} · ${rows.length.toLocaleString()}개 기록`:'표시할 기록이 없습니다.';
-     $('performance').textContent=(busy?'계좌 이력 조회 중… · ':'')+(error?'이력 갱신 실패 · 저장된 기록만 표시 · ':'')+dates+' · '+(range==='1D'?'최근 거래일 정규장 5분 기록':'거래일별 계좌 가치')+' · 계좌 전체 기록으로 이전 규칙 운용·입출금 포함'+(storageError?' · 브라우저 저장 실패':'');
+     $('performance').textContent=(busy?'계좌 이력 조회 중… · ':'')+(error?'이력 갱신 실패 · 저장된 기록과 최신 계좌 가치 표시 · ':'')+dates+' · '+(range==='1D'?'최근 거래일 정규장 5분 기록':'거래일별 계좌 가치')+(source.at(-1)===live?' · 마지막 점은 최신 계좌 가치':'')+' · 계좌 전체 기록으로 이전 규칙 운용·입출금 포함'+(storageError?' · 브라우저 저장 실패':'');
      if(rows.length<2){const strong=document.createElement('strong');strong.textContent=rows.length?'기록을 모으고 있어요':accountId?'이 기간의 기록이 아직 없어요':'계좌를 연결하면 이력을 불러옵니다.';box.append(strong);return;}
      const ns='http://www.w3.org/2000/svg',make=(name,attrs,text)=>{const e=document.createElementNS(ns,name);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=text;return e;};
      const values=rows.map(r=>r.equity),lo=Math.min(...values),hi=Math.max(...values),pad=Math.max((hi-lo)*.1,hi*.005,1),min=lo-pad,max=hi+pad;
@@ -36,10 +38,11 @@
      const label=r=>range==='1D'?new Intl.DateTimeFormat('ko-KR',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.time))+' ET':ny(r.time);
      svg.append(make('text',{x:72,y:245,fill:'#84909f','font-size':12},label(rows[0])),make('text',{x:738,y:245,'text-anchor':'end',fill:'#84909f','font-size':12},label(rows.at(-1))));box.append(svg);
    }
-   function reset(){generation++;accountId=null;daily=[];intraday=[];lastDaily=lastIntraday=0;busy=false;queued=false;error='';render();}
+   function reset(){generation++;accountId=null;daily=[];intraday=[];live=null;lastDaily=lastIntraday=0;busy=false;queued=false;error='';render();}
    async function update(account){
      if(!account?.id)return;
      if(accountId!==account.id){reset();accountId=account.id;try{const cached=JSON.parse(storage.getItem('flow.paper.history.v1.'+accountId)||'null');if(Array.isArray(cached?.daily))daily=merge([],cached.daily);}catch{}render();}
+     if(Number.isFinite(Number(account.equity))){live={time:now(),equity:Number(account.equity)};render();}
      if(busy)return;
      const dailyDue=now()-lastDaily>=300000,dayDue=range==='1D'&&now()-lastIntraday>=60000;if(!dailyDue&&!dayDue)return;
      busy=true;error='';render();const id=accountId,token=generation;

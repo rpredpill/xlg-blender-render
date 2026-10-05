@@ -2,9 +2,11 @@
  'use strict';
  const C=FLOWPaperCore,$=id=>document.getElementById(id),KEY='flow.paper.credentials.v1';
  let credentials=null,account=null,signal=null,state=null,busy=false,connecting=false,timer=null,lastPulseFetch=0;
+ let displayBusy=false,pulseBusy=false,marketClock=null,clockChecked=0,calendar=[],calendarMonth='',lastDisplaySuccess=0;
+ const renderOperations=()=>globalThis.PulseView?.renderOperations(marketClock,state,calendar,clockChecked);
  const stateKey=()=>`flow.paper.state.v1.${account.id}`;
  const save=()=>localStorage.setItem(stateKey(),JSON.stringify(state));
- const status=t=>{$('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
+ const status=t=>{$('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);renderOperations();};
  const halfYear=C.halfYear;
  const nyDate=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));
  const log=t=>{if(!state)return;state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,150);save();$('log').textContent=state.log.join('\n');};
@@ -59,14 +61,33 @@
  const history=globalThis.FlowHistory?.create({api,document,storage:localStorage});
  function updatePulse(){
    if(!globalThis.PulseView)return;PulseView.renderAccount(account,state);
-   if(!credentials||Date.now()-lastPulseFetch<15000)return;lastPulseFetch=Date.now();const pulseAccountId=account.id,pulseCredentials=credentials;
-   Promise.allSettled([api('/positions'),api('/orders?status=all&limit=20&direction=desc')]).then(results=>{if(credentials!==pulseCredentials||account?.id!==pulseAccountId)return;for(const [i,r] of results.entries()){if(r.status==='fulfilled'){if(i===0)PulseView.renderPositions(r.value);else PulseView.renderOrders(r.value);}else PulseView.unavailable(i===0?'pulse-positions':'pulse-orders',i===0?3:5);}});
+   if(!credentials||pulseBusy||Date.now()-lastPulseFetch<15000)return;pulseBusy=true;lastPulseFetch=Date.now();const pulseAccountId=account.id,pulseCredentials=credentials;
+   Promise.allSettled([api('/positions'),api('/orders?status=all&limit=20&direction=desc')]).then(results=>{if(credentials!==pulseCredentials||account?.id!==pulseAccountId)return;for(const [i,r] of results.entries()){if(r.status==='fulfilled'){if(i===0)PulseView.renderPositions(r.value);else PulseView.renderOrders(r.value);}else PulseView.unavailable(i===0?'pulse-positions':'pulse-orders',i===0?3:5);}}).finally(()=>{pulseBusy=false;});
  }
  async function refresh(){
-   account=await api('/account');updatePulse();void history?.update(account);
+   const connection=credentials,next=await api('/account');if(connection!==credentials)return;account=next;updatePulse();void history?.update(account);
    $('account').textContent=`Paper · ${account.status} · 계좌 가치 $${Number(account.equity).toLocaleString('en-US',{maximumFractionDigits:2})} · 현금 $${Number(account.cash).toLocaleString('en-US',{maximumFractionDigits:2})}`;
    if(state?.started){const now=new Date().toISOString();if(!state.nav.length||Date.now()-Date.parse(state.nav.at(-1).time)>60000){state.nav.push({time:now,equity:Number(account.equity),cash:Number(account.cash)});state.nav=state.nav.slice(-500);save();}
      $('nav').replaceChildren();state.nav.slice(-15).reverse().forEach(r=>{const tr=document.createElement('tr');[r.time.replace('T',' ').slice(0,19)+' UTC',r.equity.toFixed(2),r.cash.toFixed(2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('nav').append(tr);});globalThis.PulseView?.renderAccount(account,state);}
+ }
+ async function refreshDisplay(){
+   if(displayBusy||connecting||busy||!credentials||document.visibilityState==='hidden')return;
+   displayBusy=true;const connection=credentials;
+   const button=$('refresh-now');button.disabled=true;
+   $('live-refresh').textContent='현재 가치·손익·시장 상태 갱신 중…';
+   try{
+     const results=await Promise.allSettled([refresh(),api('/clock')]);
+     if(connection!==credentials)return;
+     if(results[1].status==='fulfilled'){
+       marketClock=results[1].value;clockChecked=Date.now();
+       const d=nyDate(marketClock.is_open?marketClock.timestamp:marketClock.next_open),half=halfYear(d),done=state?.started&&state.lastHalfYear===half;
+       const y=Number(d.slice(0,4)),h=Number(half.at(-1)),month=done?(h===1?`${y}-07`:`${y+1}-01`):`${y}-${h===1?'01':'07'}`;
+       if(calendarMonth!==month){try{const days=await api('/calendar?start='+month+'-01&end='+month+'-10');if(connection!==credentials)return;calendar=days;calendarMonth=month;}catch{calendar=[];}}
+     }
+     if(results.every(r=>r.status==='fulfilled')){lastDisplaySuccess=Date.now();$('live-refresh').textContent='15초마다 자동 갱신 · '+new Date(lastDisplaySuccess).toLocaleTimeString('ko-KR',{timeZone:'Asia/Seoul',hour12:false})+' KST';}
+     else $('live-refresh').textContent='갱신 지연 · 마지막 확인값 표시 · 15초 후 재확인';
+     renderOperations();
+   }finally{displayBusy=false;button.disabled=false;}
  }
  function stop(message='접속 시 자동 실행 중지됨'){if(state){state.armed=false;state.manualPaused=true;delete state.pausedReason;save();}clearInterval(timer);timer=null;status(message);}
  function pause(message){if(state){state.pausedReason=message;save();}status(message);}
@@ -78,7 +99,7 @@
    try{
      credentials={keyId:$('paper-key').value.trim(),secretKey:$('paper-secret').value.trim()};
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
-     account=null;state=null;lastPulseFetch=0;history?.reset();globalThis.PulseView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
+     account=null;state=null;marketClock=null;calendar=[];calendarMonth='';lastPulseFetch=0;history?.reset();globalThis.PulseView?.clear();renderOperations();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
      if($('remember').checked)localStorage.setItem(KEY,JSON.stringify(credentials));
      state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:true,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
      state.owned=state.owned||[];state.selected=state.selected||[];state.nav=state.nav||[];state.log=state.log||[];state.intents=state.intents||{};
@@ -88,7 +109,7 @@
      await loadSignal();await refresh();$('start').disabled=false;
      status(state.armed?'Paper 연결 완료 · 접속 시 자동 매매를 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
      if(state.armed){installTimer();await tick();}
-   }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;}
+   }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;void refreshDisplay();}
  }
  function request(symbol,side,amount,date){return {symbol,side,type:'market',time_in_force:'day',extended_hours:false,...(side==='buy'?{notional:amount.toFixed(2)}:{qty:amount.toFixed(6)}),client_order_id:`flow3-${date}-${symbol.replace('.','')}-${side}`};}
  const record=request=>({request,local:'new',id:null,status:null});
@@ -151,7 +172,7 @@
      C.assert(navigator.locks,'중복 실행 방지를 지원하는 최신 브라우저가 필요합니다.');
      await navigator.locks.request('flow-paper-'+account.id,{ifAvailable:true},async lock=>{
        if(!lock)return;state=JSON.parse(localStorage.getItem(stateKey()));if(!state?.armed)return;
-       const clock=await api('/clock');
+       const clock=await api('/clock');marketClock=clock;clockChecked=Date.now();renderOperations();
        if(state.pending && state.pending.ruleId!==C.RULE_ID){
          // Reconcile already submitted legacy orders, never submit the remaining old requests.
          const legacy=state.pending,submitted=legacy.sells.concat(legacy.buys).filter(o=>o.local!=='new');
@@ -170,10 +191,12 @@
  $('connect').onclick=connect;
  $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();installTimer();log(`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){pause(e.message);}};
  $('stop').onclick=()=>stop('접속 시 자동 실행 중지됨. 이미 접수한 주문은 Alpaca Paper에서 확인하세요.');
- $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;history?.reset();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
- document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')tick();});
+ $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;account=null;state=null;marketClock=null;calendar=[];calendarMonth='';history?.reset();globalThis.PulseView?.clear();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;$('live-refresh').textContent='연결 후 15초마다 자동 갱신';status('Paper 키 삭제 완료');};
+ $('refresh-now').onclick=()=>{lastPulseFetch=0;void refreshDisplay();};
+ setInterval(()=>{renderOperations();void refreshDisplay();},15000);
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){lastPulseFetch=0;void refreshDisplay().then(()=>tick());}});
+ window.addEventListener('online',()=>{lastPulseFetch=0;void refreshDisplay();});
  loadSignal().catch(e=>status(e.message));
  const saved=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('somx.alpaca.credentials.v1')||'null');
  if(saved){$('remember').checked=!!localStorage.getItem(KEY);$('paper-key').value=saved.keyId||'';$('paper-secret').value=saved.secretKey||'';connect();}
 })();
-
