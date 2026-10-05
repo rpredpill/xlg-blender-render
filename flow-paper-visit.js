@@ -89,7 +89,7 @@
  function pause(message){if(state){state.pausedReason=message;save();}status(message);}
  function clearPause(){if(state?.pausedReason){delete state.pausedReason;save();globalThis.PulseView?.renderAccount(account,state);}}
  function installTimer(){clearInterval(timer);timer=setInterval(tick,30000);}
- function guard(positions,open){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned);}
+ function guard(positions,open){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[],state.exitCleanup?.orders||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned);}
  async function connect(){
    if(busy||connecting)return;connecting=true;clearInterval(timer);timer=null;
    try{
@@ -107,7 +107,7 @@
      if(state.armed){installTimer();await tick();}
    }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;void refreshDisplay();}
  }
- function request(symbol,side,amount,date){return {symbol,side,type:'market',time_in_force:'day',extended_hours:false,...(side==='buy'?{notional:amount.toFixed(2)}:{qty:amount.toFixed(6)}),client_order_id:`flow3-${date}-${symbol.replace('.','')}-${side}`};}
+ function request(symbol,side,amount,date){return {symbol,side,type:'market',time_in_force:'day',extended_hours:false,...(side==='buy'?{notional:amount.toFixed(2)}:{qty:C.sellQuantity(amount)}),client_order_id:`flow3-${date}-${symbol.replace('.','')}-${side}`};}
  const record=request=>({request,local:'new',id:null,status:null});
  async function validateSignal(clock,executionDate){
    const today=nyDate(clock.timestamp),start=new Date(clock.timestamp);start.setUTCDate(start.getUTCDate()-20);
@@ -123,7 +123,11 @@
    const rows=C.targets(signal,state.selected),capital=Math.min(state.budget,Number(account.equity))*.995;C.assert(capital>=10,'투자 가능한 금액 부족');
    for(const r of rows){const a=await api('/assets/'+encodeURIComponent(r.ticker));C.assert(a.tradable&&a.fractionable&&a.class==='us_equity','소수점 개별주식 거래 불가: '+r.ticker);}
    const target=Object.fromEntries(rows.map(r=>[r.ticker,capital*r.weight])),sells=[];
-   for(const p of positions){const excess=Number(p.market_value)-(target[p.symbol]||0);if(excess>1){C.assert(Number(p.current_price)>0,'매도 시세 확인 필요: '+p.symbol);const raw=target[p.symbol]?excess/Number(p.current_price):Number(p.qty);const qty=Math.floor(Math.min(raw,Number(p.qty))*1e6)/1e6;if(qty>0)sells.push(record(request(p.symbol,'sell',qty,date)));}}
+   for(const p of positions){
+     if(!Object.hasOwn(target,p.symbol)){sells.push(record(request(p.symbol,'sell',C.sellQuantity(p.qty),date)));continue;}
+     const excess=Number(p.market_value)-target[p.symbol];
+     if(excess>1){C.assert(Number(p.current_price)>0,'매도 시세 확인 필요: '+p.symbol);const qty=Math.floor(Math.min(excess/Number(p.current_price),Number(p.qty))*1e9)/1e9;if(qty>0)sells.push(record(request(p.symbol,'sell',qty,date)));}
+   }
    state.pending={date,halfYear:halfYear(date),ruleId:C.RULE_ID,signalDate:signal.signalDate,rows,target,sells,buys:[],phase:'selling'};
    state.owned=Array.from(new Set([...state.owned,...rows.map(r=>r.ticker)]));save();log(`접속 시 실행 계획 생성 · ${date} · 신호 ${signal.signalDate}`);drawTargets();
  }
@@ -162,6 +166,21 @@
    state.intents[plan.date]={status:'filled',signalDate:plan.signalDate,mode:'visit',ruleId:plan.ruleId,orders:plan.sells.concat(plan.buys).map(o=>({id:o.id,client_order_id:o.request.client_order_id,symbol:o.request.symbol}))};
    state.pending=null;save();log('Paper 체결 확인 완료 · 다음 반기 첫 접속 때 리밸런싱');status('Paper 체결 확인 완료 · 이번 반기 추가 주문 없음');await refresh();drawTargets();
  }
+ async function cleanupExited(clock){
+   if(!state.started||!state.selected?.length)return false;
+   await refresh();
+   const [positions,open]=await Promise.all([api('/positions'),api('/orders?status=open&limit=500')]);guard(positions,open);
+   if(!state.exitCleanup){
+     const residuals=positions.filter(p=>state.owned.includes(p.symbol)&&!state.selected.includes(p.symbol)&&Number(p.qty)>0&&Number(p.qty)<=0.000001000001&&Math.abs(Number(p.market_value))<0.01);
+     if(!residuals.length)return false;
+     const batch=Date.now().toString(36);
+     state.exitCleanup={orders:residuals.map(p=>{const r=request(p.symbol,'sell',C.sellQuantity(p.qty),nyDate(clock.timestamp));r.client_order_id='flow-dust-'+batch+'-'+p.symbol.replace('.','');return record(r);})};save();log('편출 종목 소수점 잔여 전량 매도 계획 저장');
+   }
+   if(!await settle(state.exitCleanup.orders)){status('편출 종목 잔여 매도 체결 대기');return true;}
+   const after=await api('/positions'),symbols=new Set(state.exitCleanup.orders.map(o=>o.request.symbol));
+   C.assert(!after.some(p=>symbols.has(p.symbol)&&Number(p.qty)>0),'잔여 매도 체결 후 보유 수량 확인 대기');
+   state.exitCleanupHistory=state.exitCleanupHistory||[];state.exitCleanupHistory.push({...state.exitCleanup,completedAt:new Date().toISOString()});state.exitCleanup=null;save();log('편출 종목 소수점 잔여 매도 완료');lastPulseFetch=0;await refresh();return false;
+ }
  async function tick(){
    if(busy||!state?.armed||!credentials)return;busy=true;
    try{
@@ -177,11 +196,12 @@
          state.pending=null;save();log('이전 주문 확인 완료 · 미제출 이전 목표를 종료하고 새 FLOW로 전환');
        }
        if(state.pending){await advance(clock);clearPause();return;}
+       if(await cleanupExited(clock))return;
        const date=clock.is_open?nyDate(clock.timestamp):nyDate(clock.next_open);C.assert(/^\d{4}-\d{2}-\d{2}$/.test(date),'거래일 확인 필요');
        if(state.started&&state.lastHalfYear===halfYear(date)){await refresh();clearPause();status('접속 시 확인 완료 · 이번 반기 추가 주문 없음');return;}
        await createPlan(clock,date);await advance(clock);clearPause();
      });
-   }catch(e){const p=state?.pending,hasIntent=p&&p.sells.concat(p.buys).some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}
+   }catch(e){const p=state?.pending,hasIntent=!!(p&&p.sells.concat(p.buys).some(o=>o.local!=='new'))||!!state?.exitCleanup?.orders.some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}
    finally{busy=false;}
  }
  $('connect').onclick=connect;

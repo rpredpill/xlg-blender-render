@@ -36,7 +36,11 @@
    assert(budget>=10,'사용 가능한 현금이 부족합니다.');
    return rows.map(r=>({symbol:r.ticker,notional:(Math.floor(budget*r.weight*100)/100).toFixed(2),side:'buy',type:'market',time_in_force:'day',client_order_id:`flow3-${date}-${r.ticker.replace('.','')}-buy`}));
  }
- const api={PAPER,RULE_ID,halfYear,migrateState,assert,targets,accountGuard,buyBudget,initialOrders};
+ function sellQuantity(value){
+   const qty=typeof value==='string'?value:Number(value).toFixed(9);
+   assert(/^\d+(\.\d{1,9})?$/.test(qty)&&Number(qty)>0,'매도 수량 확인 필요');
+   return qty;
+ }
+ const api={PAPER,RULE_ID,halfYear,migrateState,assert,targets,accountGuard,buyBudget,initialOrders,sellQuantity};
  root.FLOWPaperCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
-
