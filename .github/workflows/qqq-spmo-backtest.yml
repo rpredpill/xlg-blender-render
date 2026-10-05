@@ -1,0 +1,30 @@
+name: KRW FX Tax Data
+on:
+  push:
+    branches: ['research/qqq-spmo-intersection-backtest']
+    paths:
+      - 'research/fetch_krw_fx.py'
+      - '.github/workflows/qqq-spmo-backtest.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  krw-fx:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install 'pandas>=2.2,<3' 'yfinance>=0.2.66,<0.3'
+      - name: Fetch KRW FX history
+        run: python research/fetch_krw_fx.py
+      - name: Upload KRW FX data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: krw-fx-tax-data
+          path: research/krw_fx_output/
+          if-no-files-found: error
