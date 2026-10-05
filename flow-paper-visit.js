@@ -101,6 +101,8 @@
      state.owned=state.owned||[];state.selected=state.selected||[];state.nav=state.nav||[];state.log=state.log||[];state.intents=state.intents||{};
      if(C.migrateState(state))log('FLOW 규칙 전환 · 21일 평균 거래대금 Top5 · 동일비중 · 반기 · 이전 기록 유지');
      state.armed=state.manualPaused!==true;state.budget=Number.isFinite(Number(state.budget))&&Number(state.budget)>=10?Number(state.budget):Number($('budget').value)||100000;save();
+     if(state.cashPolicyVersion!==2){state.investAll=true;state.cashPolicyVersion=2;save();log('계좌 전체 투자 활성화 · 평가이익과 잔여 현금 포함 · 차입 없음');}
+     $('invest-all').checked=state.investAll===true;$('budget').disabled=state.investAll===true;
      $('log').textContent=state.log.join('\n')||'아직 주문이 없습니다.';$('budget').value=state.budget||100000;
      await loadSignal();await refresh();$('start').disabled=false;
      status(state.armed?'Paper 연결 완료 · 접속 시 자동 매매를 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
@@ -120,7 +122,7 @@
    C.assert(!Object.values(state.intents).some(i=>['submitting','submitted'].includes(i.status)),'이전 버전의 미완료 주문이 있습니다. Alpaca Paper 주문 내역을 먼저 확인하세요.');
    await loadSignal();await validateSignal(clock,date);await refresh();
    const [positions,open]=await Promise.all([api('/positions'),api('/orders?status=open&limit=500')]);guard(positions,open);
-   const rows=C.targets(signal,state.selected),capital=Math.min(state.budget,Number(account.equity))*.995;C.assert(capital>=10,'투자 가능한 금액 부족');
+   const rows=C.targets(signal,state.selected),capital=(state.investAll?Number(account.equity):Math.min(state.budget,Number(account.equity)))*.995;C.assert(capital>=10,'투자 가능한 금액 부족');
    for(const r of rows){const a=await api('/assets/'+encodeURIComponent(r.ticker));C.assert(a.tradable&&a.fractionable&&a.class==='us_equity','소수점 개별주식 거래 불가: '+r.ticker);}
    const target=Object.fromEntries(rows.map(r=>[r.ticker,capital*r.weight])),sells=[];
    for(const p of positions){
@@ -187,9 +189,9 @@
    await refresh();const [positions,open]=await Promise.all([api('/positions'),api('/orders?status=open&limit=500')]);guard(positions,open);
    if(!state.cashSweep){
      if(!clock.is_open){status('장 마감 · 잔여 현금 추가 매수는 다음 정규장 접속 시 확인');return true;}
-     const allocations=C.cashAllocation(account,positions,state.selected,state.budget);
+     const allocations=C.cashAllocation(account,positions,state.selected,state.budget,state.investAll===true);
      if(!allocations.length){
-       const cash=Number(account.cash),invested=positions.reduce((sum,p)=>sum+Number(p.market_value),0),capacity=Math.max(0,Math.min(state.budget,Number(account.equity))-invested);
+       const cash=Number(account.cash),invested=positions.reduce((sum,p)=>sum+Number(p.market_value),0),capacity=state.investAll?cash:Math.max(0,Math.min(state.budget,Number(account.equity))-invested);
        const money=v=>String.fromCharCode(36)+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
        if(cash<1)status('추가 매수 완료 · 남은 현금 '+money(cash)+' · 최소 매수금액 1달러 미만');
        else if(capacity<1)status('추가 매수 대기 · 투자 한도 '+money(state.budget)+' / 보유 평가액 '+money(invested)+' · 남은 현금 '+money(cash)+' · 한도 내 추가 가능 '+money(capacity));
@@ -227,8 +229,9 @@
    }catch(e){const p=state?.pending,hasIntent=!!(p&&p.sells.concat(p.buys).some(o=>o.local!=='new'))||!!state?.exitCleanup?.orders.some(o=>o.local!=='new')||!!state?.cashSweep?.orders.some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}
    finally{busy=false;}
  }
+ $('invest-all').onchange=()=>{$('budget').disabled=$('invest-all').checked;};
  $('connect').onclick=connect;
- $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();installTimer();log(`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){pause(e.message);}};
+ $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.investAll=$('invest-all').checked;state.cashPolicyVersion=2;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();installTimer();log(state.investAll?'접속 시 자동 실행 활성화 · 계좌 전체 투자 · 현금 범위 내':`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){pause(e.message);}};
  $('stop').onclick=()=>stop('접속 시 자동 실행 중지됨. 이미 접수한 주문은 Alpaca Paper에서 확인하세요.');
  $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;account=null;state=null;marketClock=null;calendar=[];calendarMonth='';history?.reset();globalThis.PulseView?.clear();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
  setInterval(()=>{renderOperations();void refreshDisplay();},15000);

@@ -41,11 +41,11 @@
    assert(/^\d+(\.\d{1,9})?$/.test(qty)&&Number(qty)>0,'매도 수량 확인 필요');
    return qty;
  }
- function cashAllocation(account,positions,selected,budget){
+ function cashAllocation(account,positions,selected,budget,investAll=false){
    assert(selected.length===5&&new Set(selected).size===5,'현행 FLOW 보유 목표 확인 필요');
    const equity=Number(account.equity),cash=Number(account.cash),values=new Map(positions.map(p=>[p.symbol,Number(p.market_value)]));
    assert(Number.isFinite(equity)&&Number.isFinite(cash)&&cash>=0&&Number.isFinite(budget)&&budget>=10&&[...values.values()].every(v=>Number.isFinite(v)&&v>=0),'추가 매수 금액 확인 필요');
-   const invested=[...values.values()].reduce((a,b)=>a+b,0),limit=Math.min(budget,equity);
+   const invested=[...values.values()].reduce((a,b)=>a+b,0),limit=investAll?invested+cash:Math.min(budget,equity);
    const cents=Math.floor(Math.max(0,Math.min(cash,limit-invested))*100+1e-7);
    if(cents<100)return [];
    const rows=selected.map(symbol=>({symbol,need:Math.max(0,limit/5-(values.get(symbol)||0)),cents:0})).sort((a,b)=>b.need-a.need||a.symbol.localeCompare(b.symbol));
