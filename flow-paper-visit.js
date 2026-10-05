@@ -89,7 +89,7 @@
  function pause(message){if(state){state.pausedReason=message;save();}status(message);}
  function clearPause(){if(state?.pausedReason){delete state.pausedReason;save();globalThis.PulseView?.renderAccount(account,state);}}
  function installTimer(){clearInterval(timer);timer=setInterval(tick,30000);}
- function guard(positions,open){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[],state.exitCleanup?.orders||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned);}
+ function guard(positions,open){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[],state.exitCleanup?.orders||[],state.cashSweep?.orders||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned);}
  async function connect(){
    if(busy||connecting)return;connecting=true;clearInterval(timer);timer=null;
    try{
@@ -164,7 +164,7 @@
    if(!await settle(plan.buys)){status(clock.is_open?'Paper 매수 체결 대기 · 화면을 닫아도 접수한 주문은 유지됩니다.':'Paper 매수 주문 예약됨 · 다음 정규장에 체결 시도 · 화면을 닫아도 됩니다.');return;}
    state.started=true;state.selected=plan.rows.map(r=>r.ticker);state.lastExecutionDate=plan.date;state.lastHalfYear=plan.halfYear;
    state.intents[plan.date]={status:'filled',signalDate:plan.signalDate,mode:'visit',ruleId:plan.ruleId,orders:plan.sells.concat(plan.buys).map(o=>({id:o.id,client_order_id:o.request.client_order_id,symbol:o.request.symbol}))};
-   state.pending=null;save();log('Paper 체결 확인 완료 · 다음 반기 첫 접속 때 리밸런싱');status('Paper 체결 확인 완료 · 이번 반기 추가 주문 없음');await refresh();drawTargets();
+   state.pending=null;save();log('Paper 기본 매수 체결 확인 완료 · 잔여 현금 추가 매수 확인');status('기본 매수 체결 완료 · 잔여 현금 투자 확인');await refresh();drawTargets();
  }
  async function cleanupExited(clock){
    if(!state.started||!state.selected?.length)return false;
@@ -181,6 +181,20 @@
    C.assert(!after.some(p=>symbols.has(p.symbol)&&Number(p.qty)>0),'잔여 매도 체결 후 보유 수량 확인 대기');
    state.exitCleanupHistory=state.exitCleanupHistory||[];state.exitCleanupHistory.push({...state.exitCleanup,completedAt:new Date().toISOString()});state.exitCleanup=null;save();log('편출 종목 소수점 잔여 매도 완료');lastPulseFetch=0;await refresh();return false;
  }
+ async function sweepCash(clock){
+   if(!state.started||state.selected?.length!==5)return false;
+   // A second pass begins only after prior orders have filled and no unrelated orders remain.
+   await refresh();const [positions,open]=await Promise.all([api('/positions'),api('/orders?status=open&limit=500')]);guard(positions,open);
+   if(!state.cashSweep){
+     if(!clock.is_open)return false;
+     const allocations=C.cashAllocation(account,positions,state.selected,state.budget);if(!allocations.length)return false;
+     const batch=Date.now().toString(36);
+     state.cashSweep={createdAt:new Date().toISOString(),orders:allocations.map(a=>{const r=request(a.symbol,'buy',Number(a.notional),nyDate(clock.timestamp));r.client_order_id='flow-cash-'+batch+'-'+a.symbol.replace('.','');return record(r);})};
+     save();log('잔여 현금 추가 매수 계획 저장 · 현금 및 투자 한도 내 · 부족한 비중 우선');
+   }
+   if(!await settle(state.cashSweep.orders)){status('잔여 현금 추가 매수 체결 대기');return true;}
+   state.cashSweepHistory=state.cashSweepHistory||[];state.cashSweepHistory.push({...state.cashSweep,completedAt:new Date().toISOString()});state.cashSweep=null;save();log('잔여 현금 추가 매수 체결 확인 완료');lastPulseFetch=0;await refresh();return false;
+ }
  async function tick(){
    if(busy||!state?.armed||!credentials)return;busy=true;
    try{
@@ -195,13 +209,14 @@
          state.legacyPlans=state.legacyPlans||[];state.legacyPlans.push({...legacy,archivedAt:new Date().toISOString(),reason:'strategy_changed'});
          state.pending=null;save();log('이전 주문 확인 완료 · 미제출 이전 목표를 종료하고 새 FLOW로 전환');
        }
-       if(state.pending){await advance(clock);clearPause();return;}
+       if(state.pending){await advance(clock);if(!state.pending)await sweepCash(clock);clearPause();return;}
+       if(state.cashSweep){if(await sweepCash(clock))return;}
        if(await cleanupExited(clock))return;
        const date=clock.is_open?nyDate(clock.timestamp):nyDate(clock.next_open);C.assert(/^\d{4}-\d{2}-\d{2}$/.test(date),'거래일 확인 필요');
-       if(state.started&&state.lastHalfYear===halfYear(date)){await refresh();clearPause();status('접속 시 확인 완료 · 이번 반기 추가 주문 없음');return;}
-       await createPlan(clock,date);await advance(clock);clearPause();
+       if(state.started&&state.lastHalfYear===halfYear(date)){if(await sweepCash(clock))return;await refresh();clearPause();status(clock.is_open?'운용 확인 완료 · 주문 가능한 잔여 현금 투자 확인':'장 마감 · 잔여 현금 추가 매수는 다음 정규장 접속 시 확인');return;}
+       await createPlan(clock,date);await advance(clock);if(!state.pending)await sweepCash(clock);clearPause();
      });
-   }catch(e){const p=state?.pending,hasIntent=!!(p&&p.sells.concat(p.buys).some(o=>o.local!=='new'))||!!state?.exitCleanup?.orders.some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}
+   }catch(e){const p=state?.pending,hasIntent=!!(p&&p.sells.concat(p.buys).some(o=>o.local!=='new'))||!!state?.exitCleanup?.orders.some(o=>o.local!=='new')||!!state?.cashSweep?.orders.some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}
    finally{busy=false;}
  }
  $('connect').onclick=connect;
