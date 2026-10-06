@@ -23,3 +23,5 @@
 .history-value-change{font-size:22px;font-weight:700;color:#2563eb}.performance-card .history-ranges button{font-size:14px;padding:9px 13px}.performance-card .chart{width:100%}@media(max-width:520px){.performance-card .history-ranges button{padding:10px 7px}.history-value-change{font-size:23px;margin:5px 0 7px}}
 
 .performance-card .chart{min-height:0;justify-content:flex-start}.performance-card .history-toolbar{margin-bottom:8px}.performance-card .history-value-change{margin-bottom:0}.performance-card .chart:has(>strong){min-height:100px;justify-content:center}@media(max-width:520px){.performance-card{padding-bottom:16px}.performance-card .history-toolbar{gap:8px;margin-bottom:6px}.performance-card .history-value-change{margin:2px 0 0}}
+
+.positive{color:#dc2626!important}.negative{color:#2563eb!important}.compare-swatch{display:inline-block;vertical-align:middle;margin-right:7px;flex:none}

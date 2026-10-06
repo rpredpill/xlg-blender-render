@@ -56,10 +56,12 @@
   const svg=svgEl('svg',{viewBox:'0 0 900 340',role:'img','aria-label':'Paper 계좌와 QQQ QLD VOO 동일 기간 가치 변화'});svg.style.width='100%';
   for(let i=0;i<5;i++){const y=22+i*65,v=max-(max-min)*i/4;svg.append(svgEl('line',{x1:64,x2:880,y1:y,y2:y,stroke:'#eef1f5'}),svgEl('text',{x:55,y:y+5,'text-anchor':'end',fill:'#68768a','font-size':13},v.toFixed(1)));}
   const baseline=22+260*(max-100)/(max-min);svg.append(svgEl('line',{x1:64,x2:880,y1:baseline,y2:baseline,stroke:'#bdc7d4','stroke-dasharray':'5 5'}));
-  for(const [symbol,color]of Object.entries(COLORS)){
+  for(const symbol of Object.keys(COLORS)){
+   const color= indexed.at(-1)[symbol]>100?'#dc2626':'#2563eb',dash={FLOW:'',QQQ:'6 4',QLD:'10 4',VOO:'2 4'}[symbol];
+   $('compare-color-'+symbol)?.setAttribute('stroke',color);
    const path=indexed.map((r,i)=>(i?'L':'M')+(64+i*816/(indexed.length-1)).toFixed(2)+','+(22+260*(max-r[symbol])/(max-min)).toFixed(2)).join(' ');
-   svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':2.7}));
-   const tr=document.createElement('tr');td(tr,symbol==='FLOW'?'FLOW · Paper 계좌':symbol);const change=indexed.at(-1)[symbol]-100;td(tr,pct(change),change>=0?'positive':'negative');td(tr,indexed.at(-1)[symbol].toFixed(2));body.append(tr);
+   svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':2.7,'stroke-dasharray':dash}));
+   const tr=document.createElement('tr');td(tr,symbol==='FLOW'?'FLOW · Paper 계좌':symbol);const change=indexed.at(-1)[symbol]-100;td(tr,pct(change),change>0?'positive':'negative');td(tr,indexed.at(-1)[symbol].toFixed(2));body.append(tr);
   }
   svg.append(svgEl('text',{x:64,y:324,fill:'#68768a','font-size':13},indexed[0].date),svgEl('text',{x:880,y:324,'text-anchor':'end',fill:'#68768a','font-size':13},indexed.at(-1).date));box.append(svg);
   set('compare-note','계좌는 입출금·이전 규칙 운용을 포함한 가치 변화입니다. ETF는 배당·분할 조정 종가 기준이며, 동일 납입 조건의 투자 수익률 비교는 아닙니다. 정규장 마감이 완료된 공통 거래일만 표시합니다.');

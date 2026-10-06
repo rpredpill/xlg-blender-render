@@ -23,7 +23,7 @@
    return {amount:last-first,percent:(last/first-1)*100};
  }
  function create({api,document,storage,now=()=>Date.now()}){
-   const $=id=>document.getElementById(id);let accountId=null,range='ALL',daily=[],intraday=[],lastDaily=0,lastIntraday=0,busy=false,generation=0,error='',storageError=false,queued=false,live=null;
+   const $=id=>document.getElementById(id);let accountId=null,range='1D',daily=[],intraday=[],lastDaily=0,lastIntraday=0,busy=false,generation=0,error='',storageError=false,queued=false,live=null;
    function save(){try{storage.setItem('flow.paper.history.v1.'+accountId,JSON.stringify({daily,updated:lastDaily}));storageError=false;}catch{storageError=true;}}
    function render(){
      for(const k of Object.keys(LABELS))$('history-'+k)?.setAttribute('aria-pressed',String(range===k));
@@ -34,14 +34,14 @@
      if(summary){
        const sign=value?.amount>0?'+':value?.amount<0?'−':'';
        summary.textContent=value?sign+'$'+Math.abs(value.amount).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' ('+sign+Math.abs(value.percent).toFixed(2)+'%)':'—';
-       summary.className='history-value-change';
+       summary.className='history-value-change'+(value?.amount>0?' positive':' negative');
        summary.setAttribute('aria-label',LABELS[range]+' 계좌 가치 변화 '+summary.textContent);
      }
      if(rows.length<2){const strong=document.createElement('strong');strong.textContent=rows.length?'기록을 모으고 있어요':accountId?'이 기간의 기록이 아직 없어요':'계좌를 연결하면 이력을 불러옵니다.';box.append(strong);return;}
      const ns='http://www.w3.org/2000/svg',make=(name,attrs,text)=>{const e=document.createElementNS(ns,name);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=text;return e;};
      const values=rows.map(r=>r.equity),lo=Math.min(...values),hi=Math.max(...values),pad=Math.max((hi-lo)*.1,hi*.005,1),min=lo-pad,max=hi+pad;
      const width=Math.max(280,Math.round(box.clientWidth||760)),height=width<520?260:320;
-     const left=88,right=width-16,top=18,bottom=height-42,font=width<340?14:width<520?15:16,color='#2563eb';
+     const left=88,right=width-16,top=18,bottom=height-42,font=width<340?14:width<520?15:16,color=value?.amount>0?'#dc2626':'#2563eb';
      const svg=make('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':`FLOW Paper 계좌 가치 ${LABELS[range]}`});svg.style.width='100%';svg.style.display='block';
      const start=rows[0].time,span=rows.at(-1).time-start||1;
      const points=rows.map(r=>({x:left+(r.time-start)*(right-left)/span,y:top+(bottom-top)*(max-r.equity)/(max-min)}));

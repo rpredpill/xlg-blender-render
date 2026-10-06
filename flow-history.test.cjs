@@ -14,21 +14,27 @@ async function main(){
  assert.equal(H.select([{time:Date.parse('2026-02-28T23:00:00Z'),equity:1}],'1M',Date.parse('2026-03-31T00:00:00Z')).length,1);
  const document=dom();document.getElementById('paper-chart').clientWidth=320;let resize;document.defaultView={addEventListener:(name,fn)=>{if(name==='resize')resize=fn;}};const store=new Map(),storage={getItem:k=>store.get(k),setItem:(k,v)=>store.set(k,v)},calls=[];let fail=false;
  const api=async path=>{calls.push(path);if(fail)throw Error('offline');return {timestamp:[sec('2026-10-01T20:00:00Z'),sec('2026-10-02T14:00:00Z'),sec('2026-10-02T20:00:00Z')],equity:[100,102,105]};};
- let time=Date.parse('2026-10-04T12:00:00Z');const h=H.create({api,document,storage,now:()=>time});
+ let time=Date.parse('2026-10-04T12:00:00Z');const h=H.create({api,document,storage,now:()=>time});assert.equal(document.elements['history-1D'].attrs['aria-pressed'],'true');assert.equal(document.elements['history-ALL'].attrs['aria-pressed'],'false');document.elements['history-ALL'].onclick();
  await h.update({id:'A',created_at:'2026-01-01T00:00:00Z'});assert.equal(calls.length,1);assert(calls[0].includes('timeframe=1D&start='));assert.equal(JSON.parse(store.get('flow.paper.history.v1.A')).daily.length,2);assert(document.elements['paper-chart'].children[0].children.some(n=>n.attrs.d));assert.equal(document.elements['history-value-change'].textContent,'+$5.00 (+5.00%)');
  const svg=document.elements['paper-chart'].children[0];assert.equal(svg.attrs.viewBox,'0 0 320 260');
- assert(svg.children.some(n=>n.attrs.fill==='url(#flow-history-fill)'));assert(svg.children.some(n=>n.attrs.stroke==='#2563eb'&&n.attrs.d));
- assert(svg.children.filter(n=>n.attrs['font-size']).every(n=>n.attrs['font-size']>=14));assert.equal(document.elements['history-value-change'].className,'history-value-change');
+ assert(svg.children.some(n=>n.attrs.fill==='url(#flow-history-fill)'));assert(svg.children.some(n=>n.attrs.stroke==='#dc2626'&&n.attrs.d));
+ assert(svg.children.filter(n=>n.attrs['font-size']).every(n=>n.attrs['font-size']>=14));assert.equal(document.elements['history-value-change'].className,'history-value-change positive');
  document.elements['paper-chart'].clientWidth=960;resize();assert.equal(document.elements['paper-chart'].children[0].attrs.viewBox,'0 0 960 320');
  document.elements['history-1D'].onclick();await new Promise(r=>setImmediate(r));assert(calls[1].includes('period=7D&timeframe=5Min'));assert(document.elements['paper-chart'].children[0].children.at(-1).textContent.includes('ET'));assert.equal(document.elements['history-value-change'].textContent,'+$3.00 (+2.94%)');
  assert(document.elements['paper-chart'].children[0].children.some(n=>n.attrs.d));assert.equal(document.elements['history-1D'].attrs['aria-pressed'],'true');
  time+=400000;fail=true;await h.update({id:'A'});assert(document.elements['paper-chart'].children[0].children.some(n=>n.attrs.d));assert.equal(JSON.parse(store.get('flow.paper.history.v1.A')).daily.length,2);
+ // Loss and unchanged periods use blue for the line, fill and summary.
+ for(const [end,expected]of [[90,'−$10.00 (−10.00%)'],[100,'$0.00 (0.00%)']]){
+  const down=dom(),chart=H.create({api:async()=>({timestamp:[Date.parse('2026-10-01T20:00:00Z')/1000,Date.parse('2026-10-02T20:00:00Z')/1000],equity:[100,end]}),document:down,storage,now:()=>time});
+  down.elements['history-ALL'].onclick();await chart.update({id:'color-'+end});assert.equal(down.elements['history-value-change'].textContent,expected);assert.equal(down.elements['history-value-change'].className,'history-value-change negative');
+  assert(down.elements['paper-chart'].children[0].children.some(n=>n.attrs.stroke==='#2563eb'&&n.attrs.d));
+ }
  h.reset();assert.equal(document.elements['history-value-change'].textContent,'—');assert.equal(document.elements['paper-chart'].children.length,1);assert(document.elements['paper-chart'].children[0].textContent.includes('연결'));
  // A stale response cannot fill a different account's chart or storage.
- let resolve;const d=dom(),pending=H.create({api:()=>new Promise(r=>resolve=r),document:d,storage,now:()=>time});const req=pending.update({id:'OLD'});pending.reset();resolve({timestamp:[1,2],equity:[10,20]});await req;assert(!store.has('flow.paper.history.v1.OLD'));assert(d.elements['paper-chart'].children[0].textContent.includes('연결'));
+ let resolve;const d=dom(),pending=H.create({api:()=>new Promise(r=>resolve=r),document:d,storage,now:()=>time});d.elements['history-ALL'].onclick();const req=pending.update({id:'OLD'});pending.reset();resolve({timestamp:[1,2],equity:[10,20]});await req;assert(!store.has('flow.paper.history.v1.OLD'));assert(d.elements['paper-chart'].children[0].textContent.includes('연결'));
  // Selecting intraday while a daily request is in flight fetches it after completion.
  let finish;const d2=dom(),paths=[],switcher=H.create({api:path=>{paths.push(path);return paths.length===1?new Promise(r=>finish=r):Promise.resolve({timestamp:[1,2],equity:[1,2]});},document:d2,storage,now:()=>time});
- const flight=switcher.update({id:'SWITCH'});d2.elements['history-1D'].onclick();finish({timestamp:[1,2],equity:[1,2]});await flight;await new Promise(r=>setImmediate(r));assert.equal(paths.length,2);assert(paths[1].includes('5Min'));
+ d2.elements['history-ALL'].onclick();const flight=switcher.update({id:'SWITCH'});d2.elements['history-1D'].onclick();finish({timestamp:[1,2],equity:[1,2]});await flight;await new Promise(r=>setImmediate(r));assert.equal(paths.length,2);assert(paths[1].includes('5Min'));
  // A long daily history is preserved beyond the old 500 snapshot limit.
  const long=Array.from({length:1500},(_,i)=>({time:Date.parse('2020-01-01T21:00:00Z')+i*86400000,equity:100+i}));assert.equal(H.merge([],long).length,1500);
  console.log('PASS: history validation, daily merge, calendar ranges, last trading day, account isolation, persistent cache, API failure fallback, period buttons and removed-caption compatibility');
