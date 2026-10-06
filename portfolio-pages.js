@@ -71,7 +71,7 @@
    const value=indexed.length>=2?indexed.at(-1)[symbol]-100:null,color=COLORS[symbol];
    const card=document.createElement('button');card.type='button';card.id='compare-focus-'+symbol;card.className='compare-series'+(focusedSeries===symbol?' is-focused':'');card.setAttribute('aria-pressed',String(focusedSeries===symbol));card.setAttribute('aria-label',symbol+' '+(value===null?'기록 대기':pct(value))+' · 그래프 강조');
    const title=document.createElement('span');title.className='compare-series-name';title.textContent=symbol;
-   const swatch=svgEl('svg',{viewBox:'0 0 40 10',width:40,height:10,'aria-hidden':'true'});swatch.append(svgEl('path',{d:'M1 5h38',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':{FLOW:'',QQQ:'8 5',QLD:'14 6',VOO:'2 5'}[symbol]}));
+   const swatch=svgEl('svg',{viewBox:'0 0 40 10',width:40,height:10,'aria-hidden':'true'});swatch.append(svgEl('path',{d:'M1 5h38',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':''}));
    const number=document.createElement('strong');number.textContent=value===null?'—':pct(value);number.style.color=value===null?'#84909f':color;card.append(title,swatch,number);
    card.onclick=()=>{focusedSeries=focusedSeries===symbol?null:symbol;renderCompare();$('compare-focus-'+symbol)?.focus?.({preventScroll:true});};body.append(card);
   }
@@ -84,12 +84,12 @@
   const svg=svgEl('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':'선택 기간 '+COMPARE_RANGES[range]+' 계좌와 ETF 가치 변화 비교'});svg.style.width='100%';
   const y=v=>top+(bottom-top)*(max-v)/(max-min),x=i=>left+i*(right-left)/(indexed.length-1);
   for(let i=0;i<4;i++){const v=max-(max-min)*i/3,yy=y(v);svg.append(svgEl('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:'#dce2e9'}),svgEl('text',{x:left-8,y:yy+5,'text-anchor':'end',fill:'#526174','font-size':font,'font-weight':500},(v>0?'+':'')+v.toFixed(1)+'%'));}
-  svg.append(svgEl('line',{x1:left,x2:right,y1:y(0),y2:y(0),stroke:'#99a6b6','stroke-dasharray':'4 4'}));
+  svg.append(svgEl('line',{x1:left,x2:right,y1:y(0),y2:y(0),stroke:'#99a6b6','stroke-dasharray':''}));
   const ordered=['QQQ','QLD','VOO','FLOW'].filter(s=>s!==focusedSeries).concat(focusedSeries?[focusedSeries]:[]);
   for(const symbol of ordered){
    const color=COLORS[symbol],dim=focusedSeries&&focusedSeries!==symbol;
    const path=indexed.map((r,i)=>(i?'L':'M')+x(i).toFixed(2)+','+y(r[symbol]-100).toFixed(2)).join(' ');
-   svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':{FLOW:'',QQQ:'8 5',QLD:'14 6',VOO:'2 5'}[symbol],opacity:dim?.12:1,'stroke-linecap':'round','stroke-linejoin':'round'}));
+   svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':'',opacity:dim?.12:1,'stroke-linecap':'round','stroke-linejoin':'round'}));
   }
   const label=d=>intraday&&range==='1D'?new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(d))+' ET':indexed[0].date.slice(0,4)!==indexed.at(-1).date.slice(0,4)?d.slice(2).replaceAll('-','.'):d.slice(5).replace('-','/');svg.append(svgEl('text',{x:left,y:height-10,fill:'#526174','font-size':font},label(indexed[0].date)),svgEl('text',{x:right,y:height-10,'text-anchor':'end',fill:'#526174','font-size':font},label(indexed.at(-1).date)));box.append(svg);
  }
