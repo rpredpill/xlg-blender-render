@@ -17,8 +17,8 @@
  function renderPositions(rows){
   rows=rows.filter(r=>Number.isFinite(Number(r.qty))&&Math.abs(Number(r.qty))>0);
   const isRemainder=r=>Math.abs(Number(r.qty))<=0.000001000001&&Number.isFinite(Number(r.market_value))&&Math.abs(Number(r.market_value))<0.01;
-  const remainderCount=rows.filter(isRemainder).length;rows=rows.filter(r=>!isRemainder(r));
-  $('pulse-count').textContent=rows.length+'종목'+(remainderCount?' · 미세 잔여 '+remainderCount+'건 제외':'');if(!rows.length){empty('pulse-positions','아직 보유 종목이 없습니다.',3);return;}
+  rows=rows.filter(r=>!isRemainder(r));
+  if(!rows.length){empty('pulse-positions','아직 보유 종목이 없습니다.',3);return;}
   const body=$('pulse-positions');body.replaceChildren();
   for(const r of [...rows].sort((a,b)=>Number(b.market_value)-Number(a.market_value))){const tr=document.createElement('tr'),td=document.createElement('td'),wrap=document.createElement('span'),avatar=stockAvatar(r.symbol),name=document.createElement('span');wrap.className='stock-symbol';name.textContent=r.symbol;wrap.append(avatar,name);td.append(wrap);tr.append(td);cell(tr,money(r.market_value));const change=r.unrealized_plpc==null?NaN:Number(r.unrealized_plpc)*100;cell(tr,Number.isFinite(change)?`${change>=0?'+':''}${change.toFixed(2)}%`:'—',change>0?'positive':'negative');body.append(tr);}
  }
@@ -28,6 +28,6 @@
   const body=$('pulse-orders');body.replaceChildren();for(const r of rows){const tr=document.createElement('tr');cell(tr,r.symbol);cell(tr,r.side==='buy'?'매수':'매도',r.side==='buy'?'positive':'negative');const td=document.createElement('td'),badge=document.createElement('span');badge.className='order-badge';badge.textContent=statuses[r.status]||r.status;td.append(badge);tr.append(td);cell(tr,Number(r.filled_qty||0).toLocaleString('en-US',{maximumFractionDigits:6}));cell(tr,r.filled_avg_price!=null?money(r.filled_avg_price):'—');body.append(tr);}
  }
  function unavailable(id,cols){empty(id,'내역을 불러오지 못했습니다. 다음 갱신 때 다시 확인합니다.',cols);}
- function clear(){renderAccount(null,null);$('pulse-count').textContent='—';empty('pulse-positions','계좌 연결 후 보유 종목을 확인하세요.',3);empty('pulse-orders','계좌를 연결하면 최근 주문을 불러옵니다.',5);}
+ function clear(){renderAccount(null,null);empty('pulse-positions','계좌 연결 후 보유 종목을 확인하세요.',3);empty('pulse-orders','계좌를 연결하면 최근 주문을 불러옵니다.',5);}
  globalThis.PulseView={renderAccount,renderPositions,renderOrders,unavailable,clear};
 })();

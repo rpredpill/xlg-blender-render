@@ -33,7 +33,6 @@
    const target=selected.includes(r.symbol)?20:r.symbol==='현금'&&state?.investAll?0:null;
    td(tr,target===null?'—':target.toFixed(2)+'%');td(tr,target===null?'—':pct(r.weight*100-target)+'p');body.append(tr);
   });
-  svg.append(svgEl('text',{x:140,y:134,'text-anchor':'middle',fill:'#68768a','font-size':14},'주식 비중'),svgEl('text',{x:140,y:166,'text-anchor':'middle',fill:'#152338','font-size':27,'font-weight':650},(result.total>0?(1-result.cash/result.total)*100:0).toFixed(2)+'%'));
   set('weight-note',(result.cash<0?'현금 부족 '+money(result.cash)+' · 표는 부족액을 포함한 순자산 기준, 원형 그래프는 양수 자산 구성 기준입니다. ':'')+'실제 평가금액과 현금 합계 기준 · 목표는 최근 완료한 리밸런싱 기준 · 가격 변화에 따라 실제 비중이 달라집니다.');
  }
  let targetSignal=null,targetFetched=0,targetGeneration=0;
@@ -117,11 +116,10 @@
   }catch(e){if(mode==='weights'){$('weight-ring').replaceChildren();$('weight-rows').replaceChildren();set('weight-note','현재 보유 내역 조회 실패 · 계좌 연결에서 조회 상태를 확인하세요.');}if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
   finally{busy=false;}
  }
- $('page-connect').onclick=()=>{if(busy){status('현재 조회 완료 후 다시 연결하세요.');return;}const keyId=$('page-key').value.trim(),secretKey=$('page-secret').value.trim();if(!keyId||!secretKey){status('Paper API 키를 입력하세요.');return;}credentials={keyId,secretKey};lastSuccess=0;void refresh(true);};
  for(const k of ['1M','1Y','5Y','ALL'])if($('compare-'+k))$('compare-'+k).onclick=()=>{range=k;renderCompare();};
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void refresh(true);});
  window.addEventListener('online',()=>void refresh(true));setInterval(()=>void refresh(),15000);
  const existing=json('flow.paper.credentials.v1')||json('somx.alpaca.credentials.v1');
- if(existing?.keyId&&existing?.secretKey){credentials=existing;void refresh(true);}else{status('Paper 계좌 연결 필요 · 설정에 저장한 연결 정보를 이어 사용합니다.');$('page-connection').open=true;}
+ if(existing?.keyId&&existing?.secretKey){credentials=existing;void refresh(true);}else{status('Paper 계좌 연결 필요 · 설정에 저장한 연결 정보를 이어 사용합니다.');}
  if(mode==='compare')renderCompare();if(mode==='weights'&&!credentials)void loadTargets(null);
 })();

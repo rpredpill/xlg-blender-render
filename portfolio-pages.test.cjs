@@ -15,9 +15,9 @@ async function test(mode,cash='20'){
   else throw Error('Unexpected '+url);return {ok:true,json:async()=>data};
  }};ctx.globalThis=ctx;vm.createContext(ctx);for(const name of ['flow-paper-core.js','portfolio-math.js','portfolio-pages.js'])vm.runInContext(fs.readFileSync(__dirname+'/'+name,'utf8'),ctx);
  for(let i=0;i<250;i++)await Promise.resolve();assert(requests.every(r=>r.method==='GET'));
- if(mode==='weights'){assert.equal(nodes.get('holdings').children.length,5);assert(nodes.get('signal-meta').textContent.includes('최신 목표 준비됨'));assert.equal(nodes.get('weight-rows').children.length,2);assert(nodes.get('weight-ring').children.length>=3);if(Number(cash)<0)assert(nodes.get('weight-note').textContent.includes('현금 부족'));}
+ if(mode==='weights'){assert.equal(nodes.get('holdings').children.length,5);assert(nodes.get('signal-meta').textContent.includes('최신 목표 준비됨'));assert.equal(nodes.get('weight-rows').children.length,2);assert(nodes.get('weight-ring').children.length>=2);assert(!ids.has('weight-note'));}
  else if(mode==='schedule'){assert.equal(nodes.get('rebalance-date').textContent,'2027.01.04');assert(nodes.get('rebalance-detail').textContent.includes('이번 반기 완료'));}
- else{assert.equal(nodes.get('compare-results').children.length,4);assert(nodes.get('compare-period').textContent.includes('2026-10-01 ~ 2026-10-02'));assert.equal(requests.filter(r=>r.url.includes('/stocks/bars?')).length,2);nodes.get('compare-1Y').onclick();assert.equal(nodes.get('compare-1Y').attrs['aria-pressed'],'true');}
+ else{assert.equal(nodes.get('compare-results').children.length,4);assert(!ids.has('compare-period'));assert(nodes.get('compare-chart').children.length>0);assert.equal(requests.filter(r=>r.url.includes('/stocks/bars?')).length,2);nodes.get('compare-1Y').onclick();assert.equal(nodes.get('compare-1Y').attrs['aria-pressed'],'true');}
  console.log('PASS '+mode+(Number(cash)<0?' negative cash':'')+': actual HTML rendering, read-only requests and controls');
 }
 (async()=>{await test('weights');await test('weights','-0.73');await test('compare');await test('schedule')})().catch(e=>{console.error(e);process.exitCode=1});
