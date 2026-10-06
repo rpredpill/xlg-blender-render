@@ -1,4 +1,4 @@
-const CACHE="gpt-trading-pwa-v71";
+const CACHE="gpt-trading-pwa-v72";
 const BASE=self.registration.scope;
 const SHELL=["./","./index.html","./sidebar.js?v=1","./weights.html","./compare.html","./portfolio-math.js?v=1","./portfolio-pages.js?v=1","./pulse.css?v=8","./pulse-view.js?v=7","./flow-paper-core.js?v=5","./flow-history.js?v=2","./flow-paper-visit.js?v=16","./manifest.webmanifest?v=31","./gpt-logo.svg","./gpt-icon.png"].map(p=>new URL(p,BASE).href);
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)))});
