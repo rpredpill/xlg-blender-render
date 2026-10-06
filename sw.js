@@ -1,6 +1,6 @@
-const CACHE="gpt-trading-pwa-v90";
+const CACHE="gpt-trading-pwa-v91";
 const BASE=self.registration.scope;
-const SHELL=["./","./index.html","./sidebar.js?v=3","./status-notice.js?v=3","./weights.html","./compare.html","./schedule.html","./settings.html","./portfolio-math.js?v=3","./portfolio-pages.js?v=6","./pulse.css?v=20","./pulse-view.js?v=15","./flow-paper-core.js?v=6","./flow-history.js?v=7","./flow-paper-visit.js?v=20","./manifest.webmanifest?v=31","./gpt-logo.svg","./gpt-icon.png"].map(p=>new URL(p,BASE).href);
+const SHELL=["./","./index.html","./sidebar.js?v=3","./status-notice.js?v=3","./weights.html","./compare.html","./schedule.html","./settings.html","./portfolio-math.js?v=4","./portfolio-pages.js?v=7","./pulse.css?v=21","./pulse-view.js?v=15","./flow-paper-core.js?v=6","./flow-history.js?v=7","./flow-paper-visit.js?v=20","./manifest.webmanifest?v=31","./gpt-logo.svg","./gpt-icon.png"].map(p=>new URL(p,BASE).href);
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)))});
 self.addEventListener("activate",e=>{e.waitUntil(Promise.all([self.clients.claim(),caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))]))});
 self.addEventListener("fetch",e=>{

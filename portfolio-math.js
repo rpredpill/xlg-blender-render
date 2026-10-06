@@ -25,12 +25,17 @@
   const dates=[...maps.FLOW.keys()].filter(d=>['QQQ','QLD','VOO'].every(s=>maps[s].has(d))).sort();
   return dates.map(d=>({date:d,...Object.fromEntries(Object.entries(maps).map(([s,m])=>[s,m.get(d)]))}));
  }
- function period(rows,range,now=Date.now()){
-  if(range==='ALL')return rows;
-  const d=new Date(now),day=d.getUTCDate();d.setUTCDate(1);
-  if(range==='1M')d.setUTCMonth(d.getUTCMonth()-1);else d.setUTCFullYear(d.getUTCFullYear()-(range==='5Y'?5:1));
-  const month=d.getUTCMonth();d.setUTCDate(day);if(d.getUTCMonth()!==month)d.setUTCDate(0);
-  const start=d.toISOString().slice(0,10);return rows.filter(r=>r.date>=start);
+ function period(rows,range,now){
+  if(!rows.length||range==='ALL')return rows;
+  if(range==='1D')return rows.slice(-2);
+  if(range==='5D')return rows.slice(-6);
+  const d=new Date(now??Date.parse(rows.at(-1).date+'T23:59:59Z')),day=d.getUTCDate();d.setUTCDate(1);
+  if(range==='YTD')d.setUTCMonth(0);
+  else if(range==='1M'||range==='6M')d.setUTCMonth(d.getUTCMonth()-(range==='6M'?6:1));
+  else d.setUTCFullYear(d.getUTCFullYear()-(range==='5Y'?5:1));
+  if(range!=='YTD'){const month=d.getUTCMonth();d.setUTCDate(day);if(d.getUTCMonth()!==month)d.setUTCDate(0);}
+  const start=d.toISOString().slice(0,10),first=rows.findIndex(r=>r.date>=start);
+  return first<0?[]:rows.slice(range==='YTD'&&first>0?first-1:first);
  }
  function indexed(rows){
   if(!rows.length)return [];

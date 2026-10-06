@@ -4,7 +4,7 @@
  const PAPER='https://paper-api.alpaca.markets/v2',DATA='https://data.alpaca.markets/v2',COLORS={FLOW:'#2563eb',QLD:'#dc2626',QQQ:'#ec4899',VOO:'#84cc16'};
  const money=v=>(Number(v)<0?'−$':'$')+Math.abs(Number(v)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
  const pct=v=>(v>=0?'+':'')+v.toFixed(2)+'%';
- let credentials=null,busy=false,accountId=null,rows=[],range='ALL',lastSuccess=0,checkedAt='',saved=false;
+ let credentials=null,busy=false,accountId=null,rows=[],range='1M',lastSuccess=0,checkedAt='',saved=false;
  const set=(id,text)=>{if($(id))$(id).textContent=text;};
  const status=text=>set('page-status',text);
  function json(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch{return null;}}
@@ -59,29 +59,43 @@
   }while(token);
   return out;
  }
+ const COMPARE_RANGES={ '1D':'1일','5D':'5일','1M':'1개월','6M':'6개월',YTD:'YTD',ALL:'전체' };
+ let focusedSeries=null,compareLoaded=false,compareError='';
  function renderCompare(){
-  for(const k of ['1M','1Y','5Y','ALL'])$('compare-'+k)?.setAttribute('aria-pressed',String(range===k));
+  if(mode!=='compare')return;
+  for(const k of Object.keys(COMPARE_RANGES))$('compare-'+k)?.setAttribute('aria-pressed',String(range===k));
   const selected=M.period(rows,range),indexed=M.indexed(selected),box=$('compare-chart'),body=$('compare-results');box.replaceChildren();body.replaceChildren();
-  if(indexed.length<2){const p=document.createElement('p');p.className='muted';p.textContent='같은 거래일의 기록이 2개 이상 쌓이면 비교 그래프를 표시합니다.';box.append(p);set('compare-period','비교 가능한 공통 기록이 아직 부족합니다.');return;}
-  const dates=indexed[0].date+' ~ '+indexed.at(-1).date;
-  set('compare-period',dates+' · 공통 '+indexed.length+'거래일 · 첫날 100');
-  const all=indexed.flatMap(r=>Object.keys(COLORS).map(s=>r[s])),lo=Math.min(...all),hi=Math.max(...all),pad=Math.max((hi-lo)*.08,1),min=lo-pad,max=hi+pad;
-  const svg=svgEl('svg',{viewBox:'0 0 900 340',role:'img','aria-label':'Paper 계좌와 QQQ QLD VOO 동일 기간 가치 변화'});svg.style.width='100%';
-  for(let i=0;i<5;i++){const y=22+i*65,v=max-(max-min)*i/4;svg.append(svgEl('line',{x1:64,x2:880,y1:y,y2:y,stroke:'#eef1f5'}),svgEl('text',{x:55,y:y+5,'text-anchor':'end',fill:'#68768a','font-size':13},v.toFixed(1)));}
-  const baseline=22+260*(max-100)/(max-min);svg.append(svgEl('line',{x1:64,x2:880,y1:baseline,y2:baseline,stroke:'#bdc7d4','stroke-dasharray':'5 5'}));
-  for(const symbol of Object.keys(COLORS)){
-   const color= indexed.at(-1)[symbol]>100?'#dc2626':'#2563eb',dash={FLOW:'',QQQ:'6 4',QLD:'10 4',VOO:'2 4'}[symbol];
-   $('compare-color-'+symbol)?.setAttribute('stroke',color);
-   const path=indexed.map((r,i)=>(i?'L':'M')+(64+i*816/(indexed.length-1)).toFixed(2)+','+(22+260*(max-r[symbol])/(max-min)).toFixed(2)).join(' ');
-   svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':2.7,'stroke-dasharray':dash}));
-   const tr=document.createElement('tr');td(tr,symbol==='FLOW'?'FLOW · Paper 계좌':symbol);const change=indexed.at(-1)[symbol]-100;td(tr,pct(change),change>0?'positive':'negative');td(tr,indexed.at(-1)[symbol].toFixed(2));body.append(tr);
+  const feedback=$('compare-feedback');if(feedback){feedback.hidden=!compareError;feedback.textContent=compareError;}
+  set('compare-coverage','');
+  for(const symbol of ['FLOW','QQQ','QLD','VOO']){
+   const value=indexed.length>=2?indexed.at(-1)[symbol]-100:null,color=value>0?'#dc2626':'#2563eb';
+   const card=document.createElement('button');card.type='button';card.id='compare-focus-'+symbol;card.className='compare-series'+(focusedSeries===symbol?' is-focused':'');card.setAttribute('aria-pressed',String(focusedSeries===symbol));card.setAttribute('aria-label',symbol+' '+(value===null?'기록 대기':pct(value))+' · 그래프 강조');
+   const title=document.createElement('span');title.className='compare-series-name';title.textContent=symbol;
+   const swatch=svgEl('svg',{viewBox:'0 0 40 10',width:40,height:10,'aria-hidden':'true'});swatch.append(svgEl('path',{d:'M1 5h38',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':{FLOW:'',QQQ:'8 5',QLD:'14 6',VOO:'2 5'}[symbol]}));
+   const number=document.createElement('strong');number.textContent=value===null?'—':pct(value);number.className=value===null?'':value>0?'positive':'negative';card.append(title,swatch,number);
+   card.onclick=()=>{focusedSeries=focusedSeries===symbol?null:symbol;renderCompare();$('compare-focus-'+symbol)?.focus?.({preventScroll:true});};body.append(card);
   }
-  svg.append(svgEl('text',{x:64,y:324,fill:'#68768a','font-size':13},indexed[0].date),svgEl('text',{x:880,y:324,'text-anchor':'end',fill:'#68768a','font-size':13},indexed.at(-1).date));box.append(svg);
-  set('compare-note','계좌는 입출금·이전 규칙 운용을 포함한 가치 변화입니다. ETF는 배당·분할 조정 종가 기준이며, 동일 납입 조건의 투자 수익률 비교는 아닙니다. 정규장 마감이 완료된 공통 거래일만 표시합니다.');
+  if(indexed.length<2){const p=document.createElement('strong');p.className='compare-empty';p.textContent=compareError?'비교 기록을 불러오지 못했어요':!credentials?'설정에서 계좌를 연결하면 비교할 수 있어요.':compareLoaded?'비교 가능한 거래일 기록이 아직 부족해요.':'비교 데이터를 불러오는 중…';box.append(p);return;}
+  const short=range!=='ALL'&&selected[0]===rows[0]&&(range==='5D'?rows.length<6:range!=='1D');
+  set('compare-coverage',short?COMPARE_RANGES[range]+' 선택 · 현재 쌓인 '+rows.length+'거래일 기록으로 표시':range==='1D'?'최근 완료 거래일의 변화':range==='5D'?'최근 완료된 5거래일의 변화':'');
+  const values=indexed.flatMap(r=>['FLOW','QQQ','QLD','VOO'].filter(s=>!focusedSeries||s===focusedSeries).map(s=>r[s]-100));
+  const lo=Math.min(0,...values),hi=Math.max(0,...values),pad=Math.max((hi-lo)*.13,.15),min=lo-pad,max=hi+pad;
+  const width=Math.max(280,Math.round(box.clientWidth||760)),height=width<520?280:340,left=62,right=width-12,top=18,bottom=height-42,font=width<520?14:15;
+  const svg=svgEl('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':'선택 기간 '+COMPARE_RANGES[range]+' 계좌와 ETF 가치 변화 비교'});svg.style.width='100%';
+  const y=v=>top+(bottom-top)*(max-v)/(max-min),x=i=>left+i*(right-left)/(indexed.length-1);
+  for(let i=0;i<4;i++){const v=max-(max-min)*i/3,yy=y(v);svg.append(svgEl('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:'#dce2e9'}),svgEl('text',{x:left-8,y:yy+5,'text-anchor':'end',fill:'#526174','font-size':font,'font-weight':500},(v>0?'+':'')+v.toFixed(1)+'%'));}
+  svg.append(svgEl('line',{x1:left,x2:right,y1:y(0),y2:y(0),stroke:'#99a6b6','stroke-dasharray':'4 4'}));
+  const ordered=['QQQ','QLD','VOO','FLOW'].filter(s=>s!==focusedSeries).concat(focusedSeries?[focusedSeries]:[]);
+  for(const symbol of ordered){
+   const color=indexed.at(-1)[symbol]>100?'#dc2626':'#2563eb',dim=focusedSeries&&focusedSeries!==symbol;
+   const path=indexed.map((r,i)=>(i?'L':'M')+x(i).toFixed(2)+','+y(r[symbol]-100).toFixed(2)).join(' ');
+   svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':{FLOW:'',QQQ:'8 5',QLD:'14 6',VOO:'2 5'}[symbol],opacity:dim?.12:1,'stroke-linecap':'round','stroke-linejoin':'round'}));
+  }
+  const label=d=>indexed[0].date.slice(0,4)!==indexed.at(-1).date.slice(0,4)?d.slice(2).replaceAll('-','.'):d.slice(5).replace('-','/');svg.append(svgEl('text',{x:left,y:height-10,fill:'#526174','font-size':font},label(indexed[0].date)),svgEl('text',{x:right,y:height-10,'text-anchor':'end',fill:'#526174','font-size':font},label(indexed.at(-1).date)));box.append(svg);
  }
  async function loadComparison(account){
   const cacheKey='flow.paper.compare.v1.'+account.id;
-  if(accountId!==account.id){accountId=account.id;rows=[];checkedAt='';renderCompare();const cache=json(cacheKey);if(Array.isArray(cache?.rows)&&cache.rows.every(r=>/^\d{4}-\d{2}-\d{2}$/.test(r?.date)&&Object.keys(COLORS).every(s=>Number.isFinite(r[s])&&r[s]>0))){rows=cache.rows;checkedAt=cache.checkedAt||'';saved=true;renderCompare();}}
+  if(accountId!==account.id){accountId=account.id;rows=[];checkedAt='';compareLoaded=false;focusedSeries=null;renderCompare();const cache=json(cacheKey);if(Array.isArray(cache?.rows)&&cache.rows.every(r=>/^\d{4}-\d{2}-\d{2}$/.test(r?.date)&&Object.keys(COLORS).every(s=>Number.isFinite(r[s])&&r[s]>0))){rows=cache.rows;checkedAt=cache.checkedAt||'';saved=true;renderCompare();}}
   const clock=await get(PAPER,'/clock'),today=M.date(clock.timestamp),startCalendar=new Date(clock.timestamp);startCalendar.setUTCDate(startCalendar.getUTCDate()-20);
   const calendar=await get(PAPER,'/calendar?start='+startCalendar.toISOString().slice(0,10)+'&end='+today);
   const time=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(clock.timestamp));
@@ -89,10 +103,10 @@
   if(!complete)throw Error('완료 거래일 확인 필요');
   const created=Date.parse(account.created_at);if(!Number.isFinite(created))throw Error('계좌 개설일 확인 필요');
   const data=await get(PAPER,'/account/portfolio/history?timeframe=1D&start='+encodeURIComponent(new Date(created).toISOString())),history=M.history(data);
-  if(!history.length){rows=[];renderCompare();return;}
+  if(!history.length){rows=[];compareLoaded=true;renderCompare();return;}
   const end=new Date(Date.now()-16*60000).toISOString(),prices=await bars(history[0].date,end);
   for(const symbol of Object.keys(prices))if(!prices[symbol].length)throw Error(symbol+' 가격 이력을 불러오지 못했습니다.');
-  rows=M.align(history,prices,complete);checkedAt=new Date().toISOString();saved=false;
+  rows=M.align(history,prices,complete);compareLoaded=true;compareError='';checkedAt=new Date().toISOString();saved=false;
   try{localStorage.setItem(cacheKey,JSON.stringify({rows,checkedAt}));}catch{}
   renderCompare();
  }
@@ -113,13 +127,13 @@
    if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);void loadTargets(account);}else if(mode==='schedule')await loadSchedule(account);else await loadComparison(account);
    lastSuccess=Date.now();status(mode==='weights'?'현재 보유 비중 · Paper 계좌':mode==='schedule'?'리밸런싱 일정 · Paper 계좌':'동일 기간 비교 · 완료 거래일 기준');
    set('page-checked',(mode==='weights'?new Date(lastSuccess):new Date(checkedAt||lastSuccess)).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' KST 기준');
-  }catch(e){if(mode==='weights'){$('weight-ring').replaceChildren();$('weight-rows').replaceChildren();set('weight-note','현재 보유 내역 조회 실패 · 계좌 연결에서 조회 상태를 확인하세요.');}if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
+  }catch(e){if(mode==='compare'){compareError=(rows.length?'저장된 비교 기록 표시 · ':'')+'조회 실패 · 잠시 후 다시 확인합니다.';renderCompare();}if(mode==='weights'){$('weight-ring').replaceChildren();$('weight-rows').replaceChildren();set('weight-note','현재 보유 내역 조회 실패 · 계좌 연결에서 조회 상태를 확인하세요.');}if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
   finally{busy=false;}
  }
- for(const k of ['1M','1Y','5Y','ALL'])if($('compare-'+k))$('compare-'+k).onclick=()=>{range=k;renderCompare();};
+ for(const k of Object.keys(COMPARE_RANGES))if($('compare-'+k))$('compare-'+k).onclick=()=>{range=k;renderCompare();};
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void refresh(true);});
  window.addEventListener('online',()=>void refresh(true));setInterval(()=>void refresh(),15000);
  const existing=json('flow.paper.credentials.v1')||json('somx.alpaca.credentials.v1');
  if(existing?.keyId&&existing?.secretKey){credentials=existing;void refresh(true);}else{status('Paper 계좌 연결 필요 · 설정에 저장한 연결 정보를 이어 사용합니다.');}
- if(mode==='compare')renderCompare();if(mode==='weights'&&!credentials)void loadTargets(null);
+ window.addEventListener('resize',()=>{if(mode==='compare')renderCompare();});if(mode==='compare')renderCompare();if(mode==='weights'&&!credentials)void loadTargets(null);
 })();
