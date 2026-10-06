@@ -36,6 +36,20 @@
   svg.append(svgEl('text',{x:140,y:134,'text-anchor':'middle',fill:'#68768a','font-size':14},'주식 비중'),svgEl('text',{x:140,y:166,'text-anchor':'middle',fill:'#152338','font-size':27,'font-weight':650},(result.total>0?(1-result.cash/result.total)*100:0).toFixed(2)+'%'));
   set('weight-note',(result.cash<0?'현금 부족 '+money(result.cash)+' · 표는 부족액을 포함한 순자산 기준, 원형 그래프는 양수 자산 구성 기준입니다. ':'')+'실제 평가금액과 현금 합계 기준 · 목표는 최근 완료한 리밸런싱 기준 · 가격 변화에 따라 실제 비중이 달라집니다.');
  }
+ let targetSignal=null,targetFetched=0,targetGeneration=0;
+ async function loadTargets(account){
+  if(mode!=='weights'||!$('holdings'))return;const token=++targetGeneration;
+  try{
+   if(!targetSignal||Date.now()-targetFetched>=300000){
+    let response;try{response=await fetch('https://raw.githubusercontent.com/rpredpill/xlg-blender-render/somx-pages/flow-latest.json?t='+Date.now(),{cache:'no-store'});if(!response.ok)throw Error('신호 조회 실패');}catch{response=await fetch('./flow-latest.json?t='+Date.now(),{cache:'no-store'});}
+    if(!response.ok)throw Error('신호 조회 실패');const next=await response.json();if(token!==targetGeneration)return;targetSignal=next;targetFetched=Date.now();
+   }
+   if(token!==targetGeneration)return;const state=account?json('flow.paper.state.v1.'+account.id):null,signal=targetSignal;
+   const targets=state?.pending?.rows||FLOWPaperCore.targets(signal,state?.selected||[]),body=$('holdings');body.replaceChildren();
+   for(const row of targets){const tr=document.createElement('tr');td(tr,row.ticker);td(tr,row.rank);td(tr,(row.weight*100).toFixed(2)+'%');body.append(tr);}
+   set('signal-meta','신호 '+(state?.pending?.signalDate||signal.signalDate)+' · '+(state?.pending?'진행 중 주문의 고정 목표':signal.eligibleCount+'/'+signal.universeCount+'개 데이터 유효 · 최신 목표 준비됨'));
+  }catch{if(token!==targetGeneration)return;$('holdings').replaceChildren();set('signal-meta','최신 편입 신호 확인 대기 · 기존 보유 및 접수 주문은 유지합니다.');}
+ }
  async function bars(start,end){
   const out={QQQ:[],QLD:[],VOO:[]};let token=null;const seen=new Set();
   do{
@@ -97,7 +111,7 @@
   busy=true;
   try{
    const account=await get(PAPER,'/account');
-   if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);}else if(mode==='schedule')await loadSchedule(account);else await loadComparison(account);
+   if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);void loadTargets(account);}else if(mode==='schedule')await loadSchedule(account);else await loadComparison(account);
    lastSuccess=Date.now();status(mode==='weights'?'현재 보유 비중 · Paper 계좌':mode==='schedule'?'리밸런싱 일정 · Paper 계좌':'동일 기간 비교 · 완료 거래일 기준');
    set('page-checked',(mode==='weights'?new Date(lastSuccess):new Date(checkedAt||lastSuccess)).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' KST 기준');
   }catch(e){if(mode==='weights'){$('weight-ring').replaceChildren();$('weight-rows').replaceChildren();set('weight-note','현재 보유 내역 조회 실패 · 계좌 연결에서 조회 상태를 확인하세요.');}if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
@@ -108,6 +122,6 @@
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void refresh(true);});
  window.addEventListener('online',()=>void refresh(true));setInterval(()=>void refresh(),15000);
  const existing=json('flow.paper.credentials.v1')||json('somx.alpaca.credentials.v1');
- if(existing?.keyId&&existing?.secretKey){credentials=existing;void refresh(true);}else{status('Paper 계좌 연결 필요 · 홈에 저장한 연결 정보를 이어 사용합니다.');$('page-connection').open=true;}
- if(mode==='compare')renderCompare();
+ if(existing?.keyId&&existing?.secretKey){credentials=existing;void refresh(true);}else{status('Paper 계좌 연결 필요 · 설정에 저장한 연결 정보를 이어 사용합니다.');$('page-connection').open=true;}
+ if(mode==='compare')renderCompare();if(mode==='weights'&&!credentials)void loadTargets(null);
 })();
