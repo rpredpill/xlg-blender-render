@@ -15,12 +15,12 @@ async function main(){
  const document=dom();document.getElementById('paper-chart').clientWidth=320;let resize;document.defaultView={addEventListener:(name,fn)=>{if(name==='resize')resize=fn;}};const store=new Map(),storage={getItem:k=>store.get(k),setItem:(k,v)=>store.set(k,v)},calls=[];let fail=false;
  const api=async path=>{calls.push(path);if(fail)throw Error('offline');return {timestamp:[sec('2026-10-01T20:00:00Z'),sec('2026-10-02T14:00:00Z'),sec('2026-10-02T20:00:00Z')],equity:[100,102,105]};};
  let time=Date.parse('2026-10-04T12:00:00Z');const h=H.create({api,document,storage,now:()=>time});assert.equal(document.elements['history-1D'].attrs['aria-pressed'],'true');assert.equal(document.elements['history-ALL'].attrs['aria-pressed'],'false');document.elements['history-ALL'].onclick();
- await h.update({id:'A',created_at:'2026-01-01T00:00:00Z'});assert.equal(calls.length,1);assert(calls[0].includes('timeframe=1D&start='));assert.equal(JSON.parse(store.get('flow.paper.history.v1.A')).daily.length,2);assert(document.elements['paper-chart'].children[0].children.some(n=>n.attrs.d));assert.equal(document.elements['history-value-change'].textContent,'+$5.00 (+5.00%)');
+ await h.update({id:'A',created_at:'2026-01-01T00:00:00Z'});assert.equal(calls.length,1);assert(calls[0].includes('timeframe=1D&start='));assert.equal(JSON.parse(store.get('flow.paper.history.v1.A')).daily.length,2);assert(document.elements['paper-chart'].children[0].children.some(n=>n.attrs.d));assert.equal(document.elements['history-value-change'].textContent,'+$5.00 (5.00%)');
  const svg=document.elements['paper-chart'].children[0];assert.equal(svg.attrs.viewBox,'0 0 320 260');
  assert(svg.children.some(n=>n.attrs.fill==='url(#flow-history-fill)'));assert(svg.children.some(n=>n.attrs.stroke==='#dc2626'&&n.attrs.d));
  assert(svg.children.filter(n=>n.attrs['font-size']).every(n=>n.attrs['font-size']>=14));assert.equal(document.elements['history-value-change'].className,'history-value-change positive');
  document.elements['paper-chart'].clientWidth=960;resize();assert.equal(document.elements['paper-chart'].children[0].attrs.viewBox,'0 0 960 320');
- document.elements['history-1D'].onclick();await new Promise(r=>setImmediate(r));assert(calls[1].includes('period=7D&timeframe=5Min'));assert(document.elements['paper-chart'].children[0].children.at(-1).textContent.includes('ET'));assert.equal(document.elements['history-value-change'].textContent,'+$3.00 (+2.94%)');
+ document.elements['history-1D'].onclick();await new Promise(r=>setImmediate(r));assert(calls[1].includes('period=7D&timeframe=5Min'));assert(document.elements['paper-chart'].children[0].children.at(-1).textContent.includes('ET'));assert.equal(document.elements['history-value-change'].textContent,'+$3.00 (2.94%)');
  assert(document.elements['paper-chart'].children[0].children.some(n=>n.attrs.d));assert.equal(document.elements['history-1D'].attrs['aria-pressed'],'true');
  time+=400000;fail=true;await h.update({id:'A'});assert(document.elements['paper-chart'].children[0].children.some(n=>n.attrs.d));assert.equal(JSON.parse(store.get('flow.paper.history.v1.A')).daily.length,2);
  // Loss and unchanged periods use blue for the line, fill and summary.
@@ -29,7 +29,8 @@ async function main(){
   down.elements['history-ALL'].onclick();await chart.update({id:'color-'+end});assert.equal(down.elements['history-value-change'].textContent,expected);assert.equal(down.elements['history-value-change'].className,'history-value-change negative');
   assert(down.elements['paper-chart'].children[0].children.some(n=>n.attrs.stroke==='#2563eb'&&n.attrs.d));
  }
- h.reset();assert.equal(document.elements['history-value-change'].textContent,'—');assert.equal(document.elements['paper-chart'].children.length,1);assert(document.elements['paper-chart'].children[0].textContent.includes('연결'));
+ await h.update({id:'A',equity:1234.56});assert.equal(document.elements['history-total-value'].textContent,'1,234.56');
+ h.reset();assert.equal(document.elements['history-total-value'].textContent,'—');assert.equal(document.elements['history-value-change'].textContent,'—');assert.equal(document.elements['paper-chart'].children.length,1);assert(document.elements['paper-chart'].children[0].textContent.includes('연결'));
  // A stale response cannot fill a different account's chart or storage.
  let resolve;const d=dom(),pending=H.create({api:()=>new Promise(r=>resolve=r),document:d,storage,now:()=>time});d.elements['history-ALL'].onclick();const req=pending.update({id:'OLD'});pending.reset();resolve({timestamp:[1,2],equity:[10,20]});await req;assert(!store.has('flow.paper.history.v1.OLD'));assert(d.elements['paper-chart'].children[0].textContent.includes('연결'));
  // Selecting intraday while a daily request is in flight fetches it after completion.

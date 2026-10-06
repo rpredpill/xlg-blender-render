@@ -30,10 +30,12 @@
      let source=range==='1D'?intraday:daily;
      if(live&&source.length&&live.time>source.at(-1).time&&(range!=='1D'||ny(live.time)===ny(source.at(-1).time)))source=source.concat(live);
      const rows=select(source,range,now()),box=$('paper-chart');box.replaceChildren();
+     const total=$('history-total-value'),latest=live||[...daily,...intraday].sort((a,b)=>b.time-a.time)[0];
+     if(total)total.textContent=latest?latest.equity.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
      const summary=$('history-value-change'),value=change(rows);
      if(summary){
        const sign=value?.amount>0?'+':value?.amount<0?'−':'';
-       summary.textContent=value?sign+'$'+Math.abs(value.amount).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' ('+sign+Math.abs(value.percent).toFixed(2)+'%)':'—';
+       summary.textContent=value?sign+'$'+Math.abs(value.amount).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' ('+(value.percent<0?'−':'')+Math.abs(value.percent).toFixed(2)+'%)':'—';
        summary.className='history-value-change'+(value?.amount>0?' positive':' negative');
        summary.setAttribute('aria-label',LABELS[range]+' 계좌 가치 변화 '+summary.textContent);
      }
