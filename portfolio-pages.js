@@ -81,16 +81,24 @@
   try{localStorage.setItem(cacheKey,JSON.stringify({rows,checkedAt}));}catch{}
   renderCompare();
  }
+ async function loadSchedule(account){
+  const clock=await get(PAPER,'/clock'),state=json('flow.paper.state.v1.'+account.id),plan=M.schedule(state,clock);
+  const days=await get(PAPER,'/calendar?start='+plan.month+'-01&end='+plan.month+'-10'),first=days.filter(d=>d.date.startsWith(plan.month)).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  if(!first)throw Error('휴장일을 반영한 첫 거래일 확인 필요');
+  set('rebalance-date',first.date.replaceAll('-','.'));
+  set('rebalance-detail',plan.pending?'진행 중인 리밸런싱 주문이 있습니다.':plan.done?'이번 반기 완료 · 다음 반기 첫 거래일':plan.started?'이번 반기 실행 대상 · 미완료':'첫 투자 대기 · 이번 반기 기준일');
+  set('schedule-checked',new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' KST 기준');
+ }
  async function refresh(force=false){
   if(busy||!credentials||document.visibilityState==='hidden')return;
-  if(!force&&Date.now()-lastSuccess<(mode==='weights'?15000:300000))return;
+  if(!force&&Date.now()-lastSuccess<(mode==='compare'?300000:15000))return;
   busy=true;
   try{
    const account=await get(PAPER,'/account');
-   if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);}else await loadComparison(account);
-   lastSuccess=Date.now();status(mode==='weights'?'현재 보유 비중 · Paper 계좌':'동일 기간 비교 · 완료 거래일 기준');
+   if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);}else if(mode==='schedule')await loadSchedule(account);else await loadComparison(account);
+   lastSuccess=Date.now();status(mode==='weights'?'현재 보유 비중 · Paper 계좌':mode==='schedule'?'리밸런싱 일정 · Paper 계좌':'동일 기간 비교 · 완료 거래일 기준');
    set('page-checked',(mode==='weights'?new Date(lastSuccess):new Date(checkedAt||lastSuccess)).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' KST 기준');
-  }catch(e){status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
+  }catch(e){if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
   finally{busy=false;}
  }
  $('page-connect').onclick=()=>{const keyId=$('page-key').value.trim(),secretKey=$('page-secret').value.trim();if(!keyId||!secretKey){status('Paper API 키를 입력하세요.');return;}credentials={keyId,secretKey};lastSuccess=0;void refresh(true);};

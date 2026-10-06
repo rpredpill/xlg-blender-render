@@ -35,5 +35,11 @@
   if(!rows.length)return [];
   const first=rows[0];return rows.map(r=>({date:r.date,...Object.fromEntries(['FLOW','QQQ','QLD','VOO'].map(s=>[s,r[s]/first[s]*100]))}));
  }
- const api={date,weights,history,align,period,indexed};root.PortfolioMath=api;if(typeof module!=='undefined')module.exports=api;
+ function schedule(state,clock){
+  const d=date(clock.is_open?clock.timestamp:clock.next_open),year=Number(d.slice(0,4)),h=Number(d.slice(5,7))<=6?1:2;
+  const half=year+'H'+h,done=state?.started===true&&state.lastHalfYear===half;
+  const month=done?(h===1?year+'-07':(year+1)+'-01'):year+(h===1?'-01':'-07');
+  return {month,done,pending:!!state?.pending,started:state?.started===true};
+ }
+ const api={date,weights,history,align,period,indexed,schedule};root.PortfolioMath=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

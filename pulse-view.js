@@ -27,21 +27,5 @@
  function unavailable(id,cols){empty(id,'내역을 불러오지 못했습니다. 다음 갱신 때 다시 확인합니다.',cols);}
  document.querySelector('.status-bar a').addEventListener('click',()=>{$('connection-details').open=true;});
  function clear(){renderAccount(null,null);$('pulse-count').textContent='—';empty('pulse-positions','계좌 연결 후 보유 종목을 확인하세요.',3);empty('pulse-orders','계좌를 연결하면 최근 주문을 불러옵니다.',5);}
- function renderOperations(clock,state,calendar,checkedAt){
-  const set=(id,value)=>{if($(id))$(id).textContent=value;};
-  const kst=t=>new Date(t).toLocaleString('ko-KR',{timeZone:'Asia/Seoul',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});
-  const ny=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));
-  if(!clock){if($('market-panel'))$('market-panel').hidden=true;set('rebalance-date','—');return;}
-  const stale=Date.now()-checkedAt>45000;
-  if($('market-panel'))$('market-panel').hidden=stale||clock.is_open;
-  set('market-state','장 마감');
-  set('market-detail',(clock.is_open?'장 마감 ':'다음 개장 ')+kst(clock.is_open?clock.next_close:clock.next_open)+' KST'+(stale?' · 마지막 확인 기준':''));
-  const date=ny(clock.is_open?clock.timestamp:clock.next_open),half=FLOWPaperCore.halfYear(date),done=state?.started&&state.lastHalfYear===half;
-  const year=Number(date.slice(0,4)),h=Number(half.at(-1)),target=done?(h===1?`${year}-07`:`${year+1}-01`):`${year}-${h===1?'01':'07'}`;
-  const first=calendar?.find(d=>d.date.startsWith(target));
-  set('rebalance-date',first?first.date.replaceAll('-','.'):'거래일 확인 중');
-  set('rebalance-detail',first?(done?'반기 첫 거래일 · 접속 시 실행':'이번 반기 실행 대상 · 미완료'):'휴장일을 반영한 첫 거래일 확인 필요');
-
- }
- globalThis.PulseView={renderAccount,renderPositions,renderOrders,unavailable,clear,renderOperations};
+ globalThis.PulseView={renderAccount,renderPositions,renderOrders,unavailable,clear};
 })();

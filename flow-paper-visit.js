@@ -2,11 +2,10 @@
  'use strict';
  const C=FLOWPaperCore,$=id=>document.getElementById(id),KEY='flow.paper.credentials.v1';
  let credentials=null,account=null,signal=null,state=null,busy=false,connecting=false,timer=null,lastPulseFetch=0;
- let displayBusy=false,pulseBusy=false,marketClock=null,clockChecked=0,calendar=[],calendarMonth='';
- const renderOperations=()=>globalThis.PulseView?.renderOperations(marketClock,state,calendar,clockChecked);
+ let displayBusy=false,pulseBusy=false;
  const stateKey=()=>`flow.paper.state.v1.${account.id}`;
  const save=()=>localStorage.setItem(stateKey(),JSON.stringify(state));
- const status=t=>{$('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);renderOperations();};
+ const status=t=>{$('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
  const halfYear=C.halfYear;
  const nyDate=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));
  const log=t=>{if(!state)return;state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,150);save();$('log').textContent=state.log.join('\n');};
@@ -72,17 +71,9 @@
  }
  async function refreshDisplay(){
    if(displayBusy||connecting||busy||!credentials||document.visibilityState==='hidden')return;
-   displayBusy=true;const connection=credentials;
+   displayBusy=true;
    try{
-     const results=await Promise.allSettled([refresh(),api('/clock')]);
-     if(connection!==credentials)return;
-     if(results[1].status==='fulfilled'){
-       marketClock=results[1].value;clockChecked=Date.now();
-       const d=nyDate(marketClock.is_open?marketClock.timestamp:marketClock.next_open),half=halfYear(d),done=state?.started&&state.lastHalfYear===half;
-       const y=Number(d.slice(0,4)),h=Number(half.at(-1)),month=done?(h===1?`${y}-07`:`${y+1}-01`):`${y}-${h===1?'01':'07'}`;
-       if(calendarMonth!==month){try{const days=await api('/calendar?start='+month+'-01&end='+month+'-10');if(connection!==credentials)return;calendar=days;calendarMonth=month;}catch{calendar=[];}}
-     }
-     renderOperations();
+     await Promise.allSettled([refresh()]);
    }finally{displayBusy=false;}
  }
  function stop(message='접속 시 자동 실행 중지됨'){if(state){state.armed=false;state.manualPaused=true;delete state.pausedReason;save();}clearInterval(timer);timer=null;status(message);}
@@ -95,7 +86,7 @@
    try{
      credentials={keyId:$('paper-key').value.trim(),secretKey:$('paper-secret').value.trim()};
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
-     account=null;state=null;marketClock=null;calendar=[];calendarMonth='';lastPulseFetch=0;history?.reset();globalThis.PulseView?.clear();renderOperations();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
+     account=null;state=null;lastPulseFetch=0;history?.reset();globalThis.PulseView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
      if($('remember').checked)localStorage.setItem(KEY,JSON.stringify(credentials));
      state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:true,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
      state.owned=state.owned||[];state.selected=state.selected||[];state.nav=state.nav||[];state.log=state.log||[];state.intents=state.intents||{};
@@ -211,7 +202,7 @@
      C.assert(navigator.locks,'중복 실행 방지를 지원하는 최신 브라우저가 필요합니다.');
      await navigator.locks.request('flow-paper-'+account.id,{ifAvailable:true},async lock=>{
        if(!lock)return;state=JSON.parse(localStorage.getItem(stateKey()));if(!state?.armed)return;
-       const clock=await api('/clock');marketClock=clock;clockChecked=Date.now();renderOperations();
+       const clock=await api('/clock');
        if(state.pending && state.pending.ruleId!==C.RULE_ID){
          // Reconcile already submitted legacy orders, never submit the remaining old requests.
          const legacy=state.pending,submitted=legacy.sells.concat(legacy.buys).filter(o=>o.local!=='new');
@@ -233,8 +224,8 @@
  $('connect').onclick=connect;
  $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.investAll=$('invest-all').checked;state.cashPolicyVersion=2;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();installTimer();log(state.investAll?'접속 시 자동 실행 활성화 · 계좌 전체 투자 · 현금 범위 내':`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){pause(e.message);}};
  $('stop').onclick=()=>stop('접속 시 자동 실행 중지됨. 이미 접수한 주문은 Alpaca Paper에서 확인하세요.');
- $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;account=null;state=null;marketClock=null;calendar=[];calendarMonth='';history?.reset();globalThis.PulseView?.clear();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
- setInterval(()=>{renderOperations();void refreshDisplay();},15000);
+ $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;account=null;state=null;history?.reset();globalThis.PulseView?.clear();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
+ setInterval(()=>{void refreshDisplay();},15000);
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){lastPulseFetch=0;void refreshDisplay().then(()=>tick());}});
  window.addEventListener('online',()=>{lastPulseFetch=0;void refreshDisplay();});
  loadSignal().catch(e=>status(e.message));
