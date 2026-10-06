@@ -2,7 +2,7 @@
  'use strict';
  const M=PortfolioMath,$=id=>document.getElementById(id),mode=document.body.dataset.page;
  const PAPER='https://paper-api.alpaca.markets/v2',DATA='https://data.alpaca.markets/v2',COLORS={FLOW:'#2563eb',QLD:'#dc2626',QQQ:'#ec4899',VOO:'#84cc16'};
- const money=v=>'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ const money=v=>(Number(v)<0?'−$':'$')+Math.abs(Number(v)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
  const pct=v=>(v>=0?'+':'')+v.toFixed(2)+'%';
  let credentials=null,busy=false,accountId=null,rows=[],range='ALL',lastSuccess=0,checkedAt='',saved=false;
  const set=(id,text)=>{if($(id))$(id).textContent=text;};
@@ -26,15 +26,15 @@
   const palette=['#2563eb','#ec4899','#22a7a0','#a78bfa','#f59e0b','#5d789b'];let offset=0;
   const body=$('weight-rows');body.replaceChildren();
   result.rows.forEach((r,i)=>{
-   const color=r.symbol==='현금'?'#b5beca':palette[i%palette.length],length=2*Math.PI*96;
-   if(r.weight>0)svg.append(svgEl('circle',{cx:140,cy:140,r:96,fill:'none',stroke:color,'stroke-width':29,'stroke-dasharray':r.weight*length+' '+length,'stroke-dashoffset':-offset*length,transform:'rotate(-90 140 140)'}));offset+=r.weight;
+   const color=r.symbol==='현금'?'#b5beca':palette[i%palette.length],length=2*Math.PI*96,arc=r.chartWeight;
+   if(arc>0)svg.append(svgEl('circle',{cx:140,cy:140,r:96,fill:'none',stroke:color,'stroke-width':29,'stroke-dasharray':arc*length+' '+length,'stroke-dashoffset':-offset*length,transform:'rotate(-90 140 140)'}));offset+=arc;
    const tr=document.createElement('tr'),cell=document.createElement('td'),dot=document.createElement('i'),name=document.createElement('span');dot.className='legend-dot';dot.style.background=color;name.textContent=r.symbol;cell.append(dot,name);tr.append(cell);
    td(tr,money(r.value));td(tr,(r.weight*100).toFixed(2)+'%');
    const target=selected.includes(r.symbol)?20:r.symbol==='현금'&&state?.investAll?0:null;
    td(tr,target===null?'—':target.toFixed(2)+'%');td(tr,target===null?'—':pct(r.weight*100-target)+'p');body.append(tr);
   });
   svg.append(svgEl('text',{x:140,y:134,'text-anchor':'middle',fill:'#68768a','font-size':14},'주식 비중'),svgEl('text',{x:140,y:166,'text-anchor':'middle',fill:'#152338','font-size':27,'font-weight':650},(result.total>0?(1-result.cash/result.total)*100:0).toFixed(2)+'%'));
-  set('weight-note','실제 평가금액과 현금 합계 기준 · 목표는 최근 완료한 리밸런싱 기준 · 가격 변화에 따라 실제 비중이 달라집니다.');
+  set('weight-note',(result.cash<0?'현금 부족 '+money(result.cash)+' · 표는 부족액을 포함한 순자산 기준, 원형 그래프는 양수 자산 구성 기준입니다. ':'')+'실제 평가금액과 현금 합계 기준 · 목표는 최근 완료한 리밸런싱 기준 · 가격 변화에 따라 실제 비중이 달라집니다.');
  }
  async function bars(start,end){
   const out={QQQ:[],QLD:[],VOO:[]};let token=null;const seen=new Set();
@@ -66,7 +66,7 @@
  }
  async function loadComparison(account){
   const cacheKey='flow.paper.compare.v1.'+account.id;
-  if(accountId!==account.id){accountId=account.id;const cache=json(cacheKey);if(Array.isArray(cache?.rows)){rows=cache.rows;checkedAt=cache.checkedAt||'';saved=true;renderCompare();}}
+  if(accountId!==account.id){accountId=account.id;rows=[];checkedAt='';renderCompare();const cache=json(cacheKey);if(Array.isArray(cache?.rows)&&cache.rows.every(r=>/^\d{4}-\d{2}-\d{2}$/.test(r?.date)&&Object.keys(COLORS).every(s=>Number.isFinite(r[s])&&r[s]>0))){rows=cache.rows;checkedAt=cache.checkedAt||'';saved=true;renderCompare();}}
   const clock=await get(PAPER,'/clock'),today=M.date(clock.timestamp),startCalendar=new Date(clock.timestamp);startCalendar.setUTCDate(startCalendar.getUTCDate()-20);
   const calendar=await get(PAPER,'/calendar?start='+startCalendar.toISOString().slice(0,10)+'&end='+today);
   const time=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(clock.timestamp));
@@ -98,10 +98,10 @@
    if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);}else if(mode==='schedule')await loadSchedule(account);else await loadComparison(account);
    lastSuccess=Date.now();status(mode==='weights'?'현재 보유 비중 · Paper 계좌':mode==='schedule'?'리밸런싱 일정 · Paper 계좌':'동일 기간 비교 · 완료 거래일 기준');
    set('page-checked',(mode==='weights'?new Date(lastSuccess):new Date(checkedAt||lastSuccess)).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' KST 기준');
-  }catch(e){if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
+  }catch(e){if(mode==='weights'){$('weight-ring').replaceChildren();$('weight-rows').replaceChildren();set('weight-note','현재 보유 내역 조회 실패 · 계좌 연결에서 조회 상태를 확인하세요.');}if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
   finally{busy=false;}
  }
- $('page-connect').onclick=()=>{const keyId=$('page-key').value.trim(),secretKey=$('page-secret').value.trim();if(!keyId||!secretKey){status('Paper API 키를 입력하세요.');return;}credentials={keyId,secretKey};lastSuccess=0;void refresh(true);};
+ $('page-connect').onclick=()=>{if(busy){status('현재 조회 완료 후 다시 연결하세요.');return;}const keyId=$('page-key').value.trim(),secretKey=$('page-secret').value.trim();if(!keyId||!secretKey){status('Paper API 키를 입력하세요.');return;}credentials={keyId,secretKey};lastSuccess=0;void refresh(true);};
  for(const k of ['1M','1Y','5Y','ALL'])if($('compare-'+k))$('compare-'+k).onclick=()=>{range=k;renderCompare();};
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void refresh(true);});
  window.addEventListener('online',()=>void refresh(true));setInterval(()=>void refresh(),15000);

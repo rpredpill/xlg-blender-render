@@ -2,13 +2,16 @@
  'use strict';
  const C=FLOWPaperCore,$=id=>document.getElementById(id),KEY='flow.paper.credentials.v1';
  let credentials=null,account=null,signal=null,state=null,busy=false,connecting=false,timer=null,lastPulseFetch=0;
- let displayBusy=false,pulseBusy=false;
+ let displayBusy=false,pulseBusy=false,tradingLocked=false;
+ const recentLogs=new Map();
+ function readJSON(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch{return null;}}
+ function storedState(){const parsed=JSON.parse(localStorage.getItem(stateKey())||'null');if(parsed){C.assert(typeof parsed==='object'&&!Array.isArray(parsed),'저장된 운용 상태 확인 필요');for(const key of ['owned','selected','log','nav'])C.assert(parsed[key]===undefined||Array.isArray(parsed[key]),'저장된 운용 상태 형식 확인 필요: '+key);}return parsed;}
  const stateKey=()=>`flow.paper.state.v1.${account.id}`;
  const save=()=>localStorage.setItem(stateKey(),JSON.stringify(state));
- const status=t=>{if(globalThis.StatusNotice)StatusNotice.show(t);else $('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
+ const status=(t,blocked=false)=>{if(!blocked&&state?.pausedReason){delete state.pausedReason;if(tradingLocked)save();}if(globalThis.StatusNotice)StatusNotice.show(t);else $('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
  const halfYear=C.halfYear;
  const nyDate=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));
- const log=t=>{if(!state)return;state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,150);save();$('log').textContent=state.log.join('\n');};
+ const log=t=>{if(!state)return;const key=(account?.id||'')+':'+t.replace(/\d+ms/g,'ms').replace(/\d\/3회/g,'재시도');if(Date.now()-(recentLogs.get(key)||0)<300000)return;recentLogs.set(key,Date.now());state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,150);if(tradingLocked)save();$('log').textContent=state.log.join('\n');};
  async function api(path,method='GET',body){
    C.assert(credentials,'Paper API 연결이 필요합니다.');
    const connection=credentials,operation=`${method} ${path.split('?')[0]}`;
@@ -30,6 +33,7 @@
          throw e;
        }
        const value=r.status===204?null:await r.json();
+       C.assert(credentials===connection,'계좌 연결이 변경되었습니다. 이전 응답을 사용하지 않습니다.');
        if(attempt>1&&credentials===connection)log(`Paper 조회 복구 (${operation}) · ${attempt}회 시도`);
        return value;
      }catch(cause){
@@ -39,9 +43,10 @@
          const kind=timedOut?'15초 응답 시간 초과':offline?'브라우저 오프라인':cause.name==='SyntaxError'?'응답 JSON 해석 실패':'네트워크 또는 브라우저 접근 차단 · 원인 미확정';
          const errorType=['TypeError','AbortError','SyntaxError'].includes(cause.name)?cause.name:'Error';
          e=Error(`Paper API 통신 실패 (${operation}) · ${kind} · ${errorType} · ${attempt}/${attempts}회 · ${Date.now()-started}ms · 화면 ${document.visibilityState==='hidden'?'숨김':'표시'}`);
-         e.retryable=!offline;
+         e.retryable=!offline&&document.visibilityState!=='hidden';
        }
-       e.orderUncertain=method==='POST'&&path==='/orders';
+       e.orderUncertain=method==='POST'&&path==='/orders'&&(!e.httpStatus||e.httpStatus>=500);
+       if(credentials!==connection)throw Error('계좌 연결이 변경되었습니다. 이전 요청을 중단합니다.');
        if(attempt===attempts||!e.retryable||credentials!==connection){if(method==='GET'&&credentials===connection)log('조회 실패: '+e.message);throw e;}
        clearTimeout(timeout);
        const delay=Math.max(attempt===1?1000:3000,e.retryDelay||0);
@@ -51,6 +56,7 @@
    }
  }
  function drawTargets(){
+   if(!signal?.ready){$('signal-meta').textContent='최신 편입 신호 확인 대기 · 기존 보유 및 접수 주문은 유지합니다.';return;}
    const rows=state?.pending?.rows||C.targets(signal,state?.selected||[]);$('holdings').replaceChildren();
    rows.forEach(r=>{const tr=document.createElement('tr');[r.ticker,r.rank,(r.weight*100).toFixed(2)+'%'].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('holdings').append(tr);});
    const date=state?.pending?.signalDate||signal.signalDate;
@@ -66,7 +72,7 @@
  async function refresh(){
    const connection=credentials,next=await api('/account');if(connection!==credentials)return;account=next;updatePulse();void history?.update(account);
    $('account').textContent=`Paper · ${account.status} · 계좌 가치 $${Number(account.equity).toLocaleString('en-US',{maximumFractionDigits:2})} · 현금 $${Number(account.cash).toLocaleString('en-US',{maximumFractionDigits:2})}`;
-   if(state?.started){const now=new Date().toISOString();if(!state.nav.length||Date.now()-Date.parse(state.nav.at(-1).time)>60000){state.nav.push({time:now,equity:Number(account.equity),cash:Number(account.cash)});state.nav=state.nav.slice(-500);save();}
+   if(state?.started){const now=new Date().toISOString();if(tradingLocked&&(!state.nav.length||Date.now()-Date.parse(state.nav.at(-1).time)>60000)){state.nav.push({time:now,equity:Number(account.equity),cash:Number(account.cash)});state.nav=state.nav.slice(-500);save();}
      $('nav').replaceChildren();state.nav.slice(-15).reverse().forEach(r=>{const tr=document.createElement('tr');[r.time.replace('T',' ').slice(0,19)+' UTC',r.equity.toFixed(2),r.cash.toFixed(2)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('nav').append(tr);});globalThis.PulseView?.renderAccount(account,state);}
  }
  async function refreshDisplay(){
@@ -76,11 +82,15 @@
      await Promise.allSettled([refresh()]);
    }finally{displayBusy=false;}
  }
- function stop(message='접속 시 자동 실행 중지됨'){if(state){state.armed=false;state.manualPaused=true;delete state.pausedReason;save();}clearInterval(timer);timer=null;status(message);}
- function pause(message){if(state){state.pausedReason=message;save();}status(message);}
- function clearPause(){if(state?.pausedReason){delete state.pausedReason;save();globalThis.PulseView?.renderAccount(account,state);}}
+ async function stop(message='접속 시 자동 실행 중지됨'){
+   clearInterval(timer);timer=null;
+   if(account&&state){await navigator.locks.request('flow-paper-'+account.id,async()=>{state=storedState()||state;state.armed=false;state.manualPaused=true;delete state.pausedReason;save();});}
+   status(message);
+ }
+ function pause(message){message=message.replace(/ · \d+ms/g,'').replace(/ · [123]\/3회/g,'');if(state){state.pausedReason=message;if(tradingLocked)save();}status(message,true);}
+ function clearPause(){if(state?.pausedReason){delete state.pausedReason;if(tradingLocked)save();globalThis.PulseView?.renderAccount(account,state);}}
  function installTimer(){clearInterval(timer);timer=setInterval(tick,30000);}
- function guard(positions,open){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[],state.exitCleanup?.orders||[],state.cashSweep?.orders||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned);}
+ function guard(positions,open,allowSmallDebt=false){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[],state.exitCleanup?.orders||[],state.cashSweep?.orders||[],state.cashRepair?.orders||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned,allowSmallDebt);}
  async function connect(){
    if(busy||connecting)return;connecting=true;clearInterval(timer);timer=null;
    try{
@@ -88,14 +98,20 @@
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
      account=null;state=null;lastPulseFetch=0;history?.reset();globalThis.PulseView?.clear();await refresh();C.assert(account.id,'Paper 계좌 확인 실패');
      if($('remember').checked)localStorage.setItem(KEY,JSON.stringify(credentials));
-     state=JSON.parse(localStorage.getItem(stateKey())||'null')||{armed:true,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
+     C.assert(navigator.locks,'중복 실행 방지를 지원하는 최신 브라우저가 필요합니다.');
+     await navigator.locks.request('flow-paper-'+account.id,async()=>{
+     state=storedState()||{armed:true,started:false,owned:[],selected:[],log:[],nav:[],intents:{}};
+     C.assert(state&&typeof state==='object'&&!Array.isArray(state),'저장된 운용 상태 확인 필요');
+     for(const key of ['owned','selected','log','nav'])C.assert(state[key]===undefined||Array.isArray(state[key]),'저장된 운용 상태 형식 확인 필요: '+key);
      state.owned=state.owned||[];state.selected=state.selected||[];state.nav=state.nav||[];state.log=state.log||[];state.intents=state.intents||{};
      if(C.migrateState(state))log('FLOW 규칙 전환 · 21일 평균 거래대금 Top5 · 동일비중 · 반기 · 이전 기록 유지');
      state.armed=state.manualPaused!==true;state.budget=Number.isFinite(Number(state.budget))&&Number(state.budget)>=10?Number(state.budget):Number($('budget').value)||100000;save();
      if(state.cashPolicyVersion!==2){state.investAll=true;state.cashPolicyVersion=2;save();log('계좌 전체 투자 활성화 · 평가이익과 잔여 현금 포함 · 차입 없음');}
+     });
      $('invest-all').checked=state.investAll===true;$('budget').disabled=state.investAll===true;
      $('log').textContent=state.log.join('\n')||'아직 주문이 없습니다.';$('budget').value=state.budget||100000;
-     await loadSignal();await refresh();$('start').disabled=false;
+     try{await loadSignal();}catch(e){log('편입 신호 조회 대기: '+e.message);}
+     await refresh();$('start').disabled=false;
      status(state.armed?'Paper 연결 완료 · 접속 시 자동 매매를 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
      if(state.armed){installTimer();await tick();}
    }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;void refreshDisplay();}
@@ -124,14 +140,24 @@
    state.pending={date,halfYear:halfYear(date),ruleId:C.RULE_ID,signalDate:signal.signalDate,rows,target,sells,buys:[],phase:'selling'};
    state.owned=Array.from(new Set([...state.owned,...rows.map(r=>r.ticker)]));save();log(`접속 시 실행 계획 생성 · ${date} · 신호 ${signal.signalDate}`);drawTargets();
  }
- async function settle(orders){
+ async function settle(orders,submit=true){
    let filled=true;
    for(const o of orders){
      let result;
+     C.assert(!['rejected','canceled','expired','replaced','suspended'].includes(o.status),'주문 상태 확인 필요: '+o.request.symbol+' '+o.status);
+     if(o.local==='skipped')continue;
      if(o.local==='new'){
+       if(!submit)return false;
+       if(o.request.side==='buy'){
+         await refresh();const positions=await api('/positions'),open=await api('/orders?status=open&limit=500');guard(positions,open);
+         if(open.length)return false;
+         const available=Math.floor(Math.max(0,Number(account.cash)-C.CASH_RESERVE)*100)/100;
+         if(available<1){o.local='skipped';o.status='skipped';save();log(o.request.symbol+' 추가 매수 생략 · 안전 잔액 및 최소 주문 금액 유지');continue;}
+         if(Number(o.request.notional)>available){o.request.notional=available.toFixed(2);save();}
+       }
        o.local='uncertain';save(); // Durable before POST; never repost an uncertain request.
        log(`${o.request.side.toUpperCase()} ${o.request.symbol} 주문 제출`);
-       result=await api('/orders','POST',o.request);C.assert(result.id,'주문 ID 응답 확인 필요');o.id=result.id;o.local='submitted';o.status=result.status;save();
+       try{result=await api('/orders','POST',o.request);}catch(e){if(e.httpStatus&&e.httpStatus<500&&e.httpStatus!==429){o.local='rejected';o.status='rejected';save();}throw e;}C.assert(result.id,'주문 ID 응답 확인 필요');o.id=result.id;o.local='submitted';o.status=result.status;save();
      }else if(o.local==='uncertain'){
        try{result=await api('/orders:by_client_order_id?client_order_id='+encodeURIComponent(o.request.client_order_id));}
        catch(e){if(e.httpStatus===404)throw Error('주문 접수 여부를 확인할 수 없습니다. 자동 재전송하지 않습니다: '+o.request.symbol);throw e;}
@@ -139,7 +165,7 @@
      }
      if(o.status!=='filled'){result=await api('/orders/'+o.id);o.status=result.status;save();}
      C.assert(!['rejected','canceled','expired','replaced','suspended'].includes(o.status),'주문 상태 확인 필요: '+o.request.symbol+' '+o.status);
-     if(o.status!=='filled')filled=false;
+     if(o.status!=='filled')return false;
    }
    return filled;
  }
@@ -196,13 +222,36 @@
    if(!await settle(state.cashSweep.orders)){status('잔여 현금 추가 매수 체결 대기');return true;}
    state.cashSweepHistory=state.cashSweepHistory||[];state.cashSweepHistory.push({...state.cashSweep,completedAt:new Date().toISOString()});state.cashSweep=null;save();log('잔여 현금 추가 매수 체결 확인 완료');lastPulseFetch=0;await refresh();return false;
  }
+ async function repairCash(clock){
+   await refresh();
+   if(Number(account.cash)>=0&&!state.cashRepair)return false;
+   let positions=await api('/positions'),open=await api('/orders?status=open&limit=500');guard(positions,open,true);
+   const known=(state.pending?.sells||[]).concat(state.pending?.buys||[],state.exitCleanup?.orders||[],state.cashSweep?.orders||[]).filter(o=>!['new','skipped'].includes(o.local));
+   if(!await settle(known,false)||open.length){pause('현금 부족 · 기존 주문 체결 확인 대기 · 신규 매수 중단');return true;}
+   if(state.cashRepair?.orders.every(o=>o.local==='new')&&Number(account.cash)>=0){state.cashRepair=null;save();return true;}
+   if(!state.cashRepair){
+     if(!clock.is_open){pause('소액 현금 부족 · 다음 정규장에서 보유 종목 소량 매도로 정리 · 신규 매수 중단');return true;}
+     const today=nyDate(clock.timestamp),attempts=(state.cashRepairHistory||[]).filter(r=>r.date===today).length;
+     C.assert(attempts<3,'현금 부족 정리를 반복하지 않습니다. 체결 및 잔액을 확인하세요.');
+     const plan=C.cashRepair(account,positions,state.owned),asset=await api('/assets/'+encodeURIComponent(plan.symbol));
+     C.assert(asset.tradable&&asset.fractionable&&asset.class==='us_equity','현금 부족 정리 종목 거래 가능 여부 확인 필요');
+     const r=request(plan.symbol,'sell',plan.qty,today);r.client_order_id='flow-repair-'+Date.now().toString(36)+'-'+plan.symbol.replace('.','');
+     state.cashRepair={date:today,orders:[record(r)]};save();log('소액 현금 부족 정리 · '+plan.symbol+' 보유 수량 일부 매도 계획 저장');
+   }
+   if(!clock.is_open&&state.cashRepair.orders.some(o=>o.local==='new')){pause('소액 현금 부족 정리 · 다음 정규장 대기');return true;}
+   if(!await settle(state.cashRepair.orders)){pause('소액 현금 부족 정리 매도 체결 대기 · 신규 매수 중단');return true;}
+   await refresh();state.cashRepairHistory=state.cashRepairHistory||[];state.cashRepairHistory.push({...state.cashRepair,completedAt:new Date().toISOString()});state.cashRepair=null;save();
+   C.assert(Number(account.cash)>=0,'소액 매도 체결 후 현금 잔액 확인 대기');
+   clearPause();log('소액 현금 부족 정리 매도 체결 확인 완료');status('현금 부족 정리 완료 · 안전 잔액 유지');return true;
+ }
  async function tick(){
-   if(busy||!state?.armed||!credentials)return;busy=true;
+   if(busy||!state?.armed||!credentials||!account||document.visibilityState==='hidden'||navigator.onLine===false)return;busy=true;
    try{
      C.assert(navigator.locks,'중복 실행 방지를 지원하는 최신 브라우저가 필요합니다.');
      await navigator.locks.request('flow-paper-'+account.id,{ifAvailable:true},async lock=>{
-       if(!lock)return;state=JSON.parse(localStorage.getItem(stateKey()));if(!state?.armed)return;
+       if(!lock)return;const latest=storedState();C.assert(latest,'저장된 운용 상태가 없습니다. 다시 연결하세요.');state=latest;tradingLocked=true;try{if(!state.armed)return;
        const clock=await api('/clock');
+       if(await repairCash(clock))return;
        if(state.pending && state.pending.ruleId!==C.RULE_ID){
          // Reconcile already submitted legacy orders, never submit the remaining old requests.
          const legacy=state.pending,submitted=legacy.sells.concat(legacy.buys).filter(o=>o.local!=='new');
@@ -216,19 +265,29 @@
        const date=clock.is_open?nyDate(clock.timestamp):nyDate(clock.next_open);C.assert(/^\d{4}-\d{2}-\d{2}$/.test(date),'거래일 확인 필요');
        if(state.started&&state.lastHalfYear===halfYear(date)){if(await sweepCash(clock))return;await refresh();clearPause();status(clock.is_open?'운용 확인 완료 · 주문 가능한 잔여 현금 투자 확인':'장 마감 · 잔여 현금 추가 매수는 다음 정규장 접속 시 확인');return;}
        await createPlan(clock,date);await advance(clock);if(!state.pending)await sweepCash(clock);clearPause();
+       }catch(e){const p=state?.pending,hasIntent=!!(p&&p.sells.concat(p.buys).some(o=>o.local!=='new'))||!!state?.exitCleanup?.orders.some(o=>o.local!=='new')||!!state?.cashSweep?.orders.some(o=>o.local!=='new')||!!state?.cashRepair?.orders.some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}finally{tradingLocked=false;}
      });
-   }catch(e){const p=state?.pending,hasIntent=!!(p&&p.sells.concat(p.buys).some(o=>o.local!=='new'))||!!state?.exitCleanup?.orders.some(o=>o.local!=='new')||!!state?.cashSweep?.orders.some(o=>o.local!=='new');const suffix=e.orderUncertain||hasIntent?' · 기존 주문은 유지됩니다. 접수/체결 확인 후 이어 처리하며, 중복 재전송하지 않습니다.':' · 이번 실행에서 주문을 제출하지 않았습니다.';log('실행 확인 대기: '+e.message+suffix);pause(e.message+suffix);}
+   }catch(e){status('실행 확인 대기 · '+e.message,true);}
    finally{busy=false;}
  }
  $('invest-all').onchange=()=>{$('budget').disabled=$('invest-all').checked;};
  $('connect').onclick=connect;
- $('start').onclick=async()=>{try{C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy,'기존 실행이 진행 중입니다.');await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'));const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');state.budget=budget;state.investAll=$('invest-all').checked;state.cashPolicyVersion=2;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();installTimer();log(state.investAll?'접속 시 자동 실행 활성화 · 계좌 전체 투자 · 현금 범위 내':`접속 시 자동 실행 활성화 · 투자 한도 $${budget} · 현금 한도 적용`);await tick();}catch(e){pause(e.message);}};
- $('stop').onclick=()=>stop('접속 시 자동 실행 중지됨. 이미 접수한 주문은 Alpaca Paper에서 확인하세요.');
- $('forget').onclick=()=>{stop();localStorage.removeItem(KEY);credentials=null;account=null;state=null;history?.reset();globalThis.PulseView?.clear();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
+ $('start').onclick=async()=>{try{
+   C.assert(state&&credentials,'Paper 계좌 연결 필요');C.assert(!busy&&!connecting,'기존 실행이 진행 중입니다.');
+   await navigator.locks.request('flow-paper-'+account.id,async()=>{
+     state=storedState();C.assert(state,'저장된 운용 상태 확인 필요');
+     await refresh();guard(await api('/positions'),await api('/orders?status=open&limit=500'),true);
+     const budget=Number($('budget').value);C.assert(Number.isFinite(budget)&&budget>=10,'$10 이상 투자 한도를 입력하세요.');
+     state.budget=budget;state.investAll=$('invest-all').checked;state.cashPolicyVersion=2;state.armed=true;state.manualPaused=false;delete state.pausedReason;save();
+   });
+   installTimer();await tick();
+ }catch(e){pause(e.message);}};
+ $('stop').onclick=()=>void stop('접속 시 자동 실행 중지됨. 이미 접수한 주문은 Alpaca Paper에서 확인하세요.');
+ $('forget').onclick=async()=>{if(busy||connecting){status('실행 확인 중 · 완료 후 키를 삭제할 수 있습니다.');return;}await stop();localStorage.removeItem(KEY);localStorage.removeItem('somx.alpaca.credentials.v1');credentials=null;account=null;state=null;history?.reset();globalThis.PulseView?.clear();$('paper-key').value='';$('paper-secret').value='';$('start').disabled=true;status('Paper 키 삭제 완료');};
  setInterval(()=>{void refreshDisplay();},15000);
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){lastPulseFetch=0;void refreshDisplay().then(()=>tick());}});
  window.addEventListener('online',()=>{lastPulseFetch=0;void refreshDisplay();});
  loadSignal().catch(e=>status(e.message));
- const saved=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('somx.alpaca.credentials.v1')||'null');
+ const saved=readJSON(KEY)||readJSON('somx.alpaca.credentials.v1');
  if(saved){$('remember').checked=!!localStorage.getItem(KEY);$('paper-key').value=saved.keyId||'';$('paper-secret').value=saved.secretKey||'';connect();}
 })();

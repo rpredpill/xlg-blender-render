@@ -1,93 +1,51 @@
-const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const C=require('./flow-paper-core.js'),fixture=JSON.parse(fs.readFileSync(__dirname+'/flow-test-fixture.json'));
-const next=new Date(fixture.signalDate+'T12:00:00Z');do{next.setUTCDate(next.getUTCDate()+1)}while([0,6].includes(next.getUTCDay()));const date=next.toISOString().slice(0,10),q=C.halfYear(date);
-const stateKey='flow.paper.state.v1.mock-paper';
-function broker({closed=false,lost=false,unknown=false,stale=false,foreign=false,cash=100000,clockFail=0,accountFail=0,failures={}}={}){
- const store=new Map(),orders=new Map(),posts=[],positions=new Map(),calls=[];let locked=false,count=0,closedNow=closed;
- function apply(o){if(o.status==='filled')return;const r=o.request,p=positions.get(r.symbol)||{symbol:r.symbol,qty:0,current_price:'100',side:'long',market_value:0};if(r.side==='buy'){const value=Number(r.notional);assert(cash+1e-8>=value,'Cash overrun');cash-=value;p.qty+=value/100;}else{const qty=Number(r.qty);assert(p.qty+1e-8>=qty,'Oversell');p.qty-=qty;cash+=qty*100;}p.market_value=p.qty*100;if(p.qty<1e-9)positions.delete(p.symbol);else positions.set(p.symbol,p);o.status='filled';}
- const b={store,orders,posts,positions,calls,closed:()=>closedNow,setClosed:v=>closedNow=v,fillAll:()=>{for(const o of orders.values())apply(o)},
-   locks:{request:async(n,opts,fn)=>{if(locked)return fn(null);locked=true;try{return await fn({})}finally{locked=false;}}},
-   fetch:async(url,opts={})=>{
-    if(url.includes('flow-latest.json'))return {ok:true,status:200,json:async()=>fixture};
-    assert(url.startsWith(C.PAPER+'/'));const path=url.slice(C.PAPER.length);let data,status=200;
-    calls.push({path,method:opts.method||'GET'});
-    const failure=failures[path];
-    if(failure&&failure.remaining-->0){
-      if(failure.kind==='timeout')return new Promise((resolve,reject)=>opts.signal.addEventListener('abort',()=>{const e=Error('Aborted');e.name='AbortError';reject(e);},{once:true}));
-      if(failure.status)return {ok:false,status:failure.status,headers:{get:()=>failure.retryAfter||null},json:async()=>({message:'mock server failure'})};
-      throw TypeError('Sensitive diagnostic text must not be logged: MOCK_SECRET');
-    }
-    if((opts.method||'GET')==='GET'){assert.equal(opts.headers['Content-Type'],undefined);assert.equal(opts.cache,undefined);}
-    if(path==='/account'&&accountFail-->0)throw Error('Temporary account connection failure');
-    if(path.startsWith('/account/portfolio/history?'))data={timestamp:[Date.parse(fixture.signalDate+'T15:00:00Z')/1000,Date.parse(fixture.signalDate+'T20:00:00Z')/1000],equity:[100000,100050]};
-    else if(path==='/account')data={id:'mock-paper',status:'ACTIVE',cash:String(cash),equity:String(cash+[...positions.values()].reduce((s,p)=>s+p.market_value,0)),long_market_value:String([...positions.values()].reduce((s,p)=>s+p.market_value,0)),short_market_value:'0',buying_power:'400000'};
-    else if(path==='/positions')data=[...positions.values()].map(p=>({...p,qty:String(p.qty),market_value:String(p.market_value)}));
-    else if(path.startsWith('/orders?'))data=[...orders.values()].filter(o=>o.status!=='filled').map(o=>({id:o.id,status:o.status,client_order_id:o.request.client_order_id})).concat(foreign?[{client_order_id:'foreign',id:'foreign'}]:[]);
-    else if(path==='/clock'&&clockFail-->0)throw Error('Temporary clock connection failure');
-    else if(path==='/clock')data={is_open:!closedNow,timestamp:closedNow?fixture.signalDate+'T23:00:00Z':date+'T14:00:00Z',next_open:date+'T13:30:00Z',next_close:date+'T20:00:00Z'};
-    else if(path.startsWith('/calendar'))data=stale?[{date:'2099-01-02',close:'16:00'}]:[{date:fixture.signalDate,close:'16:00'},{date,close:'16:00'}];
-    else if(path.startsWith('/assets/'))data={tradable:true,fractionable:true,class:'us_equity'};
-    else if(path==='/orders'&&opts.method==='POST'){
-     assert.equal(opts.headers['Content-Type'],'application/json');const request=JSON.parse(opts.body);assert.equal(request.extended_hours,false);assert.equal(request.time_in_force,'day');assert.equal(request.type,'market');assert(![...orders.values()].some(o=>o.request.client_order_id===request.client_order_id),'Duplicate broker POST');posts.push(request);
-     if(unknown&&posts.length===1)throw Error('Lost before acceptance');
-     const o={id:'order-'+(++count),request,status:'accepted'};orders.set(o.id,o);if(!closedNow)apply(o);data={id:o.id,status:o.status};if(lost&&posts.length===1)throw Error('Lost after acceptance');
-    }else if(path.startsWith('/orders:by_client_order_id?')){const id=new URL(C.PAPER+path).searchParams.get('client_order_id'),o=[...orders.values()].find(o=>o.request.client_order_id===id);if(o)data={id:o.id,status:o.status};else{status=404;data={message:'not found'}}}
-    else if(path.startsWith('/orders/')){const o=orders.get(path.split('/').at(-1));assert(o);data={id:o.id,status:o.status};}
-    else throw Error('Unexpected path '+path);
-    return {ok:status===200,status,json:async()=>data};
-   }};return b;
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),C=require(__dirname+'/flow-paper-core.js');
+const source=fs.readFileSync(__dirname+'/flow-paper-visit.js','utf8'),fixture=JSON.parse(fs.readFileSync(__dirname+'/flow-test-fixture.json','utf8'));
+function create(opts={}){
+ const nodes=new Map();const node=()=>({textContent:'',value:'100000',checked:true,disabled:false,children:[],replaceChildren(...a){this.children=a},append(...a){this.children.push(...a)}}),writes=[],posts=[],orders=new Map(),requests=[],storage=new Map();let count=0;
+ const selected=['A','B','C','D','E'];let account={id:'test',status:'ACTIVE',cash:opts.cash??'-0.73',equity:'99999.27',long_market_value:'100000',short_market_value:'0'},positions=selected.map(symbol=>({symbol,qty:'200',side:'long',current_price:'100',market_value:'20000'})),state={armed:true,started:true,owned:selected,selected,log:[],nav:[],intents:{},ruleId:C.RULE_ID,budget:100000,investAll:true,lastHalfYear:'2026H2'},clock={is_open:opts.isOpen??true,timestamp:'2026-10-06T14:00:00Z',next_open:'2026-10-07T13:30:00Z'};
+ if(opts.empty){positions=[];account.cash='100000';account.equity='100000';account.long_market_value='0';state.started=false;state.owned=[];state.selected=[];delete state.lastHalfYear;}
+ const doc={visibilityState:'visible',getElementById(id){if(!nodes.has(id))nodes.set(id,node());return nodes.get(id)},createElement:node,addEventListener(){}};
+ const ctx={document:doc,console,Date,Intl,AbortController,URLSearchParams,navigator:{onLine:true,locks:{request:async(name,arg,callback)=>typeof arg==='function'?arg():callback({name})}},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>{writes.push({key:k,value:JSON.parse(v)});storage.set(k,v)},removeItem:k=>storage.delete(k)},setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){},window:{addEventListener(){}},FLOWPaperCore:C,PulseView:{renderAccount(){},clear(){},renderPositions(){},renderOrders(){},unavailable(){}},StatusNotice:{show:t=>doc.getElementById('status').textContent=t},fetch:async(url,o={})=>{
+ requests.push({url,method:o.method||'GET'});if(url.includes('flow-latest.json'))return {ok:true,status:200,json:async()=>fixture};const path=url.replace(C.PAPER,'');
+ const response=(value,status=200)=>({ok:status<400,status,headers:{get(){return null}},json:async()=>structuredClone(value)});
+ if(o.method==='POST'){
+  const request=JSON.parse(o.body);posts.push(request);if(opts.postReject)return response({message:'not permitted'},403);const id='order-'+(++count);const filled=opts.accepted?'accepted':'filled';const order={id,status:filled,client_order_id:request.client_order_id,...request};orders.set(id,order);
+  if(filled==='filled'){let position=positions.find(p=>p.symbol===request.symbol);if(!position){position={symbol:request.symbol,side:'long',qty:'0',current_price:'100',market_value:'0'};positions.push(position);}const qty=request.side==='sell'?-Number(request.qty):Number(request.notional)/100;position.qty=String(Number(position.qty)+qty);position.market_value=String(Number(position.qty)*100);account.cash=String(Number(account.cash)-qty*100);account.long_market_value=String(positions.reduce((sum,p)=>sum+Number(p.market_value),0));account.equity=String(Number(account.long_market_value)+Number(account.cash));}
+  if(opts.postReject)return response({message:'not permitted'},403);
+  if(opts.uncertain&&!opts.didTimeout){opts.didTimeout=true;throw new TypeError('lost response');}
+  return response(order);
+ }
+ if(path==='/account')return response(account);
+ if(path==='/clock')return response(clock);
+ if(path==='/positions')return response(positions);
+ if(path.startsWith('/calendar'))return response(opts.stale?[{date:'2099-01-02',close:'16:00'}]:[{date:fixture.signalDate,close:'16:00'},{date:'2026-10-06',close:'16:00'}]);
+ if(path.startsWith('/assets/'))return response({tradable:true,fractionable:true,class:'us_equity'});
+ if(path.startsWith('/orders:by_client_order_id'))return response([...orders.values()].find(o=>o.client_order_id===decodeURIComponent(path.split('=')[1]))||{},[...orders.values()].some(o=>o.client_order_id===decodeURIComponent(path.split('=')[1]))?200:404);
+ if(path.startsWith('/orders/'))return response(orders.get(path.split('/')[2]));
+ if(path.startsWith('/orders?'))return response((path.includes('status=open')?[...orders.values()].filter(o=>o.status!=='filled'):[]).concat(opts.foreign?[{id:'foreign',client_order_id:'foreign'}]:[]));
+ if(opts.delayed){return new Promise(resolve=>{opts.resolve=()=>response(account)&&resolve(response(account));});}
+ throw Error('Unexpected '+path);
+ }};ctx.globalThis=ctx;vm.createContext(ctx);
+ const cut=source.indexOf(' loadSignal().catch(');
+ const injected=source.slice(0,cut)+` globalThis.T={tick,settle,refresh,repairCash,api,log,guard,set(a,s){account=a;state=s;credentials={keyId:'MOCK',secretKey:'MOCK'};},setState(s){state=s;},get(){return state;},lock(v){tradingLocked=v;},setCredentials(c){credentials=c;}};})();`;
+ vm.runInContext(opts.startup?source:injected,ctx);ctx.T?.set(account,state);storage.set('flow.paper.state.v1.test',JSON.stringify(state));
+ return {ctx,T:ctx.T,nodes,writes,posts,storage,state,account,clock,orders,opts,requests};
 }
-async function page(b,{offline=false,fastTimeout=false}={}){
- const elements={},events={},element=()=>({value:'',checked:false,disabled:false,textContent:'',style:{},setAttribute(){},append(){},replaceChildren(){}}),$=id=>elements[id]||(elements[id]=element());let interval;
- $('paper-key').value='MOCK';$('paper-secret').value='MOCK';$('budget').value='100000';$('remember').checked=true;
- const delays=[];
- const context={FlowHistory:require('./flow-history.js'),FLOWPaperCore:C,fetch:b.fetch,AbortController,setTimeout:(fn,ms)=>{if(ms!==15000)delays.push(ms);return setTimeout(fn,ms===15000?(fastTimeout?0:60000):0)},clearTimeout,document:{getElementById:$,createElement:element,createElementNS:element,visibilityState:'visible',addEventListener:(event,fn)=>events[event]=fn},localStorage:{getItem:k=>b.store.get(k)||null,setItem:(k,v)=>b.store.set(k,v),removeItem:k=>b.store.delete(k)},navigator:{locks:b.locks,onLine:!offline},Intl,Date,console,setInterval:fn=>(interval=fn,1),clearInterval(){}};
- vm.runInNewContext(fs.readFileSync(__dirname+'/flow-paper-visit.js','utf8'),context);
- for(let i=0;i<80;i++)await new Promise(r=>setImmediate(r));
- return {$,delays,stop:()=>$('stop').onclick(),connect:()=>$('connect').onclick(),start:()=>$('start').onclick(),tick:async()=>{if(interval)await interval()},state:()=>JSON.parse(b.store.get(stateKey))};
-}
-async function run(){
- // Immediate execution at 10am, not the old closing window; no margin budget.
- let b=broker(),p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,5);assert(p.state().started);assert(b.posts.reduce((s,o)=>s+Number(o.notional||0),0)<=99500);await p.tick();await page(b);assert.equal(b.posts.length,5);
- // Broker-accepted closed-session orders survive closing/reopening the page.
- b=broker({closed:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,5);assert.equal(p.state().pending.phase,'buying');assert(p.$('status').textContent.includes('예약됨'));await page(b);assert.equal(b.posts.length,5);b.fillAll();p=await page(b);assert.equal(b.posts.length,5);assert(p.state().started);assert.equal(p.state().lastHalfYear,q);
- // A lost response reconciles by client ID, never reposts the same order.
- b=broker({closed:true,lost:true});p=await page(b);await p.connect();assert.equal(b.posts.length,1);assert.equal(p.state().armed,true);assert(p.state().pausedReason);await p.tick();assert.equal(b.posts.length,5);assert.equal(new Set(b.posts.map(o=>o.client_order_id)).size,5);
- // A genuinely unknown order must not be retried even on explicit restart.
- b=broker({closed:true,unknown:true});p=await page(b);await p.connect();await p.start();await p.start();assert.equal(b.posts.length,1);assert(p.$('status').textContent.includes('自')===false);assert(p.$('status').textContent.includes('자동 재전송하지 않습니다'));
- // Missed quarters catch up; do not buy against unfilled sale proceeds.
- b=broker({closed:true,cash:1000});const old=fixture.ranking[25].ticker;b.positions.set(old,{symbol:old,qty:990,current_price:'100',side:'long',market_value:99000});
- b.store.set(stateKey,JSON.stringify({armed:false,started:true,owned:[old],selected:[old],lastQuarter:'2025Q1',budget:100000,log:[],nav:[],intents:{}}));p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,1);assert.equal(b.posts[0].side,'sell');await page(b);assert.equal(b.posts.length,1);b.fillAll();p=await page(b);assert.equal(b.posts.length,6);assert(b.posts.slice(1).every(o=>o.side==='buy'));assert(b.posts.slice(1).reduce((s,o)=>s+Number(o.notional),0)<=99500);b.fillAll();p=await page(b);assert.equal(p.state().lastHalfYear,q);assert.equal(b.posts.length,6);
- // Strategy migration reconciles accepted legacy orders but never submits old unsubmitted targets.
- b=broker({closed:true});const legacyTicker=fixture.ranking[25].ticker,unusedTicker=fixture.ranking[26].ticker;
- const legacyRequest={symbol:legacyTicker,side:'buy',notional:'1000.00',type:'market',time_in_force:'day',client_order_id:'flow2-legacy-buy'};
- b.orders.set('legacy',{id:'legacy',request:legacyRequest,status:'accepted'});
- b.store.set(stateKey,JSON.stringify({armed:true,started:false,owned:[legacyTicker,unusedTicker],selected:[],budget:100000,log:['old record'],nav:[],intents:{},pending:{date,quarter:'2026Q4',signalDate:fixture.signalDate,rows:[],target:{},sells:[],buys:[{request:legacyRequest,local:'submitted',id:'legacy',status:'accepted'},{request:{...legacyRequest,symbol:unusedTicker,client_order_id:'unsubmitted-legacy'},local:'new'}],phase:'buying'}}));
- p=await page(b);await p.connect();assert.equal(b.posts.length,0);assert(p.$('status').textContent.includes('이전 FLOW 주문'));
- b.fillAll();p=await page(b);assert.equal(b.posts.length,1);assert.equal(b.posts[0].side,'sell');assert.equal(p.state().legacyPlans.length,1);assert(p.state().log.includes('old record'));
- b.fillAll();p=await page(b);assert.equal(b.posts.length,6);assert(!b.posts.some(o=>o.client_order_id==='unsubmitted-legacy'));assert.equal(p.state().ruleId,C.RULE_ID);
- // Guard foreign orders, stale signals, and repeated concurrent visits.
- b=broker({foreign:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,0);
- b=broker({stale:true});p=await page(b);await p.connect();await p.start();assert.equal(b.posts.length,0);
- b=broker({closed:true});p=await page(b);await p.connect();await p.start();await Promise.all([page(b),page(b),p.tick()]);assert.equal(b.posts.length,5);
- // Passive preference survives transient API errors, reloads, and unknown-order checks.
- b=broker({clockFail:3});p=await page(b);await p.connect();assert(p.state().armed);assert(p.state().pausedReason);assert.equal(b.posts.length,0);p=await page(b);assert(p.state().armed);assert(!p.state().pausedReason);assert.equal(b.posts.length,5);await p.tick();assert.equal(b.posts.length,5);
- b=broker({accountFail:3});p=await page(b);await p.connect();assert.equal(b.posts.length,0);await p.tick();assert(p.state().armed);assert.equal(b.posts.length,5);
- // Only an explicit stop persists a manual pause; restart clears that pause.
- b=broker();p=await page(b);await p.connect();p.stop();assert.equal(p.state().armed,false);assert.equal(p.state().manualPaused,true);p=await page(b);assert.equal(p.state().armed,false);await p.start();assert(p.state().armed);assert.equal(p.state().manualPaused,false);assert.equal(b.posts.length,5);
- b=broker({unknown:true});p=await page(b);await p.connect();await p.tick();await page(b);assert.equal(b.posts.length,1);assert(p.state().armed);assert(p.state().pausedReason);
- // GET recovery uses bounded backoff, sanitized diagnostics, and preserves trading guards.
- b=broker({failures:{'/clock':{remaining:2}}});p=await page(b);await p.connect();assert.equal(b.posts.length,5);assert.deepEqual(p.delays,[1000,3000]);assert(p.state().log.some(s=>s.includes('조회 복구')));assert(!JSON.stringify(p.state()).includes('MOCK_SECRET'));
- b=broker({failures:{'/clock':{remaining:2,status:503}}});p=await page(b);await p.connect();assert.equal(b.posts.length,5);assert.equal(b.calls.filter(c=>c.path==='/clock').length,3);
- b=broker({failures:{'/clock':{remaining:1,status:429,retryAfter:'2'}}});p=await page(b);await p.connect();assert.equal(b.posts.length,5);assert.deepEqual(p.delays,[2000]);
- b=broker({failures:{'/clock':{remaining:5,status:429,retryAfter:'60'}}});p=await page(b);await p.connect();assert.equal(b.posts.length,0);assert.equal(b.calls.filter(c=>c.path==='/clock').length,1);assert(p.state().armed);
- b=broker({failures:{'/account':{remaining:5,status:401}}});p=await page(b);await p.connect();assert.equal(b.calls.length,1);assert.equal(b.posts.length,0);assert.equal(p.delays.length,0);
- b=broker({failures:{'/clock':{remaining:5}}});p=await page(b,{offline:true});await p.connect();assert.equal(b.calls.filter(c=>c.path==='/clock').length,1);assert(p.state().pausedReason.includes('オ')===false);assert(p.state().pausedReason.includes('오프라인'));assert(p.state().armed);
- b=broker({failures:{'/clock':{remaining:1,kind:'timeout'}}});p=await page(b,{fastTimeout:true});await p.connect();assert.equal(b.posts.length,5);assert(p.state().log.some(s=>s.includes('15초 응답 시간 초과')));
- b=broker({failures:{'/orders':{remaining:1,kind:'timeout'}}});p=await page(b,{fastTimeout:true});await p.connect();assert.equal(b.calls.filter(c=>c.method==='POST').length,1);await p.tick();assert.equal(b.calls.filter(c=>c.method==='POST').length,1);assert(p.state().pending.buys[0].local==='uncertain');
- console.log('PASS: bounded GET retries, backoff and Retry-After, auth/offline handling, sanitized errors, GET timeout recovery, POST timeout never resubmitted');
- console.log('PASS: passive auto-connect, reload persistence, transient clock/account recovery, explicit manual stop, and no duplicate unknown-order submissions');
- console.log('PASS: intraday execution, closed-session queue, reload resume, half-year catch-up, sell-before-buy, cash-only cap, foreign-order/stale-signal guards, lost-response reconciliation, unknown-order stop, concurrent duplicate prevention');
-}
-run().catch(e=>{console.error(e);process.exit(1)});
-
+(async()=>{
+ let startup=create({startup:true});await startup.nodes.get('connect').onclick();assert.equal(startup.posts.length,1);assert.equal(startup.posts[0].side,'sell');assert(Number(startup.account.cash)>0);
+ startup=create({startup:true,empty:true});await startup.nodes.get('connect').onclick();assert(startup.posts.length>=5);assert(startup.posts.every(o=>o.side==='buy'));assert(Number(startup.account.cash)>=C.CASH_RESERVE-1e-6);assert(JSON.parse(startup.storage.get('flow.paper.state.v1.test')).started);
+ startup=create({startup:true,empty:true,foreign:true});await startup.nodes.get('connect').onclick();assert.equal(startup.posts.length,0,'foreign orders block new investment');
+ startup=create({startup:true,empty:true,stale:true});await startup.nodes.get('connect').onclick();assert.equal(startup.posts.length,0,'stale signals block new investment');
+ let a=create({isOpen:false});await a.T.tick();assert.equal(a.posts.length,0);assert(a.T.get().pausedReason.includes('다음 정규장'));const logs=a.T.get().log.length;await a.T.tick();assert.equal(a.T.get().log.length,logs,'same error should not spam');
+ a=create();await a.T.tick();assert.equal(a.posts.length,1);assert.equal(a.posts[0].side,'sell');assert(Number(a.account.cash)>0);assert.equal(a.T.get().cashRepair,null);assert(a.T.get().cashRepairHistory.length===1);await a.T.tick();assert(a.posts.filter(o=>o.side==='buy').every(o=>Number(o.notional)<=Number(a.account.cash)+1));assert(a.posts.filter(o=>o.side==='sell').length===1);
+ a=create({cash:'-20'});await a.T.tick();assert.equal(a.posts.length,0);assert(a.T.get().pausedReason);
+ a=create({uncertain:true});await a.T.tick();assert.equal(a.posts.length,1);assert.equal(a.T.get().cashRepair.orders[0].local,'uncertain');await a.T.tick();assert.equal(a.posts.length,1,'uncertain POST must never be repeated');assert(a.T.get().cashRepairHistory.length===1);
+ a=create({accepted:true});await a.T.tick();await a.T.tick();assert.equal(a.posts.length,1,'accepted sell must not duplicate');
+ a=create({cash:'3.00'});a.T.lock(true);const buys=['A','B'].map((symbol,i)=>({request:{symbol,notional:'2.00',side:'buy',type:'market',time_in_force:'day',client_order_id:'test'+i},local:'new',id:null,status:null}));a.T.get().cashSweep={orders:buys};await a.T.settle(buys);assert.equal(a.posts.length,1);assert.equal(buys[1].local,'skipped');assert.equal(Number(a.account.cash),1);
+ a=create({cash:'3.00',accepted:true});a.T.lock(true);const pending=['A','B'].map((symbol,i)=>({request:{symbol,notional:'1.00',side:'buy',client_order_id:'pending'+i},local:'new',id:null,status:null}));a.T.get().cashSweep={orders:pending};assert.equal(await a.T.settle(pending),false);assert.equal(a.posts.length,1,'wait for first fill before submitting second');
+ a=create({cash:'3.00'});a.writes.length=0;await a.T.refresh();a.T.log('조회 실패 test');assert.equal(a.writes.length,0,'read-only refresh/log must not overwrite trading ledger');
+ a=create({cash:'3.00',postReject:true});a.T.lock(true);const rejected={request:{symbol:'A',notional:'1.00',side:'buy',client_order_id:'rejected'},local:'new',id:null,status:null};a.T.get().cashSweep={orders:[rejected]};await assert.rejects(()=>a.T.settle([rejected]));assert.equal(rejected.local,'rejected');await assert.rejects(()=>a.T.settle([rejected]));assert.equal(a.posts.length,1);
+ a=create({cash:'3.00'});a.storage.set('flow.paper.state.v1.test','corrupted');a.writes.length=0;await a.T.tick();assert.equal(a.posts.length,0);assert.equal(a.writes.length,0);assert.equal(a.storage.get('flow.paper.state.v1.test'),'corrupted');
+ a=create({cash:'3.00',delayed:true});const late=a.T.api('/delayed');a.T.setCredentials({keyId:'NEW',secretKey:'NEW'});a.opts.resolve();await assert.rejects(()=>late,/계좌 연결이 변경/);
+ console.log('PASS full connection/initial investment, corrupt-state blocking, regular-hours debt repair, repeated status, bounded debt, exact-once POST recovery, fill sequencing, fresh cash reserve, definite rejection, ledger isolation and old-account response rejection');
+})().catch(e=>{console.error(e);process.exitCode=1});

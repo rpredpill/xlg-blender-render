@@ -5,7 +5,7 @@
  const KEY='flow.paper.dismissed-notices.v1';
  let dismissed=new Set(),current='',drag=null;
  function read(){try{const values=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(values))values.filter(v=>typeof v==='string').forEach(v=>dismissed.add(v));}catch{}}
- function resetDrag(){drag=null;bar.classList.remove('is-dragging');bar.style.transform='';bar.style.opacity='';}
+ function resetDrag(){const pointer=drag?.id;drag=null;if(pointer!==undefined&&bar.hasPointerCapture(pointer))bar.releasePointerCapture(pointer);bar.classList.remove('is-dragging');bar.style.transform='';bar.style.opacity='';}
  function show(text){const next=String(text||'').trim();if(next!==current)resetDrag();current=next;message.textContent=next;bar.hidden=!next||dismissed.has(next);}
  function dismiss(){
   if(!current)return;

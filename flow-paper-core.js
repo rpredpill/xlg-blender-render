@@ -3,6 +3,7 @@
  'use strict';
  const PAPER='https://paper-api.alpaca.markets/v2';
  function assert(ok,message){if(!ok)throw Error(message);}
+ const CASH_RESERVE=1;
  const RULE_ID='FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2';
  function targets(signal,previous=[]){
    assert(signal?.ready && signal.version===2 && signal.ruleId===RULE_ID,'새 FLOW 신호가 준비되지 않았습니다.');
@@ -20,10 +21,13 @@
    state.ruleId=RULE_ID;delete state.lastHalfYear;
    return true;
  }
- function accountGuard(account,positions,orders,owned=[]){
+ function accountGuard(account,positions,orders,owned=[],allowSmallDebt=false){
    assert(account.status==='ACTIVE'&&!account.trading_blocked&&!account.account_blocked,'계좌가 거래 가능한 상태가 아닙니다.');
-   assert(Number(account.cash)>=0&&Number(account.short_market_value||0)===0,'현금 또는 공매도 계좌 상태 확인 필요');
-   assert(Number(account.long_market_value||0)<=Number(account.equity)+1,'차입 투자 상태에서는 실행하지 않습니다.');
+   const cash=Number(account.cash),equity=Number(account.equity),long=Number(account.long_market_value||0),short=Number(account.short_market_value||0);
+   assert([cash,equity,long,short].every(Number.isFinite)&&equity>0&&long>=0&&short===0,'계좌 현금·평가금액·공매도 상태 확인 필요');
+   const smallDebt=allowSmallDebt&&cash<0&&-cash<=Math.min(5,equity*.0001);
+   assert(cash>=0||smallDebt,'현금 부족 · 신규 매수 중단 · 잔액 확인 필요');
+   assert(smallDebt||long<=equity+1,'차입 투자 상태에서는 실행하지 않습니다.');
    assert(positions.every(p=>p.side==='long'&&owned.includes(p.symbol)&&Number(p.qty)>0),'FLOW 전용 빈 Paper 계좌가 필요합니다. 기존 다른 보유 종목을 매매하지 않습니다.');
    assert(orders.length===0,'미체결 주문이 있습니다. 먼저 계좌에서 확인하세요.');
  }
@@ -46,7 +50,7 @@
    const equity=Number(account.equity),cash=Number(account.cash),values=new Map(positions.map(p=>[p.symbol,Number(p.market_value)]));
    assert(Number.isFinite(equity)&&Number.isFinite(cash)&&cash>=0&&Number.isFinite(budget)&&budget>=10&&[...values.values()].every(v=>Number.isFinite(v)&&v>=0),'추가 매수 금액 확인 필요');
    const invested=[...values.values()].reduce((a,b)=>a+b,0),limit=investAll?invested+cash:Math.min(budget,equity);
-   const cents=Math.floor(Math.max(0,Math.min(cash,limit-invested))*100+1e-7);
+   const cents=Math.floor(Math.max(0,Math.min(cash-CASH_RESERVE,limit-invested))*100+1e-7);
    if(cents<100)return [];
    const rows=selected.map(symbol=>({symbol,need:Math.max(0,limit/5-(values.get(symbol)||0)),cents:0})).sort((a,b)=>b.need-a.need||a.symbol.localeCompare(b.symbol));
    const total=rows.reduce((s,r)=>s+r.need,0);if(total<=0)return [];
@@ -54,6 +58,16 @@
    rows[0].cents+=cents-rows.reduce((s,r)=>s+r.cents,0);
    return rows.filter(r=>r.cents>=100).map(r=>({symbol:r.symbol,notional:(r.cents/100).toFixed(2)}));
  }
- const api={PAPER,RULE_ID,halfYear,migrateState,assert,targets,accountGuard,buyBudget,initialOrders,sellQuantity,cashAllocation};
+ function cashRepair(account,positions,owned){
+   accountGuard(account,positions,[],owned,true);
+   const cash=Number(account.cash);if(cash>=0)return null;
+   const amount=-cash+CASH_RESERVE+1;
+   const held=positions.filter(p=>Number(p.current_price)>0&&Number.isFinite(Number(p.current_price))&&Number(p.market_value)>=amount*2).sort((a,b)=>Number(b.market_value)-Number(a.market_value)||a.symbol.localeCompare(b.symbol));
+   assert(held.length>0,'소액 현금 부족을 정리할 보유 종목 확인 필요');
+   const position=held[0],qty=Math.ceil(amount/Number(position.current_price)*1e9)/1e9;
+   assert(qty>0&&qty<Number(position.qty),'소액 잔액 정리 매도 수량 확인 필요');
+   return {symbol:position.symbol,qty:qty.toFixed(9)};
+ }
+ const api={PAPER,CASH_RESERVE,cashRepair,RULE_ID,halfYear,migrateState,assert,targets,accountGuard,buyBudget,initialOrders,sellQuantity,cashAllocation};
  root.FLOWPaperCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

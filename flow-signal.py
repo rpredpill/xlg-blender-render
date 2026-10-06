@@ -77,7 +77,7 @@ async def build():
           'signalDate':asof,'membershipRetrievedAt':dt.datetime.now(dt.UTC).isoformat(),'membershipSource':url,
           'priceSource':'Yahoo Finance daily close × volume; consolidated vendor data, not Alpaca IEX',
           'universeCount':len(symbols),'eligibleCount':len(rows),'excluded':excluded,
-          'rule':'21-session arithmetic mean traded value; current Top5 without retention buffer; equal 20% weights; semiannual June/December review; no leverage or ETF holdings',
+          'rule':'21-session arithmetic mean traded value; current Top5 without retention buffer; equal 20% weights; semiannual January/July first-trading-day rebalance; no leverage or ETF holdings',
           'rows':top,'ranking':rows,'initialSignal':True,'coverageGuard':.98}
     (ROOT/'flow-latest.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
     if not ready:raise RuntimeError('Latest FLOW signal is not ready; preserve prior simulation snapshot')
