@@ -68,11 +68,11 @@
   const feedback=$('compare-feedback');if(feedback){feedback.hidden=!compareError;feedback.textContent=compareError;}
   set('compare-coverage','');
   for(const symbol of ['FLOW','QQQ','QLD','VOO']){
-   const value=indexed.length>=2?indexed.at(-1)[symbol]-100:null,color=value>0?'#dc2626':'#2563eb';
+   const value=indexed.length>=2?indexed.at(-1)[symbol]-100:null,color=COLORS[symbol];
    const card=document.createElement('button');card.type='button';card.id='compare-focus-'+symbol;card.className='compare-series'+(focusedSeries===symbol?' is-focused':'');card.setAttribute('aria-pressed',String(focusedSeries===symbol));card.setAttribute('aria-label',symbol+' '+(value===null?'기록 대기':pct(value))+' · 그래프 강조');
    const title=document.createElement('span');title.className='compare-series-name';title.textContent=symbol;
    const swatch=svgEl('svg',{viewBox:'0 0 40 10',width:40,height:10,'aria-hidden':'true'});swatch.append(svgEl('path',{d:'M1 5h38',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':{FLOW:'',QQQ:'8 5',QLD:'14 6',VOO:'2 5'}[symbol]}));
-   const number=document.createElement('strong');number.textContent=value===null?'—':pct(value);number.className=value===null?'':value>0?'positive':'negative';card.append(title,swatch,number);
+   const number=document.createElement('strong');number.textContent=value===null?'—':pct(value);number.style.color=value===null?'#84909f':color;card.append(title,swatch,number);
    card.onclick=()=>{focusedSeries=focusedSeries===symbol?null:symbol;renderCompare();$('compare-focus-'+symbol)?.focus?.({preventScroll:true});};body.append(card);
   }
   if(indexed.length<2){const p=document.createElement('strong');p.className='compare-empty';p.textContent=compareError?'비교 기록을 불러오지 못했어요':!credentials?'설정에서 계좌를 연결하면 비교할 수 있어요.':compareLoaded?'비교 가능한 거래일 기록이 아직 부족해요.':'비교 데이터를 불러오는 중…';box.append(p);return;}
@@ -87,7 +87,7 @@
   svg.append(svgEl('line',{x1:left,x2:right,y1:y(0),y2:y(0),stroke:'#99a6b6','stroke-dasharray':'4 4'}));
   const ordered=['QQQ','QLD','VOO','FLOW'].filter(s=>s!==focusedSeries).concat(focusedSeries?[focusedSeries]:[]);
   for(const symbol of ordered){
-   const color=indexed.at(-1)[symbol]>100?'#dc2626':'#2563eb',dim=focusedSeries&&focusedSeries!==symbol;
+   const color=COLORS[symbol],dim=focusedSeries&&focusedSeries!==symbol;
    const path=indexed.map((r,i)=>(i?'L':'M')+x(i).toFixed(2)+','+y(r[symbol]-100).toFixed(2)).join(' ');
    svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':{FLOW:'',QQQ:'8 5',QLD:'14 6',VOO:'2 5'}[symbol],opacity:dim?.12:1,'stroke-linecap':'round','stroke-linejoin':'round'}));
   }
