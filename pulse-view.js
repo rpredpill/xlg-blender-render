@@ -24,7 +24,6 @@
   const body=$('pulse-orders');body.replaceChildren();for(const r of rows){const tr=document.createElement('tr');cell(tr,r.symbol);cell(tr,r.side==='buy'?'매수':'매도',r.side==='buy'?'positive':'');const td=document.createElement('td'),badge=document.createElement('span');badge.className='order-badge';badge.textContent=statuses[r.status]||r.status;td.append(badge);tr.append(td);cell(tr,Number(r.filled_qty||0).toLocaleString('en-US',{maximumFractionDigits:6}));cell(tr,r.filled_avg_price!=null?money(r.filled_avg_price):'—');body.append(tr);}
  }
  function unavailable(id,cols){empty(id,'내역을 불러오지 못했습니다. 다음 갱신 때 다시 확인합니다.',cols);}
- document.querySelector('.status-bar a').addEventListener('click',()=>{$('connection-details').open=true;});
  function clear(){renderAccount(null,null);$('pulse-count').textContent='—';empty('pulse-positions','계좌 연결 후 보유 종목을 확인하세요.',3);empty('pulse-orders','계좌를 연결하면 최근 주문을 불러옵니다.',5);}
  globalThis.PulseView={renderAccount,renderPositions,renderOrders,unavailable,clear};
 })();

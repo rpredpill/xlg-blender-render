@@ -5,7 +5,7 @@
  let displayBusy=false,pulseBusy=false;
  const stateKey=()=>`flow.paper.state.v1.${account.id}`;
  const save=()=>localStorage.setItem(stateKey(),JSON.stringify(state));
- const status=t=>{$('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
+ const status=t=>{if(globalThis.StatusNotice)StatusNotice.show(t);else $('status').textContent=t;globalThis.PulseView?.renderAccount(account,state);};
  const halfYear=C.halfYear;
  const nyDate=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(t));
  const log=t=>{if(!state)return;state.log.unshift(`${new Date().toISOString()} ${t}`);state.log=state.log.slice(0,150);save();$('log').textContent=state.log.join('\n');};
