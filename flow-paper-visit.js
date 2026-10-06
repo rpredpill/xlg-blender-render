@@ -92,7 +92,7 @@
  function installTimer(){clearInterval(timer);timer=setInterval(tick,30000);}
  function guard(positions,open,allowSmallDebt=false){const own=new Set((state.pending?.sells||[]).concat(state.pending?.buys||[],state.exitCleanup?.orders||[],state.cashSweep?.orders||[],state.cashRepair?.orders||[]).map(o=>o.request.client_order_id));C.accountGuard(account,positions,open.filter(o=>!own.has(o.client_order_id)),state.owned,allowSmallDebt);}
  async function connect(){
-   if(busy||connecting)return;connecting=true;clearInterval(timer);timer=null;
+   if(busy||connecting)return;connecting=true;globalThis.StatusNotice?.suspend?.();clearInterval(timer);timer=null;
    try{
      credentials={keyId:$('paper-key').value.trim(),secretKey:$('paper-secret').value.trim()};
      C.assert(credentials.keyId&&credentials.secretKey,'Paper API 키를 입력하세요.');
@@ -112,9 +112,8 @@
      $('log').textContent=state.log.join('\n')||'아직 주문이 없습니다.';$('budget').value=state.budget||100000;
      try{await loadSignal();}catch(e){log('편입 신호 조회 대기: '+e.message);}
      await refresh();$('start').disabled=false;
-     status(state.armed?'Paper 연결 완료 · 접속 시 자동 매매를 확인합니다.':'Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
-     if(state.armed){installTimer();await tick();}
-   }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;void refreshDisplay();}
+     if(state.armed){installTimer();await tick();}else status('Paper 연결 완료 · 수동 중지 상태를 유지합니다.');
+   }catch(e){$('start').disabled=!state;pause('연결 확인 대기 · '+e.message);if(e.httpStatus===401||e.httpStatus===403){clearInterval(timer);timer=null;}else if(state?.armed&&account){installTimer();}else if(!state&&credentials){timer=setInterval(connect,30000);}}finally{connecting=false;globalThis.StatusNotice?.resume?.();void refreshDisplay();}
  }
  function request(symbol,side,amount,date){return {symbol,side,type:'market',time_in_force:'day',extended_hours:false,...(side==='buy'?{notional:amount.toFixed(2)}:{qty:C.sellQuantity(amount)}),client_order_id:`flow3-${date}-${symbol.replace('.','')}-${side}`};}
  const record=request=>({request,local:'new',id:null,status:null});
@@ -287,7 +286,6 @@
  setInterval(()=>{void refreshDisplay();},15000);
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){lastPulseFetch=0;void refreshDisplay().then(()=>tick());}});
  window.addEventListener('online',()=>{lastPulseFetch=0;void refreshDisplay();});
- loadSignal().catch(e=>status(e.message));
  const saved=readJSON(KEY)||readJSON('somx.alpaca.credentials.v1');
- if(saved){$('remember').checked=!!localStorage.getItem(KEY);$('paper-key').value=saved.keyId||'';$('paper-secret').value=saved.secretKey||'';connect();}
+ if(saved){$('remember').checked=!!localStorage.getItem(KEY);$('paper-key').value=saved.keyId||'';$('paper-secret').value=saved.secretKey||'';connect();}else{globalThis.StatusNotice?.show('계좌 연결 대기');loadSignal().catch(e=>status(e.message));}
 })();

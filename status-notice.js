@@ -3,10 +3,10 @@
  const bar=document.getElementById('status-notice'),message=document.getElementById('status'),close=document.getElementById('status-close');
  if(!bar||!message||!close)return;
  const KEY='flow.paper.dismissed-notices.v1';
- let dismissed=new Set(),current='',drag=null;
+ let dismissed=new Set(),current='',drag=null,suspended=false;
  function read(){try{const values=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(values))values.filter(v=>typeof v==='string').forEach(v=>dismissed.add(v));}catch{}}
  function resetDrag(){const pointer=drag?.id;drag=null;if(pointer!==undefined&&bar.hasPointerCapture(pointer))bar.releasePointerCapture(pointer);bar.classList.remove('is-dragging');bar.style.transform='';bar.style.opacity='';}
- function show(text){const next=String(text||'').trim();if(next!==current)resetDrag();current=next;message.textContent=next;bar.hidden=!next||dismissed.has(next);}
+ function show(text){const next=String(text||'').trim();if(next!==current)resetDrag();current=next;message.textContent=next;bar.hidden=suspended||!next||dismissed.has(next);}
  function dismiss(){
   if(!current)return;
   dismissed.add(current);try{localStorage.setItem(KEY,JSON.stringify([...dismissed]));}catch{}
@@ -37,5 +37,5 @@
  bar.addEventListener('pointercancel',resetDrag);
  bar.addEventListener('lostpointercapture',resetDrag);
  window.addEventListener('storage',e=>{if(e.key===KEY){read();show(current);}});
- read();globalThis.StatusNotice={show};show(message.textContent);
+ read();bar.hidden=true;globalThis.StatusNotice={show,suspend(){suspended=true;resetDrag();bar.hidden=true;},resume(){suspended=false;show(current);}};
 })();

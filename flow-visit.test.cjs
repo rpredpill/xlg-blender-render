@@ -26,7 +26,7 @@ function create(opts={}){
  if(opts.delayed){return new Promise(resolve=>{opts.resolve=()=>response(account)&&resolve(response(account));});}
  throw Error('Unexpected '+path);
  }};ctx.globalThis=ctx;vm.createContext(ctx);
- const cut=source.indexOf(' loadSignal().catch(');
+ const cut=source.indexOf(' const saved=readJSON(KEY)');
  const injected=source.slice(0,cut)+` globalThis.T={tick,settle,refresh,repairCash,api,log,guard,set(a,s){account=a;state=s;credentials={keyId:'MOCK',secretKey:'MOCK'};},setState(s){state=s;},get(){return state;},lock(v){tradingLocked=v;},setCredentials(c){credentials=c;}};})();`;
  vm.runInContext(opts.startup?source:injected,ctx);ctx.T?.set(account,state);storage.set('flow.paper.state.v1.test',JSON.stringify(state));
  return {ctx,T:ctx.T,nodes,writes,posts,storage,state,account,clock,orders,opts,requests};
