@@ -27,3 +27,5 @@
 .positive{color:#dc2626!important}.negative{color:#2563eb!important}.compare-swatch{display:inline-block;vertical-align:middle;margin-right:7px;flex:none}
 
 .performance-card .history-quote{width:100%;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}.history-total{display:flex;align-items:baseline;gap:7px;font-variant-numeric:tabular-nums}.history-total strong{font-size:36px;font-weight:650;letter-spacing:-1px;color:var(--ink,#152338)}.history-currency{font-size:16px;color:#68768a}.performance-card .history-quote .history-value-change{width:auto;margin:0;font-size:22px}@media(max-width:520px){.history-total strong{font-size:32px}.history-currency{font-size:14px}.performance-card .history-quote .history-value-change{font-size:20px}}
+
+.stock-avatar{width:32px;height:32px;flex:none;overflow:hidden;position:relative;border-radius:9px}.stock-avatar.has-logo{background:#fff;box-shadow:inset 0 0 0 1px #e9edf2}.stock-logo{display:block;width:100%;height:100%;object-fit:contain;padding:4px}.stock-logo[hidden],.stock-logo-fallback[hidden]{display:none}

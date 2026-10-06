@@ -3,6 +3,16 @@
  const $=id=>document.getElementById(id),money=v=>Number.isFinite(Number(v))?(Number(v)<0?'−$':'$')+Math.abs(Number(v)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
  const cell=(tr,text,className)=>{const td=document.createElement('td');td.textContent=text;if(className)td.className=className;tr.append(td);return td;};
  const empty=(id,text,cols)=>{const tr=document.createElement('tr');const td=cell(tr,text,'empty-cell');td.colSpan=cols;$(id)?.replaceChildren(tr);};
+ const missingLogos=new Set();
+ function stockAvatar(symbol){
+  const avatar=document.createElement('span'),fallback=document.createElement('span');avatar.className='stock-avatar';fallback.className='stock-logo-fallback';fallback.textContent=symbol.slice(0,2);avatar.append(fallback);
+  if(!/^[A-Z0-9][A-Z0-9.-]{0,14}$/.test(symbol)||missingLogos.has(symbol))return avatar;
+  // Company logo images from Financial Modeling Prep's symbol image service.
+  const img=document.createElement('img');img.className='stock-logo';img.alt='';img.loading='eager';img.decoding='async';img.referrerPolicy='no-referrer';img.hidden=true;
+  img.onload=()=>{img.hidden=false;fallback.hidden=true;avatar.classList.add('has-logo');};
+  img.onerror=()=>{missingLogos.add(symbol);img.remove();fallback.hidden=false;avatar.classList.remove('has-logo');};
+  img.src='https://images.financialmodelingprep.com/symbol/'+encodeURIComponent(symbol)+'.png';avatar.append(img);return avatar;
+ }
  function renderAccount(){}
  function renderPositions(rows){
   rows=rows.filter(r=>Number.isFinite(Number(r.qty))&&Math.abs(Number(r.qty))>0);
@@ -10,7 +20,7 @@
   const remainderCount=rows.filter(isRemainder).length;rows=rows.filter(r=>!isRemainder(r));
   $('pulse-count').textContent=rows.length+'종목'+(remainderCount?' · 미세 잔여 '+remainderCount+'건 제외':'');if(!rows.length){empty('pulse-positions','아직 보유 종목이 없습니다.',3);return;}
   const body=$('pulse-positions');body.replaceChildren();
-  for(const r of [...rows].sort((a,b)=>Number(b.market_value)-Number(a.market_value))){const tr=document.createElement('tr'),td=document.createElement('td'),wrap=document.createElement('span'),avatar=document.createElement('span'),name=document.createElement('span');wrap.className='stock-symbol';avatar.className='stock-avatar';avatar.textContent=r.symbol.slice(0,2);name.textContent=r.symbol;wrap.append(avatar,name);td.append(wrap);tr.append(td);cell(tr,money(r.market_value));const change=r.unrealized_plpc==null?NaN:Number(r.unrealized_plpc)*100;cell(tr,Number.isFinite(change)?`${change>=0?'+':''}${change.toFixed(2)}%`:'—',change>0?'positive':'negative');body.append(tr);}
+  for(const r of [...rows].sort((a,b)=>Number(b.market_value)-Number(a.market_value))){const tr=document.createElement('tr'),td=document.createElement('td'),wrap=document.createElement('span'),avatar=stockAvatar(r.symbol),name=document.createElement('span');wrap.className='stock-symbol';name.textContent=r.symbol;wrap.append(avatar,name);td.append(wrap);tr.append(td);cell(tr,money(r.market_value));const change=r.unrealized_plpc==null?NaN:Number(r.unrealized_plpc)*100;cell(tr,Number.isFinite(change)?`${change>=0?'+':''}${change.toFixed(2)}%`:'—',change>0?'positive':'negative');body.append(tr);}
  }
  function renderOrders(rows){
   if(!rows.length){empty('pulse-orders','아직 주문 내역이 없습니다.',5);return;}
