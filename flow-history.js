@@ -34,19 +34,26 @@
      if(summary){
        const sign=value?.amount>0?'+':value?.amount<0?'−':'';
        summary.textContent=value?sign+'$'+Math.abs(value.amount).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' ('+sign+Math.abs(value.percent).toFixed(2)+'%)':'—';
-       summary.className='history-value-change'+(value?.amount>0?' positive':value?.amount<0?' negative':'');
+       summary.className='history-value-change';
        summary.setAttribute('aria-label',LABELS[range]+' 계좌 가치 변화 '+summary.textContent);
      }
      if(rows.length<2){const strong=document.createElement('strong');strong.textContent=rows.length?'기록을 모으고 있어요':accountId?'이 기간의 기록이 아직 없어요':'계좌를 연결하면 이력을 불러옵니다.';box.append(strong);return;}
      const ns='http://www.w3.org/2000/svg',make=(name,attrs,text)=>{const e=document.createElementNS(ns,name);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=text;return e;};
      const values=rows.map(r=>r.equity),lo=Math.min(...values),hi=Math.max(...values),pad=Math.max((hi-lo)*.1,hi*.005,1),min=lo-pad,max=hi+pad;
-     const svg=make('svg',{viewBox:'0 0 760 260',role:'img','aria-label':`FLOW Paper 계좌 가치 ${LABELS[range]}`});svg.style.width='100%';
-     for(let i=0;i<4;i++){const y=20+i*64;svg.append(make('line',{x1:72,x2:738,y1:y,y2:y,stroke:'#eef1f5'}),make('text',{x:65,y:y+4,'text-anchor':'end',fill:'#84909f','font-size':12},'$'+(max-(max-min)*i/3).toLocaleString('en-US',{maximumFractionDigits:0})));}
+     const width=Math.max(280,Math.round(box.clientWidth||760)),height=width<520?260:320;
+     const left=88,right=width-16,top=18,bottom=height-42,font=width<340?14:width<520?15:16,color='#2563eb';
+     const svg=make('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':`FLOW Paper 계좌 가치 ${LABELS[range]}`});svg.style.width='100%';svg.style.display='block';
      const start=rows[0].time,span=rows.at(-1).time-start||1;
-     const path=rows.map((r,i)=>(i?'L':'M')+(72+(r.time-start)*666/span).toFixed(2)+','+(20+192*(max-r.equity)/(max-min)).toFixed(2)).join(' ');
-     svg.append(make('path',{d:path,fill:'none',stroke:'#2563eb','stroke-width':3}));
+     const points=rows.map(r=>({x:left+(r.time-start)*(right-left)/span,y:top+(bottom-top)*(max-r.equity)/(max-min)}));
+     const path=points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2)).join(' ');
+     const defs=make('defs',{}),gradient=make('linearGradient',{id:'flow-history-fill',x1:'0%',y1:'0%',x2:'0%',y2:'100%'});
+     gradient.append(make('stop',{offset:'0%','stop-color':color,'stop-opacity':.25}),make('stop',{offset:'100%','stop-color':color,'stop-opacity':0}));defs.append(gradient);svg.append(defs);
+     svg.append(make('path',{d:path+' L'+right+','+bottom+' L'+left+','+bottom+' Z',fill:'url(#flow-history-fill)',stroke:'none','aria-hidden':'true'}));
+     for(let i=0;i<4;i++){const y=top+i*(bottom-top)/3;svg.append(make('line',{x1:left,x2:right,y1:y,y2:y,stroke:'#dce2e9','stroke-width':1}),make('text',{x:left-9,y:y+5,'text-anchor':'end',fill:'#526174','font-size':font,'font-weight':500},'$'+(max-(max-min)*i/3).toLocaleString('en-US',{maximumFractionDigits:0})));}
+     svg.append(make('path',{d:path,fill:'none',stroke:color,'stroke-width':3,'stroke-linejoin':'round','stroke-linecap':'round'}));
+     const last=points.at(-1);svg.append(make('circle',{cx:last.x,cy:last.y,r:4,fill:color,stroke:'#fff','stroke-width':2,'aria-hidden':'true'}));
      const label=r=>range==='1D'?new Intl.DateTimeFormat('ko-KR',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.time))+' ET':ny(r.time);
-     svg.append(make('text',{x:72,y:245,fill:'#84909f','font-size':12},label(rows[0])),make('text',{x:738,y:245,'text-anchor':'end',fill:'#84909f','font-size':12},label(rows.at(-1))));box.append(svg);
+     svg.append(make('text',{x:left,y:height-10,fill:'#526174','font-size':font,'font-weight':500},label(rows[0])),make('text',{x:right,y:height-10,'text-anchor':'end',fill:'#526174','font-size':font,'font-weight':500},label(rows.at(-1))));box.append(svg);
    }
    function reset(){generation++;accountId=null;daily=[];intraday=[];live=null;lastDaily=lastIntraday=0;busy=false;queued=false;error='';render();}
    async function update(account){
@@ -65,7 +72,7 @@
      }finally{if(token===generation&&id===accountId){busy=false;render();if(queued){queued=false;if(currentAccount)void update(currentAccount);}}}
    }
    for(const k of Object.keys(LABELS))if($('history-'+k))$('history-'+k).onclick=()=>{range=k;if(busy)queued=true;render();if(currentAccount)void update(currentAccount);};
-   let currentAccount=null;render();
+   let currentAccount=null;document.defaultView?.addEventListener('resize',render);render();
    return {update(account){currentAccount=account;return update(account);},reset(){currentAccount=null;reset();},render};
  }
  const exported={normalize,merge,select,change,create};if(typeof module!=='undefined'&&module.exports)module.exports=exported;else root.FlowHistory=exported;

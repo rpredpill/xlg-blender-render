@@ -19,3 +19,5 @@
 .status-bar[hidden]{display:none}.status-bar{touch-action:pan-y;transition:transform .18s ease,opacity .18s ease}.status-bar.is-dragging{transition:none;user-select:none}.notice-close{flex:none;display:inline-flex;align-items:center;gap:6px;background:transparent;color:#4869a3;padding:4px 6px;font-size:12px;white-space:nowrap;min-height:32px}.notice-close:hover{background:#e3ebfa}.notice-close span{font-size:20px;line-height:1}@media(prefers-reduced-motion:reduce){.status-bar{transition:none}}
 
 .history-value-change{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.3px;color:#68768a}@media(max-width:520px){.history-value-change{width:100%;margin-top:2px}}
+
+.history-value-change{font-size:22px;font-weight:700;color:#2563eb}.performance-card .history-ranges button{font-size:14px;padding:9px 13px}.performance-card .chart{width:100%}@media(max-width:520px){.performance-card .history-ranges button{padding:10px 7px}.history-value-change{font-size:23px;margin:5px 0 7px}}
