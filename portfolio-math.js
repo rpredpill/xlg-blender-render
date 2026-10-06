@@ -25,6 +25,14 @@
   const dates=[...maps.FLOW.keys()].filter(d=>['QQQ','QLD','VOO'].every(s=>maps[s].has(d))).sort();
   return dates.map(d=>({date:d,...Object.fromEntries(Object.entries(maps).map(([s,m])=>[s,m.get(d)]))}));
  }
+ function alignIntraday(account,bars,cutoff){
+  if(!Array.isArray(account?.timestamp)||!Array.isArray(account.equity)||account.timestamp.length!==account.equity.length)throw Error('장중 계좌 이력 형식 확인 필요');
+  const bucket=t=>Math.floor(t/300000)*300000,maps={FLOW:new Map()};
+  account.timestamp.forEach((t,i)=>{const time=bucket(t*1000),v=account.equity[i];if(Number.isFinite(time)&&time<=cutoff&&Number.isFinite(v)&&v>0)maps.FLOW.set(time,v);});
+  for(const symbol of ['QQQ','QLD','VOO']){maps[symbol]=new Map();for(const b of bars[symbol]||[]){const time=bucket(Date.parse(b.t)+300000);if(Number.isFinite(time)&&time<=cutoff&&Number.isFinite(b.c)&&b.c>0)maps[symbol].set(time,b.c);}}
+  return [...maps.FLOW.keys()].filter(t=>['QQQ','QLD','VOO'].every(s=>maps[s].has(t))).sort((a,b)=>a-b).map(time=>({date:new Date(time).toISOString(),...Object.fromEntries(Object.entries(maps).map(([s,m])=>[s,m.get(time)]))}));
+ }
+ function intradayPeriod(rows,range){const days=[...new Set(rows.map(r=>date(r.date)))].slice(range==='1D'?-1:-5);return rows.filter(r=>days.includes(date(r.date)));}
  function period(rows,range,now){
   if(!rows.length||range==='ALL')return rows;
   if(range==='1D')return rows.slice(-2);
@@ -48,5 +56,5 @@
   const month=pendingMonth||(done?(h===1?year+'-07':(year+1)+'-01'):year+(h===1?'-01':'-07'));
   return {month,done,pending:!!state?.pending,started:state?.started===true};
  }
- const api={date,weights,history,align,period,indexed,schedule};root.PortfolioMath=api;if(typeof module!=='undefined')module.exports=api;
+ const api={date,weights,history,align,alignIntraday,intradayPeriod,period,indexed,schedule};root.PortfolioMath=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

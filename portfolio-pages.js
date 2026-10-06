@@ -4,7 +4,7 @@
  const PAPER='https://paper-api.alpaca.markets/v2',DATA='https://data.alpaca.markets/v2',COLORS={FLOW:'#2563eb',QLD:'#dc2626',QQQ:'#ec4899',VOO:'#84cc16'};
  const money=v=>(Number(v)<0?'−$':'$')+Math.abs(Number(v)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
  const pct=v=>(v>=0?'+':'')+v.toFixed(2)+'%';
- let credentials=null,busy=false,accountId=null,rows=[],range='1M',lastSuccess=0,checkedAt='',saved=false;
+ let credentials=null,busy=false,accountId=null,rows=[],range='1D',lastSuccess=0,checkedAt='',saved=false;
  const set=(id,text)=>{if($(id))$(id).textContent=text;};
  const status=text=>set('page-status',text);
  function json(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch{return null;}}
@@ -49,10 +49,10 @@
    set('signal-meta','신호 '+(state?.pending?.signalDate||signal.signalDate)+' · '+(state?.pending?'진행 중 주문의 고정 목표':signal.eligibleCount+'/'+signal.universeCount+'개 데이터 유효 · 최신 목표 준비됨'));
   }catch{if(token!==targetGeneration)return;$('holdings').replaceChildren();set('signal-meta','최신 편입 신호 확인 대기 · 기존 보유 및 접수 주문은 유지합니다.');}
  }
- async function bars(start,end){
+ async function bars(start,end,timeframe='1Day'){
   const out={QQQ:[],QLD:[],VOO:[]};let token=null;const seen=new Set();
   do{
-   const q=new URLSearchParams({symbols:'QQQ,QLD,VOO',timeframe:'1Day',start,end,adjustment:'all',feed:'sip',limit:'10000',sort:'asc'});if(token)q.set('page_token',token);
+   const q=new URLSearchParams({symbols:'QQQ,QLD,VOO',timeframe,start,end,adjustment:'all',feed:'sip',limit:'10000',sort:'asc'});if(token)q.set('page_token',token);
    const data=await get(DATA,'/stocks/bars?'+q);
    for(const s of Object.keys(out))out[s].push(...(data.bars?.[s]||[]));
    token=data.next_page_token||null;if(token){if(seen.has(token)||seen.size>=100)throw Error('가격 이력의 나머지 페이지 확인 필요');seen.add(token);}
@@ -60,11 +60,11 @@
   return out;
  }
  const COMPARE_RANGES={ '1D':'1일','5D':'5일','1M':'1개월','6M':'6개월',YTD:'YTD',ALL:'전체' };
- let focusedSeries=null,compareLoaded=false,compareError='';
+ let focusedSeries=null,compareLoaded=false,compareError='',intradayRows=[];
  function renderCompare(){
   if(mode!=='compare')return;
   for(const k of Object.keys(COMPARE_RANGES))$('compare-'+k)?.setAttribute('aria-pressed',String(range===k));
-  const selected=M.period(rows,range),indexed=M.indexed(selected),box=$('compare-chart'),body=$('compare-results');box.replaceChildren();body.replaceChildren();
+  const intraday=range==='1D'||range==='5D',selected=intraday?M.intradayPeriod(intradayRows,range):M.period(rows,range),indexed=M.indexed(selected),box=$('compare-chart'),body=$('compare-results');box.replaceChildren();body.replaceChildren();
   const feedback=$('compare-feedback');if(feedback){feedback.hidden=!compareError;feedback.textContent=compareError;}
   set('compare-coverage','');
   for(const symbol of ['FLOW','QQQ','QLD','VOO']){
@@ -76,8 +76,8 @@
    card.onclick=()=>{focusedSeries=focusedSeries===symbol?null:symbol;renderCompare();$('compare-focus-'+symbol)?.focus?.({preventScroll:true});};body.append(card);
   }
   if(indexed.length<2){const p=document.createElement('strong');p.className='compare-empty';p.textContent=compareError?'비교 기록을 불러오지 못했어요':!credentials?'설정에서 계좌를 연결하면 비교할 수 있어요.':compareLoaded?'비교 가능한 거래일 기록이 아직 부족해요.':'비교 데이터를 불러오는 중…';box.append(p);return;}
-  const short=range!=='ALL'&&selected[0]===rows[0]&&(range==='5D'?rows.length<6:range!=='1D');
-  set('compare-coverage',short?COMPARE_RANGES[range]+' 선택 · 현재 쌓인 '+rows.length+'거래일 기록으로 표시':range==='1D'?'최근 완료 거래일의 변화':range==='5D'?'최근 완료된 5거래일의 변화':'');
+  const short=!intraday&&range!=='ALL'&&selected[0]===rows[0]&&(range==='5D'?rows.length<6:range!=='1D');
+  set('compare-coverage',intraday?'5분 간격 · ETF 지연 시세와 공통 시각 기준':short?COMPARE_RANGES[range]+' 선택 · 현재 쌓인 '+rows.length+'거래일 기록으로 표시':range==='1D'?'최근 완료 거래일의 변화':range==='5D'?'최근 완료된 5거래일의 변화':'');
   const values=indexed.flatMap(r=>['FLOW','QQQ','QLD','VOO'].filter(s=>!focusedSeries||s===focusedSeries).map(s=>r[s]-100));
   const lo=Math.min(0,...values),hi=Math.max(0,...values),pad=Math.max((hi-lo)*.13,.15),min=lo-pad,max=hi+pad;
   const width=Math.max(280,Math.round(box.clientWidth||760)),height=width<520?280:340,left=62,right=width-12,top=18,bottom=height-42,font=width<520?14:15;
@@ -91,11 +91,20 @@
    const path=indexed.map((r,i)=>(i?'L':'M')+x(i).toFixed(2)+','+y(r[symbol]-100).toFixed(2)).join(' ');
    svg.append(svgEl('path',{d:path,fill:'none',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':{FLOW:'',QQQ:'8 5',QLD:'14 6',VOO:'2 5'}[symbol],opacity:dim?.12:1,'stroke-linecap':'round','stroke-linejoin':'round'}));
   }
-  const label=d=>indexed[0].date.slice(0,4)!==indexed.at(-1).date.slice(0,4)?d.slice(2).replaceAll('-','.'):d.slice(5).replace('-','/');svg.append(svgEl('text',{x:left,y:height-10,fill:'#526174','font-size':font},label(indexed[0].date)),svgEl('text',{x:right,y:height-10,'text-anchor':'end',fill:'#526174','font-size':font},label(indexed.at(-1).date)));box.append(svg);
+  const label=d=>intraday&&range==='1D'?new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(d))+' ET':indexed[0].date.slice(0,4)!==indexed.at(-1).date.slice(0,4)?d.slice(2).replaceAll('-','.'):d.slice(5).replace('-','/');svg.append(svgEl('text',{x:left,y:height-10,fill:'#526174','font-size':font},label(indexed[0].date)),svgEl('text',{x:right,y:height-10,'text-anchor':'end',fill:'#526174','font-size':font},label(indexed.at(-1).date)));box.append(svg);
+ }
+ async function loadIntraday(account){
+  if(accountId!==account.id){accountId=account.id;rows=[];intradayRows=[];compareLoaded=false;focusedSeries=null;renderCompare();}
+  const end=new Date(Date.now()-16*60000).toISOString();
+  const data=await get(PAPER,'/account/portfolio/history?period=2W&timeframe=5Min&intraday_reporting=market_hours&end='+encodeURIComponent(end));
+  const valid=(data.timestamp||[]).filter((t,i)=>Number.isFinite(t)&&Number.isFinite(data.equity?.[i])&&data.equity[i]>0);
+  if(!valid.length){intradayRows=[];compareLoaded=true;renderCompare();return;}
+  const prices=await bars(new Date(Math.min(...valid)*1000-300000).toISOString(),end,'5Min');
+  intradayRows=M.alignIntraday(data,prices,Date.parse(end));compareLoaded=true;compareError='';renderCompare();
  }
  async function loadComparison(account){
   const cacheKey='flow.paper.compare.v1.'+account.id;
-  if(accountId!==account.id){accountId=account.id;rows=[];checkedAt='';compareLoaded=false;focusedSeries=null;renderCompare();const cache=json(cacheKey);if(Array.isArray(cache?.rows)&&cache.rows.every(r=>/^\d{4}-\d{2}-\d{2}$/.test(r?.date)&&Object.keys(COLORS).every(s=>Number.isFinite(r[s])&&r[s]>0))){rows=cache.rows;checkedAt=cache.checkedAt||'';saved=true;renderCompare();}}
+  if(accountId!==account.id){accountId=account.id;rows=[];intradayRows=[];checkedAt='';compareLoaded=false;focusedSeries=null;renderCompare();const cache=json(cacheKey);if(Array.isArray(cache?.rows)&&cache.rows.every(r=>/^\d{4}-\d{2}-\d{2}$/.test(r?.date)&&Object.keys(COLORS).every(s=>Number.isFinite(r[s])&&r[s]>0))){rows=cache.rows;checkedAt=cache.checkedAt||'';saved=true;renderCompare();}}
   const clock=await get(PAPER,'/clock'),today=M.date(clock.timestamp),startCalendar=new Date(clock.timestamp);startCalendar.setUTCDate(startCalendar.getUTCDate()-20);
   const calendar=await get(PAPER,'/calendar?start='+startCalendar.toISOString().slice(0,10)+'&end='+today);
   const time=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(clock.timestamp));
@@ -120,17 +129,17 @@
  }
  async function refresh(force=false){
   if(busy||!credentials||document.visibilityState==='hidden')return;
-  if(!force&&Date.now()-lastSuccess<(mode==='compare'?300000:15000))return;
-  busy=true;
+  if(!force&&Date.now()-lastSuccess<(mode==='compare'?(range==='1D'||range==='5D'?60000:300000):15000))return;
+  busy=true;const requestedRange=range;
   try{
    const account=await get(PAPER,'/account');
-   if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);void loadTargets(account);}else if(mode==='schedule')await loadSchedule(account);else await loadComparison(account);
+   if(mode==='weights'){const positions=await get(PAPER,'/positions');renderWeights(account,positions);void loadTargets(account);}else if(mode==='schedule')await loadSchedule(account);else if(range==='1D'||range==='5D')await loadIntraday(account);else await loadComparison(account);
    lastSuccess=Date.now();status(mode==='weights'?'현재 보유 비중 · Paper 계좌':mode==='schedule'?'리밸런싱 일정 · Paper 계좌':'동일 기간 비교 · 완료 거래일 기준');
    set('page-checked',(mode==='weights'?new Date(lastSuccess):new Date(checkedAt||lastSuccess)).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' KST 기준');
   }catch(e){if(mode==='compare'){compareError=(rows.length?'저장된 비교 기록 표시 · ':'')+'조회 실패 · 잠시 후 다시 확인합니다.';renderCompare();}if(mode==='weights'){$('weight-ring').replaceChildren();$('weight-rows').replaceChildren();set('weight-note','현재 보유 내역 조회 실패 · 계좌 연결에서 조회 상태를 확인하세요.');}if(mode==='schedule'){set('rebalance-date','—');set('rebalance-detail','일정을 확인하지 못했습니다. 계좌 연결에서 조회 상태를 확인하세요.');set('schedule-checked','');}status((mode==='compare'&&rows.length?'저장된 비교 기록 표시 · ':'')+'조회 확인 필요 · '+(e.name==='AbortError'?'응답 시간 초과':e.message));}
-  finally{busy=false;}
+  finally{busy=false;if(mode==='compare'&&requestedRange!==range)void refresh(true);}
  }
- for(const k of Object.keys(COMPARE_RANGES))if($('compare-'+k))$('compare-'+k).onclick=()=>{range=k;renderCompare();};
+ for(const k of Object.keys(COMPARE_RANGES))if($('compare-'+k))$('compare-'+k).onclick=()=>{range=k;renderCompare();if(credentials)void refresh(true);};
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void refresh(true);});
  window.addEventListener('online',()=>void refresh(true));setInterval(()=>void refresh(),15000);
  const existing=json('flow.paper.credentials.v1')||json('somx.alpaca.credentials.v1');
