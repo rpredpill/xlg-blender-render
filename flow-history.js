@@ -24,9 +24,6 @@
      let source=range==='1D'?intraday:daily;
      if(live&&source.length&&live.time>source.at(-1).time&&(range!=='1D'||ny(live.time)===ny(source.at(-1).time)))source=source.concat(live);
      const rows=select(source,range,now()),box=$('paper-chart');box.replaceChildren();
-     $('history-change').textContent=rows.length>1&&rows[0].equity>0?`${LABELS[range]} 가치 변화 ${(rows.at(-1).equity/rows[0].equity-1)*100>=0?'+':''}${((rows.at(-1).equity/rows[0].equity-1)*100).toFixed(2)}%`:'기간 가치 변화 —';
-     const dates=rows.length?`${ny(rows[0].time)} ~ ${ny(rows.at(-1).time)} · ${rows.length.toLocaleString()}개 기록`:'표시할 기록이 없습니다.';
-     $('performance').textContent=(busy?'계좌 이력 조회 중… · ':'')+(error?'이력 갱신 실패 · 저장된 기록과 최신 계좌 가치 표시 · ':'')+dates+' · '+(range==='1D'?'최근 거래일 정규장 5분 기록':'거래일별 계좌 가치')+(source.at(-1)===live?' · 마지막 점은 최신 계좌 가치':'')+' · 계좌 전체 기록으로 이전 규칙 운용·입출금 포함'+(storageError?' · 브라우저 저장 실패':'');
      if(rows.length<2){const strong=document.createElement('strong');strong.textContent=rows.length?'기록을 모으고 있어요':accountId?'이 기간의 기록이 아직 없어요':'계좌를 연결하면 이력을 불러옵니다.';box.append(strong);return;}
      const ns='http://www.w3.org/2000/svg',make=(name,attrs,text)=>{const e=document.createElementNS(ns,name);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=text;return e;};
      const values=rows.map(r=>r.equity),lo=Math.min(...values),hi=Math.max(...values),pad=Math.max((hi-lo)*.1,hi*.005,1),min=lo-pad,max=hi+pad;
