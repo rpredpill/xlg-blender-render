@@ -16,6 +16,12 @@
    const month=d.getUTCMonth();d.setUTCDate(day);if(d.getUTCMonth()!==month)d.setUTCDate(0);
    return rows.filter(r=>r.time>=d.getTime());
  }
+ function change(rows){
+   if(rows.length<2)return null;
+   const first=rows[0].equity,last=rows.at(-1).equity;
+   if(!Number.isFinite(first)||first<=0||!Number.isFinite(last))return null;
+   return {amount:last-first,percent:(last/first-1)*100};
+ }
  function create({api,document,storage,now=()=>Date.now()}){
    const $=id=>document.getElementById(id);let accountId=null,range='ALL',daily=[],intraday=[],lastDaily=0,lastIntraday=0,busy=false,generation=0,error='',storageError=false,queued=false,live=null;
    function save(){try{storage.setItem('flow.paper.history.v1.'+accountId,JSON.stringify({daily,updated:lastDaily}));storageError=false;}catch{storageError=true;}}
@@ -24,6 +30,13 @@
      let source=range==='1D'?intraday:daily;
      if(live&&source.length&&live.time>source.at(-1).time&&(range!=='1D'||ny(live.time)===ny(source.at(-1).time)))source=source.concat(live);
      const rows=select(source,range,now()),box=$('paper-chart');box.replaceChildren();
+     const summary=$('history-value-change'),value=change(rows);
+     if(summary){
+       const sign=value?.amount>0?'+':value?.amount<0?'−':'';
+       summary.textContent=value?sign+'$'+Math.abs(value.amount).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' ('+sign+Math.abs(value.percent).toFixed(2)+'%)':'—';
+       summary.className='history-value-change'+(value?.amount>0?' positive':value?.amount<0?' negative':'');
+       summary.setAttribute('aria-label',LABELS[range]+' 계좌 가치 변화 '+summary.textContent);
+     }
      if(rows.length<2){const strong=document.createElement('strong');strong.textContent=rows.length?'기록을 모으고 있어요':accountId?'이 기간의 기록이 아직 없어요':'계좌를 연결하면 이력을 불러옵니다.';box.append(strong);return;}
      const ns='http://www.w3.org/2000/svg',make=(name,attrs,text)=>{const e=document.createElementNS(ns,name);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=text;return e;};
      const values=rows.map(r=>r.equity),lo=Math.min(...values),hi=Math.max(...values),pad=Math.max((hi-lo)*.1,hi*.005,1),min=lo-pad,max=hi+pad;
@@ -55,5 +68,5 @@
    let currentAccount=null;render();
    return {update(account){currentAccount=account;return update(account);},reset(){currentAccount=null;reset();},render};
  }
- const exported={normalize,merge,select,create};if(typeof module!=='undefined'&&module.exports)module.exports=exported;else root.FlowHistory=exported;
+ const exported={normalize,merge,select,change,create};if(typeof module!=='undefined'&&module.exports)module.exports=exported;else root.FlowHistory=exported;
 })(globalThis);
