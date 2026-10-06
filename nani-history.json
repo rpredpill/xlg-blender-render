@@ -2876,7 +2876,7 @@
   "nasdaq100Source": {
     "source": "https://raw.githubusercontent.com/thuningxu/sp500nq100/main/nasdaq100_components_history.csv",
     "method": "public NDX history + official 2026 Nasdaq changes; primary failed: 403 Client Error: Forbidden for url: https://www.nasdaq.com/articles/global-indexes/nasdaq-100-index",
-    "asOf": "2026-10-03",
+    "asOf": "2026-10-06",
     "count": 103
   }
 }
