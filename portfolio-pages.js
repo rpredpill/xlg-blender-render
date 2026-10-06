@@ -69,8 +69,8 @@
   set('compare-coverage','');
   for(const symbol of ['FLOW','QQQ','QLD','VOO']){
    const value=indexed.length>=2?indexed.at(-1)[symbol]-100:null,color=COLORS[symbol];
-   const card=document.createElement('button');card.type='button';card.id='compare-focus-'+symbol;card.className='compare-series'+(focusedSeries===symbol?' is-focused':'');card.setAttribute('aria-pressed',String(focusedSeries===symbol));card.setAttribute('aria-label',symbol+' '+(value===null?'기록 대기':pct(value))+' · 그래프 강조');
-   const title=document.createElement('span');title.className='compare-series-name';title.textContent=symbol;
+   const card=document.createElement('button');card.type='button';card.id='compare-focus-'+symbol;card.className='compare-series'+(focusedSeries===symbol?' is-focused':'');card.setAttribute('aria-pressed',String(focusedSeries===symbol));card.setAttribute('aria-label',(symbol==='FLOW'?'자동매매':symbol)+' '+(value===null?'기록 대기':pct(value))+' · 그래프 강조');
+   const title=document.createElement('span');title.className='compare-series-name';title.textContent=symbol==='FLOW'?'자동매매':symbol;
    const swatch=svgEl('svg',{viewBox:'0 0 40 10',width:40,height:10,'aria-hidden':'true'});swatch.append(svgEl('path',{d:'M1 5h38',stroke:color,'stroke-width':symbol==='FLOW'?4:3,'stroke-dasharray':''}));
    const number=document.createElement('strong');number.textContent=value===null?'—':pct(value);number.style.color=value===null?'#84909f':color;card.append(title,swatch,number);
    card.onclick=()=>{focusedSeries=focusedSeries===symbol?null:symbol;renderCompare();$('compare-focus-'+symbol)?.focus?.({preventScroll:true});};body.append(card);
