@@ -73,11 +73,11 @@ async def build():
     top=[dict(r,weight=.2) for r in rows[:5]]
     age=(dt.date.fromisoformat(today)-dt.date.fromisoformat(asof)).days
     ready=len(rows)/len(symbols)>=.98 and age<=4 and len(top)==5
-    data={'strategy':'FLOW','version':2,'ruleId':'FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2','ready':ready,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),
+    data={'strategy':'FLOW','version':3,'ruleId':'FLOW_MEAN21_TOP5_EQUAL_QQQ_CALENDAR_QUARTERLY_V3','ready':ready,'generatedAt':dt.datetime.now(dt.UTC).isoformat(),
           'signalDate':asof,'membershipRetrievedAt':dt.datetime.now(dt.UTC).isoformat(),'membershipSource':url,
           'priceSource':'Yahoo Finance daily close × volume; consolidated vendor data, not Alpaca IEX',
           'universeCount':len(symbols),'eligibleCount':len(rows),'excluded':excluded,
-          'rule':'21-session arithmetic mean traded value; current Top5 without retention buffer; equal 20% weights; semiannual January/July first-trading-day rebalance; no leverage or ETF holdings',
+          'rule':'21-session arithmetic mean traded value; current Top5 without retention buffer; equal 20% weights; quarterly March/June/September/December first trading day after third Friday; latest completed 21-session signal immediately before execution; no leverage or ETF holdings',
           'rows':top,'ranking':rows,'initialSignal':True,'coverageGuard':.98}
     (ROOT/'flow-latest.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
     if not ready:raise RuntimeError('Latest FLOW signal is not ready; preserve prior simulation snapshot')
@@ -100,4 +100,5 @@ async def build():
     print(json.dumps({'signalDate':asof,'eligibleCount':len(rows),'forwardStart':forward['start'],'forwardAsOf':forward['asOf']},ensure_ascii=False))
 
 if __name__=='__main__': asyncio.run(build())
+
 

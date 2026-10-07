@@ -1,7 +1,7 @@
 {
   "strategy": "FLOW",
-  "version": 2,
-  "ruleId": "FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2",
+  "version": 3,
+  "ruleId": "FLOW_MEAN21_TOP5_EQUAL_QQQ_CALENDAR_QUARTERLY_V3",
   "ready": true,
   "generatedAt": "2026-10-06T18:23:22.083430+00:00",
   "signalDate": "2026-10-05",
@@ -11,7 +11,7 @@
   "universeCount": 503,
   "eligibleCount": 503,
   "excluded": [],
-  "rule": "21-session arithmetic mean traded value; current Top5 without retention buffer; equal 20% weights; semiannual January/July first-trading-day rebalance; no leverage or ETF holdings",
+  "rule": "21-session arithmetic mean traded value; current Top5 without retention buffer; equal 20% weights; quarterly March/June/September/December first trading day after third Friday; latest completed 21-session signal immediately before execution; no leverage or ETF holdings",
   "rows": [
     {
       "ticker": "MU",

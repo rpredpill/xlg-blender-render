@@ -2,7 +2,7 @@ const fs=require('fs'),vm=require('vm'),assert=require('assert'),C=require(__dir
 const source=fs.readFileSync(__dirname+'/flow-paper-visit.js','utf8'),fixture=JSON.parse(fs.readFileSync(__dirname+'/flow-test-fixture.json','utf8'));
 function create(opts={}){
  const nodes=new Map();const node=()=>({textContent:'',value:'100000',checked:true,disabled:false,children:[],replaceChildren(...a){this.children=a},append(...a){this.children.push(...a)}}),writes=[],posts=[],orders=new Map(),requests=[],storage=new Map();let count=0;
- const selected=['A','B','C','D','E'];let account={id:'test',status:'ACTIVE',cash:opts.cash??'-0.73',equity:'99999.27',long_market_value:'100000',short_market_value:'0'},positions=selected.map(symbol=>({symbol,qty:'200',side:'long',current_price:'100',market_value:'20000'})),state={armed:true,started:true,owned:selected,selected,log:[],nav:[],intents:{},ruleId:C.RULE_ID,budget:100000,investAll:true,lastHalfYear:'2026H2'},clock={is_open:opts.isOpen??true,timestamp:'2026-10-06T14:00:00Z',next_open:'2026-10-07T13:30:00Z'};
+ const selected=['A','B','C','D','E'];let account={id:'test',status:'ACTIVE',cash:opts.cash??'-0.73',equity:'99999.27',long_market_value:'100000',short_market_value:'0'},positions=selected.map(symbol=>({symbol,qty:'200',side:'long',current_price:'100',market_value:'20000'})),state={armed:true,started:true,owned:selected,selected,log:[],nav:[],intents:{},ruleId:C.RULE_ID,budget:100000,investAll:true,lastCycle:'2026Q3',lastExecutionDate:'2026-10-02'},clock={is_open:opts.isOpen??true,timestamp:'2026-10-06T14:00:00Z',next_open:'2026-10-07T13:30:00Z'};
  if(opts.empty){positions=[];account.cash='100000';account.equity='100000';account.long_market_value='0';state.started=false;state.owned=[];state.selected=[];delete state.lastHalfYear;}
  const doc={visibilityState:'visible',getElementById(id){if(!nodes.has(id))nodes.set(id,node());return nodes.get(id)},createElement:node,addEventListener(){}};
  const ctx={document:doc,console,Date,Intl,AbortController,URLSearchParams,navigator:{onLine:true,locks:{request:async(name,arg,callback)=>typeof arg==='function'?arg():callback({name})}},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>{writes.push({key:k,value:JSON.parse(v)});storage.set(k,v)},removeItem:k=>storage.delete(k)},setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){},window:{addEventListener(){}},FLOWPaperCore:C,PulseView:{renderAccount(){},clear(){},renderPositions(){},renderOrders(){},unavailable(){}},StatusNotice:{show:t=>doc.getElementById('status').textContent=t},fetch:async(url,o={})=>{
@@ -18,7 +18,7 @@ function create(opts={}){
  if(path==='/account')return response(account);
  if(path==='/clock')return response(clock);
  if(path==='/positions')return response(positions);
- if(path.startsWith('/calendar'))return response(opts.stale?[{date:'2099-01-02',close:'16:00'}]:[{date:fixture.signalDate,close:'16:00'},{date:'2026-10-06',close:'16:00'}]);
+ if(path.startsWith('/calendar'))return response(opts.stale?[{date:'2099-01-02',close:'16:00'}]:[{date:'2025-12-22'},{date:'2026-03-23'},{date:'2026-06-22'},{date:'2026-09-21'},{date:fixture.signalDate,close:'16:00'},{date:'2026-10-06',close:'16:00'},{date:'2026-12-21'},{date:'2027-03-22'}]);
  if(path.startsWith('/assets/'))return response({tradable:true,fractionable:true,class:'us_equity'});
  if(path.startsWith('/orders:by_client_order_id'))return response([...orders.values()].find(o=>o.client_order_id===decodeURIComponent(path.split('=')[1]))||{},[...orders.values()].some(o=>o.client_order_id===decodeURIComponent(path.split('=')[1]))?200:404);
  if(path.startsWith('/orders/'))return response(orders.get(path.split('/')[2]));
@@ -49,3 +49,4 @@ function create(opts={}){
  a=create({cash:'3.00',delayed:true});const late=a.T.api('/delayed');a.T.setCredentials({keyId:'NEW',secretKey:'NEW'});a.opts.resolve();await assert.rejects(()=>late,/계좌 연결이 변경/);
  console.log('PASS full connection/initial investment, corrupt-state blocking, regular-hours debt repair, repeated status, bounded debt, exact-once POST recovery, fill sequencing, fresh cash reserve, definite rejection, ledger isolation and old-account response rejection');
 })().catch(e=>{console.error(e);process.exitCode=1});
+

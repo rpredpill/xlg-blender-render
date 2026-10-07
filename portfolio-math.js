@@ -49,12 +49,13 @@
   if(!rows.length)return [];
   const first=rows[0];return rows.map(r=>({date:r.date,...Object.fromEntries(['FLOW','QQQ','QLD','VOO'].map(s=>[s,r[s]/first[s]*100]))}));
  }
- function schedule(state,clock){
-  const d=date(clock.is_open?clock.timestamp:clock.next_open),year=Number(d.slice(0,4)),h=Number(d.slice(5,7))<=6?1:2;
-  const half=year+'H'+h,done=state?.started===true&&state.lastHalfYear===half;
-  const pendingDate=state?.pending?.date,pendingMonth=/^\d{4}-\d{2}-\d{2}$/.test(pendingDate||'')?pendingDate.slice(0,4)+(Number(pendingDate.slice(5,7))<=6?'-01':'-07'):null;
-  const month=pendingMonth||(done?(h===1?year+'-07':(year+1)+'-01'):year+(h===1?'-01':'-07'));
-  return {month,done,pending:!!state?.pending,started:state?.started===true};
+ function schedule(state,clock,calendar){
+  const C=root.FLOWPaperCore||(typeof require==='function'?require('./flow-paper-core.js'):null);
+  if(!C)throw Error('분기 일정 계산기 확인 필요');
+  const d=date(clock.is_open?clock.timestamp:clock.next_open),events=C.quarterSchedule(d,calendar),done=state?.started===true&&C.lastCycle(state,calendar)===events.latest.cycle;
+  const pendingDate=state?.pending?.date,target=pendingDate||(state?.started&&!done?events.latest.date:events.next.date);
+  return {date:target,done,pending:!!state?.pending,started:state?.started===true};
  }
  const api={date,weights,history,align,alignIntraday,intradayPeriod,period,indexed,schedule};root.PortfolioMath=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);
+

@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict'),C=require('./flow-paper-core.js'),M=require('./portfolio-math.js');
+const calendar=['2025-12-22','2026-03-23','2026-06-23','2026-09-21','2026-12-21','2027-03-22'].map(date=>({date}));
+assert.equal(C.quarterSchedule('2026-03-20',calendar).latest.cycle,'2025Q4');
+assert.equal(C.quarterSchedule('2026-03-23',calendar).latest.cycle,'2026Q1');
+assert.equal(C.quarterSchedule('2026-06-22',calendar).latest.cycle,'2026Q1','Monday holiday must defer execution');
+assert.equal(C.quarterSchedule('2026-06-23',calendar).latest.cycle,'2026Q2');
+assert.equal(C.quarterSchedule('2026-09-20',calendar).latest.cycle,'2026Q2');
+assert.equal(C.quarterSchedule('2026-09-21',calendar).latest.cycle,'2026Q3');
+assert.equal(C.quarterSchedule('2027-01-04',calendar).next.date,'2027-03-22','January is not a rebalance');
+assert.throws(()=>C.quarterSchedule('2026-10-07',[]));
+const state={ruleId:'FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2',started:true,lastExecutionDate:'2026-10-02',manualPaused:true,lastHalfYear:'2026H2',intents:{old:{status:'filled'}},pending:{date:'2026-10-02',ruleId:'FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2',sells:[{local:'submitted',id:'old-order'}],buys:[{local:'new'}]}};
+assert(C.migrateState(state));assert.equal(state.intents.old.ruleId,'FLOW_MEAN21_TOP5_EQUAL_SEMIANNUAL_V2');assert(state.manualPaused);assert.equal(state.pending.sells[0].id,'old-order');assert.equal(state.pending.buys[0].local,'new');assert.equal(state.pending.ruleId,C.RULE_ID);
+assert.equal(C.lastCycle(state,calendar),'2026Q3');assert(!C.migrateState(state));
+delete state.pending;
+assert.equal(M.schedule(state,{is_open:true,timestamp:'2026-10-07T14:00:00Z'},calendar).date,'2026-12-21');
+assert.equal(M.schedule(state,{is_open:false,timestamp:'2026-12-18T22:00:00Z',next_open:'2026-12-21T14:30:00Z'},calendar).date,'2026-12-21');
+console.log('PASS quarterly boundaries, broker holidays, year rollover, missing-calendar block, V2 migration, pending-order preservation and no immediate repeat after October investment');

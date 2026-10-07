@@ -120,11 +120,10 @@
   renderCompare();
  }
  async function loadSchedule(account){
-  const clock=await get(PAPER,'/clock'),state=json('flow.paper.state.v1.'+account.id),plan=M.schedule(state,clock);
-  const days=await get(PAPER,'/calendar?start='+plan.month+'-01&end='+plan.month+'-10'),first=days.filter(d=>d.date.startsWith(plan.month)).sort((a,b)=>a.date.localeCompare(b.date))[0];
-  if(!first)throw Error('휴장일을 반영한 첫 거래일 확인 필요');
-  set('rebalance-date',first.date.replaceAll('-','.'));
-  set('rebalance-detail',plan.pending?'진행 중인 리밸런싱 주문이 있습니다.':plan.done?'이번 반기 완료 · 다음 반기 첫 거래일':plan.started?'이번 반기 실행 대상 · 미완료':'첫 투자 대기 · 이번 반기 기준일');
+  const clock=await get(PAPER,'/clock'),state=json('flow.paper.state.v1.'+account.id),d=M.date(clock.is_open?clock.timestamp:clock.next_open),range=FLOWPaperCore.calendarRange(d);
+  const days=await get(PAPER,'/calendar?start='+range.start+'&end='+range.end),plan=M.schedule(state,clock,days);
+  set('rebalance-date',plan.date.replaceAll('-','.'));
+  set('rebalance-detail',plan.pending?'진행 중인 리밸런싱 주문이 있습니다.':plan.done?'이번 분기 완료 · 다음 QQQ식 분기 일정':plan.started?'분기 실행 대상 · 미완료 · 다음 접속 시 확인':'첫 투자 대기 · 연결 후 초기 진입, 이후 QQQ식 분기 일정');
   set('schedule-checked',new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' KST 기준');
  }
  async function refresh(force=false){
@@ -146,3 +145,4 @@
  if(existing?.keyId&&existing?.secretKey){credentials=existing;void refresh(true);}else{status('Paper 계좌 연결 필요 · 설정에 저장한 연결 정보를 이어 사용합니다.');}
  window.addEventListener('resize',()=>{if(mode==='compare')renderCompare();});if(mode==='compare')renderCompare();if(mode==='weights'&&!credentials)void loadTargets(null);
 })();
+

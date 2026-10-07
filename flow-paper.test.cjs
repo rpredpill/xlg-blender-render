@@ -29,7 +29,7 @@ async function integration({closed=false,timeout=false,clockFailure=false}={}){
    if(path==='/account')data=account;
    else if(path==='/positions'||path.startsWith('/orders?'))data=[];
    else if(path==='/clock'){if(clockFailure)throw Error('Mock clock network failure');data={is_open:!closed,timestamp:testDate+'T19:58:45Z',next_close:testDate+'T20:00:00Z'};}
-   else if(path.startsWith('/calendar'))data=[{date:signal.signalDate},{date:testDate}];
+   else if(path.startsWith('/calendar'))data=[{date:'2025-12-22'},{date:'2026-03-23'},{date:'2026-06-22'},{date:'2026-09-21'},{date:signal.signalDate},{date:testDate},{date:'2026-12-21'},{date:'2027-03-22'}];
    else if(path.startsWith('/assets/'))data={tradable:true,fractionable:true,class:'us_equity'};
    else if(path==='/orders'&&options.method==='POST'){assert.equal(options.headers['Content-Type'],'application/json');posts.push(JSON.parse(options.body));if(timeout)throw Error('Mock response lost after submission');data={id:'mock-'+posts.length,status:'filled'};}
    else if(path.startsWith('/orders/'))data={id:path.split('/').at(-1),status:'filled'};
@@ -47,4 +47,5 @@ async function integration({closed=false,timeout=false,clockFailure=false}={}){
 }
 (async()=>{await integration();await integration({closed:true});await integration({timeout:true});await integration({clockFailure:true});console.log('PASS: Alpaca CORS-compatible GET, JSON POST, read-failure reporting, cash-only sizing, ownership, current Top5 equal weights, closed-market guard, paper-only routing, filled execution, lost-response stop, duplicate prevention');})().catch(e=>{console.error(e);process.exit(1)});
 require('./flow-visit.test.cjs');
+
 
