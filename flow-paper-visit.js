@@ -122,7 +122,7 @@
    const calendar=await api('/calendar?start='+start.toISOString().slice(0,10)+'&end='+executionDate);
    const time=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(clock.timestamp));
    const completed=calendar.filter(d=>d.date<today||(d.date===today&&!clock.is_open&&time>=(d.close||'16:00')));
-   C.assert(completed.slice(-2).some(d=>d.date===signal.signalDate),'최신 완료 거래일 신호가 없습니다. 신호 갱신 후 다시 접속하세요.');C.assert(signal.ready,'편입 신호 검증 필요');
+   C.assert(completed.at(-1)?.date===signal.signalDate,'최신 완료 거래일 신호가 없습니다. 신호 갱신 후 다시 접속하세요.');C.assert(signal.ready,'편입 신호 검증 필요');
  }
  async function createPlan(clock,date,cycle){
    C.assert(!Object.values(state.intents).some(i=>['submitting','submitted'].includes(i.status)),'이전 버전의 미완료 주문이 있습니다. Alpaca Paper 주문 내역을 먼저 확인하세요.');
