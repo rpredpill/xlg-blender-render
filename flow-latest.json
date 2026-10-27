@@ -3,9 +3,9 @@
   "version": 3,
   "ruleId": "FLOW_MEAN21_TOP5_EQUAL_QQQ_CALENDAR_QUARTERLY_V3",
   "ready": true,
-  "generatedAt": "2026-10-27T00:26:44.963968+00:00",
-  "signalDate": "2026-10-23",
-  "membershipRetrievedAt": "2026-10-27T00:26:44.963985+00:00",
+  "generatedAt": "2026-10-27T18:02:12.680817+00:00",
+  "signalDate": "2026-10-26",
+  "membershipRetrievedAt": "2026-10-27T18:02:12.680835+00:00",
   "membershipSource": "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
   "priceSource": "Yahoo Finance daily close × volume; consolidated vendor data, not Alpaca IEX",
   "universeCount": 503,
@@ -17,31 +17,31 @@
   "rows": [
     {
       "ticker": "MU",
-      "score": 26388650463.5841,
+      "score": 26289617170.03377,
       "rank": 1,
       "weight": 0.2
     },
     {
       "ticker": "NVDA",
-      "score": 23594523105.395073,
+      "score": 23563323438.707623,
       "rank": 2,
       "weight": 0.2
     },
     {
       "ticker": "META",
-      "score": 14017859322.581264,
+      "score": 14021057761.347599,
       "rank": 3,
       "weight": 0.2
     },
     {
       "ticker": "TSLA",
-      "score": 13569564951.932344,
+      "score": 13743360412.424143,
       "rank": 4,
       "weight": 0.2
     },
     {
       "ticker": "AAPL",
-      "score": 12927814059.481375,
+      "score": 13139994075.718616,
       "rank": 5,
       "weight": 0.2
     }
@@ -49,2512 +49,2512 @@
   "ranking": [
     {
       "ticker": "MU",
-      "score": 26388650463.5841,
+      "score": 26289617170.03377,
       "rank": 1
     },
     {
       "ticker": "NVDA",
-      "score": 23594523105.395073,
+      "score": 23563323438.707623,
       "rank": 2
     },
     {
       "ticker": "META",
-      "score": 14017859322.581264,
+      "score": 14021057761.347599,
       "rank": 3
     },
     {
       "ticker": "TSLA",
-      "score": 13569564951.932344,
+      "score": 13743360412.424143,
       "rank": 4
     },
     {
       "ticker": "AAPL",
-      "score": 12927814059.481375,
+      "score": 13139994075.718616,
       "rank": 5
     },
     {
       "ticker": "SNDK",
-      "score": 12218270472.878883,
+      "score": 11998624112.47733,
       "rank": 6
     },
     {
       "ticker": "AMD",
-      "score": 11390138761.354282,
+      "score": 11284637465.343657,
       "rank": 7
     },
     {
       "ticker": "MSFT",
-      "score": 11065770326.157198,
+      "score": 10604163536.93746,
       "rank": 8
     },
     {
       "ticker": "INTC",
-      "score": 10253741704.585957,
+      "score": 10106082856.384459,
       "rank": 9
     },
     {
       "ticker": "AMZN",
-      "score": 9087629500.804937,
+      "score": 9067704611.629013,
       "rank": 10
     },
     {
       "ticker": "GOOGL",
-      "score": 8090381595.585124,
+      "score": 8093376605.867513,
       "rank": 11
     },
     {
       "ticker": "AVGO",
-      "score": 7475492620.280238,
+      "score": 7493987825.306047,
       "rank": 12
     },
     {
       "ticker": "GOOG",
-      "score": 5260171563.727969,
+      "score": 5288664280.744862,
       "rank": 13
     },
     {
       "ticker": "MRVL",
-      "score": 5202431130.338033,
+      "score": 5208487847.471328,
       "rank": 14
     },
     {
       "ticker": "LITE",
-      "score": 4613162987.295677,
+      "score": 4675409324.09232,
       "rank": 15
     },
     {
       "ticker": "PLTR",
-      "score": 4312173320.582508,
+      "score": 4306682010.950215,
       "rank": 16
     },
     {
       "ticker": "MRNA",
-      "score": 4097223838.195147,
+      "score": 4127323683.2635064,
       "rank": 17
     },
     {
       "ticker": "ORCL",
-      "score": 3927667647.422972,
+      "score": 3911091902.7414594,
       "rank": 18
     },
     {
-      "ticker": "BE",
-      "score": 3873207133.9857554,
+      "ticker": "STX",
+      "score": 3870372395.8176384,
       "rank": 19
     },
     {
-      "ticker": "STX",
-      "score": 3861471509.910947,
+      "ticker": "WDC",
+      "score": 3864317774.232701,
       "rank": 20
     },
     {
-      "ticker": "WDC",
-      "score": 3828487406.1260405,
+      "ticker": "BE",
+      "score": 3839988939.4148326,
       "rank": 21
     },
     {
       "ticker": "DELL",
-      "score": 3459456653.146653,
+      "score": 3331510040.9400578,
       "rank": 22
     },
     {
       "ticker": "AMAT",
-      "score": 3160497986.1875987,
+      "score": 3153554994.308617,
       "rank": 23
     },
     {
       "ticker": "MDT",
-      "score": 2986041666.034117,
+      "score": 2969150605.5920553,
       "rank": 24
     },
     {
       "ticker": "NFLX",
-      "score": 2853868850.477891,
+      "score": 2940635976.543826,
       "rank": 25
     },
     {
       "ticker": "LRCX",
-      "score": 2793153601.411947,
+      "score": 2802624354.675729,
       "rank": 26
     },
     {
       "ticker": "LLY",
-      "score": 2774009004.2538595,
+      "score": 2793881719.395229,
       "rank": 27
     },
     {
       "ticker": "JPM",
-      "score": 2571658000.6020684,
+      "score": 2483483220.753697,
       "rank": 28
     },
     {
       "ticker": "WMT",
-      "score": 2371936707.620966,
+      "score": 2363707316.61911,
       "rank": 29
     },
     {
-      "ticker": "UNH",
-      "score": 2317649454.775129,
+      "ticker": "GEV",
+      "score": 2339348120.816476,
       "rank": 30
     },
     {
-      "ticker": "GEV",
-      "score": 2291524895.913551,
+      "ticker": "UNH",
+      "score": 2334172146.4362736,
       "rank": 31
     },
     {
-      "ticker": "V",
-      "score": 2273454832.8796387,
+      "ticker": "BRK.B",
+      "score": 2323042773.030744,
       "rank": 32
     },
     {
-      "ticker": "BRK.B",
-      "score": 2272332479.332915,
+      "ticker": "V",
+      "score": 2295329434.7391763,
       "rank": 33
     },
     {
       "ticker": "BAC",
-      "score": 2216825938.5582514,
+      "score": 2217335627.652068,
       "rank": 34
     },
     {
       "ticker": "CRWD",
-      "score": 2171840308.860561,
+      "score": 2185867750.214931,
       "rank": 35
     },
     {
       "ticker": "COST",
-      "score": 2158633507.4288507,
+      "score": 2068827243.6593192,
       "rank": 36
     },
     {
-      "ticker": "GS",
-      "score": 2045674160.2975028,
+      "ticker": "PANW",
+      "score": 2042862319.5665631,
       "rank": 37
     },
     {
-      "ticker": "PANW",
-      "score": 2034570927.8606596,
+      "ticker": "GS",
+      "score": 2037646750.9448824,
       "rank": 38
     },
     {
-      "ticker": "CAT",
-      "score": 2029445124.2373512,
+      "ticker": "COHR",
+      "score": 2032676670.1870146,
       "rank": 39
     },
     {
-      "ticker": "COHR",
-      "score": 2017640539.0032086,
+      "ticker": "CAT",
+      "score": 2028282167.0224144,
       "rank": 40
     },
     {
       "ticker": "JNJ",
-      "score": 1992797416.975839,
+      "score": 2013281146.5233939,
       "rank": 41
     },
     {
       "ticker": "HOOD",
-      "score": 1974862887.7504258,
+      "score": 1964130152.2466023,
       "rank": 42
     },
     {
       "ticker": "XOM",
-      "score": 1941431180.320449,
+      "score": 1953064013.4697323,
       "rank": 43
     },
     {
-      "ticker": "QCOM",
-      "score": 1890578950.9243193,
+      "ticker": "CRM",
+      "score": 1856129179.2491367,
       "rank": 44
     },
     {
-      "ticker": "CRM",
-      "score": 1886384230.8133807,
+      "ticker": "MA",
+      "score": 1823285386.4911761,
       "rank": 45
     },
     {
-      "ticker": "MA",
-      "score": 1805819513.773891,
+      "ticker": "KLAC",
+      "score": 1813023915.817842,
       "rank": 46
     },
     {
-      "ticker": "KLAC",
-      "score": 1800331508.7014334,
+      "ticker": "QCOM",
+      "score": 1801896608.6496263,
       "rank": 47
     },
     {
-      "ticker": "ACN",
-      "score": 1740446298.8869076,
+      "ticker": "TXN",
+      "score": 1784508657.4041457,
       "rank": 48
     },
     {
-      "ticker": "CSCO",
-      "score": 1731119543.641808,
+      "ticker": "ACN",
+      "score": 1747371785.2375576,
       "rank": 49
     },
     {
-      "ticker": "TXN",
-      "score": 1729138656.2654042,
+      "ticker": "CSCO",
+      "score": 1737133553.983997,
       "rank": 50
     },
     {
-      "ticker": "TMO",
-      "score": 1636163291.4065406,
+      "ticker": "NOW",
+      "score": 1639029667.1432495,
       "rank": 51
     },
     {
-      "ticker": "CVX",
-      "score": 1589480590.6978061,
+      "ticker": "TMO",
+      "score": 1632259043.955485,
       "rank": 52
     },
     {
-      "ticker": "NOW",
-      "score": 1581167906.549363,
+      "ticker": "CVX",
+      "score": 1596859271.43918,
       "rank": 53
     },
     {
-      "ticker": "HD",
-      "score": 1576414958.477202,
+      "ticker": "PG",
+      "score": 1549483043.7898183,
       "rank": 54
     },
     {
-      "ticker": "PG",
-      "score": 1517526477.2964478,
+      "ticker": "HD",
+      "score": 1548482194.2356656,
       "rank": 55
     },
     {
       "ticker": "BA",
-      "score": 1513275578.3886864,
+      "score": 1531899030.3702946,
       "rank": 56
     },
     {
-      "ticker": "NKE",
-      "score": 1498264121.03504,
+      "ticker": "KO",
+      "score": 1502961129.5778546,
       "rank": 57
     },
     {
-      "ticker": "KO",
-      "score": 1463358703.7132626,
+      "ticker": "NKE",
+      "score": 1477325499.8562405,
       "rank": 58
     },
     {
       "ticker": "GE",
-      "score": 1443758944.8897588,
+      "score": 1468824162.8290086,
       "rank": 59
     },
     {
       "ticker": "ABBV",
-      "score": 1423000301.0187058,
+      "score": 1452663619.362386,
       "rank": 60
     },
     {
       "ticker": "MRK",
-      "score": 1396648363.2949102,
+      "score": 1425573098.395284,
       "rank": 61
     },
     {
       "ticker": "COIN",
-      "score": 1395027396.1593628,
+      "score": 1383387313.0260649,
       "rank": 62
     },
     {
-      "ticker": "SMCI",
-      "score": 1391370333.5824604,
+      "ticker": "IBM",
+      "score": 1368437970.4033988,
       "rank": 63
     },
     {
       "ticker": "MCD",
-      "score": 1370782104.804702,
+      "score": 1353815976.4081683,
       "rank": 64
     },
     {
-      "ticker": "IBM",
-      "score": 1367730405.3126743,
+      "ticker": "SMCI",
+      "score": 1326057611.7143993,
       "rank": 65
     },
     {
       "ticker": "WFC",
-      "score": 1315380302.2069294,
+      "score": 1322869597.4852061,
       "rank": 66
     },
     {
-      "ticker": "PEP",
-      "score": 1292027826.1036465,
+      "ticker": "ADI",
+      "score": 1302174888.4906588,
       "rank": 67
     },
     {
-      "ticker": "HPE",
-      "score": 1281073438.578651,
+      "ticker": "PEP",
+      "score": 1296557296.7094784,
       "rank": 68
     },
     {
-      "ticker": "ADI",
-      "score": 1274219204.296003,
+      "ticker": "VZ",
+      "score": 1280613274.7889018,
       "rank": 69
     },
     {
-      "ticker": "VRT",
-      "score": 1236760034.2669532,
+      "ticker": "HPE",
+      "score": 1261873937.1128263,
       "rank": 70
     },
     {
-      "ticker": "TWLO",
-      "score": 1224200026.4282227,
+      "ticker": "VRT",
+      "score": 1239621422.9546683,
       "rank": 71
     },
     {
       "ticker": "SNPS",
-      "score": 1222018094.6584065,
+      "score": 1238802652.899606,
       "rank": 72
     },
     {
       "ticker": "APP",
-      "score": 1221699521.8409946,
+      "score": 1204295051.723807,
       "rank": 73
     },
     {
-      "ticker": "VZ",
-      "score": 1217844021.8156543,
+      "ticker": "T",
+      "score": 1193841736.7590768,
       "rank": 74
     },
     {
-      "ticker": "C",
-      "score": 1179070867.4067543,
+      "ticker": "GLW",
+      "score": 1190469095.5574036,
       "rank": 75
     },
     {
-      "ticker": "VST",
-      "score": 1166105477.8914678,
+      "ticker": "C",
+      "score": 1188301443.3849516,
       "rank": 76
     },
     {
-      "ticker": "T",
-      "score": 1162509639.858918,
+      "ticker": "TWLO",
+      "score": 1187652132.5039818,
       "rank": 77
     },
     {
       "ticker": "MS",
-      "score": 1159590277.0034063,
+      "score": 1174400443.573434,
       "rank": 78
     },
     {
-      "ticker": "AMGN",
-      "score": 1150372827.841041,
+      "ticker": "CIEN",
+      "score": 1166182242.8953624,
       "rank": 79
     },
     {
-      "ticker": "GLW",
-      "score": 1148717286.718314,
+      "ticker": "VST",
+      "score": 1162184873.5132854,
       "rank": 80
     },
     {
-      "ticker": "CIEN",
-      "score": 1148308865.2614048,
+      "ticker": "CEG",
+      "score": 1156930593.1262789,
       "rank": 81
     },
     {
-      "ticker": "CEG",
-      "score": 1146510734.797959,
+      "ticker": "AMGN",
+      "score": 1150144617.2906785,
       "rank": 82
     },
     {
-      "ticker": "BKNG",
-      "score": 1114004964.765131,
+      "ticker": "UBER",
+      "score": 1090532338.9048622,
       "rank": 83
     },
     {
       "ticker": "ANET",
-      "score": 1092147580.796596,
+      "score": 1085024051.8454416,
       "rank": 84
     },
     {
-      "ticker": "DHR",
-      "score": 1089830632.9063053,
+      "ticker": "BKNG",
+      "score": 1084858710.4736328,
       "rank": 85
     },
     {
-      "ticker": "VLO",
-      "score": 1070316736.3441104,
+      "ticker": "DHR",
+      "score": 1077167196.4544387,
       "rank": 86
     },
     {
-      "ticker": "UBER",
-      "score": 1057172343.2681129,
+      "ticker": "INTU",
+      "score": 1054157171.4425223,
       "rank": 87
     },
     {
-      "ticker": "INTU",
-      "score": 1055547390.5808222,
+      "ticker": "ADBE",
+      "score": 1050013059.622701,
       "rank": 88
     },
     {
-      "ticker": "ADBE",
-      "score": 1043835381.2935239,
+      "ticker": "VLO",
+      "score": 1045081810.0394113,
       "rank": 89
     },
     {
       "ticker": "TER",
-      "score": 1018416036.890811,
+      "score": 1032673754.2317709,
       "rank": 90
     },
     {
       "ticker": "ABT",
-      "score": 1018013280.7390486,
+      "score": 1019626683.4694272,
       "rank": 91
     },
     {
       "ticker": "AXP",
-      "score": 1007770551.3055711,
+      "score": 1014000675.7716588,
       "rank": 92
     },
     {
-      "ticker": "TJX",
-      "score": 1006562715.1740664,
+      "ticker": "LIN",
+      "score": 998079784.7381592,
       "rank": 93
     },
     {
-      "ticker": "NEE",
-      "score": 1003316880.0642104,
+      "ticker": "TJX",
+      "score": 985809486.1492338,
       "rank": 94
     },
     {
-      "ticker": "LIN",
-      "score": 994091114.3463135,
+      "ticker": "ISRG",
+      "score": 982147806.8437849,
       "rank": 95
     },
     {
-      "ticker": "ISRG",
-      "score": 964394169.8320662,
+      "ticker": "NEE",
+      "score": 978638520.3523909,
       "rank": 96
     },
     {
-      "ticker": "ETN",
-      "score": 950511067.0709519,
+      "ticker": "TMUS",
+      "score": 960550860.9268188,
       "rank": 97
     },
     {
-      "ticker": "APH",
-      "score": 937913017.6544553,
+      "ticker": "ETN",
+      "score": 956205206.749907,
       "rank": 98
     },
     {
-      "ticker": "TMUS",
-      "score": 937217504.8301333,
+      "ticker": "APH",
+      "score": 939156085.1278396,
       "rank": 99
     },
     {
-      "ticker": "MPWR",
-      "score": 919432538.2841564,
+      "ticker": "FICO",
+      "score": 936746540.1654924,
       "rank": 100
     },
     {
-      "ticker": "RTX",
-      "score": 910795128.0425298,
+      "ticker": "MPWR",
+      "score": 935623429.910133,
       "rank": 101
     },
     {
-      "ticker": "DIS",
-      "score": 904160547.6509094,
+      "ticker": "RTX",
+      "score": 930241770.0673422,
       "rank": 102
     },
     {
-      "ticker": "PM",
-      "score": 892157442.2621953,
+      "ticker": "DIS",
+      "score": 905589290.2694339,
       "rank": 103
     },
     {
-      "ticker": "SBUX",
-      "score": 885742558.7532771,
+      "ticker": "PM",
+      "score": 905218454.1221982,
       "rank": 104
     },
     {
-      "ticker": "MPC",
-      "score": 879225254.96521,
+      "ticker": "SBUX",
+      "score": 883811865.1349386,
       "rank": 105
     },
     {
-      "ticker": "FICO",
-      "score": 869713037.1837797,
+      "ticker": "MPC",
+      "score": 875528082.5179327,
       "rank": 106
     },
     {
       "ticker": "GILD",
-      "score": 866471904.2547317,
+      "score": 874189562.4674479,
       "rank": 107
     },
     {
       "ticker": "PFE",
-      "score": 853153739.502053,
+      "score": 851653403.4241812,
       "rank": 108
     },
     {
-      "ticker": "SCHW",
-      "score": 821526308.0760775,
+      "ticker": "SPGI",
+      "score": 833164311.462693,
       "rank": 109
     },
     {
-      "ticker": "ON",
-      "score": 815928499.0046546,
+      "ticker": "PTC",
+      "score": 817716328.7355696,
       "rank": 110
     },
     {
-      "ticker": "PTC",
-      "score": 809192893.715922,
+      "ticker": "SCHW",
+      "score": 815515963.3312044,
       "rank": 111
     },
     {
-      "ticker": "CVS",
-      "score": 808164154.8516047,
+      "ticker": "COP",
+      "score": 813962592.4583435,
       "rank": 112
     },
     {
-      "ticker": "SPGI",
-      "score": 807514895.672898,
+      "ticker": "ON",
+      "score": 804882156.1151778,
       "rank": 113
     },
     {
-      "ticker": "COP",
-      "score": 806728767.2338213,
+      "ticker": "BMY",
+      "score": 791005378.0467806,
       "rank": 114
     },
     {
-      "ticker": "BMY",
-      "score": 799937477.1765935,
+      "ticker": "NXPI",
+      "score": 787782059.3893869,
       "rank": 115
     },
     {
-      "ticker": "COF",
-      "score": 785461639.0991211,
+      "ticker": "FCX",
+      "score": 781546233.4351313,
       "rank": 116
     },
     {
-      "ticker": "FCX",
-      "score": 779102496.0083735,
+      "ticker": "COF",
+      "score": 779068936.5478516,
       "rank": 117
     },
     {
-      "ticker": "DDOG",
-      "score": 776217661.7451986,
+      "ticker": "CDNS",
+      "score": 765130431.3427153,
       "rank": 118
     },
     {
-      "ticker": "NXPI",
-      "score": 769283477.973938,
+      "ticker": "CVS",
+      "score": 759993333.4759667,
       "rank": 119
     },
     {
-      "ticker": "DE",
-      "score": 747374083.1914992,
+      "ticker": "DDOG",
+      "score": 743883332.522147,
       "rank": 120
     },
     {
-      "ticker": "CDNS",
-      "score": 738127222.3843529,
+      "ticker": "LMT",
+      "score": 740046142.1729678,
       "rank": 121
     },
     {
-      "ticker": "SYK",
-      "score": 730355421.5176537,
+      "ticker": "DE",
+      "score": 737218460.7892717,
       "rank": 122
     },
     {
-      "ticker": "MCHP",
-      "score": 727534904.867372,
+      "ticker": "SYK",
+      "score": 727658894.0646217,
       "rank": 123
     },
     {
       "ticker": "BLK",
-      "score": 725459578.5958426,
+      "score": 723291756.6167922,
       "rank": 124
     },
     {
-      "ticker": "ILMN",
-      "score": 712868255.5172875,
+      "ticker": "MCHP",
+      "score": 719725142.5971621,
       "rank": 125
     },
     {
-      "ticker": "HUM",
-      "score": 710751583.8405064,
+      "ticker": "HWM",
+      "score": 717996561.429487,
       "rank": 126
     },
     {
-      "ticker": "AZO",
-      "score": 698416834.8156157,
+      "ticker": "PWR",
+      "score": 705869885.1914179,
       "rank": 127
     },
     {
-      "ticker": "PWR",
-      "score": 691582251.3151623,
+      "ticker": "HUM",
+      "score": 699918283.9733305,
       "rank": 128
     },
     {
-      "ticker": "UNP",
-      "score": 687922556.3409715,
+      "ticker": "FIX",
+      "score": 698175707.6817104,
       "rank": 129
     },
     {
-      "ticker": "HWM",
-      "score": 687391297.1919469,
+      "ticker": "CMG",
+      "score": 695625779.819752,
       "rank": 130
     },
     {
-      "ticker": "LMT",
-      "score": 687265394.0156482,
+      "ticker": "UNP",
+      "score": 693152175.433059,
       "rank": 131
     },
     {
-      "ticker": "CMG",
-      "score": 685866547.1680596,
+      "ticker": "BX",
+      "score": 680437852.9804411,
       "rank": 132
     },
     {
       "ticker": "CMCSA",
-      "score": 683083661.2833204,
+      "score": 678574758.9006969,
       "rank": 133
     },
     {
-      "ticker": "AKAM",
-      "score": 677522752.991195,
+      "ticker": "DASH",
+      "score": 672771587.0011103,
       "rank": 134
     },
     {
       "ticker": "BSX",
-      "score": 676410121.007447,
+      "score": 670498555.3732917,
       "rank": 135
     },
     {
-      "ticker": "BX",
-      "score": 672458091.6529701,
+      "ticker": "AZO",
+      "score": 666095215.9598215,
       "rank": 136
     },
     {
-      "ticker": "FIX",
-      "score": 668180748.3125232,
+      "ticker": "ILMN",
+      "score": 665335669.3915957,
       "rank": 137
     },
     {
       "ticker": "MCK",
-      "score": 658389781.576974,
+      "score": 663763840.8578055,
       "rank": 138
     },
     {
-      "ticker": "PSX",
-      "score": 655260324.8355684,
+      "ticker": "NEM",
+      "score": 656214926.4900935,
       "rank": 139
     },
     {
-      "ticker": "RCL",
-      "score": 638464676.5401205,
+      "ticker": "PSX",
+      "score": 646066137.1619089,
       "rank": 140
     },
     {
-      "ticker": "NEM",
-      "score": 637433076.9481114,
+      "ticker": "SLB",
+      "score": 642604515.0452387,
       "rank": 141
     },
     {
-      "ticker": "DASH",
-      "score": 635657513.9728365,
+      "ticker": "RCL",
+      "score": 639263028.1014578,
       "rank": 142
     },
     {
-      "ticker": "GM",
-      "score": 632101068.1900024,
+      "ticker": "RDDT",
+      "score": 639019174.932934,
       "rank": 143
     },
     {
-      "ticker": "FTNT",
-      "score": 628359932.5810024,
+      "ticker": "AMT",
+      "score": 635892123.7802415,
       "rank": 144
     },
     {
-      "ticker": "SLB",
-      "score": 628101443.5801188,
+      "ticker": "FTNT",
+      "score": 635815280.0606863,
       "rank": 145
     },
     {
-      "ticker": "LOW",
-      "score": 623527943.4765043,
+      "ticker": "VRTX",
+      "score": 627167365.4972621,
       "rank": 146
     },
     {
-      "ticker": "TT",
-      "score": 617760448.6999512,
+      "ticker": "GM",
+      "score": 622802599.5229086,
       "rank": 147
     },
     {
-      "ticker": "VRTX",
-      "score": 616815426.5190488,
+      "ticker": "LOW",
+      "score": 622255842.0517695,
       "rank": 148
     },
     {
-      "ticker": "AMT",
-      "score": 612734710.3943598,
+      "ticker": "TGT",
+      "score": 615382613.193839,
       "rank": 149
     },
     {
-      "ticker": "URI",
-      "score": 607626379.4593447,
+      "ticker": "CCL",
+      "score": 612464594.080262,
       "rank": 150
     },
     {
-      "ticker": "RDDT",
-      "score": 607590046.3861375,
+      "ticker": "URI",
+      "score": 612100570.3424363,
       "rank": 151
     },
     {
-      "ticker": "ABNB",
-      "score": 607143446.4043753,
+      "ticker": "TT",
+      "score": 611236684.3295143,
       "rank": 152
     },
     {
       "ticker": "PGR",
-      "score": 606848343.301755,
+      "score": 602414569.4922311,
       "rank": 153
     },
     {
-      "ticker": "TGT",
-      "score": 606255637.2118269,
+      "ticker": "DAL",
+      "score": 593077602.7820768,
       "rank": 154
     },
     {
-      "ticker": "PYPL",
-      "score": 605451871.3080451,
+      "ticker": "CME",
+      "score": 591476321.5663365,
       "rank": 155
     },
     {
-      "ticker": "CCL",
-      "score": 604254579.5997438,
+      "ticker": "CMI",
+      "score": 587760164.499628,
       "rank": 156
     },
     {
-      "ticker": "DAL",
-      "score": 597478609.9134536,
+      "ticker": "MMM",
+      "score": 586052853.5485404,
       "rank": 157
     },
     {
-      "ticker": "CMI",
-      "score": 588554712.8894625,
+      "ticker": "PYPL",
+      "score": 583709768.0533454,
       "rank": 158
     },
     {
-      "ticker": "CME",
-      "score": 587001571.2589809,
+      "ticker": "ABNB",
+      "score": 583101882.1040562,
       "rank": 159
     },
     {
-      "ticker": "MMM",
-      "score": 578799941.4139521,
+      "ticker": "HLT",
+      "score": 575503354.3688093,
       "rank": 160
     },
     {
-      "ticker": "P",
-      "score": 576396478.9992197,
+      "ticker": "NTAP",
+      "score": 561685773.7751552,
       "rank": 161
     },
     {
-      "ticker": "BNY",
-      "score": 566498760.0957961,
+      "ticker": "P",
+      "score": 561294858.6490812,
       "rank": 162
     },
     {
-      "ticker": "SWKS",
-      "score": 566035415.4995509,
+      "ticker": "BNY",
+      "score": 559932379.3273926,
       "rank": 163
     },
     {
       "ticker": "WELL",
-      "score": 558387366.5605818,
+      "score": 559113583.1632341,
       "rank": 164
     },
     {
-      "ticker": "SO",
-      "score": 555946171.0574923,
+      "ticker": "NOC",
+      "score": 559105852.6320684,
       "rank": 165
     },
     {
-      "ticker": "HLT",
-      "score": 554664614.4476027,
+      "ticker": "SWKS",
+      "score": 557235220.3998021,
       "rank": 166
     },
     {
-      "ticker": "WMB",
-      "score": 551396923.5460191,
+      "ticker": "SO",
+      "score": 557211492.9185413,
       "rank": 167
     },
     {
-      "ticker": "NOC",
-      "score": 550821879.8874629,
+      "ticker": "ELV",
+      "score": 556932761.9191488,
       "rank": 168
     },
     {
-      "ticker": "ELV",
-      "score": 550405787.8718785,
+      "ticker": "CB",
+      "score": 549491468.9752488,
       "rank": 169
     },
     {
-      "ticker": "NTAP",
-      "score": 550064809.009443,
+      "ticker": "PLD",
+      "score": 549111581.8248204,
       "rank": 170
     },
     {
-      "ticker": "CB",
-      "score": 549776313.1798154,
+      "ticker": "WMB",
+      "score": 547587886.7963518,
       "rank": 171
     },
     {
-      "ticker": "PLD",
-      "score": 548597932.6586043,
+      "ticker": "OXY",
+      "score": 538676605.6109837,
       "rank": 172
     },
     {
-      "ticker": "OXY",
-      "score": 539161347.3447527,
+      "ticker": "ADP",
+      "score": 536041594.997733,
       "rank": 173
     },
     {
-      "ticker": "REGN",
-      "score": 534081042.703683,
+      "ticker": "PH",
+      "score": 533231386.01597375,
       "rank": 174
     },
     {
-      "ticker": "PH",
-      "score": 532088510.68260556,
+      "ticker": "MO",
+      "score": 532556728.674934,
       "rank": 175
     },
     {
-      "ticker": "MO",
-      "score": 530202587.59598505,
+      "ticker": "AKAM",
+      "score": 531234763.94380844,
       "rank": 176
     },
     {
-      "ticker": "KKR",
-      "score": 528189863.0311512,
+      "ticker": "REGN",
+      "score": 528165463.406808,
       "rank": 177
     },
     {
       "ticker": "UAL",
-      "score": 523745690.41090465,
+      "score": 527581892.300306,
       "rank": 178
     },
     {
-      "ticker": "WM",
-      "score": 519242795.9272839,
+      "ticker": "HON",
+      "score": 526371798.85304767,
       "rank": 179
     },
     {
-      "ticker": "EQIX",
-      "score": 518183933.46208847,
+      "ticker": "KKR",
+      "score": 525945508.3693005,
       "rank": 180
     },
     {
-      "ticker": "ADP",
-      "score": 514674639.84069824,
+      "ticker": "WM",
+      "score": 524196667.7873884,
       "rank": 181
     },
     {
-      "ticker": "MAR",
-      "score": 513517739.0116374,
+      "ticker": "JCI",
+      "score": 520311943.2426816,
       "rank": 182
     },
     {
-      "ticker": "JCI",
-      "score": 512297522.8222075,
+      "ticker": "CVNA",
+      "score": 517398205.2409581,
       "rank": 183
     },
     {
-      "ticker": "HON",
-      "score": 510865723.40313137,
+      "ticker": "TRV",
+      "score": 515726358.45671153,
       "rank": 184
     },
     {
-      "ticker": "TRV",
-      "score": 507752806.47786456,
+      "ticker": "MAR",
+      "score": 512742017.99505323,
       "rank": 185
     },
     {
-      "ticker": "CVNA",
-      "score": 506481986.9207473,
+      "ticker": "EQIX",
+      "score": 508803805.62366307,
       "rank": 186
     },
     {
       "ticker": "CSX",
-      "score": 500986283.3981105,
+      "score": 504211315.4946282,
       "rank": 187
     },
     {
-      "ticker": "SHW",
-      "score": 498066285.4758126,
+      "ticker": "HCA",
+      "score": 503521985.37321544,
       "rank": 188
     },
     {
-      "ticker": "KR",
-      "score": 486481871.31796336,
+      "ticker": "SHW",
+      "score": 494745609.21936035,
       "rank": 189
     },
     {
-      "ticker": "F",
-      "score": 483370954.3568021,
+      "ticker": "TSCO",
+      "score": 486476691.4323171,
       "rank": 190
     },
     {
-      "ticker": "HCA",
-      "score": 483008114.0725272,
+      "ticker": "F",
+      "score": 481473817.0237496,
       "rank": 191
     },
     {
       "ticker": "ALL",
-      "score": 480596874.2635091,
+      "score": 477152835.9648205,
       "rank": 192
     },
     {
-      "ticker": "MRSH",
-      "score": 479704704.02599514,
+      "ticker": "USB",
+      "score": 473187510.2817172,
       "rank": 193
     },
     {
-      "ticker": "TSCO",
-      "score": 479491863.5769799,
+      "ticker": "AON",
+      "score": 472656282.86888486,
       "rank": 194
     },
     {
-      "ticker": "O",
-      "score": 479145867.96704245,
+      "ticker": "DUK",
+      "score": 472189198.1963021,
       "rank": 195
     },
     {
-      "ticker": "USB",
-      "score": 476088808.1702096,
+      "ticker": "KR",
+      "score": 472094417.16455734,
       "rank": 196
     },
     {
-      "ticker": "TTWO",
-      "score": 473052908.3068121,
+      "ticker": "MRSH",
+      "score": 471365323.9143008,
       "rank": 197
     },
     {
-      "ticker": "AON",
-      "score": 472266085.62069845,
+      "ticker": "KMB",
+      "score": 469857460.6292361,
       "rank": 198
     },
     {
-      "ticker": "DUK",
-      "score": 471223692.3174177,
+      "ticker": "TTWO",
+      "score": 469310319.64612687,
       "rank": 199
     },
     {
       "ticker": "PNC",
-      "score": 469582845.5809094,
+      "score": 469168617.3118228,
       "rank": 200
     },
     {
-      "ticker": "KMB",
-      "score": 467247767.6521665,
+      "ticker": "EMR",
+      "score": 468567644.0541585,
       "rank": 201
     },
     {
       "ticker": "MDLZ",
-      "score": 467139261.3954998,
+      "score": 467912460.2445512,
       "rank": 202
     },
     {
-      "ticker": "JBL",
-      "score": 466992762.1314639,
+      "ticker": "O",
+      "score": 465856209.11085945,
       "rank": 203
     },
     {
-      "ticker": "CRH",
-      "score": 464044463.1185259,
+      "ticker": "JBL",
+      "score": 464769253.5144624,
       "rank": 204
     },
     {
       "ticker": "CI",
-      "score": 462336212.5274658,
+      "score": 464735820.8145868,
       "rank": 205
     },
     {
-      "ticker": "EMR",
-      "score": 460404265.326509,
+      "ticker": "ROST",
+      "score": 463051213.3917672,
       "rank": 206
     },
     {
-      "ticker": "ROST",
-      "score": 459090366.6948591,
+      "ticker": "CRH",
+      "score": 462028011.8646894,
       "rank": 207
     },
     {
-      "ticker": "EXPE",
-      "score": 449704868.636649,
+      "ticker": "KMI",
+      "score": 461616136.49045855,
       "rank": 208
     },
     {
       "ticker": "PCG",
-      "score": 448283857.1896099,
+      "score": 453122943.43536013,
       "rank": 209
     },
     {
       "ticker": "ICE",
-      "score": 446139880.326262,
+      "score": 452675144.99816895,
       "rank": 210
     },
     {
-      "ticker": "FLEX",
-      "score": 444157853.4334092,
+      "ticker": "CCI",
+      "score": 451137108.269864,
       "rank": 211
     },
     {
-      "ticker": "LEN",
-      "score": 443700761.97676885,
+      "ticker": "MCO",
+      "score": 447662050.979033,
       "rank": 212
     },
     {
-      "ticker": "GD",
-      "score": 443344452.5477818,
+      "ticker": "FLEX",
+      "score": 447012558.2807995,
       "rank": 213
     },
     {
-      "ticker": "VEEV",
-      "score": 441744680.2898589,
+      "ticker": "LEN",
+      "score": 440682217.2294253,
       "rank": 214
     },
     {
-      "ticker": "KMI",
-      "score": 440670074.16973114,
+      "ticker": "ORLY",
+      "score": 440003109.1598147,
       "rank": 215
     },
     {
-      "ticker": "MCO",
-      "score": 439983103.6549886,
+      "ticker": "GD",
+      "score": 439860227.4169922,
       "rank": 216
     },
     {
       "ticker": "KEYS",
-      "score": 439047667.4361456,
+      "score": 439748973.64763534,
       "rank": 217
     },
     {
-      "ticker": "DVN",
-      "score": 434968481.9502331,
+      "ticker": "EXPE",
+      "score": 437232890.51804316,
       "rank": 218
     },
     {
-      "ticker": "ORLY",
-      "score": 434015748.8837832,
+      "ticker": "UPS",
+      "score": 436443655.98653156,
       "rank": 219
     },
     {
-      "ticker": "FAST",
-      "score": 433504658.19326127,
+      "ticker": "VEEV",
+      "score": 435546070.21818614,
       "rank": 220
     },
     {
-      "ticker": "CCI",
-      "score": 430157753.750356,
+      "ticker": "DVN",
+      "score": 431555062.62034464,
       "rank": 221
     },
     {
-      "ticker": "UPS",
-      "score": 427558792.43705386,
+      "ticker": "FAST",
+      "score": 429770367.38784426,
       "rank": 222
     },
     {
-      "ticker": "DHI",
-      "score": 426587235.585022,
+      "ticker": "CL",
+      "score": 429654510.2067493,
       "rank": 223
     },
     {
-      "ticker": "ADSK",
-      "score": 425622067.84893215,
+      "ticker": "DHI",
+      "score": 426265221.49672735,
       "rank": 224
     },
     {
-      "ticker": "AXON",
-      "score": 420575609.67392695,
+      "ticker": "CTSH",
+      "score": 424654698.6177535,
       "rank": 225
     },
     {
       "ticker": "KDP",
-      "score": 419991423.54974294,
+      "score": 424631432.66824996,
       "rank": 226
     },
     {
-      "ticker": "CL",
-      "score": 419751323.6238389,
+      "ticker": "ADSK",
+      "score": 420860217.5095331,
       "rank": 227
     },
     {
-      "ticker": "MNST",
-      "score": 417568271.627299,
+      "ticker": "WDAY",
+      "score": 416907948.53421164,
       "rank": 228
     },
     {
-      "ticker": "CTSH",
-      "score": 417311332.0864541,
+      "ticker": "EBAY",
+      "score": 416452966.1738441,
       "rank": 229
     },
     {
-      "ticker": "EOG",
-      "score": 416709777.62574697,
+      "ticker": "AXON",
+      "score": 416442618.3566139,
       "rank": 230
     },
     {
-      "ticker": "LULU",
-      "score": 414639404.87772626,
+      "ticker": "HONA",
+      "score": 415122275.3407796,
       "rank": 231
     },
     {
-      "ticker": "CAH",
-      "score": 412446658.5058303,
+      "ticker": "EOG",
+      "score": 414537577.9573713,
       "rank": 232
     },
     {
-      "ticker": "HONA",
-      "score": 411260428.99874735,
+      "ticker": "EQT",
+      "score": 414441839.4254412,
       "rank": 233
     },
     {
-      "ticker": "FANG",
-      "score": 410102208.6106073,
+      "ticker": "MNST",
+      "score": 414270476.7761594,
       "rank": 234
     },
     {
-      "ticker": "EBAY",
-      "score": 409079048.4421503,
+      "ticker": "CAH",
+      "score": 410749280.98653156,
       "rank": 235
     },
     {
-      "ticker": "AEP",
-      "score": 408530317.55153114,
+      "ticker": "FANG",
+      "score": 408514339.1827538,
       "rank": 236
     },
     {
-      "ticker": "HBAN",
-      "score": 408389273.1007031,
+      "ticker": "LULU",
+      "score": 407104866.2226359,
       "rank": 237
     },
     {
-      "ticker": "XEL",
-      "score": 406811335.0192479,
+      "ticker": "CBOE",
+      "score": 403649839.5494007,
       "rank": 238
     },
     {
-      "ticker": "WDAY",
-      "score": 406421991.22873944,
+      "ticker": "AEP",
+      "score": 403644632.5415112,
       "rank": 239
     },
     {
-      "ticker": "COR",
-      "score": 401744546.9248454,
+      "ticker": "APO",
+      "score": 403126618.7677656,
       "rank": 240
     },
     {
-      "ticker": "CBOE",
-      "score": 399098067.615836,
+      "ticker": "XEL",
+      "score": 402554049.99872845,
       "rank": 241
     },
     {
-      "ticker": "APO",
-      "score": 398386226.18266517,
+      "ticker": "COR",
+      "score": 401512309.4697498,
       "rank": 242
     },
     {
-      "ticker": "STT",
-      "score": 395702230.7061332,
+      "ticker": "TDG",
+      "score": 398025617.09100634,
       "rank": 243
     },
     {
       "ticker": "LHX",
-      "score": 392658900.4026867,
+      "score": 397058292.4219041,
       "rank": 244
     },
     {
-      "ticker": "FITB",
-      "score": 392020305.9312911,
+      "ticker": "HBAN",
+      "score": 396331995.5117135,
       "rank": 245
     },
     {
-      "ticker": "TDG",
-      "score": 389172811.2769717,
+      "ticker": "STT",
+      "score": 396133240.280224,
       "rank": 246
     },
     {
-      "ticker": "AIG",
-      "score": 388605742.36086893,
+      "ticker": "WAT",
+      "score": 393580144.7714669,
       "rank": 247
     },
     {
-      "ticker": "WAT",
-      "score": 387517707.99400693,
+      "ticker": "FITB",
+      "score": 391441572.14655197,
       "rank": 248
     },
     {
-      "ticker": "TFC",
-      "score": 386812634.5553625,
+      "ticker": "ECL",
+      "score": 391166204.0313721,
       "rank": 249
     },
     {
-      "ticker": "ECL",
-      "score": 385825358.0899193,
+      "ticker": "TFC",
+      "score": 390556431.2593006,
       "rank": 250
     },
     {
-      "ticker": "TEL",
-      "score": 383073161.9622367,
+      "ticker": "AIG",
+      "score": 387898419.9089414,
       "rank": 251
     },
     {
-      "ticker": "MLM",
-      "score": 380375844.3263463,
+      "ticker": "TEL",
+      "score": 387324783.34931874,
       "rank": 252
     },
     {
-      "ticker": "A",
-      "score": 377834766.38183594,
+      "ticker": "MSI",
+      "score": 385128258.1509545,
       "rank": 253
     },
     {
-      "ticker": "MSI",
-      "score": 375467004.3167841,
+      "ticker": "MLM",
+      "score": 382053168.3583577,
       "rank": 254
     },
     {
-      "ticker": "ECHO",
-      "score": 374984776.65514266,
+      "ticker": "ITW",
+      "score": 375277913.9023554,
       "rank": 255
     },
     {
       "ticker": "HPQ",
-      "score": 373727212.2888565,
+      "score": 374372641.5226255,
       "rank": 256
     },
     {
-      "ticker": "ITW",
-      "score": 367419734.1607957,
+      "ticker": "A",
+      "score": 370914660.7539586,
       "rank": 257
     },
     {
-      "ticker": "FDX",
-      "score": 366766796.425665,
+      "ticker": "ECHO",
+      "score": 370557508.22590417,
       "rank": 258
     },
     {
-      "ticker": "EQT",
-      "score": 364641617.8403945,
+      "ticker": "ROK",
+      "score": 366513942.0895531,
       "rank": 259
     },
     {
-      "ticker": "ROK",
-      "score": 364229232.41024923,
+      "ticker": "MSCI",
+      "score": 363734368.5808454,
       "rank": 260
     },
     {
-      "ticker": "FSLR",
-      "score": 362866897.5084577,
+      "ticker": "KEY",
+      "score": 359485931.5271741,
       "rank": 261
     },
     {
       "ticker": "CTAS",
-      "score": 361935541.92897254,
+      "score": 358937755.2533831,
       "rank": 262
     },
     {
-      "ticker": "KEY",
-      "score": 359885686.78371793,
+      "ticker": "IBKR",
+      "score": 358640539.26733106,
       "rank": 263
     },
     {
-      "ticker": "MSCI",
-      "score": 359290260.62186104,
+      "ticker": "IQV",
+      "score": 356034242.8492955,
       "rank": 264
     },
     {
-      "ticker": "KVUE",
-      "score": 357366042.1276819,
+      "ticker": "AJG",
+      "score": 355659426.8895467,
       "rank": 265
     },
     {
-      "ticker": "AJG",
-      "score": 353225257.0047288,
+      "ticker": "KVUE",
+      "score": 355560690.6800225,
       "rank": 266
     },
     {
-      "ticker": "IR",
-      "score": 351533650.6284078,
+      "ticker": "FSLR",
+      "score": 354891159.2498053,
       "rank": 267
     },
     {
-      "ticker": "IBKR",
-      "score": 351173690.01392186,
+      "ticker": "FDX",
+      "score": 354622792.71923244,
       "rank": 268
     },
     {
-      "ticker": "IQV",
-      "score": 348250431.5777007,
+      "ticker": "IR",
+      "score": 351656012.95562017,
       "rank": 269
     },
     {
       "ticker": "EFX",
-      "score": 346899808.6374192,
+      "score": 350706426.633853,
       "rank": 270
     },
     {
-      "ticker": "GIS",
-      "score": 345335718.5749871,
+      "ticker": "XYZ",
+      "score": 348893854.8442296,
       "rank": 271
     },
     {
-      "ticker": "XYZ",
-      "score": 342527555.3691319,
+      "ticker": "PCAR",
+      "score": 348103983.70052516,
       "rank": 272
     },
     {
-      "ticker": "PCAR",
-      "score": 340358470.60368854,
+      "ticker": "CRL",
+      "score": 345240871.270316,
       "rank": 273
     },
     {
-      "ticker": "HAL",
-      "score": 339449707.6654798,
+      "ticker": "GIS",
+      "score": 342965428.7373406,
       "rank": 274
     },
     {
-      "ticker": "GWW",
-      "score": 338600993.90113467,
+      "ticker": "HAL",
+      "score": 340071391.26148224,
       "rank": 275
     },
     {
-      "ticker": "CRL",
-      "score": 336925346.9297863,
+      "ticker": "DXCM",
+      "score": 338419309.40104896,
       "rank": 276
     },
     {
-      "ticker": "YUM",
-      "score": 334412641.3247245,
+      "ticker": "CBRE",
+      "score": 338005752.5365557,
       "rank": 277
     },
     {
-      "ticker": "CASY",
-      "score": 330656593.6909993,
+      "ticker": "YUM",
+      "score": 337112014.6491641,
       "rank": 278
     },
     {
-      "ticker": "CBRE",
-      "score": 330388246.4210874,
+      "ticker": "BKR",
+      "score": 335734114.6525428,
       "rank": 279
     },
     {
-      "ticker": "BKR",
-      "score": 329555467.89694285,
+      "ticker": "DLR",
+      "score": 330135206.6202073,
       "rank": 280
     },
     {
-      "ticker": "EXC",
-      "score": 328949297.5578308,
+      "ticker": "GWW",
+      "score": 327907812.151809,
       "rank": 281
     },
     {
-      "ticker": "AME",
-      "score": 327635806.51942664,
+      "ticker": "EXC",
+      "score": 327551021.27554756,
       "rank": 282
     },
     {
-      "ticker": "CFG",
-      "score": 327382753.11064947,
+      "ticker": "CASY",
+      "score": 327429861.94516134,
       "rank": 283
     },
     {
-      "ticker": "VMC",
-      "score": 325766184.86313593,
+      "ticker": "KHC",
+      "score": 326608144.9932643,
       "rank": 284
     },
     {
-      "ticker": "RF",
-      "score": 324278616.2936892,
+      "ticker": "CFG",
+      "score": 324664516.1064148,
       "rank": 285
     },
     {
-      "ticker": "DXCM",
-      "score": 323672637.64070785,
+      "ticker": "RF",
+      "score": 324174581.4086914,
       "rank": 286
     },
     {
-      "ticker": "KHC",
-      "score": 323476740.42262125,
+      "ticker": "OTIS",
+      "score": 322943773.2632228,
       "rank": 287
     },
     {
-      "ticker": "FERG",
-      "score": 321147177.6828584,
+      "ticker": "AME",
+      "score": 322619741.5593465,
       "rank": 288
     },
     {
-      "ticker": "MET",
-      "score": 320903847.2441174,
+      "ticker": "NRG",
+      "score": 322568450.69983345,
       "rank": 289
     },
     {
-      "ticker": "OTIS",
-      "score": 320774033.25456893,
+      "ticker": "ROP",
+      "score": 321768020.3575498,
       "rank": 290
     },
     {
-      "ticker": "NRG",
-      "score": 320368652.1844773,
+      "ticker": "ODFL",
+      "score": 319995697.4453154,
       "rank": 291
     },
     {
-      "ticker": "DLR",
-      "score": 319314140.7796224,
+      "ticker": "FERG",
+      "score": 319456107.09642684,
       "rank": 292
     },
     {
-      "ticker": "CHTR",
-      "score": 319225657.9829988,
+      "ticker": "VMC",
+      "score": 319195104.08717567,
       "rank": 293
     },
     {
-      "ticker": "TRGP",
-      "score": 318567490.01275927,
+      "ticker": "MET",
+      "score": 318650080.5713472,
       "rank": 294
     },
     {
-      "ticker": "PAYX",
-      "score": 317248736.54817855,
+      "ticker": "TRGP",
+      "score": 318547488.35420156,
       "rank": 295
     },
     {
-      "ticker": "ODFL",
-      "score": 314400462.42443264,
+      "ticker": "CHTR",
+      "score": 315062376.314145,
       "rank": 296
     },
     {
-      "ticker": "MTD",
-      "score": 311210065.19601005,
+      "ticker": "PAYX",
+      "score": 312548135.27646744,
       "rank": 297
     },
     {
-      "ticker": "CPRT",
-      "score": 310157069.11887217,
+      "ticker": "MTD",
+      "score": 312121422.7899461,
       "rank": 298
     },
     {
-      "ticker": "NCLH",
-      "score": 310066032.04083216,
+      "ticker": "STZ",
+      "score": 311457966.6857402,
       "rank": 299
     },
     {
-      "ticker": "ZTS",
-      "score": 307357366.7421977,
+      "ticker": "CPRT",
+      "score": 309581788.6216391,
       "rank": 300
     },
     {
-      "ticker": "SKYD",
-      "score": 307052641.4491267,
+      "ticker": "NCLH",
+      "score": 308835858.15798897,
       "rank": 301
     },
     {
-      "ticker": "EW",
-      "score": 306682296.0011437,
+      "ticker": "NDAQ",
+      "score": 308744020.4535348,
       "rank": 302
     },
     {
-      "ticker": "STZ",
-      "score": 306238999.87168086,
+      "ticker": "EW",
+      "score": 306236543.5526893,
       "rank": 303
     },
     {
-      "ticker": "ROP",
-      "score": 304610103.0181885,
+      "ticker": "SKYD",
+      "score": 306000180.73056996,
       "rank": 304
     },
     {
-      "ticker": "NDAQ",
-      "score": 303518340.69846016,
+      "ticker": "LYV",
+      "score": 304695450.1496088,
       "rank": 305
     },
     {
-      "ticker": "LYV",
-      "score": 303109140.2412778,
+      "ticker": "ZTS",
+      "score": 304460361.6865975,
       "rank": 306
     },
     {
-      "ticker": "BIIB",
-      "score": 299037245.4709008,
+      "ticker": "NUE",
+      "score": 302439484.01859826,
       "rank": 307
     },
     {
-      "ticker": "PEG",
-      "score": 295362849.02202064,
+      "ticker": "BIIB",
+      "score": 300171820.56070966,
       "rank": 308
     },
     {
-      "ticker": "VTR",
-      "score": 295331659.78695095,
+      "ticker": "EXE",
+      "score": 299096418.5099647,
       "rank": 309
     },
     {
-      "ticker": "NUE",
-      "score": 294788241.1733718,
+      "ticker": "DECK",
+      "score": 294619387.08379835,
       "rank": 310
     },
     {
-      "ticker": "EXE",
-      "score": 292734068.8597906,
+      "ticker": "EL",
+      "score": 294322791.6084653,
       "rank": 311
     },
     {
-      "ticker": "CHRW",
-      "score": 292050244.06912667,
+      "ticker": "VTR",
+      "score": 293437215.61144876,
       "rank": 312
     },
     {
-      "ticker": "ETR",
-      "score": 290753794.98552597,
+      "ticker": "CHRW",
+      "score": 293023102.15003604,
       "rank": 313
     },
     {
-      "ticker": "EIX",
-      "score": 290082528.3068339,
+      "ticker": "PEG",
+      "score": 292798870.2806745,
       "rank": 314
     },
     {
-      "ticker": "CARR",
-      "score": 289007776.20046705,
+      "ticker": "TPR",
+      "score": 292179070.0431097,
       "rank": 315
     },
     {
-      "ticker": "DECK",
-      "score": 288912897.9112171,
+      "ticker": "VRSN",
+      "score": 291758284.23229396,
       "rank": 316
     },
     {
-      "ticker": "EL",
-      "score": 288601196.96535385,
+      "ticker": "CMS",
+      "score": 289775504.60824513,
       "rank": 317
     },
     {
       "ticker": "WAB",
-      "score": 287522863.6481875,
+      "score": 288488575.5993071,
       "rank": 318
     },
     {
-      "ticker": "TPR",
-      "score": 287373986.3505046,
+      "ticker": "EME",
+      "score": 288300526.1698405,
       "rank": 319
     },
     {
-      "ticker": "CMS",
-      "score": 286533504.6770005,
+      "ticker": "EIX",
+      "score": 287623403.8905189,
       "rank": 320
     },
     {
-      "ticker": "VMRK",
-      "score": 285222044.1685631,
+      "ticker": "BDX",
+      "score": 286137874.1831462,
       "rank": 321
     },
     {
-      "ticker": "EME",
-      "score": 283703787.8894624,
+      "ticker": "ETR",
+      "score": 285316743.27214557,
       "rank": 322
     },
     {
-      "ticker": "BDX",
-      "score": 283691725.0778198,
+      "ticker": "APD",
+      "score": 284154926.4142718,
       "rank": 323
     },
     {
-      "ticker": "OKE",
-      "score": 283437750.21863663,
+      "ticker": "VMRK",
+      "score": 283085649.78915626,
       "rank": 324
     },
     {
-      "ticker": "CF",
-      "score": 283354694.6046375,
+      "ticker": "CNC",
+      "score": 282990018.0890401,
       "rank": 325
     },
     {
-      "ticker": "VRSN",
-      "score": 282315678.7343343,
+      "ticker": "OKE",
+      "score": 281043249.09577143,
       "rank": 326
     },
     {
-      "ticker": "RVTY",
-      "score": 278877744.1996983,
+      "ticker": "CARR",
+      "score": 280775537.4413627,
       "rank": 327
     },
     {
-      "ticker": "APD",
-      "score": 278213862.34188986,
+      "ticker": "CF",
+      "score": 280567268.4636434,
       "rank": 328
     },
     {
-      "ticker": "FOXA",
-      "score": 276149473.0570112,
+      "ticker": "NVR",
+      "score": 278513985.0957961,
       "rank": 329
     },
     {
-      "ticker": "RSG",
-      "score": 275874749.93823826,
+      "ticker": "DG",
+      "score": 277793319.59827965,
       "rank": 330
     },
     {
-      "ticker": "WEC",
-      "score": 273609799.0190052,
+      "ticker": "IDXX",
+      "score": 277652175.67545575,
       "rank": 331
     },
     {
-      "ticker": "NVR",
-      "score": 273595532.7404204,
+      "ticker": "FOXA",
+      "score": 277595124.1240002,
       "rank": 332
     },
     {
-      "ticker": "CNC",
-      "score": 272574318.5101827,
+      "ticker": "RSG",
+      "score": 277233765.79459053,
       "rank": 333
     },
     {
-      "ticker": "IDXX",
-      "score": 271499750.7530576,
+      "ticker": "RVTY",
+      "score": 273233355.2068801,
       "rank": 334
     },
     {
-      "ticker": "D",
-      "score": 270499508.51155233,
+      "ticker": "WSM",
+      "score": 272880651.327224,
       "rank": 335
     },
     {
-      "ticker": "ACGL",
-      "score": 269800120.9057036,
+      "ticker": "WEC",
+      "score": 271648405.71499777,
       "rank": 336
     },
     {
       "ticker": "LUV",
-      "score": 269721046.3988713,
+      "score": 270169109.0145111,
       "rank": 337
     },
     {
-      "ticker": "WSM",
-      "score": 269419306.8676903,
+      "ticker": "D",
+      "score": 268598926.4382317,
       "rank": 338
     },
     {
       "ticker": "AMP",
-      "score": 268835117.66502744,
+      "score": 267225747.3910377,
       "rank": 339
     },
     {
-      "ticker": "FISV",
-      "score": 268262929.31264243,
+      "ticker": "ROL",
+      "score": 266181923.15218788,
       "rank": 340
     },
     {
-      "ticker": "ROL",
-      "score": 267574802.09783825,
+      "ticker": "FISV",
+      "score": 265460673.96036783,
       "rank": 341
     },
     {
-      "ticker": "DG",
-      "score": 265555118.31007457,
+      "ticker": "NSC",
+      "score": 264224406.254069,
       "rank": 342
     },
     {
       "ticker": "SRE",
-      "score": 265144442.42390224,
+      "score": 263624932.7811105,
       "rank": 343
     },
     {
       "ticker": "DPZ",
-      "score": 263251197.81261626,
+      "score": 263438597.57981074,
       "rank": 344
     },
     {
-      "ticker": "SYY",
-      "score": 260505405.1468622,
+      "ticker": "ARES",
+      "score": 262169423.06856427,
       "rank": 345
     },
     {
-      "ticker": "ARES",
-      "score": 259998685.96024287,
+      "ticker": "ACGL",
+      "score": 260654962.51642138,
       "rank": 346
     },
     {
-      "ticker": "BBY",
-      "score": 258830815.60945058,
+      "ticker": "RMD",
+      "score": 259411451.8381028,
       "rank": 347
     },
     {
-      "ticker": "NSC",
-      "score": 256735658.5989816,
+      "ticker": "BBY",
+      "score": 258308121.18185133,
       "rank": 348
     },
     {
-      "ticker": "SPG",
-      "score": 255327621.84084937,
+      "ticker": "DOW",
+      "score": 257675824.28885868,
       "rank": 349
     },
     {
-      "ticker": "RMD",
-      "score": 254520886.2755185,
+      "ticker": "ULTA",
+      "score": 256842662.46715727,
       "rank": 350
     },
     {
-      "ticker": "PSA",
-      "score": 253125137.02625093,
+      "ticker": "SPG",
+      "score": 256609816.40116373,
       "rank": 351
     },
     {
-      "ticker": "DGX",
-      "score": 252314165.3622582,
+      "ticker": "PSA",
+      "score": 255972951.89208984,
       "rank": 352
     },
     {
-      "ticker": "CNP",
-      "score": 252086496.57229468,
+      "ticker": "DGX",
+      "score": 255069225.72602773,
       "rank": 353
     },
     {
-      "ticker": "ULTA",
-      "score": 251372584.37267485,
+      "ticker": "SYY",
+      "score": 254272001.16181147,
       "rank": 354
     },
     {
-      "ticker": "AWK",
-      "score": 248868846.854219,
+      "ticker": "HAS",
+      "score": 253300937.52811977,
       "rank": 355
     },
     {
-      "ticker": "ED",
-      "score": 248691179.98955137,
+      "ticker": "AWK",
+      "score": 252305077.59028843,
       "rank": 356
     },
     {
-      "ticker": "GEN",
-      "score": 248617065.22438413,
+      "ticker": "APA",
+      "score": 251613837.61476788,
       "rank": 357
     },
     {
-      "ticker": "DOW",
-      "score": 246711224.7862044,
+      "ticker": "HSY",
+      "score": 251067073.7630935,
       "rank": 358
     },
     {
-      "ticker": "PPL",
-      "score": 246568382.43055797,
+      "ticker": "CNP",
+      "score": 250723009.86289978,
       "rank": 359
     },
     {
-      "ticker": "APA",
-      "score": 245847832.94728598,
+      "ticker": "ED",
+      "score": 249126057.30594453,
       "rank": 360
     },
     {
-      "ticker": "HSY",
-      "score": 244335976.2363979,
+      "ticker": "HUBB",
+      "score": 248980374.49645996,
       "rank": 361
     },
     {
-      "ticker": "HAS",
-      "score": 243471320.0495402,
+      "ticker": "PPL",
+      "score": 247405995.1884315,
       "rank": 362
     },
     {
-      "ticker": "FFIV",
-      "score": 241277437.65055338,
+      "ticker": "PHM",
+      "score": 245103728.65575156,
       "rank": 363
     },
     {
-      "ticker": "HUBB",
-      "score": 239542187.33812314,
+      "ticker": "FFIV",
+      "score": 244407492.52784365,
       "rank": 364
     },
     {
-      "ticker": "DRI",
-      "score": 239164306.74649194,
+      "ticker": "SYF",
+      "score": 240729337.5841413,
       "rank": 365
     },
     {
-      "ticker": "PHM",
-      "score": 239157807.68479848,
+      "ticker": "DLTR",
+      "score": 233764636.07250395,
       "rank": 366
     },
     {
-      "ticker": "SYF",
-      "score": 238409528.27119374,
+      "ticker": "STLD",
+      "score": 233248831.81370327,
       "rank": 367
     },
     {
-      "ticker": "DLTR",
-      "score": 235315806.2756493,
+      "ticker": "VICI",
+      "score": 229953869.72608113,
       "rank": 368
     },
     {
-      "ticker": "GEHC",
-      "score": 232204657.60528928,
+      "ticker": "ALB",
+      "score": 229927611.9505746,
       "rank": 369
     },
     {
-      "ticker": "ADM",
-      "score": 232102344.48754448,
+      "ticker": "DRI",
+      "score": 229573306.74649194,
       "rank": 370
     },
     {
-      "ticker": "ALB",
-      "score": 229535226.09917778,
+      "ticker": "XYL",
+      "score": 229500482.00305757,
       "rank": 371
     },
     {
-      "ticker": "VICI",
-      "score": 229101186.70874095,
+      "ticker": "ADM",
+      "score": 229181897.2764878,
       "rank": 372
     },
     {
-      "ticker": "MTB",
-      "score": 226375907.60650635,
+      "ticker": "GEHC",
+      "score": 228840261.89355397,
       "rank": 373
     },
     {
-      "ticker": "XYL",
-      "score": 225899243.85125297,
+      "ticker": "MTB",
+      "score": 227932912.7421061,
       "rank": 374
     },
     {
       "ticker": "NI",
-      "score": 225043295.99529448,
+      "score": 227452667.4870809,
       "rank": 375
     },
     {
-      "ticker": "GRMN",
-      "score": 224626325.0113351,
+      "ticker": "LVS",
+      "score": 226948980.405971,
       "rank": 376
     },
     {
-      "ticker": "VRSK",
-      "score": 222770613.5777065,
+      "ticker": "GRMN",
+      "score": 225563839.0238444,
       "rank": 377
     },
     {
-      "ticker": "STLD",
-      "score": 222048554.44771904,
+      "ticker": "GEN",
+      "score": 224307790.5616306,
       "rank": 378
     },
     {
-      "ticker": "LVS",
-      "score": 220816888.87563434,
+      "ticker": "TYL",
+      "score": 223628833.26372418,
       "rank": 379
     },
     {
-      "ticker": "JBHT",
-      "score": 220010440.58387393,
+      "ticker": "PODD",
+      "score": 223345046.4316232,
       "rank": 380
     },
     {
-      "ticker": "DOV",
-      "score": 219954164.37624976,
+      "ticker": "VRSK",
+      "score": 221236442.79044014,
       "rank": 381
     },
     {
-      "ticker": "PODD",
-      "score": 219347057.74289086,
+      "ticker": "CDW",
+      "score": 219181121.06192452,
       "rank": 382
     },
     {
-      "ticker": "GNRC",
-      "score": 217788324.81929234,
+      "ticker": "FDS",
+      "score": 219064091.28999257,
       "rank": 383
     },
     {
-      "ticker": "TYL",
-      "score": 217756921.97309223,
+      "ticker": "DOV",
+      "score": 217133834.82934862,
       "rank": 384
     },
     {
-      "ticker": "AEE",
-      "score": 216105094.88968623,
+      "ticker": "EXPD",
+      "score": 215612871.42719087,
       "rank": 385
     },
     {
-      "ticker": "CDW",
-      "score": 215204028.2822382,
+      "ticker": "GNRC",
+      "score": 215609213.21091425,
       "rank": 386
     },
     {
-      "ticker": "FDS",
-      "score": 214519322.72774833,
+      "ticker": "NTRS",
+      "score": 214752089.84919956,
       "rank": 387
     },
     {
-      "ticker": "EXPD",
-      "score": 213828116.26921153,
+      "ticker": "AEE",
+      "score": 214386309.50666156,
       "rank": 388
     },
     {
-      "ticker": "NTRS",
-      "score": 213675023.07390484,
+      "ticker": "HIG",
+      "score": 212268797.17131114,
       "rank": 389
     },
     {
-      "ticker": "HIG",
-      "score": 212123135.496412,
+      "ticker": "JBHT",
+      "score": 210737002.9174078,
       "rank": 390
     },
     {
-      "ticker": "CLX",
-      "score": 209878953.40990338,
+      "ticker": "TECH",
+      "score": 207960877.2263663,
       "rank": 391
     },
     {
-      "ticker": "COO",
-      "score": 209123613.92508006,
+      "ticker": "CLX",
+      "score": 207887443.71308827,
       "rank": 392
     },
     {
-      "ticker": "DTE",
-      "score": 208301028.89367968,
+      "ticker": "TROW",
+      "score": 207300636.77775064,
       "rank": 393
     },
     {
       "ticker": "FE",
-      "score": 206987232.4020204,
+      "score": 206796420.6066495,
       "rank": 394
     },
     {
-      "ticker": "TECH",
-      "score": 205798194.29760888,
+      "ticker": "MKC",
+      "score": 205132250.3264291,
       "rank": 395
     },
     {
-      "ticker": "LH",
-      "score": 205345477.3863293,
+      "ticker": "INCY",
+      "score": 204486270.8303179,
       "rank": 396
     },
     {
-      "ticker": "FIS",
-      "score": 205192390.41491917,
+      "ticker": "LYB",
+      "score": 204427057.75598797,
       "rank": 397
     },
     {
-      "ticker": "MKC",
-      "score": 204576527.4089995,
+      "ticker": "LH",
+      "score": 203501970.43282646,
       "rank": 398
     },
     {
-      "ticker": "TROW",
-      "score": 202419528.99307978,
+      "ticker": "SBAC",
+      "score": 203353753.1675793,
       "rank": 399
     },
     {
-      "ticker": "LYB",
-      "score": 200054707.39522663,
+      "ticker": "CHD",
+      "score": 203291627.5357201,
       "rank": 400
     },
     {
-      "ticker": "MOS",
-      "score": 200037772.9671024,
+      "ticker": "FIS",
+      "score": 203192525.88010517,
       "rank": 401
     },
     {
-      "ticker": "INCY",
-      "score": 199408207.7726455,
+      "ticker": "COO",
+      "score": 202719904.78808084,
       "rank": 402
     },
     {
-      "ticker": "CPAY",
-      "score": 198230900.3452846,
+      "ticker": "DTE",
+      "score": 202108844.6975708,
       "rank": 403
     },
     {
-      "ticker": "SBAC",
-      "score": 198198844.07741,
+      "ticker": "TDY",
+      "score": 200895949.97849238,
       "rank": 404
     },
     {
-      "ticker": "CHD",
-      "score": 198163634.99156407,
+      "ticker": "MOS",
+      "score": 199853900.69525582,
       "rank": 405
     },
     {
-      "ticker": "LNT",
-      "score": 195732923.93956867,
+      "ticker": "OMC",
+      "score": 197857232.72356305,
       "rank": 406
     },
     {
-      "ticker": "TDY",
-      "score": 194859525.85100445,
+      "ticker": "CPAY",
+      "score": 197278098.33592007,
       "rank": 407
     },
     {
-      "ticker": "OMC",
-      "score": 194643886.23846143,
+      "ticker": "WST",
+      "score": 196708229.75696382,
       "rank": 408
     },
     {
       "ticker": "HST",
-      "score": 193022623.4563555,
+      "score": 195349607.4327923,
       "rank": 409
     },
     {
-      "ticker": "WST",
-      "score": 192153674.80090913,
+      "ticker": "LNT",
+      "score": 194742134.1361091,
       "rank": 410
     },
     {
-      "ticker": "PRU",
-      "score": 187577657.09500995,
+      "ticker": "LII",
+      "score": 194422915.0110154,
       "rank": 411
     },
     {
-      "ticker": "ES",
-      "score": 187445932.0402963,
+      "ticker": "PRU",
+      "score": 190591789.0278771,
       "rank": 412
     },
     {
-      "ticker": "LII",
-      "score": 185934832.51023066,
+      "ticker": "Q",
+      "score": 190066673.92098564,
       "rank": 413
     },
     {
-      "ticker": "RL",
-      "score": 185179002.78799874,
+      "ticker": "IT",
+      "score": 187429588.06108746,
       "rank": 414
     },
     {
       "ticker": "PPG",
-      "score": 184734613.24597314,
+      "score": 184884504.25854638,
       "rank": 415
     },
     {
-      "ticker": "AFL",
-      "score": 184562115.4434204,
+      "ticker": "ES",
+      "score": 184494642.1687898,
       "rank": 416
     },
     {
-      "ticker": "Q",
-      "score": 184191281.3320705,
+      "ticker": "RL",
+      "score": 183411278.8696289,
       "rank": 417
     },
     {
-      "ticker": "IT",
-      "score": 184019522.05665225,
+      "ticker": "AFL",
+      "score": 182671807.50779653,
       "rank": 418
     },
     {
-      "ticker": "SW",
-      "score": 178600097.67632258,
+      "ticker": "ALLE",
+      "score": 181964825.80290294,
       "rank": 419
     },
     {
-      "ticker": "IP",
-      "score": 178151085.6711887,
+      "ticker": "SW",
+      "score": 181412765.0954837,
       "rank": 420
     },
     {
-      "ticker": "RJF",
-      "score": 176629481.26496816,
+      "ticker": "IP",
+      "score": 179852872.6584934,
       "rank": 421
     },
     {
-      "ticker": "EVRG",
-      "score": 173759341.7418707,
+      "ticker": "ZBH",
+      "score": 178340247.3964873,
       "rank": 422
     },
     {
-      "ticker": "ZBH",
-      "score": 173648564.87695605,
+      "ticker": "RJF",
+      "score": 177756105.90951103,
       "rank": 423
     },
     {
-      "ticker": "EXR",
-      "score": 173640661.31766182,
+      "ticker": "EVRG",
+      "score": 175970927.87203106,
       "rank": 424
     },
     {
-      "ticker": "ATO",
-      "score": 173312869.80336508,
+      "ticker": "EXR",
+      "score": 173950383.05489677,
       "rank": 425
     },
     {
-      "ticker": "ZBRA",
-      "score": 172868651.59156436,
+      "ticker": "ATO",
+      "score": 173597705.24953207,
       "rank": 426
     },
     {
       "ticker": "WRB",
-      "score": 172849326.27505347,
+      "score": 173555007.69024804,
       "rank": 427
     },
     {
-      "ticker": "ALLE",
-      "score": 172652744.791812,
+      "ticker": "WY",
+      "score": 173165546.6606231,
       "rank": 428
     },
     {
-      "ticker": "WYNN",
-      "score": 172497388.85323662,
+      "ticker": "ZBRA",
+      "score": 171897048.51335797,
       "rank": 429
     },
     {
-      "ticker": "WY",
-      "score": 171422519.3906784,
+      "ticker": "WYNN",
+      "score": 171795034.8472232,
       "rank": 430
     },
     {
-      "ticker": "VTRS",
-      "score": 169434929.1767756,
+      "ticker": "TSN",
+      "score": 168352940.9353892,
       "rank": 431
     },
     {
-      "ticker": "GDDY",
-      "score": 169056609.90796772,
+      "ticker": "TKO",
+      "score": 168318206.9063459,
       "rank": 432
     },
     {
-      "ticker": "TKO",
-      "score": 167735292.40758985,
+      "ticker": "GDDY",
+      "score": 166516071.10174268,
       "rank": 433
     },
     {
-      "ticker": "TSN",
-      "score": 166576090.21775383,
+      "ticker": "VTRS",
+      "score": 166094314.38263485,
       "rank": 434
     },
     {
       "ticker": "VLTO",
-      "score": 166410858.33427793,
+      "score": 165562360.4170663,
       "rank": 435
     },
     {
       "ticker": "CSGP",
-      "score": 165741546.41799927,
+      "score": 164466561.06629145,
       "rank": 436
     },
     {
-      "ticker": "BG",
-      "score": 165491089.83426777,
+      "ticker": "IFF",
+      "score": 164249436.80706933,
       "rank": 437
     },
     {
-      "ticker": "GPN",
-      "score": 163665250.44733682,
+      "ticker": "IEX",
+      "score": 161565618.21172804,
       "rank": 438
     },
     {
-      "ticker": "FDXF",
-      "score": 163170229.78751773,
+      "ticker": "GPN",
+      "score": 161556264.38424248,
       "rank": 439
     },
     {
-      "ticker": "IFF",
-      "score": 162758458.9265006,
+      "ticker": "IRM",
+      "score": 159920692.87490845,
       "rank": 440
     },
     {
-      "ticker": "MGM",
-      "score": 162135721.93367368,
+      "ticker": "FDXF",
+      "score": 159382776.3073876,
       "rank": 441
     },
     {
-      "ticker": "IRM",
-      "score": 161491184.33292934,
+      "ticker": "BG",
+      "score": 158602142.5429208,
       "rank": 442
     },
     {
-      "ticker": "IEX",
-      "score": 160120504.81036958,
+      "ticker": "BRO",
+      "score": 157287092.10951668,
       "rank": 443
     },
     {
-      "ticker": "WTW",
-      "score": 150651878.97513252,
+      "ticker": "PKG",
+      "score": 155401246.54911587,
       "rank": 444
     },
     {
-      "ticker": "PKG",
-      "score": 149828100.428336,
+      "ticker": "STE",
+      "score": 153055607.3277065,
       "rank": 445
     },
     {
-      "ticker": "STE",
-      "score": 148678176.64475214,
+      "ticker": "MGM",
+      "score": 151670532.70063853,
       "rank": 446
     },
     {
-      "ticker": "BAX",
-      "score": 148402473.04929098,
+      "ticker": "WTW",
+      "score": 150440993.6267671,
       "rank": 447
     },
     {
-      "ticker": "HII",
-      "score": 146077310.82894462,
+      "ticker": "MAS",
+      "score": 147549775.1985459,
       "rank": 448
     },
     {
-      "ticker": "MAS",
-      "score": 145531518.41169086,
+      "ticker": "HII",
+      "score": 147402577.24057153,
       "rank": 449
     },
     {
-      "ticker": "BRO",
-      "score": 144705487.98811775,
+      "ticker": "BAX",
+      "score": 145961643.6773391,
       "rank": 450
     },
     {
-      "ticker": "UDR",
-      "score": 142311582.73893085,
+      "ticker": "AES",
+      "score": 143853526.66188195,
       "rank": 451
     },
     {
-      "ticker": "IVZ",
-      "score": 142120174.43072,
+      "ticker": "UDR",
+      "score": 143841135.44220698,
       "rank": 452
     },
     {
-      "ticker": "PNW",
-      "score": 141628233.43476796,
+      "ticker": "PNR",
+      "score": 142870742.02132452,
       "rank": 453
     },
     {
-      "ticker": "AES",
-      "score": 141302456.93610963,
+      "ticker": "IVZ",
+      "score": 142780250.5859284,
       "rank": 454
     },
     {
-      "ticker": "BALL",
-      "score": 138487069.26551092,
+      "ticker": "PNW",
+      "score": 142512474.4720459,
       "rank": 455
     },
     {
-      "ticker": "ALGN",
-      "score": 137817481.5885998,
+      "ticker": "BALL",
+      "score": 139085686.00810823,
       "rank": 456
     },
     {
-      "ticker": "PNR",
-      "score": 137429459.12717184,
+      "ticker": "ALGN",
+      "score": 138849646.05705625,
       "rank": 457
     },
     {
-      "ticker": "INVH",
-      "score": 137250144.0798169,
+      "ticker": "SWK",
+      "score": 137836843.67977324,
       "rank": 458
     },
     {
-      "ticker": "SWK",
-      "score": 136269899.53304473,
+      "ticker": "SJM",
+      "score": 137525520.65008253,
       "rank": 459
     },
     {
-      "ticker": "SJM",
-      "score": 134700082.78401694,
+      "ticker": "SNA",
+      "score": 136700772.2249349,
       "rank": 460
     },
     {
-      "ticker": "BR",
-      "score": 133799447.46675037,
+      "ticker": "INVH",
+      "score": 135484592.52158573,
       "rank": 461
     },
     {
-      "ticker": "SNA",
-      "score": 130807567.25899832,
+      "ticker": "BR",
+      "score": 134100537.96728225,
       "rank": 462
     },
     {
-      "ticker": "PFG",
-      "score": 130226215.41620891,
+      "ticker": "GPC",
+      "score": 131577872.22046626,
       "rank": 463
     },
     {
-      "ticker": "TXT",
-      "score": 130171535.54095313,
+      "ticker": "PFG",
+      "score": 130423231.77388509,
       "rank": 464
     },
     {
-      "ticker": "GPC",
-      "score": 129573462.23097302,
+      "ticker": "AMCR",
+      "score": 129838501.89428784,
       "rank": 465
     },
     {
-      "ticker": "LDOS",
-      "score": 129038914.80022612,
+      "ticker": "EG",
+      "score": 129015740.30078706,
       "rank": 466
     },
     {
-      "ticker": "AMCR",
-      "score": 128565472.31241862,
+      "ticker": "LDOS",
+      "score": 128883690.98685129,
       "rank": 467
     },
     {
-      "ticker": "EG",
-      "score": 128209335.22498721,
+      "ticker": "TXT",
+      "score": 127640157.57987612,
       "rank": 468
     },
     {
       "ticker": "BEN",
-      "score": 127952291.47248042,
+      "score": 126886107.40602584,
       "rank": 469
     },
     {
-      "ticker": "ESS",
-      "score": 125623242.83025832,
+      "ticker": "J",
+      "score": 126633869.00285994,
       "rank": 470
     },
     {
-      "ticker": "J",
-      "score": 124886139.68731108,
+      "ticker": "ESS",
+      "score": 125790462.55943662,
       "rank": 471
     },
     {
-      "ticker": "MAA",
-      "score": 123651336.85535249,
+      "ticker": "FTV",
+      "score": 124424106.49891809,
       "rank": 472
     },
     {
-      "ticker": "FTV",
-      "score": 119915694.97889563,
+      "ticker": "MAA",
+      "score": 121730467.01551165,
       "rank": 473
     },
     {
-      "ticker": "APTV",
-      "score": 118967113.61694336,
+      "ticker": "JKHY",
+      "score": 121319653.61713228,
       "rank": 474
     },
     {
       "ticker": "TRMB",
-      "score": 118598109.2784155,
+      "score": 119458911.2604777,
       "rank": 475
     },
     {
-      "ticker": "JKHY",
-      "score": 118255967.69096738,
+      "ticker": "NDSN",
+      "score": 118584080.94206311,
       "rank": 476
     },
     {
-      "ticker": "NDSN",
-      "score": 116051142.99825032,
+      "ticker": "APTV",
+      "score": 116948391.40265329,
       "rank": 477
     },
     {
-      "ticker": "DOC",
-      "score": 113901377.98717135,
+      "ticker": "DVA",
+      "score": 114379003.38258289,
       "rank": 478
     },
     {
-      "ticker": "DVA",
-      "score": 113797955.54119292,
+      "ticker": "DOC",
+      "score": 113655523.60379355,
       "rank": 479
     },
     {
-      "ticker": "HRL",
-      "score": 111531484.78746869,
+      "ticker": "KIM",
+      "score": 111889041.78316025,
       "rank": 480
     },
     {
-      "ticker": "KIM",
-      "score": 111159956.20129903,
+      "ticker": "HRL",
+      "score": 111139434.78376298,
       "rank": 481
     },
     {
-      "ticker": "AVY",
-      "score": 109452862.19714937,
+      "ticker": "DD",
+      "score": 109191952.3210798,
       "rank": 482
     },
     {
-      "ticker": "DD",
-      "score": 107541983.76108806,
+      "ticker": "AVY",
+      "score": 108426560.00685918,
       "rank": 483
     },
     {
       "ticker": "HSIC",
-      "score": 106289397.61283511,
+      "score": 105119298.26529367,
       "rank": 484
     },
     {
-      "ticker": "FRT",
-      "score": 104579227.5378636,
+      "ticker": "ARE",
+      "score": 103252166.12792242,
       "rank": 485
     },
     {
-      "ticker": "ARE",
-      "score": 100338391.30241758,
+      "ticker": "FRT",
+      "score": 102573896.33600144,
       "rank": 486
     },
     {
-      "ticker": "NWSA",
-      "score": 99819894.65744382,
+      "ticker": "CINF",
+      "score": 100040928.36223784,
       "rank": 487
     },
     {
-      "ticker": "CPT",
-      "score": 99815350.10252453,
+      "ticker": "NWSA",
+      "score": 99949299.37484378,
       "rank": 488
     },
     {
-      "ticker": "TPL",
-      "score": 97641801.05547224,
+      "ticker": "UHS",
+      "score": 98244414.84222412,
       "rank": 489
     },
     {
-      "ticker": "UHS",
-      "score": 97351707.86852156,
+      "ticker": "CPT",
+      "score": 97950613.13781738,
       "rank": 490
     },
     {
-      "ticker": "CINF",
-      "score": 96646610.98836263,
+      "ticker": "TPL",
+      "score": 97396184.0797061,
       "rank": 491
     },
     {
       "ticker": "GL",
-      "score": 92488444.40293086,
+      "score": 95410051.80765788,
       "rank": 492
     },
     {
       "ticker": "AIZ",
-      "score": 92301167.59222122,
+      "score": 95174687.19482422,
       "rank": 493
     },
     {
-      "ticker": "REG",
-      "score": 88900403.3147176,
+      "ticker": "AOS",
+      "score": 90101462.26339795,
       "rank": 494
     },
     {
-      "ticker": "AOS",
-      "score": 87816303.34823245,
+      "ticker": "REG",
+      "score": 90010992.49587286,
       "rank": 495
     },
     {
-      "ticker": "L",
-      "score": 84906077.04257056,
+      "ticker": "SOLV",
+      "score": 85962591.06786819,
       "rank": 496
     },
     {
-      "ticker": "SOLV",
-      "score": 84443320.41938418,
+      "ticker": "L",
+      "score": 83585330.43590727,
       "rank": 497
     },
     {
       "ticker": "BXP",
-      "score": 79556914.667402,
+      "score": 80654128.4803663,
       "rank": 498
     },
     {
       "ticker": "BF.B",
-      "score": 69136373.5316867,
+      "score": 69581682.74661472,
       "rank": 499
     },
     {
       "ticker": "FOX",
-      "score": 47742780.37200201,
+      "score": 47725657.77079264,
       "rank": 500
     },
     {
       "ticker": "ERIE",
-      "score": 38318265.512738906,
+      "score": 39325912.68150693,
       "rank": 501
     },
     {
       "ticker": "NWS",
-      "score": 27837217.73579007,
+      "score": 28135849.451837085,
       "rank": 502
     }
   ],
