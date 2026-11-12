@@ -2,7 +2,7 @@
   "strategy": "Nani",
   "version": "4.0",
   "ready": true,
-  "generatedAt": "2026-11-11T01:21:03.399448+00:00",
+  "generatedAt": "2026-11-12T02:22:25.144442+00:00",
   "universe": "Nikkei 100 ∪ Nasdaq-100",
   "holdings": 203,
   "allocationMonth": "2026-11",
@@ -32,7 +32,7 @@
     "usInfoFallback": 10,
     "jpTopixImplied": 225,
     "jpInfoFallback": 0,
-    "jpTopixFloatCapJPY": 1054198368580833.0,
+    "jpTopixFloatCapJPY": 1054172177043370.4,
     "jpAnchorCount": 29,
     "jpAnchorRows": [
       {
@@ -51,10 +51,10 @@
       },
       {
         "code": "9984",
-        "floatShares": 3653717554.0,
+        "floatShares": 3653744663.0,
         "price": 6430.0,
         "topixWeight": 0.021595,
-        "impliedTopixFloatCapJPY": 1087909417560546.5
+        "impliedTopixFloatCapJPY": 1087917489376707.6
       },
       {
         "code": "8306",
@@ -79,10 +79,10 @@
       },
       {
         "code": "7974",
-        "floatShares": 1125858415.0,
+        "floatShares": 1125857616.0,
         "price": 7944.0,
         "topixWeight": 0.008685,
-        "impliedTopixFloatCapJPY": 1029800719488773.8
+        "impliedTopixFloatCapJPY": 1029799988659067.4
       },
       {
         "code": "6098",
@@ -149,10 +149,10 @@
       },
       {
         "code": "7267",
-        "floatShares": 3891731888.0,
+        "floatShares": 3891732309.0,
         "price": 1682.0,
         "topixWeight": 0.005479,
-        "impliedTopixFloatCapJPY": 1194724043733528.0
+        "impliedTopixFloatCapJPY": 1194724172976455.5
       },
       {
         "code": "6902",
@@ -198,17 +198,17 @@
       },
       {
         "code": "7751",
-        "floatShares": 798190967.0,
+        "floatShares": 794032681.0,
         "price": 4605.0,
         "topixWeight": 0.0036109999999999996,
-        "impliedTopixFloatCapJPY": 1017909001117419.1
+        "impliedTopixFloatCapJPY": 1012606063695652.2
       },
       {
         "code": "6367",
-        "floatShares": 278647230.0,
+        "floatShares": 278645638.0,
         "price": 20925.0,
         "topixWeight": 0.004809,
-        "impliedTopixFloatCapJPY": 1212454416250779.8
+        "impliedTopixFloatCapJPY": 1212447489114161.0
       },
       {
         "code": "6273",
@@ -233,10 +233,10 @@
       },
       {
         "code": "8591",
-        "floatShares": 1066576851.0,
+        "floatShares": 1066393329.0,
         "price": 5971.0,
         "topixWeight": 0.006139,
-        "impliedTopixFloatCapJPY": 1037388887004561.0
+        "impliedTopixFloatCapJPY": 1037210387271379.6
       }
     ],
     "topixWeightDate": "2026-09-30",
@@ -249,7 +249,7 @@
     "fxJPYperUSD": 157.8040008544922,
     "countryWeightJP": 0.5,
     "countryWeightUS": 0.5,
-    "nikkei100CutoffFloatCapUSD": 12057083700.133965,
+    "nikkei100CutoffFloatCapUSD": 12056784142.12967,
     "nikkei100Members": [
       "8306.T",
       "7203.T",
@@ -354,7 +354,7 @@
     ],
     "priceRetries": [],
     "ndxSourceCount": 103,
-    "ndxSourceAsOf": "2026-11-11"
+    "ndxSourceAsOf": "2026-11-12"
   },
   "weightSum": 1.0,
   "maxWeight": 0.06215298783361223,
@@ -3206,8 +3206,8 @@
   "currentMonthMTD": {
     "ready": true,
     "month": "2026-11",
-    "asOfDate": "2026-11-11",
-    "portfolioReturn": -0.00895652042815831,
+    "asOfDate": "2026-11-12",
+    "portfolioReturn": -0.007246840107284047,
     "coverageRatio": 0.9994457952285255,
     "missingReturnWeight": 0.000554204771474498,
     "rows": [
@@ -3215,1254 +3215,1254 @@
         "ticker": "AAPL",
         "country": "US",
         "weight": 0.06215298783361223,
-        "monthlyReturn": 0.023404408612962113,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.01704262441721416,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "NVDA",
         "country": "US",
         "weight": 0.05865974578107758,
-        "monthlyReturn": -0.1390642354363596,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.18618994659534083,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MSFT",
         "country": "US",
         "weight": 0.047861890383728074,
-        "monthlyReturn": 0.04038008540868221,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.01744199319227757,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "GOOGL",
         "country": "US",
         "weight": 0.03783696543753195,
-        "monthlyReturn": 0.02014445448395885,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.017418443590503596,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "GOOG",
         "country": "US",
         "weight": 0.03761817056856698,
-        "monthlyReturn": 0.019370925143481266,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.015486059098865912,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "AMZN",
         "country": "US",
         "weight": 0.02913687204080898,
-        "monthlyReturn": 0.0984321579755949,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.11464549294316306,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8306.T",
         "country": "JP",
         "weight": 0.027820112004803717,
-        "monthlyReturn": 0.04589082183563287,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.04859028194361126,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "SPCX",
         "country": "US",
         "weight": 0.02195048360506539,
-        "monthlyReturn": 0.03693170586274519,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.04437633803971375,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "7203.T",
         "country": "JP",
         "weight": 0.019589007373826146,
-        "monthlyReturn": 0.09935275080906147,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.1032362459546925,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "AVGO",
         "country": "US",
         "weight": 0.019047455111539616,
-        "monthlyReturn": -0.027073070813570355,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.01099374462594338,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8316.T",
         "country": "JP",
         "weight": 0.01788483034365609,
-        "monthlyReturn": 0.05064102564102568,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.05801282051282053,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6098.T",
         "country": "JP",
         "weight": 0.01785321354603658,
-        "monthlyReturn": -0.057135264416688814,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.11187882009035344,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6758.T",
         "country": "JP",
         "weight": 0.017203844857012214,
-        "monthlyReturn": 0.0672836418209104,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.06528264132066042,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6501.T",
         "country": "JP",
         "weight": 0.016834999443944995,
-        "monthlyReturn": -0.007195682590445784,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.012392564461323197,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "META",
         "country": "US",
         "weight": 0.01675142406400739,
-        "monthlyReturn": 0.04382851469432003,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.04386109644545999,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8411.T",
         "country": "JP",
         "weight": 0.013792568602064438,
-        "monthlyReturn": 0.07463083676998794,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.09365438339763199,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "TSLA",
         "country": "US",
         "weight": 0.013648070066328295,
-        "monthlyReturn": -0.06575894733436505,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.061483726233510505,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "6857.T",
         "country": "JP",
         "weight": 0.013635161190872564,
-        "monthlyReturn": -0.11052166224580018,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.08959622752726204,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8035.T",
         "country": "JP",
         "weight": 0.012978418322103408,
-        "monthlyReturn": -0.05266970198675491,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.008278145695364225,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "MU",
         "country": "US",
         "weight": 0.01233080179659386,
-        "monthlyReturn": -0.17673541614821098,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.1857636902974633,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8058.T",
         "country": "JP",
         "weight": 0.012124726275493042,
-        "monthlyReturn": 0.12526315789473674,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.11684210526315786,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8766.T",
         "country": "JP",
         "weight": 0.011430721463073262,
-        "monthlyReturn": 0.03141171971865253,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.01674137170029355,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9984.T",
         "country": "JP",
         "weight": 0.011189491454149615,
-        "monthlyReturn": -0.1449614215571663,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.07715688566752399,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8001.T",
         "country": "JP",
         "weight": 0.010747100895506475,
-        "monthlyReturn": 0.05800309940225823,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.06597299092317921,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6861.T",
         "country": "JP",
         "weight": 0.01013680966522484,
-        "monthlyReturn": -0.010326797385620923,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.002614379084967311,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "AMD",
         "country": "US",
         "weight": 0.010133717210379124,
-        "monthlyReturn": -0.004170673999824959,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.00881132265448148,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8031.T",
         "country": "JP",
         "weight": 0.009752868661550649,
-        "monthlyReturn": 0.017820980153908428,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.032199270959902826,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "7011.T",
         "country": "JP",
         "weight": 0.008389602977940043,
-        "monthlyReturn": -0.08879056047197642,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.056932153392330376,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6981.T",
         "country": "JP",
         "weight": 0.007881251443989044,
-        "monthlyReturn": -0.1565964090554255,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.1417642466822795,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4502.T",
         "country": "JP",
         "weight": 0.00771290549464538,
-        "monthlyReturn": -0.010770138683977581,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.0017704337562702843,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "ASML",
         "country": "US",
         "weight": 0.007473029147567269,
-        "monthlyReturn": -0.04061949919532748,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.04404304330682307,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "9983.T",
         "country": "JP",
         "weight": 0.0069874831132693445,
-        "monthlyReturn": 0.09437241010560093,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.08354498061756455,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4063.T",
         "country": "JP",
         "weight": 0.006903354626331267,
-        "monthlyReturn": -0.048387096774193505,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.003192204301075252,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "7974.T",
         "country": "JP",
         "weight": 0.006737920717402028,
-        "monthlyReturn": 0.010245413390516989,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.009888015248987303,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6503.T",
         "country": "JP",
         "weight": 0.006668552356386931,
-        "monthlyReturn": 0.05329087048832282,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.07303609341825901,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "WMT",
         "country": "US",
         "weight": 0.006667734361679433,
-        "monthlyReturn": 0.012570549614580262,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.011684162735417614,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "7741.T",
         "country": "JP",
         "weight": 0.006394240789933099,
-        "monthlyReturn": -0.08644589911436273,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.061994609164420456,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9432.T",
         "country": "JP",
         "weight": 0.006199321008622685,
-        "monthlyReturn": -0.05676602203530201,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.04873853381580506,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "2914.T",
         "country": "JP",
         "weight": 0.005632797651263531,
-        "monthlyReturn": -0.23057817027735616,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.1854560507796329,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "COST",
         "country": "US",
         "weight": 0.005524986717136204,
-        "monthlyReturn": 0.049524111190966336,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.049484697621619445,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "6752.T",
         "country": "JP",
         "weight": 0.0054998733018733,
-        "monthlyReturn": -0.11299278178789562,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.08217656857301503,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8053.T",
         "country": "JP",
         "weight": 0.005473115172326779,
-        "monthlyReturn": 0.05604362314450162,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.07603756437443199,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8002.T",
         "country": "JP",
         "weight": 0.005169029295314776,
-        "monthlyReturn": 0.07100226384029629,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.08643753858818681,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "CSCO",
         "country": "US",
         "weight": 0.005111161830109674,
-        "monthlyReturn": -0.0642192824953085,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.06896221560747484,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "9433.T",
         "country": "JP",
         "weight": 0.00496925210113897,
-        "monthlyReturn": -0.001933895921237716,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.005801687763713037,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9434.T",
         "country": "JP",
         "weight": 0.004919913560266537,
-        "monthlyReturn": -0.0021204410242957605,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.0033927185810180838,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "PLTR",
         "country": "US",
         "weight": 0.004801995098106203,
-        "monthlyReturn": -0.09285871181365823,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.09489597117093529,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8630.T",
         "country": "JP",
         "weight": 0.004508473652463101,
-        "monthlyReturn": 0.019249823071479044,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.011748053786270418,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8591.T",
         "country": "JP",
         "weight": 0.004468919614520766,
-        "monthlyReturn": -0.08775862068965512,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.05810344827586211,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8750.T",
         "country": "JP",
         "weight": 0.004438236014745937,
-        "monthlyReturn": 0.019439044709802733,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.023049153013051882,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6702.T",
         "country": "JP",
         "weight": 0.0043726900801864055,
-        "monthlyReturn": -0.03786622443338861,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.02846876727473746,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "7267.T",
         "country": "JP",
         "weight": 0.004326846606723921,
-        "monthlyReturn": -0.004744627407200719,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.002790957298353325,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8725.T",
         "country": "JP",
         "weight": 0.0041933491664361226,
-        "monthlyReturn": -0.00513015390461713,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.012730381911457367,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6701.T",
         "country": "JP",
         "weight": 0.004178168640622916,
-        "monthlyReturn": -0.07560975609756093,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.09085365853658534,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "5803.T",
         "country": "JP",
         "weight": 0.004054047602068216,
-        "monthlyReturn": -0.21738015893360674,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.20097410920276848,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6301.T",
         "country": "JP",
         "weight": 0.003911164328458621,
-        "monthlyReturn": -0.005595523581135131,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.007354116706634661,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "AMAT",
         "country": "US",
         "weight": 0.00381280055511639,
-        "monthlyReturn": -0.06253953476809015,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.05753027264002186,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "4578.T",
         "country": "JP",
         "weight": 0.0038031545514598474,
-        "monthlyReturn": 0.008357709987463435,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.0162975344755536,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "INTC",
         "country": "US",
         "weight": 0.0037394882336498534,
-        "monthlyReturn": -0.09220187237469801,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.11116208391657179,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "LRCX",
         "country": "US",
         "weight": 0.0036890042995205655,
-        "monthlyReturn": -0.08985855311088897,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.08541702566069442,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "PANW",
         "country": "US",
         "weight": 0.003656473811935288,
-        "monthlyReturn": -0.10101337228227569,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.11332089315257765,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "6723.T",
         "country": "JP",
         "weight": 0.0036446604503624956,
-        "monthlyReturn": 0.004258339247693366,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.04701916252661453,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6367.T",
         "country": "JP",
         "weight": 0.0035986602502693166,
-        "monthlyReturn": 0.10162213740458026,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.11164122137404586,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6954.T",
         "country": "JP",
         "weight": 0.0035381274957905777,
-        "monthlyReturn": 0.0005333333333332746,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.008000000000000007,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8308.T",
         "country": "JP",
         "weight": 0.0035208516854068846,
-        "monthlyReturn": 0.03942570647219701,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.04717411121239734,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "TXN",
         "country": "US",
         "weight": 0.0033910279429797572,
-        "monthlyReturn": -0.027523824232803085,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.011772499237060585,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "5802.T",
         "country": "JP",
         "weight": 0.003276454026987181,
-        "monthlyReturn": -0.11184971098265895,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.07283236994219655,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4568.T",
         "country": "JP",
         "weight": 0.003239685114017469,
-        "monthlyReturn": -0.012205908367238671,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.003184150008844866,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "285A.T",
         "country": "JP",
         "weight": 0.0032306645867942753,
-        "monthlyReturn": -0.21105398457583546,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.1518423307626392,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "NFLX",
         "country": "US",
         "weight": 0.0031739730414508827,
-        "monthlyReturn": 0.028135047886409303,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.017041761183149706,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "2802.T",
         "country": "JP",
         "weight": 0.0031598243783108083,
-        "monthlyReturn": -0.16066154754873008,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.14806064185863355,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8604.T",
         "country": "JP",
         "weight": 0.003142572736883345,
-        "monthlyReturn": 0.03991880920162383,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.04296346414073082,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6146.T",
         "country": "JP",
         "weight": 0.0031339375355183526,
-        "monthlyReturn": -0.060973106138369926,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.00759597618558816,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "CRWD",
         "country": "US",
         "weight": 0.0031147563942347184,
-        "monthlyReturn": -0.09652173189306446,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.10766800590183423,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "AMGN",
         "country": "US",
         "weight": 0.0031067317526744533,
         "monthlyReturn": 0.0038841213106510786,
-        "lastDate": "2026-11-09"
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "4503.T",
         "country": "JP",
         "weight": 0.002938439698949474,
-        "monthlyReturn": 0.02101002313030076,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.025057825751734875,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "LIN",
         "country": "US",
         "weight": 0.0029326924142979573,
-        "monthlyReturn": 0.0019062467423689444,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.004698275340300873,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8802.T",
         "country": "JP",
         "weight": 0.002920567535855408,
-        "monthlyReturn": 0.062254773737902225,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.05990060162176292,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8309.T",
         "country": "JP",
         "weight": 0.0029149446471816646,
-        "monthlyReturn": 0.0394453004622497,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.047457627118643986,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6762.T",
         "country": "JP",
         "weight": 0.002914371388344176,
-        "monthlyReturn": -0.11470700880888551,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.07334354653389508,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8801.T",
         "country": "JP",
         "weight": 0.0028947196653308195,
-        "monthlyReturn": -0.013832128261553,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.014460861364350874,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "3382.T",
         "country": "JP",
         "weight": 0.002877078819564165,
-        "monthlyReturn": 0.01850117096018744,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.00843091334894619,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "5108.T",
         "country": "JP",
         "weight": 0.002841889505399857,
-        "monthlyReturn": 0.05224999999999991,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.047250000000000014,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4519.T",
         "country": "JP",
         "weight": 0.0027818201311090914,
-        "monthlyReturn": 0.04889083479276124,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.0348803269118505,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "7751.T",
         "country": "JP",
         "weight": 0.002765895092887519,
-        "monthlyReturn": -0.003786285233487563,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.0016827934371055342,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4062.T",
         "country": "JP",
         "weight": 0.0027638278839778097,
-        "monthlyReturn": -0.1880779805048738,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.17458135466133462,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4901.T",
         "country": "JP",
         "weight": 0.002729802491261709,
-        "monthlyReturn": -0.0048226950354609555,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.013900709219858198,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4661.T",
         "country": "JP",
         "weight": 0.0027060739631698818,
-        "monthlyReturn": 0.06395851339671554,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.07461826562950158,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "GILD",
         "country": "US",
         "weight": 0.002628216641178342,
-        "monthlyReturn": -0.0031203930541743308,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.006005233894723849,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "6178.T",
         "country": "JP",
         "weight": 0.0026281763656779912,
-        "monthlyReturn": 0.005250997689560943,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.004830917874396157,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "5020.T",
         "country": "JP",
         "weight": 0.0026257449293531658,
-        "monthlyReturn": -0.11706975113915175,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.11952330879775674,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9020.T",
         "country": "JP",
         "weight": 0.0026064211032416694,
-        "monthlyReturn": 0.04642475987193162,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.042155816435432314,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6971.T",
         "country": "JP",
         "weight": 0.002600638638578852,
-        "monthlyReturn": -0.1124260355029586,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.09733727810650883,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "KLAC",
         "country": "US",
         "weight": 0.002546086577252848,
-        "monthlyReturn": -0.059284075283900006,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.04927909996280122,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ADI",
         "country": "US",
         "weight": 0.0024976143999992082,
-        "monthlyReturn": -0.0723922070501446,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.07558878462842489,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "1605.T",
         "country": "JP",
         "weight": 0.002486669798394611,
-        "monthlyReturn": -0.12222493291046599,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.11856550378141006,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8015.T",
         "country": "JP",
         "weight": 0.002484811798955158,
-        "monthlyReturn": 0.006666666666666599,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.026666666666666616,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "5401.T",
         "country": "JP",
         "weight": 0.0023989383859616582,
-        "monthlyReturn": 0.06486742894004371,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.07330171847526112,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6902.T",
         "country": "JP",
         "weight": 0.0023706409712960287,
-        "monthlyReturn": 0.018020441097364115,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.01855836471221095,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6273.T",
         "country": "JP",
         "weight": 0.002370280751918946,
-        "monthlyReturn": -0.018470511989630567,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.005346727154893038,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "SHOP",
         "country": "US",
         "weight": 0.002354533524105665,
-        "monthlyReturn": -0.0393278324509132,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.07375937569348268,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "PEP",
         "country": "US",
         "weight": 0.002332696796027685,
-        "monthlyReturn": 0.026034178010526654,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.03854499477948137,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "4452.T",
         "country": "JP",
         "weight": 0.0023115613820037287,
-        "monthlyReturn": 0.05739692805173813,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.06386418755052548,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "7832.T",
         "country": "JP",
         "weight": 0.002140643418765318,
-        "monthlyReturn": 0.07209633972429086,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.06258913009031852,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "QCOM",
         "country": "US",
         "weight": 0.0021364743169462975,
-        "monthlyReturn": 0.030221092919459958,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.04259791056171491,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "9022.T",
         "country": "JP",
         "weight": 0.002101477514273764,
-        "monthlyReturn": 0.08377625917489251,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.09415337889141995,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4543.T",
         "country": "JP",
         "weight": 0.002074995221217739,
-        "monthlyReturn": 0.05849056603773595,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.06771488469601672,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6920.T",
         "country": "JP",
         "weight": 0.0020718074664806078,
-        "monthlyReturn": -0.024594594594594565,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.00756756756756749,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "MRVL",
         "country": "US",
         "weight": 0.002069416712502183,
-        "monthlyReturn": -0.192942116966633,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.19403841429667945,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "7269.T",
         "country": "JP",
         "weight": 0.001999089654241978,
-        "monthlyReturn": 0.02785051178290887,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.04451321114020468,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "SNDK",
         "country": "US",
         "weight": 0.001998314462704271,
-        "monthlyReturn": -0.23443407941580652,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.2573360466160639,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8267.T",
         "country": "JP",
         "weight": 0.001947924629202095,
-        "monthlyReturn": 0.03966942148760322,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.03677685950413223,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9101.T",
         "country": "JP",
         "weight": 0.001932173238166667,
-        "monthlyReturn": -0.11443708609271519,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.10675496688741726,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9104.T",
         "country": "JP",
         "weight": 0.001893921555891937,
-        "monthlyReturn": -0.130064245443818,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.12088632489838735,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "ISRG",
         "country": "US",
         "weight": 0.001853323146205481,
-        "monthlyReturn": 0.047227059756066225,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.02330657768673028,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "9503.T",
         "country": "JP",
         "weight": 0.0018408288108590616,
-        "monthlyReturn": 0.015509740873841604,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.017968602231889452,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "STX",
         "country": "US",
         "weight": 0.001823395519183364,
-        "monthlyReturn": -0.21647724395241907,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.22347439505293787,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "VRTX",
         "country": "US",
         "weight": 0.0017458498018225997,
-        "monthlyReturn": -0.017846972041223763,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.02316001661904321,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "6326.T",
         "country": "JP",
         "weight": 0.0017330445301922547,
-        "monthlyReturn": -0.01937092443421562,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.021480629075565805,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9735.T",
         "country": "JP",
         "weight": 0.00169563057856911,
-        "monthlyReturn": -0.0021856331050561506,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.0018942153577152787,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "WDC",
         "country": "US",
         "weight": 0.0016226864702508746,
-        "monthlyReturn": -0.2115044731323087,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.2130826249019312,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "1925.T",
         "country": "JP",
         "weight": 0.0016089862960275824,
-        "monthlyReturn": -0.002169197396963085,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.019956616052060783,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "2503.T",
         "country": "JP",
         "weight": 0.0016045084213724462,
-        "monthlyReturn": 0.04346338124572213,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.028405201916495537,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "7013.T",
         "country": "JP",
         "weight": 0.0015934454675333443,
-        "monthlyReturn": 0.08499999999999996,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.10347826086956524,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "2502.T",
         "country": "JP",
         "weight": 0.00158507692895692,
-        "monthlyReturn": 0.03723723723723715,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.039039039039038936,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4004.T",
         "country": "JP",
         "weight": 0.00157539347688336,
-        "monthlyReturn": -0.04845642829230168,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.1610003907776476,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8601.T",
         "country": "JP",
         "weight": 0.0015539796022995972,
-        "monthlyReturn": 0.06846038863976078,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.07294469357249622,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4307.T",
         "country": "JP",
         "weight": 0.0015289455892774071,
-        "monthlyReturn": -0.04347826086956519,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.0752446654901332,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "5016.T",
         "country": "JP",
         "weight": 0.001510009797352066,
-        "monthlyReturn": -0.09095652173913038,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.07982608695652171,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "5713.T",
         "country": "JP",
         "weight": 0.0014932449956620525,
-        "monthlyReturn": -0.11740383410600175,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": -0.05124671093847888,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "8697.T",
         "country": "JP",
         "weight": 0.0014849615210614456,
-        "monthlyReturn": 0.04380086165629482,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.048348492101484064,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9766.T",
         "country": "JP",
         "weight": 0.0014713348828138914,
-        "monthlyReturn": 0.05626406601650413,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.05945236309077262,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "SBUX",
         "country": "US",
         "weight": 0.0014582208602491613,
-        "monthlyReturn": 0.04817544873932689,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.05305998555522784,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ADP",
         "country": "US",
         "weight": 0.001451416612123401,
-        "monthlyReturn": 0.028009431856622413,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.039512699178799515,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "7453.T",
         "country": "JP",
         "weight": 0.0014513045154235576,
-        "monthlyReturn": -0.00041279669762639415,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.005159958720330149,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "4507.T",
         "country": "JP",
         "weight": 0.0014316163658243109,
-        "monthlyReturn": -0.0012978585334199044,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.004218040233614495,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "BKNG",
         "country": "US",
         "weight": 0.0013874938141886113,
-        "monthlyReturn": 0.08336095371928809,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.055330929972159826,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "8795.T",
         "country": "JP",
         "weight": 0.001384849641552135,
-        "monthlyReturn": 0.026619892695006087,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.0315724308708214,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "3407.T",
         "country": "JP",
         "weight": 0.0013840718574407369,
-        "monthlyReturn": -0.010595200997195353,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.022436896229354852,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "9531.T",
         "country": "JP",
         "weight": 0.0013785089734485287,
-        "monthlyReturn": 0.003970678069639577,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.010232131948686662,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "6988.T",
         "country": "JP",
         "weight": 0.001341933872748347,
-        "monthlyReturn": 0.031722502223539895,
-        "lastDate": "2026-11-11"
+        "monthlyReturn": 0.0459531574266232,
+        "lastDate": "2026-11-12"
       },
       {
         "ticker": "ADBE",
         "country": "US",
         "weight": 0.0012060146621500497,
-        "monthlyReturn": -0.050568087094499226,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.05304852540192129,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CSX",
         "country": "US",
         "weight": 0.0011883414413910362,
-        "monthlyReturn": -0.029230778033916716,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.017692272479717497,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MAR",
         "country": "US",
         "weight": 0.0011188696272449576,
-        "monthlyReturn": -0.018447050206801485,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.007670611213235201,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CDNS",
         "country": "US",
         "weight": 0.0011114718181403404,
-        "monthlyReturn": 0.01972610745513137,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.0049088712462763695,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "INTU",
         "country": "US",
         "weight": 0.0011112900362617631,
-        "monthlyReturn": -0.005936778879270799,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.0005584201069985806,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "REGN",
         "country": "US",
         "weight": 0.0011052346865344778,
-        "monthlyReturn": -0.007829801945447135,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.012035949933291934,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "SNPS",
         "country": "US",
         "weight": 0.0011015985759313556,
-        "monthlyReturn": -0.007038354952763282,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.021965608996936115,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CEG",
         "country": "US",
         "weight": 0.0010893926046306541,
-        "monthlyReturn": 0.045082913136143876,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.013551431558397331,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "FTNT",
         "country": "US",
         "weight": 0.001040711283471823,
-        "monthlyReturn": -0.09869004401107151,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.09059467725663428,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MDLZ",
         "country": "US",
         "weight": 0.0010345306625093725,
-        "monthlyReturn": 0.01870593679651522,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.020239185374397062,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CMCSA",
         "country": "US",
         "weight": 0.0010234138233542152,
-        "monthlyReturn": 0.05283503032463033,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.06314429853937908,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MRNA",
         "country": "US",
         "weight": 0.001020292934109047,
-        "monthlyReturn": 0.2000356691886962,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.11897750594770118,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MELI",
         "country": "US",
         "weight": 0.0010162024161122067,
-        "monthlyReturn": -0.06543899163967226,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.09131707912538112,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "DDOG",
         "country": "US",
         "weight": 0.0009649805235736026,
-        "monthlyReturn": -0.23731476664794438,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.2424950190752685,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CTAS",
         "country": "US",
         "weight": 0.000928553960873266,
-        "monthlyReturn": 0.013672540763459251,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.023302316716050653,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "TMUS",
         "country": "US",
         "weight": 0.0009148030679764992,
-        "monthlyReturn": 0.09794352917530835,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.1003514109166177,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ROST",
         "country": "US",
         "weight": 0.0008825547943886808,
-        "monthlyReturn": 0.033760820372580325,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.042266434064305525,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ORLY",
         "country": "US",
         "weight": 0.0008811142934423143,
-        "monthlyReturn": 0.010011241556495909,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.005511786899428772,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "AEP",
         "country": "US",
         "weight": 0.0008751861222907056,
-        "monthlyReturn": -0.01314973503048067,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.009430451335319057,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "LITE",
         "country": "US",
         "weight": 0.0008425405109003668,
-        "monthlyReturn": -0.2571677998725225,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.27036319702084854,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "DASH",
         "country": "US",
         "weight": 0.000829138438481342,
-        "monthlyReturn": -0.0011590851531736446,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.016117448796474254,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MNST",
         "country": "US",
         "weight": 0.0008214624405539111,
-        "monthlyReturn": -0.04498852238314888,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.05126597020305623,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ABNB",
         "country": "US",
         "weight": 0.0008151567726031591,
-        "monthlyReturn": 0.13534797969549062,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.11512185591598656,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "NXPI",
         "country": "US",
         "weight": 0.0008119220244613191,
-        "monthlyReturn": -0.030291492908930184,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.010853515851760531,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "HON",
         "country": "US",
         "weight": 0.0008114382889383242,
-        "monthlyReturn": 0.02847388948897933,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.02497079613378239,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "FAST",
         "country": "US",
         "weight": 0.0007382063423969085,
-        "monthlyReturn": 0.03587698137243067,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.041002274770296276,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "PDD",
         "country": "US",
         "weight": 0.0007321269145459145,
-        "monthlyReturn": -0.005436155524269681,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.019026450075068535,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "APP",
         "country": "US",
         "weight": 0.0007211408579711772,
-        "monthlyReturn": 0.748214521565951,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.686430103651114,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MPWR",
         "country": "US",
         "weight": 0.0007105998600049837,
-        "monthlyReturn": 0.1274143409360482,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.10268191195427012,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "BKR",
         "country": "US",
         "weight": 0.0006763498970338114,
-        "monthlyReturn": -0.11989098211790472,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.12810439911016935,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "PCAR",
         "country": "US",
         "weight": 0.0006504330333105651,
-        "monthlyReturn": 0.028001992470006343,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.029855453174496782,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ADSK",
         "country": "US",
         "weight": 0.0006428976953361253,
-        "monthlyReturn": 0.05289465554375017,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.039940790138327076,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "XEL",
         "country": "US",
         "weight": 0.0006322901659664027,
-        "monthlyReturn": 0.022967913222917247,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.022329972421448296,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "PYPL",
         "country": "US",
         "weight": 0.0006077476173220694,
-        "monthlyReturn": 0.0410887468679868,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.019070708535041225,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "KDP",
         "country": "US",
         "weight": 0.0006046642684804308,
-        "monthlyReturn": 0.02525672712303839,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.0432972918718888,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "HONA",
         "country": "US",
         "weight": 0.0006041800714817419,
-        "monthlyReturn": 0.04775537344495162,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.05856547777932697,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "EXC",
         "country": "US",
         "weight": 0.0005937061451793722,
-        "monthlyReturn": -0.009546509552013527,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.012150170784054004,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ROP",
         "country": "US",
         "weight": 0.0005689216671505014,
-        "monthlyReturn": 0.012320285097982886,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.01839452122019747,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "EA",
@@ -4475,168 +4475,168 @@
         "ticker": "MSTR",
         "country": "US",
         "weight": 0.0005422698562325971,
-        "monthlyReturn": -0.0501437363606253,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.08432915915094563,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "FANG",
         "country": "US",
         "weight": 0.0005372293876022487,
-        "monthlyReturn": -0.14628653198719666,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.14671775546207266,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "IDXX",
         "country": "US",
         "weight": 0.0005355819475016784,
-        "monthlyReturn": 0.1306400390625,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.1146240234375,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "TER",
         "country": "US",
         "weight": 0.0005286648042289924,
-        "monthlyReturn": -0.11513977425708843,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.11729799188393375,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "MCHP",
         "country": "US",
         "weight": 0.0005086845184643234,
-        "monthlyReturn": -0.22387680896039863,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.23864205631637148,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "PAYX",
         "country": "US",
         "weight": 0.0004985838813273498,
-        "monthlyReturn": 0.018188298007361325,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.030964403266065865,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ALAB",
         "country": "US",
         "weight": 0.0004985772129072435,
-        "monthlyReturn": -0.15775368619267094,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.16043341149297563,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "WDAY",
         "country": "US",
         "weight": 0.0004752347076902475,
-        "monthlyReturn": -0.038712228191968734,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.045383312018685285,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "TTWO",
         "country": "US",
         "weight": 0.0004376278777822072,
-        "monthlyReturn": 0.08580702508245897,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.17606411104110542,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "NBIS",
         "country": "US",
         "weight": 0.0004274254485535708,
-        "monthlyReturn": -0.08482143386021701,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.13302276063248153,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "GEHC",
         "country": "US",
         "weight": 0.00042655004713562243,
-        "monthlyReturn": 0.08369870759789877,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.07879804666249424,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "AXON",
         "country": "US",
         "weight": 0.00040933947326184924,
-        "monthlyReturn": -0.3030344995959052,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.30450572748293825,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ODFL",
         "country": "US",
         "weight": 0.00039725538765314326,
-        "monthlyReturn": -0.019395218912877654,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.03586388848782318,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "DXCM",
         "country": "US",
         "weight": 0.00038273890106215575,
-        "monthlyReturn": -0.02254645154975865,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.03641191443892766,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ARM",
         "country": "US",
         "weight": 0.00036320345828304865,
-        "monthlyReturn": -0.10078188223849782,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.12399839796702661,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "RKLB",
         "country": "US",
         "weight": 0.0003492802017155473,
-        "monthlyReturn": 0.06872446291383572,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.1386291096825707,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "FER",
         "country": "US",
         "weight": 0.00033863472812096194,
-        "monthlyReturn": 0.08527391186010913,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.07820261221741198,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CPRT",
         "country": "US",
         "weight": 0.0003151627074048938,
-        "monthlyReturn": 0.07308204393348028,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.06812167597665986,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CCEP",
         "country": "US",
         "weight": 0.0002796046498643117,
-        "monthlyReturn": 0.025397067430715792,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.02592076429779011,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "ALNY",
         "country": "US",
         "weight": 0.00027169840484601816,
-        "monthlyReturn": -0.039791571123823366,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.0702636804721748,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "KHC",
         "country": "US",
         "weight": 0.0002617923020401786,
-        "monthlyReturn": 0.007425755234133691,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": 0.0,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "CRWV",
         "country": "US",
         "weight": 0.0002150472370764431,
-        "monthlyReturn": -0.11890628876071063,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.12340350047709447,
+        "lastDate": "2026-11-10"
       },
       {
         "ticker": "TRI",
         "country": "US",
         "weight": 0.00018594858682766165,
-        "monthlyReturn": -0.07491241706609597,
-        "lastDate": "2026-11-09"
+        "monthlyReturn": -0.07397280306901466,
+        "lastDate": "2026-11-10"
       }
     ],
     "displayOnly": true,
     "officialHistory": false,
     "definition": "Current-month display only: first available trading-day open to latest available close using the locked monthly Nani target."
   },
-  "mtdUpdatedAt": "2026-11-11T01:21:10.712011+00:00",
+  "mtdUpdatedAt": "2026-11-12T02:22:34.414692+00:00",
   "mtdTargetPolicy": "Locked to the forward-live-v4 rows archived for the allocation month when available."
 }
